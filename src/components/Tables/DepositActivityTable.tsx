@@ -1,0 +1,79 @@
+'use client'
+
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { Card, CardContent } from "@/components/ui/card"
+import { DepositActivity } from "@/types/dashboard/data"
+
+interface DepositActivityTableProps {
+    activities: DepositActivity[]
+    className?: string
+}
+
+export function DepositActivityTable({ activities, className }: DepositActivityTableProps) {
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 2
+        }).format(amount)
+    }
+
+    return (
+        <Card className={`rounded-sm border border-stroke bg-white dark:border-strokedark dark:bg-boxdark ${className}`}>
+            <CardContent className="p-0">
+                <div className="flex flex-col">
+                    <h2 className="p-6 text-2xl font-bold text-black dark:text-white font-archivo">
+                        Deposit Activity
+                    </h2>
+                    <div className="overflow-x-auto">
+                        <div className="inline-block min-w-full align-middle">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow className="bg-black hover:bg-black dark:bg-black dark:hover:bg-black rounded-none">
+                                        <TableHead className="text-white font-bold text-base font-archivo uppercase py-4">
+                                            Description
+                                        </TableHead>
+                                        <TableHead className="text-white font-bold text-base font-archivo uppercase text-right py-4">
+                                            Amount
+                                        </TableHead>
+                                        <TableHead className="text-white font-bold text-base font-archivo uppercase text-right py-4">
+                                            Date Time
+                                        </TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {activities.map((activity, index) => (
+                                        <TableRow
+                                            key={index}
+                                            className={`
+                                                ${index % 2 === 1 ? 'bg-gray-2 dark:bg-meta-4' : 'bg-white dark:bg-boxdark'}
+                                                border-b border-stroke dark:border-strokedark
+                                            `}
+                                        >
+                                            <TableCell className="font-medium text-black dark:text-white py-4">
+                                                {activity.description}
+                                            </TableCell>
+                                            <TableCell className="text-right font-medium text-black dark:text-white py-4">
+                                                {formatCurrency(activity.amount)}
+                                            </TableCell>
+                                            <TableCell className="text-right font-medium text-black dark:text-white py-4">
+                                                {activity.dateTime}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}

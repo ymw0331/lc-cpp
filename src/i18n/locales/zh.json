@@ -1,0 +1,27 @@
+{
+    "header": {
+        "searchPlaceholder": "输入搜索...",
+        "darkMode": "黑暗模式",
+        "notifications": "通知",
+        "messages": "消息",
+        "user": "用户"
+    },
+    "sidebar": {
+        "dashboard": "仪表板",
+        "ecommerce": "电子商务",
+        "calendar": "日历",
+        "profile": "个人资料",
+        "forms": "表单",
+        "form elements": "表单元素",
+        "form layout": "表单布局",
+        "tables": "表格",
+        "settings": "设置",
+        "chart": "图表",
+        "ui-elements": "UI 元素",
+        "alerts": "警报",
+        "buttons": "按钮",
+        "authentication": "认证",
+        "sign in": "登录",
+        "sign up": "注册"
+    }
+}
