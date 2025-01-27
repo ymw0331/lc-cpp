@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Filter, Plus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Image from 'next/image';
 
 // Types
 interface FilterOptions {
@@ -297,7 +298,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
                                 >
                                     <td className="py-4 px-4">
                                         <div className="flex items-center gap-3">
-                                            <img
+                                            <Image
                                                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`}
                                                 alt={user.name}
                                                 className="h-10 w-10 rounded-full"

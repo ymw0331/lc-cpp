@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import AgentLevelCard from '../Cards/AgentLevelCard';
 import { CircularProgress } from './CircularProgress';
 import { Facebook, Linkedin } from 'lucide-react';
+import Image from 'next/image';
 
 interface UserProfileViewProps {
     user: {
@@ -50,7 +51,7 @@ export const UserProfileView = ({ user }: UserProfileViewProps) => {
                 {/* Main Profile Card - Spans 7 columns */}
                 <div className="col-span-7 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark p-6">
                     <div className="flex gap-4">
-                        <img
+                        <Image
                             src={user.avatar}
                             alt={user.name}
                             className="w-20 h-20 rounded-full"

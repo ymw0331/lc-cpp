@@ -254,10 +254,10 @@ export const RecruitAgentForm = () => {
                             <li>• I confirm that all information provided in this form is accurate and true to the best of my knowledge.</li>
                             <li>• I acknowledge that the person I am referring has given their consent to be contacted by Lookcard Limited regarding this program.</li>
                             <li>• I understand that submitting a referral does not guarantee acceptance into the program for the referred individual.</li>
-                            <li>• I acknowledge that any benefits or rewards for this referral are subject to the referred individual meeting the program's eligibility and joining requirement.</li>
+                            <li>• I acknowledge that any benefits or rewards for this referral are subject to the referred individual meeting the program eligibility and joining requirement.</li>
                         </ul>
 
-
+ 
                     </div>
                 </div>
 

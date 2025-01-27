@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface ProfileCardProps {
     name: string;
     level: string;
@@ -22,7 +24,7 @@ const ProfileCard = ({ name, level, activeUsers, avatar }: ProfileCardProps) => 
                     </div>
                     <div className="relative w-20 h-20 rounded-full bg-[#F3F3F3] dark:bg-meta-4 overflow-hidden">
                         {avatar ? (
-                            <img
+                            <Image
                                 src={avatar}
                                 alt={name}
                                 className="w-full h-full object-cover"

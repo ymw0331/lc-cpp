@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface ProfileHeaderProps {
     name: string;
     level: string;
@@ -13,7 +15,7 @@ const ProfileHeader = ({ name, level, avatar, socialLinks, promotedDate }: Profi
     return (
         <div className="flex items-start gap-4 p-6 bg-whiter dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
             <div className="w-20 h-20 rounded-full overflow-hidden">
-                <img src={avatar} alt={name} className="w-full h-full object-cover" />
+                <Image src={avatar} alt={name} className="w-full h-full object-cover" />
             </div>
             <div className="flex-1">
                 <div className="flex items-center justify-between">
