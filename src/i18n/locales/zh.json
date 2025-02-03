@@ -23,5 +23,36 @@
         "authentication": "认证",
         "sign in": "登录",
         "sign up": "注册"
+    },
+    "preferences": {
+        "title": "设置",
+        "saveChanges": "保存更改",
+        "saving": "正在保存...",
+        "success": {
+            "title": "成功",
+            "description": "您的偏好设置已成功更新"
+        },
+        "error": {
+            "title": "错误",
+            "description": "更新偏好设置失败。请重试。"
+        },
+        "language": {
+            "title": "语言",
+            "select": "选择语言",
+            "changed": "语言已更改",
+            "restart": "某些更改可能需要刷新页面",
+            "options": {
+                "en": "English (Default)",
+                "zh": "中文"
+            }
+        },
+        "notifications": {
+            "title": "通知",
+            "description": "启用以接收有关您的帐户和优惠的更新。",
+            "enabled": "已启用通知",
+            "disabled": "已禁用通知",
+            "enabledDesc": "您现在将收到有关您的帐户和优惠的更新",
+            "disabledDesc": "您将不再收到通知"
+        }
     }
 }

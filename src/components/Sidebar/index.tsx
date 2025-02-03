@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import {
   AccountIcon, DashboardIcon, IncentiveManagementIcon, PerformanceIcon, ReferredUsersIcon, SettingsIcon, SupportIcon
 } from "@/components/Icons/menu"
-import { FlaskConical } from "lucide-react";
 
 
 interface SidebarProps {
@@ -69,90 +68,21 @@ const menuGroups = [
           { label: "Profile", route: "/settings/profile" },
           { label: "Password", route: "/settings/password" },
           { label: "Preference", route: "/settings/preference" },
-          { label: "Legal & Compliance", route: "/settings/legal-and-compliance" },
         ],
       },
       {
-        icon: <FlaskConical />,
-        label: "Playground",
-        route: "/playground",
+        icon: <SupportIcon />,
+        label: "Legal & Compliance",
+        route: "#",
+        children: [
+          { label: "Profile Policy", route: "/legal-and-compliance/profile-policy" },
+          { label: "Terms and Conditions", route: "/legal-and-compliance/terms-and-conditions" },
+          { label: "User Agreement", route: "/legal-and-compliance/user-agreement" },
+          { label: "Code of Conduct", route: "/legal-and-compliance/code-of-conduct" },
+          { label: "Compliance and Anti-Corruption", route: "/legal-and-compliance/compliance-and-anti-corruption" },
+          { label: "Privacy Guideline", route: "/legal-and-compliance/program-guideline" },
+        ],
       },
-      // {
-      //   icon: <PayoutIcon />,
-      //   label: "Payout",
-      //   route: "#",
-      //   children: [
-      //     { label: "Payout Summary", route: "/payout/summary" },
-      //     { label: "Payout History", route: "/payout/history" },
-      //   ],
-      // },
-      // {
-      //   icon: <AgentsIcon />,
-      //   label: "Agents/Partners",
-      //   route: "#",
-      //   children: [
-      //     { label: "Recruitment Overview", route: "/agents/recruitment-overview" },
-      //     { label: "Manage Users", route: "/agents/manage-users" },
-      //   ],
-      // },
-      // {
-      //   icon: <LevelAdvancementIcon />,
-      //   label: "Level Advancement",
-      //   route: "/level-advancement",
-      // },
-      // {
-      //   icon: <UserManagementIcon />,
-      //   label: "User Management",
-      //   route: "/user-management",
-      // },
-
-      // {
-      //   icon: <LoyaltyProgramsIcon />,
-      //   label: "Loyalty Programs",
-      //   route: "/loyalty-programs",
-      // },
-
-      // For Reference Only (to remove)
-      // {
-      //   label: "Old Calendar",
-      //   route: "/old/old-calendar",
-      // },
-      // {
-      //   label: "Old Profile",
-      //   route: "/old/old-profile",
-      // },
-      // {
-      //   label: "Old Forms",
-      //   route: "#",
-      //   children: [
-      //     { label: "Form Elements", route: "/old/old-forms/form-elements" },
-      //     { label: "Form Layout", route: "/old/old-forms/form-layout" },
-      //   ],
-      // },
-      // {
-      //   label: "Old Tables",
-      //   route: "/old/old-tables",
-      // },
-      // {
-      //   label: "Old UI",
-      //   route: "#",
-      //   children: [
-      //     { label: "Alerts", route: "/old/old-ui/alerts" },
-      //     { label: "Buttons", route: "/old/old-ui/buttons" },
-      //   ],
-      // },
-      // {
-      //   label: "Old Auth",
-      //   route: "#",
-      //   children: [
-      //     { label: "Sign In", route: "/old/old-auth/signin" },
-      //     { label: "Sign Up", route: "/old/old-auth/signup" },
-      //   ],
-      // },
-      // {
-      //   label: "Old Settings",
-      //   route: "/old/old-settings",
-      // },
     ],
   },
 ];
@@ -199,7 +129,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </div>
             ))}
           </nav>
-          
+
         </div>
         {/* <!-- Sidebar Menu --> */}
 

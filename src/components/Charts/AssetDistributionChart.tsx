@@ -1,5 +1,5 @@
-// components/Charts/AssetDistributionChart.tsx
 'use client';
+
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Sector } from 'recharts';
 import { useState } from 'react';
 

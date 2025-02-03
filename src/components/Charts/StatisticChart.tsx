@@ -40,7 +40,7 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload?.[0]) {
             return (
-                <div className="bg-white dark:bg-boxdark border border-stroke dark:border-strokedark rounded-lg shadow-lg p-3">
+                <div className="bg-white dark:bg-boxdark border border-stroke dark:border-strokedark shadow-lg p-3">
                     <p className="font-medium text-black dark:text-white">
                         {formatValue(payload[0].value)}
                     </p>
@@ -77,7 +77,7 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                     </p>
                 </div>
 
-                <div className="flex space-x-2 bg-gray-100 dark:bg-meta-4 p-1 rounded-full">
+                <div className="flex space-x-2 bg-gray-100 dark:bg-meta-4 p-1">
                     {["Week", "Month", "Year"].map((range) => (
                         <Button
                             key={range}

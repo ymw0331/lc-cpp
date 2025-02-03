@@ -1,4 +1,3 @@
-// contexts/AuthContext.tsx
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
@@ -29,9 +28,9 @@ const mockAuth = async (email: string, password: string) => {
             user: {
                 id: '1',
                 email: 'agent@example.com',
-                name: 'Wayne Yong',
+                name: 'Agent 007',
                 role: 'agent',
-                avatarUrl: '/images/user/user-01.png',
+                avatarUrl: '/images/user/user-02.png',
             // Add a URL if you have one
             },
             token: 'mock-jwt-token',

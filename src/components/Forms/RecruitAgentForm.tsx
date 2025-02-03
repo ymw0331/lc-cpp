@@ -257,7 +257,7 @@ export const RecruitAgentForm = () => {
                             <li>• I acknowledge that any benefits or rewards for this referral are subject to the referred individual meeting the program eligibility and joining requirement.</li>
                         </ul>
 
- 
+
                     </div>
                 </div>
 

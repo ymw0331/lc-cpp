@@ -55,6 +55,8 @@ export const UserProfileView = ({ user }: UserProfileViewProps) => {
                             src={user.avatar}
                             alt={user.name}
                             className="w-20 h-20 rounded-full"
+                            width={80}
+                            height={80}
                         />
                         <div className="flex-1">
                             <div className="flex justify-between items-start">

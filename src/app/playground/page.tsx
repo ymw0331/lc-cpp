@@ -2,7 +2,7 @@
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
 import MetricsChart from "@/components/Charts/MetricsChart"
-import { VerificationDialog } from "@/components/Dialogs/Verification"
+import { VerificationDialog } from "@/components/Dialogs/VerificationDialog"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"

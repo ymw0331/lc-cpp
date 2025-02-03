@@ -1,4 +1,3 @@
-// components/Tables/UsersTable.tsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -302,6 +301,8 @@ const UsersTable = ({ users }: UsersTableProps) => {
                                                 src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`}
                                                 alt={user.name}
                                                 className="h-10 w-10 rounded-full"
+                                                width={40}
+                                                height={40}
                                             />
                                             <span className="text-black dark:text-white">
                                                 {user.name}

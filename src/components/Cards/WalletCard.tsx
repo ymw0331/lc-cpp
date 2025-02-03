@@ -1,3 +1,4 @@
+import Link from "next/link";
 import USDTIcon from "../Icons/dashboard/USDTIcon";
 
 interface WalletCardProps {
@@ -10,6 +11,7 @@ interface WalletCardProps {
 }
 
 const WalletCard = ({ title, amount, icon, secondaryAmount, secondaryIcon, showTransfer }: WalletCardProps) => {
+
     return (
         <div className="p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
             {/* Icon and Title */}
@@ -45,9 +47,11 @@ const WalletCard = ({ title, amount, icon, secondaryAmount, secondaryIcon, showT
 
                 {/* Transfer Button */}
                 {showTransfer && (
-                    <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
-                        Transfer
-                    </button>
+                    <Link href="/account/transfer">
+                        <button className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                            Transfer
+                        </button>
+                    </Link>
                 )}
             </div>
         </div>

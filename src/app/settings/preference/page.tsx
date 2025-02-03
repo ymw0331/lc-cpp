@@ -1,4 +1,5 @@
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
+import PreferenceSettingsForm from '@/components/Forms/PreferenceSettingsForm'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 
 const PreferencePage = () => {
@@ -7,7 +8,7 @@ const PreferencePage = () => {
             <Breadcrumb pageName="Preference" />
 
 
-
+            <PreferenceSettingsForm />
 
         </DefaultLayout>
     )

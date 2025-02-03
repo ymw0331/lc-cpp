@@ -76,7 +76,7 @@ const SingleUserPage = () => {
 
     const userData = {
         name: "Adam Lam",
-        avatar: "/path-to-avatar.png",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Adam",
         level: "Level 2 Agent",
         promotedDate: "Nov 07, 2024",
         userId: "10118237",

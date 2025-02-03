@@ -1,5 +1,5 @@
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import SupportForm from '@/components/Forms/SupporForm'
+import SupportForm from '@/components/Forms/SupportForm'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 
 const SupportPage = () => {

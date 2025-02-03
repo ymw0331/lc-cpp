@@ -38,9 +38,13 @@
         "password": "Password",
         "preference": "Preference",
         "legal & compliance": "Legal & Compliance",
-
-
-
+        "code of conduct": "Code of Conduct",
+        "terms and conditions": "Terms and Conditions",
+        "compliance and anti-corruption": "Compliance and Anti-Corruption",
+        "user agreement": "User Agreement",
+        "profile policy": "Profile Policy",
+        "program guideline": "Program Guideline",
+        "privacy guideline": "Privacy Guideline",
         "old calendar": "Old Calendar",
         "old profile": "Old Profile",
         "old charts": "Old Charts",
@@ -55,5 +59,36 @@
         "old settings": "Old Settings",
         "sign in": "Sign In",
         "sign up": "Sign Up"
+    },
+    "preferences": {
+        "title": "Settings",
+        "saveChanges": "Save Changes",
+        "saving": "Saving...",
+        "success": {
+            "title": "Success",
+            "description": "Your preferences have been updated successfully"
+        },
+        "error": {
+            "title": "Error",
+            "description": "Failed to update preferences. Please try again."
+        },
+        "language": {
+            "title": "Language",
+            "select": "Select language",
+            "changed": "Language Changed",
+            "restart": "Some changes may require a page refresh",
+            "options": {
+                "en": "English (Default)",
+                "zh": "中文"
+            }
+        },
+        "notifications": {
+            "title": "Notification",
+            "description": "Enable to receive updates about your account and offers.",
+            "enabled": "Notifications Enabled",
+            "disabled": "Notifications Disabled",
+            "enabledDesc": "You will now receive updates about your account and offers",
+            "disabledDesc": "You will no longer receive notifications"
+        }
     }
 }

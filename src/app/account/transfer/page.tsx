@@ -1,7 +1,7 @@
 'use client'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import AssetDistributionChart from '@/components/Charts/AssetDistributionChart'
-import WalletTransfer from '@/components/Forms/WalletTransfer'
+import WalletTransferForm from '@/components/Forms/WalletTransferForm'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import TransferActivityTable from '@/components/Tables/TransferActivityTable'
 import { USDTIcon, USDCIcon } from '@/components/Icons/dashboard'
@@ -43,7 +43,7 @@ const TransferPage = () => {
             <Breadcrumb pageName="Transfer to Current Account Wallet" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
 
-                <WalletTransfer
+                <WalletTransferForm
                     sourceAmount={transferPageData.sourceWallet.amount}
                     sourceIcon={getCurrencyIcon(transferPageData.sourceWallet.currency)}
                     currencies={currencyOptionsWithIcons}

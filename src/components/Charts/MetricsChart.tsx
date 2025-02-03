@@ -67,8 +67,8 @@ const MetricsChart = ({
 
     const availableRanges = (): TimeRange[] => {
         const hasWeekData = data[activeYear]?.Week && data[activeYear]?.Week?.length > 0;
-        return hasWeekData 
-            ? ['Week', 'Month', 'Year'] 
+        return hasWeekData
+            ? ['Week', 'Month', 'Year']
             : ['Month', 'Year'];
     };
 
@@ -156,8 +156,8 @@ const MetricsChart = ({
                                 variant={activeRange === range ? "default" : "ghost"}
                                 onClick={() => setActiveRange(range)}
                                 className={`rounded-full px-6 transition-all duration-200 ${activeRange === range
-                                        ? "bg-primary text-white hover:bg-primary/90"
-                                        : "text-black dark:text-white hover:bg-meta-4/50"
+                                    ? "bg-primary text-white hover:bg-primary/90"
+                                    : "text-black dark:text-white hover:bg-meta-4/50"
                                     }`}
                             >
                                 {range}

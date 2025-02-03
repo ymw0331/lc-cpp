@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/useToast";
 
 interface ReferralCardProps {
     code: string;
