@@ -1,0 +1,101 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useToast } from '@/hooks/useToast';
+import Image from 'next/image';
+
+interface NextLevelCardProps {
+    currentLevel: string;
+    progress: number;
+    isMaxLevel?: boolean;
+    avatarUrl?: string;
+    className?: string;
+}
+
+const NextLevelCard = ({
+    currentLevel = "LEVEL 5 PARTNER",
+    progress = 84.5,
+    isMaxLevel = true,
+    avatarUrl = "/path/to/default-avatar.png",
+    className
+}: NextLevelCardProps) => {
+    const { toast } = useToast();
+
+    const handleLevelUpRequest = () => {
+        toast({
+            title: "Level Up Request Sent",
+            description: "We'll review your request and get back to you soon.",
+            duration: 3000,
+        });
+    };
+
+    return (
+        <div className={cn(
+            "rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-7.5",
+            className
+        )}>
+            {/* Header Section */}
+            <div className="mb-7.5">
+                <h4 className="text-title-sm font-normal text-bodydark2 dark:text-bodydark">
+                    Next Level
+                </h4>
+
+                <div className="mt-4 flex items-center justify-between">
+                    <h2 className="text-title-lg font-bold text-black dark:text-white">
+                        {isMaxLevel
+                            ? "Congratulations! You're already at the highest level."
+                            : "Keep going! You're making great progress."}
+                    </h2>
+
+                    {/* Avatar */}
+                    <div className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4">
+                        <Image
+                            src={avatarUrl}
+                            alt="Profile Avatar"
+                            className="rounded-full"
+                            fill
+                            sizes="(max-width: 60px) 100vw"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom Section */}
+            <div className="flex items-center justify-between gap-4">
+                {/* Progress Section */}
+                <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-title-xsm font-medium text-black dark:text-white">
+                            {currentLevel}
+                        </span>
+                        <span className="text-title-xsm font-medium text-black dark:text-white ml-2">
+                            -
+                        </span>
+                        <span className="text-title-xsm font-medium text-black dark:text-white ml-2">
+                            {progress}%
+                        </span>
+                    </div>
+
+                    <div className="relative h-3 w-full rounded-full bg-stroke dark:bg-strokedark">
+                        <div
+                            className="h-full rounded-full bg-chart-primary transition-all duration-300"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                </div>
+
+                {/* Action Button */}
+                <Button
+                    onClick={handleLevelUpRequest}
+                    className="whitespace-nowrap rounded-lg bg-bodydark1 px-6 py-3 font-medium text-black hover:bg-bodydark2 dark:bg-meta-4 dark:text-white dark:hover:bg-meta-4/80 transition-all duration-200"
+                    disabled={!isMaxLevel}
+                >
+                    Request to Level-up
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+export default NextLevelCard;

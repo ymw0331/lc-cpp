@@ -2,9 +2,11 @@
 
 import { ArrowLeft } from 'lucide-react';
 import AgentLevelCard from '../Cards/AgentLevelCard';
-import { CircularProgress } from './CircularProgress';
 import { Facebook, Linkedin } from 'lucide-react';
 import Image from 'next/image';
+import CircularProgressCard from '../Cards/CircularProgressCard';
+import ProfileHeader from './ProfileHeader';
+import ProfileHeaderCard from '../Cards/ProfileHeaderCard';
 
 interface UserProfileViewProps {
     user: {
@@ -37,7 +39,10 @@ interface UserProfileViewProps {
             physicalCard: boolean;
         };
     };
+
+
 }
+
 
 export const UserProfileView = ({ user }: UserProfileViewProps) => {
     return (
@@ -47,9 +52,34 @@ export const UserProfileView = ({ user }: UserProfileViewProps) => {
                 <ArrowLeft className="w-4 h-4" /> Back
             </button>
 
+
+            <ProfileHeaderCard
+                data={{
+                    name: "Adam Lam",
+                    level: "Level 2 Agent",
+                    avatar: "/path-to-avatar.jpg",
+                    joinedDate: "Nov 07, 2024",
+                    lastActive: "Nov 07, 2024 18:37:32",
+                    keyMarket: "Malaysia",
+                    promotedDate: "2024-01-01",
+                    socialLinks: {
+                        facebook: "https://facebook.com/adamlam",
+                        linkedin: "https://linkedin.com/in/adamlam"
+                    },
+                    status: {
+                        deposit: true,
+                        eKYC: true,
+                        activatedCard: true,
+                        physicalCard: true
+                    }
+                }}
+            />
+
+
             <div className="grid grid-cols-12 gap-4">
                 {/* Main Profile Card - Spans 7 columns */}
-                <div className="col-span-7 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark p-6">
+
+                {/* <div className="col-span-7 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark p-6">
                     <div className="flex gap-4">
                         <Image
                             src={user.avatar}
@@ -101,7 +131,7 @@ export const UserProfileView = ({ user }: UserProfileViewProps) => {
                             <span className="text-black dark:text-white">{user.keyMarket}</span>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Stats Cards - Each spans 5 columns */}
                 <div className="col-span-5 grid grid-cols-2 gap-4">
@@ -129,33 +159,22 @@ export const UserProfileView = ({ user }: UserProfileViewProps) => {
                     </div>
                 </div>
 
-                {/* Progress Charts - Spans 5 columns */}
+
                 <div className="col-span-5 grid grid-cols-2 gap-4">
-                    <div className="bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark p-6">
-                        <h4 className="text-black dark:text-white font-semibold mb-4">
-                            Card Activation Volume
-                        </h4>
-                        <div className="text-sm text-body dark:text-bodydark mb-4">
-                            {user.stats.cardActivation.current} / {user.stats.cardActivation.total}
-                        </div>
-                        <CircularProgress
-                            percentage={user.stats.cardActivation.percentage}
-                            label="Active Users"
-                        />
-                    </div>
-                    <div className="bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark p-6">
-                        <h4 className="text-black dark:text-white font-semibold mb-4">
-                            Total Agent Recruitment
-                        </h4>
-                        <div className="text-sm text-body dark:text-bodydark mb-4">
-                            {user.stats.agentRecruitment.current} / {user.stats.agentRecruitment.total}
-                        </div>
-                        <CircularProgress
-                            percentage={user.stats.agentRecruitment.percentage}
-                            label="Agents"
-                        />
-                    </div>
+                    <CircularProgressCard
+                        title="Card Activation Volume"
+                        current={user.stats.cardActivation.current}
+                        total={user.stats.cardActivation.total}
+                        label="Active Users"
+                    />
+                    <CircularProgressCard
+                        title="Total Agent Recruitment"
+                        current={user.stats.agentRecruitment.current}
+                        total={user.stats.agentRecruitment.total}
+                        label="Agents"
+                    />
                 </div>
+
             </div>
         </div>
     );

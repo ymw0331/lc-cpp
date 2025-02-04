@@ -34,8 +34,8 @@ interface AnalyticChartProps {
     className?: string;
 }
 
-const AnalyticChart = ({ 
-    title, 
+const AnalyticChart = ({
+    title,
     chartData,
     legendLabel,
     showLegend = false,
@@ -49,7 +49,7 @@ const AnalyticChart = ({
     const allValues = activeData.map(d => d.value);
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
-    
+
     const stepSize = 500;
     const yAxisMax = Math.ceil(maxValue / stepSize) * stepSize;
     const yAxisMin = Math.floor(minValue / stepSize) * stepSize;
@@ -69,14 +69,14 @@ const AnalyticChart = ({
 
     const CustomLegend = () => {
         if (!showLegend || !legendLabel) return null;
-        
+
         return (
             <div className={cn(
                 "flex items-center",
                 legendPosition === 'top-right' ? "justify-end mb-4" : "justify-end mt-2"
             )}>
                 <div className="flex items-center gap-2">
-                    <div 
+                    <div
                         className="w-3 h-3 rounded-full"
                         style={{ backgroundColor: lineColor }}
                     />
@@ -85,6 +85,22 @@ const AnalyticChart = ({
                     </span>
                 </div>
             </div>
+        );
+    };
+
+    const CustomLabel = (props: any) => {
+        const { x, y, value } = props;
+        return (
+            <text
+                x={x}
+                y={y - 15} // Position above the dot
+                fill="#64748B"
+                textAnchor="middle"
+                fontSize={12}
+                fontWeight="500"
+            >
+                {value.toLocaleString()}
+            </text>
         );
     };
 
@@ -104,8 +120,8 @@ const AnalyticChart = ({
                             variant={activePeriod === period ? "default" : "outline"}
                             className={cn(
                                 "px-4 py-2 rounded-full text-sm",
-                                activePeriod === period 
-                                    ? "bg-primary hover:bg-primary/90 text-white" 
+                                activePeriod === period
+                                    ? "bg-primary hover:bg-primary/90 text-white"
                                     : "bg-gray-2 dark:bg-meta-4 hover:bg-gray-3"
                             )}
                             onClick={() => setActivePeriod(period)}
@@ -122,7 +138,7 @@ const AnalyticChart = ({
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         data={chartData[activePeriod]}
-                        margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
+                        margin={{ top: 30, right: 10, left: 10, bottom: 5 }} // Increased top margin for labels
                     >
                         <CartesianGrid
                             strokeDasharray="5 5"
@@ -160,6 +176,7 @@ const AnalyticChart = ({
                                 stroke: '#fff',
                                 strokeWidth: 2,
                             }}
+                            label={<CustomLabel />} // Added custom label
                         />
                     </LineChart>
                 </ResponsiveContainer>

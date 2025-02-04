@@ -100,7 +100,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           }`}
       >
         {/* <!-- Sidebar Menu --> */}
-        <div className="bg-whiten dark:bg-boxdark no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
+        <div className="bg-whiten dark:bg-boxdark no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear h-full">
 
           <nav className="mt-4 px-4 py-4 lg:mt-2 lg:px-6">
 

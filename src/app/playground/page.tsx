@@ -191,43 +191,11 @@ const PlaygroundPage = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [verificationType, setVerificationType] = useState<"email" | "phone">("email");
 
-    const handleVerify = (code: string) => {
-        console.log("Verifying code:", code);
-        // Handle verification logic
-        setIsOpen(false);
-    };
-
-    const handleResend = () => {
-        console.log("Resending OTP");
-        // Handle resend logic
-    };
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Overview" />
 
-            <Button onClick={() => {
-                setVerificationType("email");
-                setIsOpen(true);
-            }}>
-                Verify Email
-            </Button>
-
-            <Button onClick={() => {
-                setVerificationType("phone");
-                setIsOpen(true);
-            }}>
-                Verify Phone
-            </Button>
-
-            <VerificationDialog
-                isOpen={isOpen}
-                onOpenChange={setIsOpen}
-                type={verificationType}
-                onVerify={handleVerify}
-                onResend={handleResend}
-                contactDetail="6926"
-            />
-
+    
             <div className="grid grid-cols-1 gap-4 p-4 md:p-6 2xl:p-10">
                 <div className="col-span-1">
                     <MetricsChart

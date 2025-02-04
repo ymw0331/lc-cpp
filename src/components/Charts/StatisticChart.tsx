@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
 import { useState } from "react";
 import { ChartDataPoint, CurrencyType } from "@/types/dashboard/data";
 import { depositChartData } from "@/lib/dashboard/data";
@@ -33,8 +33,24 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
         })} ${currency}`;
     };
 
-    const getBarColor = (_: any, index: number) => {
-        return `var(--chart-${index % 2 === 0 ? 'primary' : 'secondary'})`;
+    const formatLabelValue = (value: number) => {
+        return value.toLocaleString('en-US');
+    };
+
+    const CustomBarLabel = (props: any) => {
+        const { x, y, width, value } = props;
+        return (
+            <text
+                x={x + width / 2}
+                y={y - 10}
+                fill="#64748B"
+                textAnchor="middle"
+                fontSize={12}
+                fontWeight="500"
+            >
+                {formatLabelValue(value)}
+            </text>
+        );
     };
 
     const CustomTooltip = ({ active, payload }: any) => {
@@ -58,9 +74,9 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                 y={y}
                 width={width}
                 height={height}
-                fill={index % 2 === 0 ? "#7C74FF" : "#E9E7FD"} // Direct color application
-                rx={6}
-                ry={6}
+                fill={index % 2 === 0 ? "#7C74FF" : "#E9E7FD"}
+                rx={0}
+                ry={0}
             />
         );
     };
@@ -83,8 +99,8 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                             key={range}
                             variant={activeRange === range ? "default" : "ghost"}
                             className={`rounded-full px-6 transition-all duration-200 ${activeRange === range
-                                ? "bg-primary text-white hover:bg-primary/90"
-                                : "text-black dark:text-white hover:bg-meta-4/50"
+                                    ? "bg-primary text-white hover:bg-primary/90"
+                                    : "text-black dark:text-white hover:bg-meta-4/50"
                                 }`}
                             onClick={() => handleRangeChange(range as "Week" | "Month" | "Year")}
                         >
@@ -99,32 +115,38 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                     <ResponsiveContainer width="100%" height={400}>
                         <BarChart
                             data={chartData}
-                            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                            margin={{ top: 40, right: 10, left: 0, bottom: 0 }}
                             className="text-black dark:text-white"
                         >
                             <XAxis
                                 dataKey="label"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: 'currentColor', fontSize: 12 }}
+                                tick={{ fill: '#64748B', fontSize: 12 }}
                                 dy={10}
                             />
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: 'currentColor', fontSize: 12 }}
+                                tick={{ fill: '#64748B', fontSize: 12 }}
                                 width={80}
                                 tickFormatter={(value) => value.toLocaleString()}
                             />
                             <Tooltip
                                 content={<CustomTooltip />}
-                                cursor={{ fill: 'var(--chart-hover)' }}
+                                cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
                             />
                             <Bar
                                 dataKey="value"
                                 barSize={40}
                                 shape={CustomBar}
-                            />
+                            >
+                                <LabelList
+                                    dataKey="value"
+                                    position="top"
+                                    content={CustomBarLabel}
+                                />
+                            </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
