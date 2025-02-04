@@ -56,6 +56,7 @@ const ManageUserPage = () => {
                             key={index}
                             level={agent.level}
                             count={agent.count}
+                            type="recruit"
                         />
                     ))}
                 </div>

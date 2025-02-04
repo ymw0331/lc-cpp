@@ -1,10 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { FacebookIcon, LinkedinIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Avatar } from "@/components/ui/avatar";
+import { Facebook, Linkedin } from "lucide-react";
 
 interface ProfileData {
     name: string;
@@ -30,107 +28,90 @@ interface ProfileData {
 
 const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
     const TableRow = ({ label, value }: { label: string; value: string }) => (
-        <div className="flex justify-between py-4 border-b border-gray-100 last:border-0">
-            <span className="text-gray-500 text-lg">{label}</span>
-            <span className="text-black font-medium">{value}</span>
+        <div className="flex justify-between py-2.5 border-b border-stroke dark:border-strokedark last:border-0">
+            <span className="text-body dark:text-bodydark2">{label}</span>
+            <span className="text-black dark:text-white font-medium">{value}</span>
         </div>
     );
+
+    // Define proper labels for details
+    const detailLabels = {
+        userId: "User ID",
+        joinedSince: "Joined Since",
+        lastActive: "Last Active",
+        keyMarket: "Key Market"
+    };
+
+    // Define proper labels for status
+    const statusLabels = {
+        deposit: "Deposit",
+        eKYC: "eKYC",
+        activatedCard: "Activated Card",
+        physicalCard: "Physical Card"
+    };
 
     return (
         <div className="space-y-4">
-            <Card className="bg-[#F9FAFB] border-none">
-                <CardContent className="p-8">
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-12">
-                        <div className="flex items-start space-x-4">
-                            <Avatar className="w-20 h-20 rounded-full border-4 border-white">
-                                <AvatarImage src={data.avatar} alt={data.name} />
-                                <AvatarFallback>{data.name[0]}</AvatarFallback>
-                            </Avatar>
-                            <div className="space-y-2">
-                                <h2 className="text-2xl font-bold text-gray-900">{data.name}</h2>
-                                <Badge
-                                    variant="secondary"
-                                    className="bg-[#FCD34D] hover:bg-[#FCD34D] text-black font-semibold px-4 py-1 rounded-full"
-                                >
-                                    {data.level}
-                                </Badge>
-                                <p className="text-gray-500">Promoted on -</p>
+            {/* Profile Info Card */}
+            <Card className="bg-white dark:bg-boxdark border-none shadow-card">
+                <div className="p-6">
+                    <div className="flex items-start gap-4 mb-6">
+                        <Avatar className="h-16 w-16 rounded-full border-4 border-white dark:border-boxdark-2">
+                            <img src={data.avatar} alt={data.name} className="h-full w-full object-cover" />
+                        </Avatar>
+                        <div className="flex-1">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <h2 className="text-title-sm text-black dark:text-white font-semibold mb-1">
+                                        {data.name}
+                                    </h2>
+                                    <span className="inline-block px-3 py-0.5 bg-secondary dark:bg-secondary/80 text-black dark:text-white rounded-full text-sm font-medium">
+                                        {data.level}
+                                    </span>
+                                    <p className="text-body dark:text-bodydark2 text-sm mt-1">
+                                        Promoted on -
+                                    </p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 transition-colors">
+                                        <Facebook className="h-4 w-4 text-white" />
+                                    </button>
+                                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#0A66C2] hover:bg-[#0A66C2]/90 transition-colors">
+                                        <Linkedin className="h-4 w-4 text-white" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div className="flex space-x-2">
-                            {data.socialLinks?.facebook && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="w-10 h-10 rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90"
-                                    asChild
-                                >
-                                    <a href={data.socialLinks.facebook} target="_blank" rel="noopener noreferrer">
-                                        <FacebookIcon className="w-5 h-5 text-white" />
-                                    </a>
-                                </Button>
-                            )}
-                            {data.socialLinks?.linkedin && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="w-10 h-10 rounded-full bg-[#0A66C2] hover:bg-[#0A66C2]/90"
-                                    asChild
-                                >
-                                    <a href={data.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
-                                        <LinkedinIcon className="w-5 h-5 text-white" />
-                                    </a>
-                                </Button>
-                            )}
-                        </div>
                     </div>
 
-                    {/* Details List */}
                     <div className="space-y-0">
-                        <TableRow label="User ID" value={data.details.userId} />
-                        <TableRow label="Joined Since" value={data.details.joinedSince} />
-                        <TableRow label="Last Active" value={data.details.lastActive} />
-                        <TableRow label="Key Market" value={data.details.keyMarket} />
+                        {Object.entries(data.details).map(([key, value]) => (
+                            <TableRow
+                                key={key}
+                                label={detailLabels[key as keyof typeof detailLabels]}
+                                value={value}
+                            />
+                        ))}
                     </div>
-                </CardContent>
+                </div>
             </Card>
 
-            <Card className="bg-[#F9FAFB] border-none">
-                <CardContent className="p-8">
+            {/* Status Card */}
+            <Card className="bg-white dark:bg-boxdark border-none shadow-card">
+                <div className="p-6">
                     <div className="space-y-0">
-                        <TableRow label="Deposit" value={data.status.deposit ? "Yes" : "No"} />
-                        <TableRow label="eKYC" value={data.status.eKYC ? "Yes" : "No"} />
-                        <TableRow label="Activated Card" value={data.status.activatedCard ? "Yes" : "No"} />
-                        <TableRow label="Physical Card" value={data.status.physicalCard ? "Yes" : "No"} />
+                        {Object.entries(data.status).map(([key, value]) => (
+                            <TableRow
+                                key={key}
+                                label={statusLabels[key as keyof typeof statusLabels]}
+                                value={value ? 'Yes' : 'No'}
+                            />
+                        ))}
                     </div>
-                </CardContent>
+                </div>
             </Card>
         </div>
     );
-};
-
-// Usage Example:
-const data: ProfileData = {
-    name: "Adam Lam",
-    level: "Level 2 Agent",
-    avatar: "/path-to-avatar.jpg",
-    details: {
-        userId: "10118237",
-        joinedSince: "Nov 07, 2024",
-        lastActive: "Nov 07, 2024 18:37:32",
-        keyMarket: "Malaysia"
-    },
-    status: {
-        deposit: true,
-        eKYC: true,
-        activatedCard: true,
-        physicalCard: true
-    },
-    socialLinks: {
-        facebook: "https://facebook.com",
-        linkedin: "https://linkedin.com"
-    }
 };
 
 export default ProfileHeaderCard;
