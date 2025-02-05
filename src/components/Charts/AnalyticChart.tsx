@@ -134,11 +134,16 @@ const AnalyticChart = ({
 
             {showLegend && legendPosition === 'top-right' && <CustomLegend />}
 
-            <div className="h-[300px] w-full mt-4">
+            <div className="h-[250px] sm:h-[300px] w-full mt-4 -mx-4 sm:mx-0">
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         data={chartData[activePeriod]}
-                        margin={{ top: 30, right: 10, left: 10, bottom: 5 }} // Increased top margin for labels
+                        margin={{
+                            top: 30,
+                            right: 10,
+                            left: 10,
+                            bottom: 5
+                        }} // Increased top margin for labels
                     >
                         <CartesianGrid
                             strokeDasharray="5 5"
@@ -149,13 +154,19 @@ const AnalyticChart = ({
                             dataKey="name"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748B', fontSize: 12 }}
+                            tick={{
+                                fill: '#64748B',
+                                fontSize: window.innerWidth < 640 ? 10 : 12
+                            }}
                             dy={10}
                         />
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748B', fontSize: 12 }}
+                            tick={{
+                                fill: '#64748B',
+                                fontSize: window.innerWidth < 640 ? 10 : 12
+                            }}
                             domain={[yAxisMin, yAxisMax]}
                         />
                         <Tooltip content={<CustomTooltip />} />

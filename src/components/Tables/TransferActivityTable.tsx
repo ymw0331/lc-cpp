@@ -19,8 +19,8 @@ interface TransferActivityTableProps {
 const TransferActivityTable = ({ data }: TransferActivityTableProps) => {
 
     return (
-        <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-            <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
+        <div className="rounded-sm border border-stroke bg-white px-4 sm:px-7.5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+            <h4 className="mb-4 sm:mb-6 text-lg sm:text-xl font-semibold text-black dark:text-white px-2">
                 Transfer Activity
             </h4>
 
@@ -28,16 +28,16 @@ const TransferActivityTable = ({ data }: TransferActivityTableProps) => {
                 <Table>
                     <TableHeader className="bg-black text-white dark:bg-meta-4">
                         <TableRow>
-                            <TableHead className="py-4.5 px-4 font-medium">
+                            <TableHead className="py-3 sm:py-4.5 px-2 sm:px-4 text-xs sm:text-sm font-medium whitespace-nowrap">
                                 TRANSACTION ID
                             </TableHead>
-                            <TableHead className="py-4.5 px-4 font-medium">
+                            <TableHead className="py-3 sm:py-4.5 px-2 sm:px-4 text-xs sm:text-sm font-medium whitespace-nowrap">
                                 TRANSFERRED AMOUNT
                             </TableHead>
-                            <TableHead className="py-4.5 px-4 font-medium">
+                            <TableHead className="py-3 sm:py-4.5 px-2 sm:px-4 text-xs sm:text-sm font-medium whitespace-nowrap">
                                 DATE TIME
                             </TableHead>
-                            <TableHead className="py-4.5 px-4 font-medium">
+                            <TableHead className="py-3 sm:py-4.5 px-2 sm:px-4 text-xs sm:text-sm font-medium whitespace-nowrap">
                                 STATUS
                             </TableHead>
                         </TableRow>
@@ -48,17 +48,21 @@ const TransferActivityTable = ({ data }: TransferActivityTableProps) => {
                                 key={transfer.id}
                                 className={index % 2 === 1 ? 'bg-gray-2 dark:bg-meta-4' : ''}
                             >
-                                <TableCell className="py-5 px-4">
-                                    <p className="text-black dark:text-white">{transfer.id}</p>
+                                <TableCell className="py-4 sm:py-5 px-2 sm:px-4">
+                                    <p className="text-xs sm:text-sm text-black dark:text-white">
+                                        {transfer.id}
+                                    </p>
                                 </TableCell>
-                                <TableCell className="py-5 px-4">
-                                    <div className="flex items-center gap-2">
-                                        {transfer.currency === 'USDT' ? (
-                                            <USDTIcon className="w-6 h-6" />
-                                        ) : (
-                                            <USDCIcon className="w-6 h-6" />
-                                        )}
-                                        <span className="text-black dark:text-white">
+                                <TableCell className="py-4 sm:py-5 px-2 sm:px-4">
+                                    <div className="flex items-center gap-1 sm:gap-2">
+                                        <div className="w-5 h-5 sm:w-6 sm:h-6">
+                                            {transfer.currency === 'USDT' ? (
+                                                <USDTIcon className="w-full h-full" />
+                                            ) : (
+                                                <USDCIcon className="w-full h-full" />
+                                            )}
+                                        </div>
+                                        <span className="text-xs sm:text-sm text-black dark:text-white">
                                             {transfer.amount.toLocaleString('en-US', {
                                                 minimumFractionDigits: 2,
                                                 maximumFractionDigits: 2
@@ -66,15 +70,18 @@ const TransferActivityTable = ({ data }: TransferActivityTableProps) => {
                                         </span>
                                     </div>
                                 </TableCell>
-                                <TableCell className="py-5 px-4">
-                                    <p className="text-black dark:text-white">{transfer.dateTime}</p>
+                                <TableCell className="py-4 sm:py-5 px-2 sm:px-4">
+                                    <p className="text-xs sm:text-sm text-black dark:text-white">
+                                        {transfer.dateTime}
+                                    </p>
                                 </TableCell>
-                                <TableCell className="py-5 px-4">
+                                <TableCell className="py-4 sm:py-5 px-2 sm:px-4">
                                     <span
-                                        className={`font-medium ${transfer.status === 'SUCCEED'
-                                            ? 'text-success'
-                                            : 'text-danger'
-                                            }`}
+                                        className={`text-xs sm:text-sm font-medium ${
+                                            transfer.status === 'SUCCEED'
+                                                ? 'text-success'
+                                                : 'text-danger'
+                                        }`}
                                     >
                                         {transfer.status}
                                     </span>

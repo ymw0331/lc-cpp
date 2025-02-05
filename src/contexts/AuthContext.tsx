@@ -9,6 +9,7 @@ interface User {
     name: string;
     role: string;
     avatarUrl?: string; // Optional profile picture URL
+    level?: number;
 }
 
 interface AuthContextType {
@@ -30,7 +31,8 @@ const mockAuth = async (email: string, password: string) => {
                 email: 'agent@example.com',
                 name: 'Agent 007',
                 role: 'agent',
-                avatarUrl: '/images/user/user-02.png',
+                avatarUrl: '/images/user/user-01.png',
+                level: 5,
             // Add a URL if you have one
             },
             token: 'mock-jwt-token',

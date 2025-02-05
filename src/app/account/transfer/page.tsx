@@ -41,25 +41,27 @@ const TransferPage = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Transfer to Current Account Wallet" />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
-
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-4 sm:mb-6">
                 <WalletTransferForm
                     sourceAmount={transferPageData.sourceWallet.amount}
                     sourceIcon={getCurrencyIcon(transferPageData.sourceWallet.currency)}
                     currencies={currencyOptionsWithIcons}
                     onTransfer={handleTransfer}
                 />
-                <AssetDistributionChart
-                    title={"Current Account Wallet Balance"}
-                    data={assetDistributionWithIcons.data}
-                />
+                <div className="h-full min-h-[400px] sm:min-h-[450px]">
+                    <AssetDistributionChart
+                        title={"Current Account Wallet Balance"}
+                        data={assetDistributionWithIcons.data}
+                    />
+                </div>
             </div>
 
-            <TransferActivityTable
-                data={transferPageData.transferActivity}
-            />
+            <div className="w-full overflow-hidden">
+                <TransferActivityTable
+                    data={transferPageData.transferActivity}
+                />
+            </div>
         </DefaultLayout>
-
     );
 };
 
