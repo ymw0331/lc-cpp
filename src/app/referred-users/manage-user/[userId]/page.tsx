@@ -1,12 +1,58 @@
 'use client'
 
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
+import AgentLevelCard from '@/components/Cards/AgentLevelCard';
+import CircularProgressCard from '@/components/Cards/CircularProgressCard';
+import ProfileHeaderCard from '@/components/Cards/ProfileHeaderCard';
+import ActivationVolumeChart from '@/components/Charts/ActivationVolumeChart';
 import MetricsChart from '@/components/Charts/MetricsChart';
+import AgentLevelIcon from '@/components/Icons/dashboard/AgentLevelIcon';
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import { UserProfileView } from '@/components/user-profiles/UserProfileView';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react'
 
 const SingleUserPage = () => {
+
+    const userData = {
+        name: "Adam Lam",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Adam",
+        level: "Level 2 Agent",
+        promotedDate: "Nov 07, 2024",
+        // Properly structured details object
+        details: {
+            userId: "10118237",
+            joinedSince: "Nov 07, 2024",
+            lastActive: "Nov 07, 2024 18:37:32",
+            keyMarket: "Malaysia"
+        },
+        stats: {
+            directRecruit: 2,
+            directReferrals: 148,
+            cardActivation: {
+                current: 340,
+                total: 1000,
+                percentage: 34
+            },
+            agentRecruitment: {
+                current: 2,
+                total: 5,
+                percentage: 40
+            }
+        },
+        status: {
+            deposit: true,
+            eKYC: true,
+            activatedCard: true,
+            physicalCard: true
+        },
+        // Optional social links
+        socialLinks: {
+            facebook: "https://facebook.com",
+            linkedin: "https://linkedin.com"
+        }
+
+    };
 
     const chartData = {
         cardActivation: {
@@ -74,57 +120,72 @@ const SingleUserPage = () => {
         },
     };
 
-    const userData = {
-        name: "Adam Lam",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Adam",
-        level: "Level 2 Agent",
-        promotedDate: "Nov 07, 2024",
-        userId: "10118237",
-        joinedSince: "Nov 07, 2024",
-        lastActive: "Nov 07, 2024 18:37:32",
-        keyMarket: "Malaysia",
-        stats: {
-            directRecruit: 2,
-            directReferrals: 148,
-            cardActivation: {
-                current: 340,
-                total: 1000,
-                percentage: 34
-            },
-            agentRecruitment: {
-                current: 2,
-                total: 5,
-                percentage: 40
-            }
-        },
-        status: {
-            deposit: true,
-            eKYC: true,
-            activatedCard: true,
-            physicalCard: true
-        }
-    };
-
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName='Manage Users' />
 
-            <UserProfileView user={userData} />
+            <div className="bg-whiten dark:bg-boxdark-2">
+
+                <Link href="/referred-users/manage-user">
+                    <button className="group flex items-center gap-2 mb-6 text-body dark:text-bodydark2 hover:text-black dark:hover:text-white transition-colors">
+                        <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                        Back
+                    </button>
+                </Link>
 
 
-            <div className="col-span-1 mt-6">
-                <MetricsChart
-                    title="Card Activation Volume"
-                    amount={6340}
-                    data={chartData.cardActivation}
-                    barColor="rgb(59, 130, 246)"
-                    valueFormatter={(value) => value.toLocaleString()}
-                />
+                <div className="grid lg:grid-cols-12 gap-6">
+                    {/* Left Column - Profile Cards */}
+                    <div className="lg:col-span-7">
+                        <ProfileHeaderCard data={userData} />
+                    </div>
+
+                    {/* Right Column - Stats */}
+                    <div className="lg:col-span-5 space-y-6">
+                        <div className="grid grid-cols-2 gap-6">
+                            <AgentLevelCard
+                                level="Total Direct Recruit"
+                                count={userData.stats.directRecruit}
+                                icon={<AgentLevelIcon />}
+                            />
+                            <AgentLevelCard
+                                level="Total Direct Referrals"
+                                count={userData.stats.directReferrals}
+                                icon={<AgentLevelIcon />}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                            <CircularProgressCard
+                                title="Card Activation Volume"
+                                current={userData.stats.cardActivation.current}
+                                total={userData.stats.cardActivation.total}
+                                label="Active Users"
+                            />
+                            <CircularProgressCard
+                                title="Total Agent Recruitment"
+                                current={userData.stats.agentRecruitment.current}
+                                total={userData.stats.agentRecruitment.total}
+                                label="Agents"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Chart Section */}
+                    <div className="lg:col-span-12">
+                        {/* <MetricsChart
+                            title="Card Activation Volume"
+                            amount={userData.stats.cardActivation.current}
+                            data={chartData.cardActivation}
+                            barColor="rgb(59, 130, 246)"
+                            valueFormatter={(value) => value.toLocaleString()}
+                        /> */}
+
+                        <ActivationVolumeChart/>
+                    </div>
+                </div>
             </div>
-
         </DefaultLayout>
-
     )
 }
 

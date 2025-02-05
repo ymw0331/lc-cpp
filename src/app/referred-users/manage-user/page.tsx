@@ -1,5 +1,7 @@
+
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import AgentLevelCard from '@/components/Cards/AgentLevelCard';
+import AgentLevelIcon from '@/components/Icons/dashboard/AgentLevelIcon';
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import UsersTable from '@/components/Tables/UsersTable';
 
@@ -56,7 +58,7 @@ const ManageUserPage = () => {
                             key={index}
                             level={agent.level}
                             count={agent.count}
-                            type="recruit"
+                            icon={<AgentLevelIcon/>}
                         />
                     ))}
                 </div>

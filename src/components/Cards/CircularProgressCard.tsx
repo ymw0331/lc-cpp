@@ -20,22 +20,22 @@ const CircularProgressCard = ({
     className
 }: CircularProgressCardProps) => {
     const percentage = Math.round((current / total) * 100);
-    const radius = 45;
+    const radius = 40;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (percentage / 100) * circumference;
 
     return (
         <Card className={cn(
-            "bg-white dark:bg-boxdark shadow-sm h-full",
+            "bg-white dark:bg-boxdark border-none shadow-none",
             className
         )}>
             <CardContent className="p-6">
-                <div className="space-y-1 mb-6">
-                    <h3 className="text-xl font-semibold text-black dark:text-white">
+                <div className="flex flex-col mb-4">
+                    <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
                         {title}
                     </h3>
-                    <p className="text-base text-gray-500 dark:text-gray-400">
-                        {current}/{total.toLocaleString()}
+                    <p className="text-lg text-gray-500 dark:text-bodydark2">
+                        {current} / {total.toLocaleString()}
                     </p>
                 </div>
 
@@ -45,8 +45,8 @@ const CircularProgressCard = ({
                         viewBox="0 0 100 100"
                     >
                         <circle
-                            className="text-pink-100 dark:text-pink-900/20"
-                            strokeWidth="8"
+                            className="text-pink-100 dark:text-pink-100/20"
+                            strokeWidth="10"
                             stroke="currentColor"
                             fill="transparent"
                             r={radius}
@@ -54,8 +54,8 @@ const CircularProgressCard = ({
                             cy="50"
                         />
                         <motion.circle
-                            className="text-pink-600 dark:text-pink-500"
-                            strokeWidth="8"
+                            className="text-primary dark:text-primary/90"
+                            strokeWidth="12"
                             strokeDasharray={circumference}
                             strokeDashoffset={offset}
                             strokeLinecap="round"
@@ -66,12 +66,15 @@ const CircularProgressCard = ({
                             cy="50"
                             initial={{ strokeDashoffset: circumference }}
                             animate={{ strokeDashoffset: offset }}
-                            transition={{ duration: 1.5, ease: "easeInOut" }}
+                            transition={{
+                                duration: 1.5,
+                                ease: "easeOut"
+                            }}
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <motion.span
-                            className="text-3xl font-semibold text-black dark:text-white"
+                            className="text-3xl font-bold text-black dark:text-white"
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.5 }}
@@ -79,7 +82,7 @@ const CircularProgressCard = ({
                             {percentage}%
                         </motion.span>
                         <motion.span
-                            className="text-sm text-gray-500 dark:text-gray-400"
+                            className="text-base text-gray-500 dark:text-bodydark2"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.7 }}

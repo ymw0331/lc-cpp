@@ -1,34 +1,25 @@
-// src/components/cards/AgentLevelCard.tsx
 'use client';
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Users2Icon, UserPlusIcon } from "lucide-react";
+import { ReactNode } from "react";  // Changed from ElementType
 
 interface AgentLevelCardProps {
     level: string;
     count: number;
-    type: 'recruit' | 'referral';
+    icon: ReactNode;  // Changed to ReactNode to accept JSX elements
 }
 
-const AgentLevelCard = ({ level, count, type }: AgentLevelCardProps) => {
-    const Icon = type === 'recruit' ? Users2Icon : UserPlusIcon;
-
+const AgentLevelCard = ({ level, count, icon }: AgentLevelCardProps) => {
     return (
-        <Card className="bg-[#F9FAFB] dark:bg-boxdark border-none">
-            <CardContent className="p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                    <h4 className="text-xl text-[#6B7280] dark:text-bodydark2 font-normal">
-                        {level}
-                    </h4>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEE2E2] dark:bg-[#FEE2E2]/80">
-                        <Icon className="h-6 w-6 text-[#EF4444] dark:text-[#EF4444]/90" />
+        <Card className="bg-white dark:bg-boxdark border-none shadow-card">
+            <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-8">
+                    <h3 className="text-gray-500 text-lg">{level}</h3>
+                    <div className="w-12 h-12 rounded-full bg-pink-100 flex items-center justify-center">
+                        {icon} {/* Direct render of the icon */}
                     </div>
                 </div>
-                <div>
-                    <h3 className="text-4xl font-bold text-black dark:text-white">
-                        {count}
-                    </h3>
-                </div>
+                <p className="text-3xl font-bold">{count}</p>
             </CardContent>
         </Card>
     );

@@ -1,8 +1,10 @@
+// ProfileHeaderCard.tsx
 "use client";
 
 import { Card } from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 import { Facebook, Linkedin } from "lucide-react";
+import Image from "next/image";
 
 interface ProfileData {
     name: string;
@@ -34,7 +36,6 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
         </div>
     );
 
-    // Define proper labels for details
     const detailLabels = {
         userId: "User ID",
         joinedSince: "Joined Since",
@@ -42,7 +43,6 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
         keyMarket: "Key Market"
     };
 
-    // Define proper labels for status
     const statusLabels = {
         deposit: "Deposit",
         eKYC: "eKYC",
@@ -50,14 +50,24 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
         physicalCard: "Physical Card"
     };
 
+    // Add null checks
+    if (!data || !data.details || !data.status) {
+        return null; // Or a loading state
+    }
+
     return (
         <div className="space-y-4">
-            {/* Profile Info Card */}
             <Card className="bg-white dark:bg-boxdark border-none shadow-card">
                 <div className="p-6">
+                    {/* Profile Header */}
                     <div className="flex items-start gap-4 mb-6">
                         <Avatar className="h-16 w-16 rounded-full border-4 border-white dark:border-boxdark-2">
-                            <img src={data.avatar} alt={data.name} className="h-full w-full object-cover" />
+                            <Image 
+                            src={data.avatar} 
+                            alt={data.name} 
+                            width={40}
+                            height={40}
+                            className="h-full w-full object-cover" />
                         </Avatar>
                         <div className="flex-1">
                             <div className="flex justify-between items-start">
@@ -68,28 +78,32 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
                                     <span className="inline-block px-3 py-0.5 bg-secondary dark:bg-secondary/80 text-black dark:text-white rounded-full text-sm font-medium">
                                         {data.level}
                                     </span>
-                                    <p className="text-body dark:text-bodydark2 text-sm mt-1">
-                                        Promoted on -
-                                    </p>
                                 </div>
-                                <div className="flex gap-2">
-                                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 transition-colors">
-                                        <Facebook className="h-4 w-4 text-white" />
-                                    </button>
-                                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#0A66C2] hover:bg-[#0A66C2]/90 transition-colors">
-                                        <Linkedin className="h-4 w-4 text-white" />
-                                    </button>
-                                </div>
+                                {data.socialLinks && (
+                                    <div className="flex gap-2">
+                                        {data.socialLinks.facebook && (
+                                            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 transition-colors">
+                                                <Facebook className="h-4 w-4 text-white" />
+                                            </button>
+                                        )}
+                                        {data.socialLinks.linkedin && (
+                                            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#0A66C2] hover:bg-[#0A66C2]/90 transition-colors">
+                                                <Linkedin className="h-4 w-4 text-white" />
+                                            </button>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
 
+                    {/* Details */}
                     <div className="space-y-0">
                         {Object.entries(data.details).map(([key, value]) => (
                             <TableRow
                                 key={key}
                                 label={detailLabels[key as keyof typeof detailLabels]}
-                                value={value}
+                                value={String(value)}
                             />
                         ))}
                     </div>
