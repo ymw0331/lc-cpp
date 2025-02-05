@@ -105,7 +105,21 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-
+  
+  .sidebar-animation {
+    animation: sidebarSlide 200ms ease-out;
+  }
+  
+  @keyframes sidebarSlide {
+    from {
+      opacity: 0.8;
+      transform: translateX(-100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
   .chat-height {
     @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
   }

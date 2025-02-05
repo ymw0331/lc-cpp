@@ -24,13 +24,8 @@ const DropdownUser = () => {
       icon: User
     },
     {
-      href: "/contacts",
-      label: "My Contacts",
-      icon: Contact2
-    },
-    {
-      href: "/settings/profile",
-      label: "Account Settings",
+      href: "/settings/preference",
+      label: "Preference",
       icon: Settings
     }
   ];

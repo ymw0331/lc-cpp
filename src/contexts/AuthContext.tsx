@@ -31,8 +31,8 @@ const mockAuth = async (email: string, password: string) => {
                 email: 'agent@example.com',
                 name: 'Agent 007',
                 role: 'agent',
-                avatarUrl: '/images/user/user-01.png',
-                level: 5,
+                avatarUrl: '/images/user/user-03.png',
+                level: 4,
             // Add a URL if you have one
             },
             token: 'mock-jwt-token',

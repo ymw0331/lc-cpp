@@ -87,7 +87,6 @@ const menuGroups = [
   },
 ];
 
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { t } = useTranslation();
   const pathname = usePathname();
@@ -96,43 +95,47 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`fixed left-0 top-[88px] z-999 flex h-[calc(100vh-72px)] w-72.5 flex-col overflow-y-hidden duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+        className={`fixed left-0 top-0 lg:top-[88px] z-50 w-72.5 
+        h-full lg:h-[calc(100vh-88px)]
+        bg-whiten dark:bg-boxdark
+        border-r border-stroke dark:border-strokedark
+        transition-all duration-200 ease-out will-change-transform
+        lg:translate-x-0 
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
-        {/* <!-- Sidebar Menu --> */}
-        <div className="bg-whiten dark:bg-boxdark no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear h-full">
-
-          <nav className="mt-4 px-4 py-4 lg:mt-2 lg:px-6">
-
-            {menuGroups.map((group, groupIndex) => (
-              <div key={groupIndex}>
-                {/* <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-                  {group.name}
-                </h3> */}
-                <ul className="mb-6 flex flex-col gap-1.5">
-                  {group.menuItems.map((menuItem, menuIndex) => (
-                    <SidebarItem
-                      key={menuIndex}
-                      item={{
-                        ...menuItem,
-                        label: t(`sidebar.${menuItem.label.toLowerCase()}`),
-                        children: menuItem.children?.map(child => ({
-                          ...child,
-                          label: t(`sidebar.${child.label.toLowerCase()}`)
-                        }))
-                      }}
-                      pageName={pageName}
-                      setPageName={setPageName}
-                    />
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </nav>
-
-        </div>
-        {/* <!-- Sidebar Menu --> */}
-
+        <nav 
+          className="p-4 pt-[88px] lg:pt-4 lg:p-6"
+          style={{
+            transform: 'translate3d(0, 0, 0)',
+            backfaceVisibility: 'hidden',
+            perspective: 1000,
+          }}
+        >
+          {menuGroups.map((group, groupIndex) => (
+            <div 
+              key={groupIndex}
+              className="will-change-transform"
+            >
+              <ul className="flex flex-col gap-2">
+                {group.menuItems.map((menuItem, menuIndex) => (
+                  <SidebarItem
+                    key={menuIndex}
+                    item={{
+                      ...menuItem,
+                      label: t(`sidebar.${menuItem.label.toLowerCase()}`),
+                      children: menuItem.children?.map(child => ({
+                        ...child,
+                        label: t(`sidebar.${child.label.toLowerCase()}`)
+                      }))
+                    }}
+                    pageName={pageName}
+                    setPageName={setPageName}
+                  />
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
       </aside>
     </ClickOutside>
   );

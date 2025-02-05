@@ -19,11 +19,13 @@ import {
 import { useState, useEffect } from "react";
 import { toast } from "@/hooks/useToast";
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import useColorMode from "@/hooks/useColorMode"
+
 
 const preferenceSchema = z.object({
     language: z.enum(["en", "zh"]),
     notifications: z.boolean(),
+    darkMode: z.boolean(),
 });
 
 const languages = [
@@ -57,6 +59,7 @@ const useLanguagePreference = () => {
 const PreferencePage = () => {
     const { t } = useTranslation();
     const { setLanguagePreference } = useLanguagePreference();
+    const [colorMode, setColorMode] = useColorMode();
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -65,6 +68,7 @@ const PreferencePage = () => {
         defaultValues: {
             language: "en",
             notifications: false,
+            darkMode: colorMode === "dark",
         },
     });
 
@@ -129,6 +133,22 @@ const PreferencePage = () => {
         });
     };
 
+    const handleDarkModeToggle = (checked: boolean) => {
+        if (typeof setColorMode === "function") {
+            setColorMode(checked ? "dark" : "light");
+            form.setValue('darkMode', checked);
+
+            toast({
+                title: checked ? t('preferences.darkMode.enabled') : t('preferences.darkMode.disabled'),
+                description: checked
+                    ? t('preferences.darkMode.enabledDesc')
+                    : t('preferences.darkMode.disabledDesc'),
+                duration: 3000,
+            });
+        }
+    };
+
+
     const handleNotificationToggle = async (checked: boolean) => {
         setIsNotificationsEnabled(checked);
         form.setValue('notifications', checked);
@@ -184,6 +204,23 @@ const PreferencePage = () => {
                                         </SelectGroup>
                                     </SelectContent>
                                 </Select>
+                            </div>
+
+                            {/* Dark Mode Section */}
+                            <div className="flex items-center justify-between border-t border-stroke py-5 dark:border-strokedark">
+                                <div>
+                                    <h4 className="text-title-sm2 font-semibold text-black dark:text-white">
+                                        {t('preferences.darkMode.title', 'Dark Mode')}
+                                    </h4>
+                                    <p className="mt-1 text-sm text-body dark:text-bodydark">
+                                        {t('preferences.darkMode.description', 'Enable dark mode for a better viewing experience in low-light conditions.')}
+                                    </p>
+                                </div>
+                                <Switch
+                                    checked={colorMode === "dark"}
+                                    onCheckedChange={handleDarkModeToggle}
+                                    className="bg-stroke data-[state=checked]:bg-primary"
+                                />
                             </div>
 
 
