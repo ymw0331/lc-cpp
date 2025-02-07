@@ -4,46 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import { useState, useEffect } from "react";
-
-interface DataPoint {
-    label: string;
-    value: number;
-}
-
-type TimeRange = 'Month' | 'Year';
-
-interface TimeRangeData {
-    [key: string]: {
-        Month: DataPoint[];
-        Year: DataPoint[];
-    };
-}
-
-// Simplified weekly data
-const activationData: TimeRangeData = {
-    "2023": {
-        Month: [
-            { label: "Week 1", value: 1250 },
-            { label: "Week 2", value: 2100 },
-            { label: "Week 3", value: 1800 },
-            { label: "Week 4", value: 2400 },
-        ],
-        Year: [
-            { label: "Jan", value: 150 },
-            { label: "Feb", value: 450 },
-            { label: "Mar", value: 380 },
-            { label: "Apr", value: 560 },
-            { label: "May", value: 270 },
-            { label: "Jun", value: 490 },
-            { label: "Jul", value: 120 },
-            { label: "Aug", value: 590 },
-            { label: "Sep", value: 310 },
-            { label: "Oct", value: 430 },
-            { label: "Nov", value: 580 },
-            { label: "Dec", value: 530 },
-        ],
-    }
-};
+import { recruitData, ChartDataPoint } from "@/lib/data"; // Import recruitData
 
 const CustomBarLabel = ({ x, y, width, value }: any) => (
     <text
@@ -58,15 +19,19 @@ const CustomBarLabel = ({ x, y, width, value }: any) => (
     </text>
 );
 
+type TimeRange = 'Week' | 'Month' | 'Year'; // Define TimeRange type
+
 const ActivationVolumeChart = () => {
-    const [activeYear] = useState<string>("2023");
+    const [activeYear] = useState<string>("2023"); // You might want to make this dynamic later
     const [activeRange, setActiveRange] = useState<TimeRange>("Year");
-    const [chartData, setChartData] = useState<DataPoint[]>([]);
+    const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
 
     useEffect(() => {
-        const newData = activationData[activeYear][activeRange] || [];
+        // Access data from recruitData
+        const newData = recruitData.chartData[activeRange] || [];
         setChartData(newData);
-    }, [activeYear, activeRange]);
+    }, [activeRange]);
+
 
     const totalVolume = chartData.reduce((sum, item) => sum + item.value, 0);
 
@@ -114,15 +79,16 @@ const ActivationVolumeChart = () => {
                 </div>
 
                 <div className="flex space-x-2 bg-gray-100 dark:bg-meta-4 p-1 rounded-full">
-                    {(['Month', 'Year'] as TimeRange[]).map((range) => (
+                    {/* Include 'Week' in the time range options */}
+                    {(['Week', 'Month', 'Year'] as TimeRange[]).map((range) => (
                         <Button
                             key={range}
                             variant={activeRange === range ? "default" : "ghost"}
                             onClick={() => setActiveRange(range)}
                             className={`
                                 rounded-full px-6 transition-all duration-200
-                                ${activeRange === range 
-                                    ? "bg-primary text-white hover:bg-primary/90" 
+                                ${activeRange === range
+                                    ? "bg-primary text-white hover:bg-primary/90"
                                     : "text-black dark:text-white hover:bg-meta-4/50"
                                 }
                             `}
@@ -142,7 +108,7 @@ const ActivationVolumeChart = () => {
                             className="text-black dark:text-white"
                         >
                             <XAxis
-                                dataKey="label"
+                                dataKey="label" // Use "label" as dataKey
                                 axisLine={false}
                                 tickLine={false}
                                 tick={{ fill: '#94A3B8', fontSize: 12 }}
@@ -161,7 +127,7 @@ const ActivationVolumeChart = () => {
                             />
                             <Bar
                                 dataKey="value"
-                                barSize={activeRange === "Year" ? 40 : 60}
+                                barSize={activeRange === "Year" ? 40 : (activeRange === "Month" ? 60 : 30)} // Adjust bar size for 'Week'
                                 shape={<CustomBar />}
                                 isAnimationActive={false}
                                 label={<CustomBarLabel />}

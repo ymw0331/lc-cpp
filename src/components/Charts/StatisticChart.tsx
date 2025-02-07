@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
 import { useState } from "react";
-import { ChartDataPoint, CurrencyType } from "@/types/dashboard/data";
-import { depositChartData } from "@/lib/dashboard/data";
+import { ChartDataPoint, CurrencyType } from "@/lib/data";
+import { depositChartData } from "@/lib/data";
 
 interface StatisticChartProps {
     title: string;

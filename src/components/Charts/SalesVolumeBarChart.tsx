@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
-import { Bar } from 'recharts'
+import React, { useState } from 'react';
+import { Bar } from 'recharts';
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
     ResponsiveContainer,
     BarChart,
@@ -22,73 +22,39 @@ import {
     YAxis,
     Tooltip,
     CartesianGrid,
-} from 'recharts'
+} from 'recharts';
+import { SalesVolumeData } from '@/lib/data';
 
-// Monthly data for 2024
-const monthlyData2024 = [
-    { name: 'Jan', value: 3741 },
-    { name: 'Feb', value: 1587 },
-    { name: 'Mar', value: 2085 },
-    { name: 'Apr', value: 1664 },
-    { name: 'May', value: 1809 },
-    { name: 'Jun', value: 2536 },
-    { name: 'Jul', value: 2303 },
-    { name: 'Aug', value: 1718 },
-    { name: 'Sep', value: 2354 },
-    { name: 'Oct', value: 1914 },
-    { name: 'Nov', value: 1848 },
-    { name: 'Dec', value: 1831 }
-]
-
-// Monthly data for 2023
-const monthlyData2023 = [
-    { name: 'Jan', value: 2841 },
-    { name: 'Feb', value: 1987 },
-    { name: 'Mar', value: 2785 },
-    { name: 'Apr', value: 1964 },
-    { name: 'May', value: 2109 },
-    { name: 'Jun', value: 2736 },
-    { name: 'Jul', value: 2503 },
-    { name: 'Aug', value: 1918 },
-    { name: 'Sep', value: 2554 },
-    { name: 'Oct', value: 2114 },
-    { name: 'Nov', value: 2048 },
-    { name: 'Dec', value: 2031 }
-]
-
-// Weekly data
-const weeklyDataJan2024 = [
-    { name: 'Week 1', value: 941 },
-    { name: 'Week 2', value: 887 },
-    { name: 'Week 3', value: 985 },
-    { name: 'Week 4', value: 928 }
-]
-
-const weeklyDataFeb2024 = [
-    { name: 'Week 1', value: 441 },
-    { name: 'Week 2', value: 387 },
-    { name: 'Week 3', value: 485 },
-    { name: 'Week 4', value: 274 }
-]
-
-const SalesVolumeBarChart = () => {
-    const [viewMode, setViewMode] = useState<'month' | 'year'>('year')
-    const [selectedYear, setSelectedYear] = useState('2024')
-    const [selectedMonth, setSelectedMonth] = useState('Jan')
+const SalesVolumeBarChart = ({ salesVolumeData }: { salesVolumeData: SalesVolumeData }) => {
+    const [viewMode, setViewMode] = useState<'week' | 'month' | 'year'>('year');
+    const [selectedYear, setSelectedYear] = useState('2024');
+    const [selectedMonth, setSelectedMonth] = useState('Jan');
+    const [selectedWeek, setSelectedWeek] = useState('Week 1');
 
     // Get data based on filters
     const getData = () => {
         if (viewMode === 'year') {
-            return selectedYear === '2024' ? monthlyData2024 : monthlyData2023
-        } else {
-            return selectedMonth === 'Jan' ? weeklyDataJan2024 : weeklyDataFeb2024
+            return selectedYear === '2024' ? salesVolumeData.monthlyData2024 : salesVolumeData.monthlyData2023;
+        } else if (viewMode === 'month') {
+            return selectedMonth === 'Jan' ? salesVolumeData.monthlyData2024 : salesVolumeData.monthlyData2024; // Adjust as needed
+        } else { // viewMode === 'week'
+            // Ensure we are accessing the correct weekly data
+            const weekData = salesVolumeData.weeklyData[selectedMonth];
+            return weekData || []; // Return an empty array if weekData is undefined
         }
-    }
+    };
 
     // Calculate total
-    const total = getData().reduce((sum, item) => sum + item.value, 0)
+    const data = getData();
+    const total = data.reduce((sum, item) => sum + item.value, 0);
 
-    const CustomBarLabel = ({ x, y, width, value }: any) => {
+    interface CustomBarLabelProps {
+        x: number;
+        y: number;
+        width: number;
+        value: number;
+    }
+    const CustomBarLabel = ({ x, y, width, value }: CustomBarLabelProps) => {
         return (
             <text
                 x={x + width / 2}
@@ -99,8 +65,8 @@ const SalesVolumeBarChart = () => {
             >
                 ${value}
             </text>
-        )
-    }
+        );
+    };
 
     return (
         <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -132,13 +98,20 @@ const SalesVolumeBarChart = () => {
                     {/* View Mode Toggle */}
                     <div className="flex items-center gap-2 rounded-md bg-whiter p-1 dark:bg-meta-4">
                         <button
+                            onClick={() => setViewMode('week')}
+                            className={`rounded-md px-3 py-1 text-sm ${viewMode === 'week'
+                                ? 'bg-primary text-white'
+                                : 'bg-white text-black dark:bg-boxdark dark:text-white'
+                                }`}
+                        >
+                            Week
+                        </button>
+                        <button
                             onClick={() => setViewMode('month')}
                             className={`rounded-md px-3 py-1 text-sm ${viewMode === 'month'
                                 ? 'bg-primary text-white'
                                 : 'bg-white text-black dark:bg-boxdark dark:text-white'
                                 }`}
-
-
                         >
                             Month
                         </button>
@@ -156,6 +129,38 @@ const SalesVolumeBarChart = () => {
             </CardHeader>
 
             <CardContent className="px-0">
+                {/* Week Selector (only shown in week view) */}
+                {viewMode === 'week' && (
+                    <div className="mb-6 flex items-center gap-4">
+                        <Select
+                            value={selectedMonth}
+                            onValueChange={setSelectedMonth}
+                        >
+                            <SelectTrigger className="w-[180px] bg-transparent border-stroke">
+                                <SelectValue placeholder="Select Month" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Jan2024">January 2024</SelectItem>
+                                <SelectItem value="Feb2024">February 2024</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <Select
+                            value={selectedWeek}
+                            onValueChange={setSelectedWeek}
+                        >
+                            <SelectTrigger className="w-[140px] bg-transparent border-stroke">
+                                <SelectValue placeholder="Select Week" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Week 1">Week 1</SelectItem>
+                                <SelectItem value="Week 2">Week 2</SelectItem>
+                                <SelectItem value="Week 3">Week 3</SelectItem>
+                                <SelectItem value="Week 4">Week 4</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
+
                 {/* Month Selector (only shown in month view) */}
                 {viewMode === 'month' && (
                     <div className="mb-6">
@@ -177,7 +182,7 @@ const SalesVolumeBarChart = () => {
                 <div className="h-[400px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
-                            data={getData()}
+                            data={data} // Use the data variable
                             margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
                             barSize={40}
                         >
@@ -212,7 +217,7 @@ const SalesVolumeBarChart = () => {
                                     borderRadius: '4px',
                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                                 }}
-                                formatter={(value: number) => [`$${value}`, 'Sales']}
+                                formatter={(value) => [`$${value}`, 'Sales']}
                             />
                             <Bar
                                 dataKey="value"
@@ -225,7 +230,7 @@ const SalesVolumeBarChart = () => {
                 </div>
             </CardContent>
         </Card>
-    )
+    );
 }
 
-export default SalesVolumeBarChart
+export default SalesVolumeBarChart;

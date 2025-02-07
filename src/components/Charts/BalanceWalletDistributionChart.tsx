@@ -3,7 +3,7 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Sector } from 'recharts';
 import { useState, useEffect } from 'react';
 
-interface AssetDistributionProps {
+interface BalanceWalletDistributionProps {
     data: Array<{
         name: string;
         value: number;
@@ -13,7 +13,7 @@ interface AssetDistributionProps {
     title: string;
 }
 
-const AssetDistributionChart = ({ data, title }: AssetDistributionProps) => {
+const BalanceWalletDistributionChart = ({ data, title }: BalanceWalletDistributionProps) => {
     const [activeIndex, setActiveIndex] = useState<number | undefined>();
     const [chartSize, setChartSize] = useState({ outerRadius: 100, labelRadius: 35 });
     const COLORS = ['#7C74FF', '#E4E2FF'];
@@ -148,4 +148,4 @@ const AssetDistributionChart = ({ data, title }: AssetDistributionProps) => {
     );
 };
 
-export default AssetDistributionChart;
+export default BalanceWalletDistributionChart;

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/useToast';
 import Image from 'next/image';
+import { Avatar } from "../ui/avatar";
 
 interface NextLevelCardProps {
     currentLevel: string;
@@ -14,10 +15,11 @@ interface NextLevelCardProps {
 }
 
 const NextLevelCard = ({
-    currentLevel = "LEVEL 5 PARTNER",
-    progress = 84.5,
-    isMaxLevel = true,
-    avatarUrl = "/path/to/default-avatar.png",
+    currentLevel,
+    progress,
+    isMaxLevel,
+    avatarUrl,
+    name,
     className
 }: NextLevelCardProps) => {
     const { toast } = useToast();
@@ -49,15 +51,16 @@ const NextLevelCard = ({
                     </h2>
 
                     {/* Avatar */}
-                    <div className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4">
+                    <Avatar className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4">
                         <Image
-                            src={avatarUrl}
-                            alt="Profile Avatar"
+                            src={avatarUrl || "/images/user/user-07.png"}
+                            alt={name || "User avatar"}
                             className="rounded-full"
                             fill
                             sizes="(max-width: 60px) 100vw"
                         />
-                    </div>
+                    </Avatar>
+
                 </div>
             </div>
 

@@ -1,3 +1,5 @@
+/*** Legal Page ***/
+
 import { LegalContent } from "@/types/legal/data";
 
 export const legalContentData: Record<string, LegalContent> = {

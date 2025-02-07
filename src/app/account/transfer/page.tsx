@@ -1,11 +1,11 @@
 'use client'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import AssetDistributionChart from '@/components/Charts/AssetDistributionChart'
+import BalanceWalletDistributionChart from '@/components/Charts/BalanceWalletDistributionChart'
 import WalletTransferForm from '@/components/Forms/WalletTransferForm'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import TransferActivityTable from '@/components/Tables/TransferActivityTable'
 import { USDTIcon, USDCIcon } from '@/components/Icons/dashboard'
-import { transferPageData } from '@/lib/account/data'
+import { transferData } from '@/lib/data'
 
 const TransferPage = () => {
     // Currency Icon Mapping
@@ -21,14 +21,14 @@ const TransferPage = () => {
     };
 
     // Enhance data with icons
-    const currencyOptionsWithIcons = transferPageData.currencyOptions.map(currency => ({
+    const currencyOptionsWithIcons = transferData.currencyOptions.map(currency => ({
         ...currency,
         icon: getCurrencyIcon(currency.symbol)
     }));
 
-    const assetDistributionWithIcons = {
-        ...transferPageData.assetDistribution,
-        data: transferPageData.assetDistribution.data.map(item => ({
+    const walletBalanceDistributionWithIcons = {
+        ...transferData.walletBalanceDistribution,
+        data: transferData.walletBalanceDistribution.data.map(item => ({
             ...item,
             icon: getCurrencyIcon(item.currency)
         }))
@@ -43,22 +43,22 @@ const TransferPage = () => {
             <Breadcrumb pageName="Transfer to Current Account Wallet" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-4 sm:mb-6">
                 <WalletTransferForm
-                    sourceAmount={transferPageData.sourceWallet.amount}
-                    sourceIcon={getCurrencyIcon(transferPageData.sourceWallet.currency)}
+                    sourceAmount={transferData.sourceWallet.amount}
+                    sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
                     currencies={currencyOptionsWithIcons}
                     onTransfer={handleTransfer}
                 />
                 <div className="h-full min-h-[400px] sm:min-h-[450px]">
-                    <AssetDistributionChart
+                    <BalanceWalletDistributionChart
                         title={"Current Account Wallet Balance"}
-                        data={assetDistributionWithIcons.data}
+                        data={walletBalanceDistributionWithIcons.data}
                     />
                 </div>
             </div>
 
             <div className="w-full overflow-hidden">
                 <TransferActivityTable
-                    data={transferPageData.transferActivity}
+                    data={transferData.transferActivity}
                 />
             </div>
         </DefaultLayout>

@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
-import { DepositActivity } from "@/types/dashboard/data"
+import { DepositActivity } from "@/lib/data"
 
 interface DepositActivityTableProps {
     activities: DepositActivity[]

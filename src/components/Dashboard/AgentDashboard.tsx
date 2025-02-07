@@ -8,14 +8,13 @@ import AgentStatCard from "../Cards/AgentStatCard";
 import StatisticChart from "../Charts/StatisticChart";
 import { DepositActivityTable } from "../Tables/DepositActivityTable";
 import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
-import { dashboardStat } from "@/lib/dashboard/data";
-import { DashboardStatistics } from "@/types/dashboard/data";
 import { useState } from "react";
+import { dashboardData, DashboardStatistics } from "@/lib/data";
 
 
 const AgentDashboard: React.FC = () => {
 
-  const [data] = useState<DashboardStatistics>(dashboardStat);
+  const [data] = useState<DashboardStatistics>(dashboardData);
 
   return (
     <>
@@ -47,12 +46,6 @@ const AgentDashboard: React.FC = () => {
         <ProfileCard
           name={data.agentProfile.name}
           level={data.agentProfile.level}
-          // activeUsers={{
-          //   current: 42208,
-          //   target: 50000,
-          //   percentage: 84.5,
-          //   remaining: 7792
-          // }}
           activeUsers={data.agentProfile.activeUsers}
         />
         <div className="grid gap-6">

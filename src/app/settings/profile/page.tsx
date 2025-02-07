@@ -23,9 +23,11 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { PencilIcon, ClipboardIcon, CopyIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VerificationDialog } from '@/components/Dialogs/VerificationDialog';
 import { toast } from "@/hooks/useToast";
+import { useAuth } from '@/contexts/AuthContext';
+import { KeyMarket } from '@/lib/data';
 
 const formSchema = z.object({
     userId: z.string(),
@@ -41,28 +43,66 @@ const formSchema = z.object({
 });
 
 
-
-
 const ProfilePage = () => {
+
+    const { user } = useAuth(); // Get user data from auth context
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            userId: "John Smith",
-            fullName: "John Smith Ademan",
-            email: "johnsmith@gmail.com",
-            contactNo: "+60 11 4086 926",
-            referralCode: "7HKS56H5",
-            keyMarket: "Hong Kong",
-            linkedin: "https://www.linkedin.com/",
-            facebook: "https://www.facebook.com/",
-            instagram: "https://www.instagram.com/",
-            twitter: "https://www.x.com/",
+            userId: user?.id || "",
+            fullName: user?.name || "",
+            email: user?.email || "",
+            contactNo: user?.contactNumber || "",
+            referralCode: user?.referralCode || "",
+            keyMarket: user?.keyMarket || "",
+            linkedin: user?.socialMedia?.linkedin || "",
+            facebook: user?.socialMedia?.facebook || "",
+            instagram: user?.socialMedia?.instagram || "",
+            twitter: user?.socialMedia?.twitter || "",
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("Submitting values:", values);
+
+    useEffect(() => {
+        if (user) {
+            form.reset({
+                userId: user.id,
+                fullName: user.name,
+                email: user.email,
+                contactNo: user.contactNumber,
+                referralCode: user.referralCode,
+                keyMarket: user.keyMarket,
+                linkedin: user.socialMedia?.linkedin || "",
+                facebook: user.socialMedia?.facebook || "",
+                instagram: user.socialMedia?.instagram || "",
+                twitter: user.socialMedia?.twitter || "",
+            });
+        }
+    }, [user, form]);
+
+
+    // function onSubmit(values: z.infer<typeof formSchema>) {
+    //     console.log("Submitting values:", values);
+    // }
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            // Here you would update the user profile
+            console.log("Submitting values:", values);
+            toast({
+                title: "Success",
+                description: "Profile updated successfully",
+                duration: 3000,
+            });
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "Failed to update profile",
+                variant: "destructive",
+                duration: 3000,
+            });
+        }
     }
 
     const [isOpen, setIsOpen] = useState(false);
@@ -71,6 +111,8 @@ const ProfilePage = () => {
     const [isPhoneVerified, setIsPhoneVerified] = useState(false);
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isPhoneEditable, setIsPhoneEditable] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
 
 
     const handleVerify = (code: string) => {
@@ -314,9 +356,11 @@ const ProfilePage = () => {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent className="border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-                                                    <SelectItem value="Hong Kong">Hong Kong</SelectItem>
-                                                    <SelectItem value="Singapore">Singapore</SelectItem>
-                                                    <SelectItem value="Malaysia">Malaysia</SelectItem>
+                                                    {Object.values(KeyMarket).map((market) => (
+                                                        <SelectItem key={market} value={market}>
+                                                            {market}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
                                             <FormMessage className="mt-1 text-xs text-meta-1" />
@@ -362,7 +406,7 @@ const ProfilePage = () => {
                                     type="submit"
                                     className="flex justify-center rounded bg-primary py-3 px-6 font-medium text-white hover:bg-opacity-95 dark:bg-primary dark:text-white dark:hover:bg-opacity-90 transition-all duration-300"
                                 >
-                                    Save Changes
+                                    {isSubmitting ? "Saving..." : "Save Changes"}
                                 </Button>
                             </div>
                         </form>

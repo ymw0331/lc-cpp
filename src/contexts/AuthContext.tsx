@@ -2,18 +2,11 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { IUser, userData } from '@/lib/data';
 
-interface User {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-    avatarUrl?: string; // Optional profile picture URL
-    level?: number;
-}
 
 interface AuthContextType {
-    user: User | null;
+    user: IUser | null;
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => void;
@@ -26,23 +19,15 @@ const mockAuth = async (email: string, password: string) => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     if (email === 'agent@example.com' && password === 'password') {
         return {
-            user: {
-                id: '1',
-                email: 'agent@example.com',
-                name: 'Agent 007',
-                role: 'agent',
-                avatarUrl: '/images/user/user-03.png',
-                level: 4,
-            // Add a URL if you have one
-            },
-            token: 'mock-jwt-token',
+            user: userData,
+            token: userData.token,
         };
     }
     throw new Error('Invalid credentials');
 };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<IUser | null>(null);
     const router = useRouter();
     const pathname = usePathname();
 

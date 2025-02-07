@@ -19,6 +19,9 @@ export default function Error({
                 <h2 className="text-2xl font-semibold text-black dark:text-white mb-4">
                     Something went wrong!
                 </h2>
+                <p className="text-red-500 dark:text-red-400 mb-6">
+                    {error.message}
+                </p>
                 <button
                     onClick={() => reset()}
                     className="px-6 py-3 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"

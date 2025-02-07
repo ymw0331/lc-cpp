@@ -8,7 +8,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { TransferActivityProps } from "@/types/account/data";
+import { TransferActivityProps } from "@/lib/data";
 import USDCIcon from "../Icons/dashboard/USDCIcon";
 import USDTIcon from "../Icons/dashboard/USDTIcon";
 

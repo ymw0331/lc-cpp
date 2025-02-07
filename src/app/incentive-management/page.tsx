@@ -5,8 +5,7 @@ import IncentiveCard from '@/components/Cards/IncentiveCard'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import DataTable from '@/components/Tables/DataTable'
 import { StarBadgeIcon } from '@/components/Icons/dashboard'
-import { incentivePageData, tableColumns } from '@/lib/incentive/data'
-import { IncentivePageData } from '@/types/incentive/data'
+import { incentivePageData, IncentivePageData } from '@/lib/data'
 import React, { useState } from 'react'
 
 const IncentiveManagementPage = () => {
@@ -14,6 +13,14 @@ const IncentiveManagementPage = () => {
     const [currentMonth, setCurrentMonth] = useState<string>(
         new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' })
     );
+
+    // Table columns configuration
+    const tableColumns = [
+        { key: 'type', header: 'TYPE OF INCENTIVE', align: 'left' as const },
+        { key: 'amount', header: 'AMOUNT', align: 'right' as const },
+        { key: 'datetime', header: 'DATE TIME', align: 'right' as const },
+    ];
+
 
     return (
         <DefaultLayout>

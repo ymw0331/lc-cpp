@@ -3,7 +3,7 @@ import WalletCard from '@/components/Cards/WalletCard'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import AnalyticChart from '@/components/Charts/AnalyticChart'
 import { RewardWalletBalanceIcon, USDCIcon, WalletIcon } from '@/components/Icons/dashboard'
-import { walletStats } from '@/lib/account/data'
+import { walletStats } from '@/lib/data'
 
 const WalletsPage = () => {
     return (
