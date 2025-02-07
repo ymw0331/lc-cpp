@@ -5,12 +5,14 @@ import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/useToast';
 import Image from 'next/image';
 import { Avatar } from "../ui/avatar";
+import { AgentLevel } from "@/lib/data";
 
 interface NextLevelCardProps {
-    currentLevel: string;
+    currentLevel: AgentLevel | string;  // Accept both AgentLevel enum and string
     progress: number;
     isMaxLevel?: boolean;
     avatarUrl?: string;
+    name?: string;
     className?: string;
 }
 
@@ -30,6 +32,14 @@ const NextLevelCard = ({
             description: "We'll review your request and get back to you soon.",
             duration: 3000,
         });
+    };
+
+    // Convert enum value to display text
+    const getLevelDisplay = (level: AgentLevel | string) => {
+        if (typeof level === 'number') {
+            return `Level ${level}`;
+        }
+        return level;
     };
 
     return (
@@ -60,7 +70,6 @@ const NextLevelCard = ({
                             sizes="(max-width: 60px) 100vw"
                         />
                     </Avatar>
-
                 </div>
             </div>
 
@@ -70,7 +79,7 @@ const NextLevelCard = ({
                 <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                         <span className="text-title-xsm font-medium text-black dark:text-white">
-                            {currentLevel}
+                            {getLevelDisplay(currentLevel)}
                         </span>
                         <span className="text-title-xsm font-medium text-black dark:text-white ml-2">
                             -

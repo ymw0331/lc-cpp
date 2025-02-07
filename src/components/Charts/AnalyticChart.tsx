@@ -12,20 +12,16 @@ import {
 } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ChartDataPoint } from '@/lib/data';
 
 type Period = 'Week' | 'Month' | 'Year';
-
-interface ChartData {
-    name: string;
-    value: number;
-}
 
 interface AnalyticChartProps {
     title: string;
     chartData: {
-        Week: ChartData[];
-        Month: ChartData[];
-        Year: ChartData[];
+        Week: ChartDataPoint[];
+        Month: ChartDataPoint[];
+        Year: ChartDataPoint[];
     };
     legendLabel?: string;
     showLegend?: boolean;
@@ -151,7 +147,7 @@ const AnalyticChart = ({
                             stroke="rgba(226, 232, 240, 0.5)"
                         />
                         <XAxis
-                            dataKey="name"
+                            dataKey="label"
                             axisLine={false}
                             tickLine={false}
                             tick={{

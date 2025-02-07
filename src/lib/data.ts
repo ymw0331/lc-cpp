@@ -1,3 +1,5 @@
+import { Label } from "recharts";
+
 /*** 00 Start of Auth Data ***/
 export enum AgentLevel {
     LEVEL_1 = 1,
@@ -274,33 +276,33 @@ export const walletStats = {
     },
     walletSummary: {
         Week: [
-            { name: 'Mon', value: 1687.71 },
-            { name: 'Tue', value: 1723.45 },
-            { name: 'Wed', value: 1698.32 },
-            { name: 'Thu', value: 1756.89 },
-            { name: 'Fri', value: 1789.23 },
-            { name: 'Sat', value: 1802.45 },
-            { name: 'Sun', value: 1832.34 },
+            { label: 'Mon', value: 1687.71 },
+            { label: 'Tue', value: 1723.45 },
+            { label: 'Wed', value: 1698.32 },
+            { label: 'Thu', value: 1756.89 },
+            { label: 'Fri', value: 1789.23 },
+            { label: 'Sat', value: 1802.45 },
+            { label: 'Sun', value: 1832.34 },
         ],
         Month: [
-            { name: 'Week 1', value: 1687.71 },
-            { name: 'Week 2', value: 1723.45 },
-            { name: 'Week 3', value: 1798.32 },
-            { name: 'Week 4', value: 1832.34 },
+            { label: 'Week 1', value: 1687.71 },
+            { label: 'Week 2', value: 1723.45 },
+            { label: 'Week 3', value: 1798.32 },
+            { label: 'Week 4', value: 1832.34 },
         ],
         Year: [
-            { name: 'Jan', value: 1287.99 },
-            { name: 'Feb', value: 1636.24 },
-            { name: 'Mar', value: 1520.99 },
-            { name: 'Apr', value: 1439.70 },
-            { name: 'May', value: 1499.44 },
-            { name: 'Jun', value: 1568.83 },
-            { name: 'Jul', value: 1574.56 },
-            { name: 'Aug', value: 1687.71 },
-            { name: 'Sep', value: 1582.92 },
-            { name: 'Oct', value: 1730.35 },
-            { name: 'Nov', value: 1748.00 },
-            { name: 'Dec', value: 1527.61 },
+            { label: 'Jan', value: 1287.99 },
+            { label: 'Feb', value: 1636.24 },
+            { label: 'Mar', value: 1520.99 },
+            { label: 'Apr', value: 1439.70 },
+            { label: 'May', value: 1499.44 },
+            { label: 'Jun', value: 1568.83 },
+            { label: 'Jul', value: 1574.56 },
+            { label: 'Aug', value: 1687.71 },
+            { label: 'Sep', value: 1582.92 },
+            { label: 'Oct', value: 1730.35 },
+            { label: 'Nov', value: 1748.00 },
+            { label: 'Dec', value: 1527.61 },
         ],
     }
 };
@@ -534,6 +536,7 @@ export interface RecruitData {
         Year: ChartDataPoint[];
     };
 }
+
 
 
 export const recruitData: RecruitData = {
@@ -770,59 +773,44 @@ export const activationData: TimeRangeData = {
 
 
 /*** 05 Start of Performance Page ***/
-export interface ProgressCard {
-    title: string;
-    currentValue: number;
-    targetValue: number;
-    suffix: string;
-    progressColor: string;
-}
+// export interface ProgressCard {
+//     title: string;
+//     currentValue: number;
+//     targetValue: number;
+//     suffix: string;
+//     progressColor: string;
+// }
 
-export interface NextLevelCard {
-    currentLevel: string;
-    progress: number;
-    isMaxLevel: boolean;
-    avatarUrl: string;
-    name: string;
-}
+// export interface NextLevelCard {
+//     currentLevel: string;
+//     progress: number;
+//     isMaxLevel: boolean;
+//     avatarUrl: string;
+//     name: string;
+// }
 
-export interface SalesSummary {
-    groupSales: number;
-    personalSales: number;
-}
+// export interface SalesSummary {
+//     groupSales: number;
+//     personalSales: number;
+// }
 
-export interface DemographicData {
-    [key: string]: {
-        [key: string]: number;
-    };
-}
+// export interface DemographicData {
+//     [key: string]: {
+//         [key: string]: number;
+//     };
+// }
 
-export interface MonthlyData {
-    name: string;
-    value: number;
-}
 
-export interface WeeklyData {
-    name: string;
-    value: number;
-}
+// export interface PerformanceData {
+//     progressCards: ProgressCard[];
+//     nextLevelCard: NextLevelCard;
+//     salesSummary: SalesSummary;
+//     demographicData: DemographicData;
+//     salesVolumeData: SalesVolumeData;
+// }
 
-export interface SalesVolumeData {
-    monthlyData2024: MonthlyData[];
-    monthlyData2023: MonthlyData[];
-    weeklyData: {
-        [key: string]: WeeklyData[];
-    };
-}
 
-export interface PerformanceData {
-    progressCards: ProgressCard[];
-    nextLevelCard: NextLevelCard;
-    salesSummary: SalesSummary;
-    demographicData: DemographicData;
-    salesVolumeData: SalesVolumeData;
-}
-export const performanceData: PerformanceData = {
+export const performanceData = {
     progressCards: [
         {
             title: "Card Activation Volume",
@@ -845,6 +833,7 @@ export const performanceData: PerformanceData = {
         isMaxLevel: true,
         avatarUrl: userData.avatarUrl,
         name: userData.name,
+
     },
     salesSummary: {
         groupSales: 73.2,

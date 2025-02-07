@@ -23,7 +23,25 @@ import {
     Tooltip,
     CartesianGrid,
 } from 'recharts';
-import { SalesVolumeData } from '@/lib/data';
+
+
+interface MonthlyData {
+    name: string;
+    value: number;
+}
+
+interface WeeklyData {
+    name: string;
+    value: number;
+}
+
+interface SalesVolumeData {
+    monthlyData2024: MonthlyData[];
+    monthlyData2023: MonthlyData[];
+    weeklyData: {
+        [key: string]: WeeklyData[];
+    };
+}
 
 const SalesVolumeBarChart = ({ salesVolumeData }: { salesVolumeData: SalesVolumeData }) => {
     const [viewMode, setViewMode] = useState<'week' | 'month' | 'year'>('year');
