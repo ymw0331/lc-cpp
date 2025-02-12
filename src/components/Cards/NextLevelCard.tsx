@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/useToast';
 import Image from 'next/image';
 import { Avatar } from "../ui/avatar";
-import { AgentLevel } from "@/lib/data";
+import { AgentLevel } from "@/lib/constants/enums";
 
 interface NextLevelCardProps {
     currentLevel: AgentLevel | string;  // Accept both AgentLevel enum and string

@@ -1,74 +1,3 @@
-<<<<<<< HEAD
-import { Label } from "recharts";
-
-/*** 00 Start of Auth Data ***/
-export enum AgentLevel {
-    LEVEL_1 = 1,
-    LEVEL_2 = 2,
-    LEVEL_3 = 3,
-    LEVEL_4 = 4,
-    LEVEL_5 = 5
-}
-
-export enum Role {
-    AGENT = 'agent',
-    PARTNER = 'partner',
-}
-
-export enum KeyMarket {
-    HK = 'Hong Kong',
-    SG = 'Singapore',
-    MY = 'Malaysia',
-    CN = 'China',
-    TH = 'Thailand',
-    PH = 'Philippines',
-    ID = 'Indonesia',
-    VN = 'Vietnam',
-}
-export interface ISocialMedia {
-    linkedin?: string;
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-}
-
-export interface IUser {
-    id: string;
-    name: string;
-    email: string;
-    contactNumber: string;
-    keyMarket: KeyMarket;
-    role: Role;
-    avatarUrl?: string;
-    level?: AgentLevel;
-    referralCode: string;
-    socialMedia?: ISocialMedia;
-    token: string;
-}
-
-export const userData: IUser = {
-    id: '1',
-    name: 'Joby Tan',
-    email: 'agent@example.com',
-    contactNumber: '1234567890',
-    keyMarket: KeyMarket.HK,
-    role: Role.PARTNER,
-    avatarUrl: '/images/user/user-05.png',
-    level: AgentLevel.LEVEL_5,
-    referralCode: '7HKS56H5',
-    socialMedia: {
-        linkedin: 'https://www.linkedin.com/in/jobytan',
-        facebook: 'https://www.facebook.com/jobytan',
-        instagram: 'https://www.instagram.com/jobytan',
-        twitter: 'https://twitter.com/jobytan'
-    },
-    token: 'mock-jwt-token',
-}
-/*** 00 End of Auth Data ***/
-
-
-
-=======
 /*** 00 Start of Auth Data ***/
 import { IUser } from "@/types/user";
 import { AgentLevel, KeyMarket, Role } from "./constants/enums";
@@ -98,7 +27,6 @@ export const userData: IUser = {
 
 
 
->>>>>>> 1236bef (latest update)
 /*** 01 Start Agent Dashboard Stats ***/
 export type CurrencyType = 'USDT' | 'USDC';
 
@@ -220,10 +148,6 @@ export interface DashboardStatistics {
     directRecruitment: {
         earnings: number;
         currency: CurrencyType;
-<<<<<<< HEAD
-        totalRecruits: number;
-=======
->>>>>>> 1236bef (latest update)
         lastUpdated: string;
     };
     agentProfile: {
@@ -272,10 +196,6 @@ export const dashboardData: DashboardStatistics = {
     directRecruitment: {
         earnings: 1855.00,
         currency: defaultCurrency,
-<<<<<<< HEAD
-        totalRecruits: 2146,
-=======
->>>>>>> 1236bef (latest update)
         lastUpdated: '2024-02-20T15:30:00Z'
     },
     agentProfile: {
@@ -990,8 +910,6 @@ export const performanceData = {
 
 /*** 08 Start of Legal Page ***/
 /*** 08 End of Legal Page ***/
-<<<<<<< HEAD
-=======
 export interface LegalContent {
     title: string;
     lastUpdated: string;
@@ -1141,4 +1059,3 @@ export const legalContentData: Record<string, LegalContent> = {
         ]
     }
 };
->>>>>>> 1236bef (latest update)

@@ -5,7 +5,8 @@ import DemographicSalesChart from "@/components/Charts/DemographicSalesChart";
 import SalesSummaryCard from "@/components/Charts/SalesSummaryCard";
 import SalesVolumeBarChart from "@/components/Charts/SalesVolumeBarChart";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { AgentLevel, performanceData } from "@/lib/data"; // Adjusted import to match the export
+import { performanceData } from "@/lib/data"; // Adjusted import to match the export
+import { AgentLevel } from "@/lib/constants/enums";
 
 const PerformancePage = () => {
     const { progressCards, nextLevelCard, salesSummary, salesVolumeData, } = performanceData;

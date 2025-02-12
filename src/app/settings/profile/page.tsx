@@ -27,11 +27,7 @@ import { useEffect, useState } from "react";
 import { VerificationDialog } from '@/components/Dialogs/VerificationDialog';
 import { toast } from "@/hooks/useToast";
 import { useAuth } from '@/contexts/AuthContext';
-<<<<<<< HEAD
-import { KeyMarket } from '@/lib/data';
-=======
 import { KeyMarket } from "@/lib/constants/enums";
->>>>>>> 1236bef (latest update)
 
 const formSchema = z.object({
     userId: z.string(),

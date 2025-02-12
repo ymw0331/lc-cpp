@@ -8,12 +8,6 @@ import ReferralCard from "../Cards/ReferralCard";
 import AgentStatCard from "../Cards/AgentStatCard";
 import StatisticChart from "../Charts/StatisticChart";
 import { DepositActivityTable } from "../Tables/DepositActivityTable";
-<<<<<<< HEAD
-import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
-import { useState } from "react";
-import { dashboardData, DashboardStatistics } from "@/lib/data";
-
-=======
 import {
   RewardWalletBalanceIcon,
   TotalDepositAmountIcon,
@@ -22,15 +16,11 @@ import {
 import { dashboardService } from "@/lib/services/dashboard.service";
 import { DashboardStatistics } from "@/lib/data";
 import Loader from "@/components/common/Loader";
->>>>>>> 1236bef (latest update)
 
 const AgentDashboard: React.FC = () => {
   const [data, setData] = useState<DashboardStatistics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-<<<<<<< HEAD
-  const [data] = useState<DashboardStatistics>(dashboardData);
-=======
   useEffect(() => {
     const fetchDashboardData = async () => {
       console.log('📡 Fetching dashboard data in AgentDashboard...');
@@ -60,7 +50,6 @@ const AgentDashboard: React.FC = () => {
   }
 
   console.log('✅ Rendering AgentDashboard with data:', data);
->>>>>>> 1236bef (latest update)
 
   return (
     <>
