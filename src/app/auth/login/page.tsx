@@ -7,26 +7,39 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { LockKeyhole, Mail } from "lucide-react";
+import { LockKeyhole, Mail, Loader2 } from "lucide-react";
+
+// Test credentials matching the API response
+const TEST_CREDENTIALS = {
+    email: "alex.wong+edns123@one2.cloud",
+    password: "Test1234@"
+};
 
 export default function LoginPage() {
-    const [email, setEmail] = useState('agent@example.com');
-    const [password, setPassword] = useState('password');
+    const [email, setEmail] = useState(TEST_CREDENTIALS.email);
+    const [password, setPassword] = useState(TEST_CREDENTIALS.password);
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
+        setIsLoading(true);
+
         try {
+            console.log('🔑 Login attempt:', { email });
             await login(email, password);
         } catch (err) {
-            setError('Invalid credentials');
+            console.error('❌ Login error:', err);
+            setError(err instanceof Error ? err.message : 'Invalid credentials');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="border  min-h-screen flex items-center justify-center shadow-default border-stroke bg-white dark:bg-boxdark dark:border-strokedark">
-
+        <div className="border min-h-screen flex items-center justify-center shadow-default border-stroke bg-white dark:bg-boxdark dark:border-strokedark">
             <div className="flex flex-wrap items-center">
                 <div className="hidden w-full xl:block xl:w-1/2">
                     <div className="px-26 py-17.5 text-center">
@@ -36,6 +49,7 @@ export default function LoginPage() {
                                 alt="Logo"
                                 width={176}
                                 height={32}
+                                priority
                             />
                         </Link>
 
@@ -73,6 +87,7 @@ export default function LoginPage() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Enter your email"
                                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        disabled={isLoading}
                                         required
                                     />
                                     <span className="absolute right-4 top-2">
@@ -92,6 +107,7 @@ export default function LoginPage() {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Enter your password"
                                         className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                        disabled={isLoading}
                                         required
                                     />
                                     <span className="absolute right-4 top-2">
@@ -104,16 +120,24 @@ export default function LoginPage() {
                                 <Button
                                     type="submit"
                                     className="w-full rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                                    disabled={isLoading}
                                 >
-                                    Sign In
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Signing in...
+                                        </>
+                                    ) : (
+                                        'Sign In'
+                                    )}
                                 </Button>
                             </div>
 
-                            <div className="mt-6 text-center">
+                            {/* <div className="mt-6 text-center">
                                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Test credentials: agent@example.com / password
+                                    Test credentials: {TEST_CREDENTIALS.email} / {TEST_CREDENTIALS.password}
                                 </p>
-                            </div>
+                            </div> */}
                         </form>
                     </div>
                 </div>

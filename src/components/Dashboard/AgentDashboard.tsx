@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProfileCard from "../Cards/ProfileCard";
 import RecruitCard from "../Cards/RecruitCard";
@@ -7,14 +8,59 @@ import ReferralCard from "../Cards/ReferralCard";
 import AgentStatCard from "../Cards/AgentStatCard";
 import StatisticChart from "../Charts/StatisticChart";
 import { DepositActivityTable } from "../Tables/DepositActivityTable";
+<<<<<<< HEAD
 import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
 import { useState } from "react";
 import { dashboardData, DashboardStatistics } from "@/lib/data";
 
+=======
+import {
+  RewardWalletBalanceIcon,
+  TotalDepositAmountIcon,
+  DirectRecruitIncentiveIcon,
+} from "../Icons/dashboard";
+import { dashboardService } from "@/lib/services/dashboard.service";
+import { DashboardStatistics } from "@/lib/data";
+import Loader from "@/components/common/Loader";
+>>>>>>> 1236bef (latest update)
 
 const AgentDashboard: React.FC = () => {
+  const [data, setData] = useState<DashboardStatistics | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
   const [data] = useState<DashboardStatistics>(dashboardData);
+=======
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      console.log('📡 Fetching dashboard data in AgentDashboard...');
+      try {
+        const dashboardData = await dashboardService.getDashboardData();
+        console.log('✅ Dashboard data received in AgentDashboard:', dashboardData);
+        setData(dashboardData);
+      } catch (error) {
+        console.error('❌ Failed to fetch dashboard data in AgentDashboard:', error);
+      } finally {
+        setIsLoading(false);
+        console.log('⏳ Dashboard data loading complete.');
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (isLoading) {
+    console.log('⏳ Loading dashboard data...');
+    return <Loader />;
+  }
+
+  if (!data) {
+    console.error('❌ No dashboard data available.');
+    return <div>Error loading dashboard data.</div>;
+  }
+
+  console.log('✅ Rendering AgentDashboard with data:', data);
+>>>>>>> 1236bef (latest update)
 
   return (
     <>
@@ -50,9 +96,9 @@ const AgentDashboard: React.FC = () => {
         />
         <div className="grid gap-6">
           <RecruitCard
-            count={1234}
+            count={data.totalDirectRecruit.count}
             agentsToPartner={{
-              count: data.totalDirectRecruit.agentsToPartner
+              count: data.totalDirectRecruit.agentsToPartner,
             }}
           />
           <ReferralCard code={data.referralCode} />
@@ -67,11 +113,8 @@ const AgentDashboard: React.FC = () => {
         />
       </div>
 
-
       <div className="mt-6">
-        <DepositActivityTable
-          activities={data.depositActivities}
-        />
+        <DepositActivityTable activities={data.depositActivities} />
       </div>
     </>
   );

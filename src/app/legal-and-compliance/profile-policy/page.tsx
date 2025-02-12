@@ -1,7 +1,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import ContentSection from "@/components/Sections/ContentSection"
-import { legalContentData } from "@/lib/legal/data"
+import { legalContentData } from "@/lib/data"
 
 const ProfilePolicyPage = () => {
     return (

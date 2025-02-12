@@ -17,7 +17,11 @@ const ReferredUsersPage = () => {
                 <div className="w-full md:w-2/4">
                     {/* Top Row */}
                     <RecruitCard
+<<<<<<< HEAD
                         count={agentsToPartner.count}
+=======
+                        count={count}
+>>>>>>> 1236bef (latest update)
                         agentsToPartner={{
                             count: agentsToPartner.count,
                             trend: agentsToPartner.trend as 'up' | 'down'
