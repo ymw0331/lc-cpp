@@ -9,8 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
-import { DepositActivity } from "@/lib/data"
-
+import { DepositActivity } from "@/types/dashboard"
 interface DepositActivityTableProps {
     activities: DepositActivity[]
     className?: string
@@ -24,6 +23,8 @@ export function DepositActivityTable({ activities, className }: DepositActivityT
             minimumFractionDigits: 2
         }).format(amount)
     }
+
+    const hasData = activities && activities.length > 0;
 
     return (
         <Card className={`rounded-sm border border-stroke bg-white dark:border-strokedark dark:bg-boxdark ${className}`}>
@@ -49,7 +50,8 @@ export function DepositActivityTable({ activities, className }: DepositActivityT
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {activities.map((activity, index) => (
+
+                                    {hasData ? (activities.map((activity, index) => (
                                         <TableRow
                                             key={index}
                                             className={`
@@ -67,7 +69,17 @@ export function DepositActivityTable({ activities, className }: DepositActivityT
                                                 {activity.dateTime}
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    ))) : (
+                                        <TableRow>
+                                            <TableCell
+                                                colSpan={3}
+                                                className="text-center font-medium text-black dark:text-white py-4"
+                                            >
+                                                No Data Available
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+
                                 </TableBody>
                             </Table>
                         </div>

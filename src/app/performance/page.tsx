@@ -6,7 +6,6 @@ import SalesSummaryCard from "@/components/Charts/SalesSummaryCard";
 import SalesVolumeBarChart from "@/components/Charts/SalesVolumeBarChart";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { performanceData } from "@/lib/data"; // Adjusted import to match the export
-import { AgentLevel } from "@/lib/constants/enums";
 
 const PerformancePage = () => {
     const { progressCards, nextLevelCard, salesSummary, salesVolumeData, } = performanceData;
@@ -37,7 +36,7 @@ const PerformancePage = () => {
 
                     {/* Next Level Card */}
                     <NextLevelCard
-                        currentLevel={nextLevelCard.currentLevel ?? AgentLevel.LEVEL_1}
+                        currentLevel={nextLevelCard.currentLevel}
                         progress={nextLevelCard.progress}
                         isMaxLevel={nextLevelCard.isMaxLevel}
                         avatarUrl={nextLevelCard.avatarUrl}

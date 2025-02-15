@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LockKeyhole, Mail, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/useToast";
 
-// Test credentials matching the API response
 const TEST_CREDENTIALS = {
-    email: "alex.wong+edns123@one2.cloud",
+    email: "alex.wong+knan@one2.cloud",
     password: "Test1234@"
 };
 
@@ -21,105 +21,119 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
+    const { toast } = useToast();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('[Login] Login attempt started');
         setError('');
         setIsLoading(true);
 
         try {
-            console.log('🔑 Login attempt:', { email });
             await login(email, password);
-        } catch (err) {
-            console.error('❌ Login error:', err);
-            setError(err instanceof Error ? err.message : 'Invalid credentials');
+            console.log('[Login] Login successful');
+            toast({
+                title: "Success",
+                description: "Successfully logged in!",
+                duration: 3000,
+            });
+        } catch (err: any) {
+            const errorMessage = err.response?.data?.message || err.message || 'Login failed';
+            console.error('[Login] Login failed:', { error: errorMessage });
+            setError(errorMessage);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: errorMessage,
+                duration: 5000,
+            });
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <div className="border min-h-screen flex items-center justify-center shadow-default border-stroke bg-white dark:bg-boxdark dark:border-strokedark">
-            <div className="flex flex-wrap items-center">
-                <div className="hidden w-full xl:block xl:w-1/2">
-                    <div className="px-26 py-17.5 text-center">
-                        <Link className="mb-5.5 inline-block" href="/">
-                            <Image
-                                src={"/images/logo/lookcard-logo.png"}
-                                alt="Logo"
-                                width={176}
-                                height={32}
-                                priority
-                            />
-                        </Link>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-boxdark">
+            <div className="w-full max-w-6xl mx-auto bg-white dark:bg-boxdark-2 rounded-xl shadow-lg overflow-hidden">
+                <div className="flex flex-wrap items-center">
+                    {/* Left side - Logo and welcome message */}
+                    <div className="hidden w-full xl:block xl:w-1/2">
+                        <div className="p-12 text-center">
+                            <Link className="inline-block mb-8" href="/">
+                                <Image
+                                    src="/images/logo/lookcard-logo.png"
+                                    alt="Lookcard Logo"
+                                    width={176}
+                                    height={32}
+                                    priority
+                                />
+                            </Link>
 
-                        <p className="2xl:px-20">
-                            Welcome to Lookcard Reseller Portal. Please sign in to continue.
-                        </p>
-
-                        <span className="mt-15 inline-block">
-                            {/* Your existing SVG */}
-                        </span>
+                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                                Welcome to Lookcard Reseller Portal
+                            </h1>
+                            <p className="text-gray-600 dark:text-gray-400">
+                                Please sign in to continue to your dashboard.
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-                    <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-                        <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                            Sign In to Agent Dashboard
-                        </h2>
+                    {/* Right side - Login form */}
+                    <div className="w-full xl:w-1/2 border-l border-gray-200 dark:border-gray-700">
+                        <div className="w-full p-8 sm:p-12">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                                Sign In to Agent Dashboard
+                            </h2>
 
-                        {error && (
-                            <Alert variant="destructive" className="mb-4">
-                                <AlertDescription>{error}</AlertDescription>
-                            </Alert>
-                        )}
+                            {error && (
+                                <Alert variant="destructive" className="mb-6">
+                                    <AlertDescription>{error}</AlertDescription>
+                                </Alert>
+                            )}
 
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                                    Email
-                                </label>
-                                <div className="relative">
-                                    <Input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Enter your email"
-                                        className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        disabled={isLoading}
-                                        required
-                                    />
-                                    <span className="absolute right-4 top-2">
-                                        <Mail />
-                                    </span>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                {/* Email Input */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Email
+                                    </label>
+                                    <div className="relative">
+                                        <Input
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="Enter your email"
+                                            className="pl-4 pr-10 py-2"
+                                            disabled={isLoading}
+                                            required
+                                        />
+                                        <Mail className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="mb-6">
-                                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                                    Password
-                                </label>
-                                <div className="relative">
-                                    <Input
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Enter your password"
-                                        className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                        disabled={isLoading}
-                                        required
-                                    />
-                                    <span className="absolute right-4 top-2">
-                                        <LockKeyhole />
-                                    </span>
+                                {/* Password Input */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        Password
+                                    </label>
+                                    <div className="relative">
+                                        <Input
+                                            type="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            placeholder="Enter your password"
+                                            className="pl-4 pr-10 py-2"
+                                            disabled={isLoading}
+                                            required
+                                        />
+                                        <LockKeyhole className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="mb-5">
+                                {/* Submit Button */}
                                 <Button
                                     type="submit"
-                                    className="w-full rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                                    className="w-full"
                                     disabled={isLoading}
                                 >
                                     {isLoading ? (
@@ -131,14 +145,15 @@ export default function LoginPage() {
                                         'Sign In'
                                     )}
                                 </Button>
-                            </div>
 
-                            {/* <div className="mt-6 text-center">
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Test credentials: {TEST_CREDENTIALS.email} / {TEST_CREDENTIALS.password}
-                                </p>
-                            </div> */}
-                        </form>
+                                {/* Test Credentials Info */}
+                                <div className="text-center">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Test credentials: {TEST_CREDENTIALS.email}
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

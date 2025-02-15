@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/useToast';
 import Image from 'next/image';
 import { Avatar } from "../ui/avatar";
-import { AgentLevel } from "@/lib/constants/enums";
+import { AgentLevel } from "@/lib/data";
 
 interface NextLevelCardProps {
     currentLevel: AgentLevel | string;  // Accept both AgentLevel enum and string
@@ -62,13 +62,13 @@ const NextLevelCard = ({
 
                     {/* Avatar */}
                     <Avatar className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4">
-                        <Image
+                        {/* <Image
                             src={avatarUrl || "/images/user/user-07.png"}
                             alt={name || "User avatar"}
                             className="rounded-full"
                             fill
                             sizes="(max-width: 60px) 100vw"
-                        />
+                        /> */}
                     </Avatar>
                 </div>
             </div>

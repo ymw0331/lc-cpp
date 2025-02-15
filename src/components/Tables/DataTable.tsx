@@ -22,7 +22,7 @@ interface DataTableProps {
 
 const DataTable = ({
     columns,
-    data,
+    data = [],
     title,
     currentMonth,
     onMonthChange,
@@ -65,6 +65,7 @@ const DataTable = ({
 
     // Handle Excel export
     const exportToExcel = () => {
+        if (!data.length) return;
         const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Incentive Activity');
@@ -103,7 +104,8 @@ const DataTable = ({
                 </div>
                 <Button
                     onClick={exportToExcel}
-                    className="bg-primary hover:bg-primary/90 text-white font-medium gap-2 rounded-lg"
+                    disabled={!data.length}
+                    className={`bg-primary text-white font-medium gap-2 rounded-lg ${!data.length ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary/90'}`}
                 >
                     <Download className="w-5 h-5" />
                     Export to Excel
@@ -127,73 +129,91 @@ const DataTable = ({
                             </tr>
                         </thead>
                         <tbody>
-                            {currentData.map((row, rowIndex) => (
-                                <tr
-                                    key={rowIndex}
-                                    className={`${rowIndex % 2 === 0
+                            {data.length === 0 ? (
+                                <tr>
+                                    <td
+                                        colSpan={columns.length}
+                                        className="py-16 text-center text-body dark:text-bodydark"
+                                    >
+                                        <div className="flex flex-col items-center justify-center gap-2">
+                                            <p className="text-lg font-medium">No data available</p>
+                                            <p className="text-sm text-body dark:text-bodydark">
+                                                There are no records to display for this period
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ) : (
+                                currentData.map((row, rowIndex) => (
+                                    <tr
+                                        key={rowIndex}
+                                        className={`${rowIndex % 2 === 0
                                             ? 'bg-white dark:bg-boxdark'
                                             : 'bg-gray-2 dark:bg-meta-4'
-                                        } border-b border-stroke dark:border-strokedark hover:bg-gray-3 dark:hover:bg-boxdark-2 transition-colors`}
-                                >
-                                    {columns.map((column) => (
-                                        <td
-                                            key={`${rowIndex}-${column.key}`}
-                                            className={`py-5 px-4 text-${column.align} ${column.key === 'amount'
+                                            } border-b border-stroke dark:border-strokedark hover:bg-gray-3 dark:hover:bg-boxdark-2 transition-colors`}
+                                    >
+                                        {columns.map((column) => (
+                                            <td
+                                                key={`${rowIndex}-${column.key}`}
+                                                className={`py-5 px-4 text-${column.align} ${column.key === 'amount'
                                                     ? 'font-medium text-black dark:text-white'
                                                     : 'text-body dark:text-bodydark'
-                                                }`}
-                                        >
-                                            {column.key === 'amount'
-                                                ? `$${row[column.key].toLocaleString('en-US', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                })}`
-                                                : row[column.key]}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
+                                                    }`}
+                                            >
+                                                {column.key === 'amount'
+                                                    ? `$${row[column.key].toLocaleString('en-US', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    })}`
+                                                    : row[column.key]}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
 
-                {/* Pagination */}
-                <div className="flex flex-wrap items-center justify-between py-4.5 px-4 border-t border-stroke dark:border-strokedark">
-                    <p className="mb-4 sm:mb-0 text-body dark:text-bodydark">
-                        Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of {data.length} results
-                    </p>
-                    <div className="flex items-center space-x-2">
-                        <Button
-                            variant="outline"
-                            className="border-stroke dark:border-strokedark text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4"
-                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                            disabled={currentPage === 1}
-                        >
-                            <ChevronLeft className="w-4 h-4" />
-                        </Button>
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                {/* Pagination - Only show if there's data */}
+                {data.length > 0 && (
+                    <div className="flex flex-wrap items-center justify-between py-4.5 px-4 border-t border-stroke dark:border-strokedark">
+                        <p className="mb-4 sm:mb-0 text-body dark:text-bodydark">
+                            Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of {data.length} results
+                        </p>
+                        <div className="flex items-center space-x-2">
                             <Button
-                                key={page}
-                                variant={currentPage === page ? "default" : "outline"}
-                                onClick={() => setCurrentPage(page)}
-                                className={`${currentPage === page
+                                variant="outline"
+                                className="border-stroke dark:border-strokedark text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4"
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                disabled={currentPage === 1}
+                            >
+                                <ChevronLeft className="w-4 h-4" />
+                            </Button>
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                                <Button
+                                    key={page}
+                                    variant={currentPage === page ? "default" : "outline"}
+                                    onClick={() => setCurrentPage(page)}
+                                    className={`${currentPage === page
                                         ? 'bg-primary text-white'
                                         : 'border-stroke dark:border-strokedark text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4'
-                                    }`}
+                                        }`}
+                                >
+                                    {page}
+                                </Button>
+                            ))}
+                            <Button
+                                variant="outline"
+                                className="border-stroke dark:border-strokedark text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4"
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                disabled={currentPage === totalPages}
                             >
-                                {page}
+                                <ChevronRight className="w-4 h-4" />
                             </Button>
-                        ))}
-                        <Button
-                            variant="outline"
-                            className="border-stroke dark:border-strokedark text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4"
-                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                            disabled={currentPage === totalPages}
-                        >
-                            <ChevronRight className="w-4 h-4" />
-                        </Button>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

@@ -15,19 +15,14 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { PencilIcon, ClipboardIcon, CopyIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { PencilIcon, CopyIcon } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { VerificationDialog } from '@/components/Dialogs/VerificationDialog';
 import { toast } from "@/hooks/useToast";
 import { useAuth } from '@/contexts/AuthContext';
-import { KeyMarket } from "@/lib/constants/enums";
+import Loader from '@/components/common/Loader';
+// import { profileApi, ProfileResponse } from '@/apiOld/profile';
+import { profileApi, ProfileResponse } from '@/api';
 
 const formSchema = z.object({
     userId: z.string(),
@@ -36,75 +31,17 @@ const formSchema = z.object({
     contactNo: z.string(),
     referralCode: z.string(),
     keyMarket: z.string(),
-    linkedin: z.string().url().optional(),
-    facebook: z.string().url().optional(),
-    instagram: z.string().url().optional(),
-    twitter: z.string().url().optional(),
+    linkedin: z.string().optional(),
+    facebook: z.string().optional(),
+    instagram: z.string().optional(),
+    twitter: z.string().optional(),
 });
 
 
 const ProfilePage = () => {
-
-    const { user } = useAuth(); // Get user data from auth context
-
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            userId: user?.id || "",
-            fullName: user?.name || "",
-            email: user?.email || "",
-            contactNo: user?.contactNumber || "",
-            referralCode: user?.referralCode || "",
-            keyMarket: user?.keyMarket || "",
-            linkedin: user?.socialMedia?.linkedin || "",
-            facebook: user?.socialMedia?.facebook || "",
-            instagram: user?.socialMedia?.instagram || "",
-            twitter: user?.socialMedia?.twitter || "",
-        },
-    });
-
-
-    useEffect(() => {
-        if (user) {
-            form.reset({
-                userId: user.id,
-                fullName: user.name,
-                email: user.email,
-                contactNo: user.contactNumber,
-                referralCode: user.referralCode,
-                keyMarket: user.keyMarket,
-                linkedin: user.socialMedia?.linkedin || "",
-                facebook: user.socialMedia?.facebook || "",
-                instagram: user.socialMedia?.instagram || "",
-                twitter: user.socialMedia?.twitter || "",
-            });
-        }
-    }, [user, form]);
-
-
-    // function onSubmit(values: z.infer<typeof formSchema>) {
-    //     console.log("Submitting values:", values);
-    // }
-
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            // Here you would update the user profile
-            console.log("Submitting values:", values);
-            toast({
-                title: "Success",
-                description: "Profile updated successfully",
-                duration: 3000,
-            });
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "Failed to update profile",
-                variant: "destructive",
-                duration: 3000,
-            });
-        }
-    }
-
+    const { user } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
+    const [profileData, setProfileData] = useState<ProfileResponse | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [fieldToVerify, setFieldToVerify] = useState<"email" | "phone" | null>(null);
     const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -114,6 +51,94 @@ const ProfilePage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
 
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            userId: "",
+            fullName: "",
+            email: "",
+            contactNo: "",
+            referralCode: "",
+            keyMarket: "",
+            linkedin: "",
+            facebook: "",
+            instagram: "",
+            twitter: "",
+        },
+    });
+
+
+    // Fetch profile data
+    const fetchProfile = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const data = await profileApi.getProfile();
+            setProfileData(data);
+            form.reset({
+                userId: data.id,
+                fullName: data.name,
+                email: data.email,
+                contactNo: data.contactNumber,
+                referralCode: data.referralCode || '',
+                keyMarket: data.keyMarket,
+                linkedin: data.linkedin || '',
+                facebook: data.facebook || '',
+                instagram: data.instagram || '',
+                twitter: data.twitter || '',
+            });
+        } catch (error) {
+            console.error('Failed to fetch profile:', error);
+            toast({
+                title: "Error",
+                description: "Failed to load profile data",
+                variant: "destructive",
+                duration: 3000,
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [form]);
+
+    useEffect(() => {
+        fetchProfile();
+    }, [fetchProfile]);
+
+
+    // Handle form submission
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            setIsSubmitting(true);
+            await profileApi.updateProfile({
+                name: values.fullName,
+                email: values.email,
+                contactNumber: values.contactNo,
+                keyMarket: values.keyMarket,
+                linkedin: values.linkedin || null,
+                facebook: values.facebook || null,
+                instagram: values.instagram || null,
+                twitter: values.twitter || null,
+            });
+
+            toast({
+                title: "Success",
+                description: "Profile updated successfully",
+                duration: 3000,
+            });
+
+            // Optionally refresh the profile data
+            await fetchProfile();
+        } catch (error) {
+            console.error('Failed to update profile:', error);
+            toast({
+                title: "Error",
+                description: "Failed to update profile",
+                variant: "destructive",
+                duration: 3000,
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
 
     const handleVerify = (code: string) => {
         console.log("Verifying code:", code);
@@ -156,6 +181,18 @@ const ProfilePage = () => {
             duration: 2000,
         });
     };
+
+    if (isLoading) {
+        return <Loader />;
+    }
+
+    // Helper function to check if social media exists
+    const hasSocialMedia = (social: string) => {
+        if (!profileData) return false;
+        return profileData[social as keyof typeof profileData] !== null;
+    };
+
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Profile" />
@@ -341,28 +378,22 @@ const ProfilePage = () => {
                                 />
 
 
-
-                                {/* Key Market Field */}
+                                {/* Key Market */}
                                 <FormField
                                     control={form.control}
                                     name="keyMarket"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">Key Market</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger className="w-full rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                                        <SelectValue placeholder="Select market" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent className="border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-                                                    {Object.values(KeyMarket).map((market) => (
-                                                        <SelectItem key={market} value={market}>
-                                                            {market}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                Key Market
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    readOnly
+                                                    className="w-full rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                />
+                                            </FormControl>
                                             <FormMessage className="mt-1 text-xs text-meta-1" />
                                         </FormItem>
                                     )}
@@ -370,36 +401,42 @@ const ProfilePage = () => {
                             </div>
 
                             {/* Social Media Section */}
-                            <div className="mt-8">
-                                <h4 className="mb-5.5 text-title-sm text-black dark:text-white">Social Media Profiles</h4>
-                                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                    {['linkedin', 'facebook', 'instagram', 'twitter'].map((social) => (
-                                        <FormField
-                                            key={social}
-                                            control={form.control}
-                                            name={social as any}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel className="mb-2.5 block font-medium capitalize text-black dark:text-white">
-                                                        {social}
-                                                    </FormLabel>
-                                                    <div className="relative">
-                                                        <FormControl>
-                                                            <Input
-                                                                {...field}
-                                                                className="w-full rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                                                            />
-                                                        </FormControl>
-                                                        <PencilIcon className="absolute right-4 top-2 h-5 w-5 text-body hover:text-primary dark:text-bodydark dark:hover:text-primary cursor-pointer" />
-                                                    </div>
-                                                    <FormMessage className="mt-1 text-xs text-meta-1" />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-
+                            {profileData &&
+                                (profileData.linkedin || profileData.facebook || profileData.instagram || profileData.twitter) && (
+                                    <div className="mt-8">
+                                        <h4 className="mb-5.5 text-title-sm text-black dark:text-white">
+                                            Social Media Profiles
+                                        </h4>
+                                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                            {['linkedin', 'facebook', 'instagram', 'twitter']
+                                                .filter(social => hasSocialMedia(social))
+                                                .map((social) => (
+                                                    <FormField
+                                                        key={social}
+                                                        control={form.control}
+                                                        name={social as any}
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel className="mb-2.5 block font-medium capitalize text-black dark:text-white">
+                                                                    {social}
+                                                                </FormLabel>
+                                                                <div className="relative">
+                                                                    <FormControl>
+                                                                        <Input
+                                                                            {...field}
+                                                                            className="w-full rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                                        />
+                                                                    </FormControl>
+                                                                    <PencilIcon className="absolute right-4 top-2 h-5 w-5 text-body hover:text-primary dark:text-bodydark dark:hover:text-primary cursor-pointer" />
+                                                                </div>
+                                                                <FormMessage className="mt-1 text-xs text-meta-1" />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                ))}
+                                        </div>
+                                    </div>
+                                )}
 
                             <div className="flex justify-end mt-6 pt-5 border-t border-stroke dark:border-strokedark">
                                 <Button

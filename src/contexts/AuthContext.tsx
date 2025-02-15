@@ -2,177 +2,160 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { authService } from '@/lib/services/auth.service';
-import { AuthUserData } from '@/types/auth';
-import { IUser } from '@/types/user';
-import { useToast } from "@/hooks/useToast";
-import Loader from '@/components/common/Loader';
+import { authApi } from '@/api/auth/auth.api';
+import { profileApi } from '@/api/profile/profile.api'; // Add this
+import { storage } from '@/lib/storage';
+import type { AuthUser } from '@/api/auth/auth.types';
+import type { ProfileResponse } from '@/api/profile/profile.types';
+import { resellerApi } from '@/api/reseller/reseller.api';
+
+// Enhance AuthUser type with additional fields
+interface EnhancedAuthUser extends AuthUser {
+    profileName: string;
+    avatarUrl: string | null;
+    tierPriority: number;
+    role: string;
+}
 
 interface AuthContextType {
-    user: IUser | null;
+    user: EnhancedAuthUser | null;
     isAuthenticated: boolean;
-    isLoading: boolean;
-    isInitialized: boolean;
     login: (email: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
-    updateProfile?: (userData: Partial<IUser>) => Promise<void>;
+    logout: () => void;
+    refreshUserData: () => Promise<void>; // Add this for manual refresh
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<IUser | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isInitialized, setIsInitialized] = useState(false);
+    const [user, setUser] = useState<EnhancedAuthUser | null>(null);
     const router = useRouter();
     const pathname = usePathname();
-    const { toast } = useToast();
 
-    // Initialize auth state
+    // Fetch additional user data
+    const fetchUserData = async (baseUser: AuthUser) => {
+        try {
+            // Fetch both profile and reseller data in parallel
+            const [profileData, resellerData] = await Promise.all([
+                profileApi.getProfile(),
+                resellerApi.getResellerInfo()
+            ]);
+
+            const enhancedUser: EnhancedAuthUser = {
+                ...baseUser,
+                avatarUrl: profileData.avatarUrl,
+                role: profileData.role,
+                profileName: profileData.name,
+                tierPriority: resellerData.tier.priority,
+            };
+
+            storage.setUser(enhancedUser);
+            setUser(enhancedUser);
+
+            console.log('[Auth] Enhanced user data:', {
+                userId: enhancedUser.userId,
+                hasAvatar: !!enhancedUser.avatarUrl,
+                tierPriority: enhancedUser.tierPriority,
+                profileName: enhancedUser.profileName,
+            });
+        } catch (error) {
+            console.error('[Auth] Error fetching additional user data:', error);
+            // Still set the base user if additional data fetch fails
+            setUser(baseUser as EnhancedAuthUser);
+        }
+    };
+
     useEffect(() => {
-        const initializeAuth = async () => {
-            console.log('🚀 Initializing auth state...');
-            try {
-                const storedUser = localStorage.getItem('user');
-                const token = localStorage.getItem('token');
+        const storedUser = storage.getUser();
+        console.log('[Auth] Initial auth check:', { hasStoredUser: !!storedUser, pathname });
 
-                if (storedUser && token) {
-                    console.log('📝 Found stored credentials');
-                    const parsedUser = JSON.parse(storedUser);
-                    setUser(parsedUser);
-                    console.log('👤 User restored:', parsedUser.email);
-                } else {
-                    console.log('⚠️ No stored credentials found');
-                    if (pathname !== '/auth/login') {
-                        console.log('🔄 Redirecting to login...');
-                        router.push('/auth/login');
-                    }
-                }
-            } catch (error) {
-                console.error('❌ Error initializing auth:', error);
-                localStorage.clear();
-                router.push('/auth/login');
-            } finally {
-                setIsInitialized(true);
-                console.log('✅ Auth initialization complete');
+        if (storedUser) {
+            // Check if we need to fetch additional data
+            if (!('avatarUrl' in storedUser) || !('level' in storedUser)) {
+                fetchUserData(storedUser);
+            } else {
+                setUser(storedUser as EnhancedAuthUser);
             }
-        };
-
-        initializeAuth();
+        } else if (pathname !== '/auth/login') {
+            console.log('[Auth] No stored user, redirecting to login');
+            router.push('/auth/login');
+        }
     }, [pathname, router]);
 
     const login = async (email: string, password: string) => {
-        console.log('🔑 Attempting login for:', email);
-        setIsLoading(true);
+        console.log('[Auth] Login attempt:', { email });
 
         try {
-            const response = await authService.login({
+            const response = await authApi.login({
                 email,
                 password,
-                fcmId: '', // Add fcmId if needed
+                fcmId: '',
             });
 
-            console.log('📨 Login response received:', {
+            console.log('[Auth] Login response:', {
                 status: response.status,
-                message: response.message
+                userId: response.data?.userId,
+                firstLogin: response.data?.firstLogin
             });
 
             if (response.status) {
-                const userData = response.data;
-                const mappedUser = authService.mapToUser(response);
+                const baseUserData: AuthUser = {
+                    userId: response.data.userId,
+                    uid: response.data.uid,
+                    username: response.data.username,
+                    email: response.data.email,
+                    phoneNumber: response.data.phoneNumber,
+                    country_code: response.data.country_code,
+                    fullName: response.data.fullName,
+                    token: response.data.token,
+                    refreshToken: response.data.refreshToken,
+                    cardId: response.data.cardId,
+                    cards: response.data.cards,
+                    ekycStatus: response.data.ekycStatus,
+                    ekycReviewStatus: response.data.ekycReviewStatus,
+                    cardStatus: response.data.cardStatus,
+                    firstLogin: response.data.firstLogin,
+                };
 
-                // Store auth data
-                localStorage.setItem('token', userData.token);
-                localStorage.setItem('refreshToken', userData.refreshToken);
-                localStorage.setItem('user', JSON.stringify(mappedUser));
+                storage.setToken(response.data.token);
+                storage.setRefreshToken(response.data.refreshToken);
 
-                console.log('🔐 Auth data stored successfully');
-                setUser(mappedUser);
+                // Fetch additional data after successful login
+                await fetchUserData(baseUserData);
 
-                toast({
-                    title: "Success",
-                    description: "Successfully logged in",
-                });
-
-                console.log('➡️ Redirecting to dashboard...');
                 router.push('/');
-            } else {
-                throw new Error(response.message);
             }
-        } catch (error) {
-            console.error('❌ Login error:', error);
-            toast({
-                title: "Error",
-                description: error instanceof Error ? error.message : "Login failed",
-                variant: "destructive",
+        } catch (error: any) {
+            console.error('[Auth] Login error:', {
+                message: error.message,
+                response: error.response?.data
             });
             throw error;
-        } finally {
-            setIsLoading(false);
         }
     };
 
-    const logout = async () => {
-        console.log('🔒 Initiating logout...');
-        setIsLoading(true);
-
-        try {
-            // Add your logout API call here if needed
-            // await authService.logout();
-            console.log('🧹 Clearing local storage...');
-            localStorage.clear();
-            setUser(null);
-
-            toast({
-                title: "Success",
-                description: "Successfully logged out",
-            });
-
-            console.log('➡️ Redirecting to login...');
-            router.push('/auth/login');
-        } catch (error) {
-            console.error('❌ Logout error:', error);
-            toast({
-                title: "Error",
-                description: "Error during logout",
-                variant: "destructive",
-            });
-        } finally {
-            setIsLoading(false);
+    const refreshUserData = async () => {
+        if (user) {
+            await fetchUserData(user);
         }
     };
 
-    // Redirect if authenticated user tries to access login page
-    useEffect(() => {
-        if (user && pathname === '/auth/login') {
-            console.log('🔄 Authenticated user redirected from login page');
-            router.push('/');
-        }
-    }, [user, pathname, router]);
-
-    // Debug current auth state
-    useEffect(() => {
-        console.log('🔄 Auth state updated:', {
-            isAuthenticated: !!user,
-            isLoading,
-            isInitialized,
-            currentPath: pathname,
-            userEmail: user?.email
-        });
-    }, [user, isLoading, isInitialized, pathname]);
+    const logout = () => {
+        console.log('[Auth] Logging out user');
+        storage.clearAuth();
+        setUser(null);
+        router.push('/auth/login');
+    };
 
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                isAuthenticated: !!user,
-                isLoading,
-                isInitialized,
-                login,
-                logout,
-            }}
-        >
-            {!isInitialized ? <Loader /> : children}
+        <AuthContext.Provider value={{
+            user,
+            isAuthenticated: !!user,
+            login,
+            logout,
+            refreshUserData
+        }}>
+            {children}
         </AuthContext.Provider>
     );
 }

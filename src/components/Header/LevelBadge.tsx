@@ -12,9 +12,9 @@ const LevelBadge = ({ className }: LevelBadgeProps) => {
     const { user } = useAuth();
     // console.log('Current user in LevelBadge:', user); // Debug log
 
-    const level = user?.level || 0;
+    const level = user?.tierPriority || 0;
 
-    const getLevelConfig = (level: number) => {
+    const getLevelConfig = (tierPriority: number) => {
         const configs = {
             0: {
                 style: "bg-[#6E7A8A] border-2 border-[#8a98aa]",
@@ -52,11 +52,6 @@ const LevelBadge = ({ className }: LevelBadgeProps) => {
     };
 
     const { style, title } = getLevelConfig(level);
-
-    // Debug logs
-    // console.log('Level:', level);
-    // console.log('Style:', style);
-    // console.log('Title:', title);
 
     return (
         <div

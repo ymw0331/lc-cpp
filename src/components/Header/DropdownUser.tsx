@@ -10,12 +10,21 @@ import {
   Settings,
   LogOut,
   ChevronDown,
-  Contact2
 } from "lucide-react";
 
 const DropdownUser = () => {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Get initials from name
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   const menuItems = [
     {
@@ -44,33 +53,42 @@ const DropdownUser = () => {
         onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors"
       >
-
         <Avatar className="h-10 w-10 border-2 border-gray-200 dark:border-gray-700">
           <AvatarImage
-            src={user?.avatarUrl}
-            alt={user?.name || "User avatar"}
+            src={user?.avatarUrl || undefined}
+            alt={`${user?.profileName || user?.fullName}'s avatar`}
           />
           <AvatarFallback className="bg-primary/10">
-            {user?.name?.charAt(0) || 'U'}
+            {user?.profileName ? getInitials(user.profileName) : getInitials(user?.fullName || 'User')}
           </AvatarFallback>
         </Avatar>
 
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">
-            {user?.name}
+            {user?.profileName || user?.fullName}
           </span>
           {/* <span className="block text-xs text-gray-500 dark:text-gray-400 capitalize">
-            {user?.role}
+            {user?.tierPriority ? `Level ${user.tierPriority} Member` : user?.role}
           </span> */}
         </span>
 
-
-        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''
-          }`} />
+        <ChevronDown
+          className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''
+            }`}
+        />
       </button>
 
       {dropdownOpen && (
         <div className="absolute right-0 mt-2 w-60 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg overflow-hidden">
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              {user?.profileName || user?.fullName}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {user?.email}
+            </p>
+          </div>
+
           <div className="p-2">
             {menuItems.map((item, index) => (
               <Link

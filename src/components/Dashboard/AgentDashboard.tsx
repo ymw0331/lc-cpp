@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProfileCard from "../Cards/ProfileCard";
 import RecruitCard from "../Cards/RecruitCard";
@@ -8,102 +7,143 @@ import ReferralCard from "../Cards/ReferralCard";
 import AgentStatCard from "../Cards/AgentStatCard";
 import StatisticChart from "../Charts/StatisticChart";
 import { DepositActivityTable } from "../Tables/DepositActivityTable";
-import {
-  RewardWalletBalanceIcon,
-  TotalDepositAmountIcon,
-  DirectRecruitIncentiveIcon,
-} from "../Icons/dashboard";
-import { dashboardService } from "@/lib/services/dashboard.service";
-import { DashboardStatistics } from "@/lib/data";
-import Loader from "@/components/common/Loader";
+import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
+import Loader from "../common/Loader";
+import { useEffect, useState } from "react";
+import { dashboardApi } from "@/api/dashboard/dashboard.api";
+import { DashboardStatistics } from "@/types/dashboard";
+import { fetchData } from "@/lib/api-utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { checkTierPermission, TIER_PERMISSIONS } from '@/utils/permissions';
+import clsx from 'clsx'; // Make sure to install clsx if not already installed
 
 const AgentDashboard: React.FC = () => {
+  const { user } = useAuth();
   const [data, setData] = useState<DashboardStatistics | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      console.log('📡 Fetching dashboard data in AgentDashboard...');
-      try {
-        const dashboardData = await dashboardService.getDashboardData();
-        console.log('✅ Dashboard data received in AgentDashboard:', dashboardData);
-        setData(dashboardData);
-      } catch (error) {
-        console.error('❌ Failed to fetch dashboard data in AgentDashboard:', error);
-      } finally {
-        setIsLoading(false);
-        console.log('⏳ Dashboard data loading complete.');
-      }
-    };
-
-    fetchDashboardData();
+    fetchData(
+      dashboardApi.getDashboardData,
+      setData,
+      setError,
+      setLoading
+    );
   }, []);
 
-  if (isLoading) {
-    console.log('⏳ Loading dashboard data...');
+  if (!user || loading) {
     return <Loader />;
   }
 
-  if (!data) {
-    console.error('❌ No dashboard data available.');
-    return <div>Error loading dashboard data.</div>;
+  if (error || !data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-red-500">Failed to load dashboard data</p>
+      </div>
+    );
   }
 
-  console.log('✅ Rendering AgentDashboard with data:', data);
+  const canAccessRecruitment = checkTierPermission(
+    user.tierPriority,
+    TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+  );
+
+  const canAccessIncentives = checkTierPermission(
+    user.tierPriority,
+    TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
+  );
+
+  const visibleStatCards = [
+    {
+      icon: <RewardWalletBalanceIcon />,
+      title: "Reward Wallet Balance",
+      amount: data.rewardWallet.balance,
+    },
+    {
+      icon: <TotalDepositAmountIcon />,
+      title: "Total Deposit Amount",
+      amount: data.totalDeposits.amount,
+    },
+    canAccessIncentives && {
+      icon: <DirectRecruitIncentiveIcon />,
+      title: "Direct Recruit Incentive Earnings",
+      amount: data.directRecruitment.earnings,
+    },
+  ].filter(Boolean);
 
   return (
     <>
       <Breadcrumb pageName="Overview" />
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5 mb-6">
-        <AgentStatCard
-          icon={<RewardWalletBalanceIcon />}
-          title="Reward Wallet Balance"
-          amount={data.rewardWallet.balance}
-        />
-
-        <AgentStatCard
-          icon={<TotalDepositAmountIcon />}
-          title="Total Deposit Amount"
-          amount={data.totalDeposits.amount}
-        />
-
-        <AgentStatCard
-          icon={<DirectRecruitIncentiveIcon />}
-          title="Direct Recruit Incentive Earnings"
-          amount={data.directRecruitment.earnings}
-        />
+      {/* Stats Cards with dynamic grid */}
+      <div className={clsx(
+        "grid gap-4 md:gap-6 2xl:gap-7.5 mb-6",
+        {
+          'grid-cols-1 md:grid-cols-2': visibleStatCards.length === 2,
+          'grid-cols-1 md:grid-cols-2 xl:grid-cols-3': visibleStatCards.length === 3,
+        }
+      )}>
+        {visibleStatCards.map((card, index) => (
+          card && (
+            <AgentStatCard
+              key={index}
+              icon={card.icon}
+              title={card.title}
+              amount={card.amount}
+            />
+          )
+        ))}
       </div>
 
-      {/* Profile and Recruitment Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <ProfileCard
-          name={data.agentProfile.name}
-          level={data.agentProfile.level}
-          activeUsers={data.agentProfile.activeUsers}
-        />
-        <div className="grid gap-6">
-          <RecruitCard
-            count={data.totalDirectRecruit.count}
-            agentsToPartner={{
-              count: data.totalDirectRecruit.agentsToPartner,
-            }}
+      {/* Profile, Referral, and Recruitment Section */}
+      <div className={clsx(
+        "grid gap-6 mb-6",
+        {
+          'grid-cols-1 lg:grid-cols-3': canAccessRecruitment,
+          'grid-cols-1 lg:grid-cols-2': !canAccessRecruitment,
+        }
+      )}>
+        {/* Profile Card - Always spans first column */}
+        <div className={clsx(
+          canAccessRecruitment ? 'lg:col-span-2' : 'lg:col-span-1'
+        )}>
+          <ProfileCard
+            name={data.agentProfile.name}
+            level={data.agentProfile.level}
+            activeUsers={data.agentProfile.activeUsers}
           />
+        </div>
+
+        {/* Right Column - Referral and Recruitment */}
+        <div className="space-y-6">
+          {/* Referral Card - Available to all tiers */}
           <ReferralCard code={data.referralCode} />
+
+          {/* Recruitment Card - Only for higher tiers */}
+          {canAccessRecruitment && (
+            <RecruitCard
+              count={data.totalDirectRecruit.count}
+              agentsToPartner={{
+                count: data.totalDirectRecruit.agentsToPartner
+              }}
+            />
+          )}
         </div>
       </div>
 
-      <div className="mt-6">
+      {/* Charts and Tables Section */}
+      <div className="space-y-6">
         <StatisticChart
           title="Deposit Summary"
           total={data.totalDeposits.amount}
           currency={data.totalDeposits.currency}
+          chartData={data.totalDeposits.chartData}
         />
-      </div>
 
-      <div className="mt-6">
-        <DepositActivityTable activities={data.depositActivities} />
+        <DepositActivityTable
+          activities={data.depositActivities}
+        />
       </div>
     </>
   );

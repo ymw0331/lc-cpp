@@ -5,23 +5,51 @@ import IncentiveCard from '@/components/Cards/IncentiveCard'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import DataTable from '@/components/Tables/DataTable'
 import { StarBadgeIcon } from '@/components/Icons/dashboard'
-import { incentivePageData, IncentivePageData } from '@/lib/data'
-import React, { useState } from 'react'
+import { IncentivePageData } from '@/types/incentive'
+import React, { useEffect, useState } from 'react'
+import { resellerApi } from '@/api/reseller/reseller.api'
+import { useAuth } from '@/contexts/AuthContext'
+import Loader from '@/components/common/Loader'
+import { fetchData } from '@/lib/api-utils'
 
 const IncentiveManagementPage = () => {
-    const [data] = useState<IncentivePageData>(incentivePageData);
+    const { user } = useAuth();
+    const [data, setData] = useState<IncentivePageData | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
     const [currentMonth, setCurrentMonth] = useState<string>(
         new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' })
     );
 
-    // Table columns configuration
+    useEffect(() => {
+        fetchData(
+            async () => {
+                const resellerData = await resellerApi.getResellerInfo();
+                return resellerApi.transformToIncentiveData(resellerData);
+            },
+            setData,
+            setError,
+            setLoading
+        );
+    }, []);
+
     const tableColumns = [
         { key: 'type', header: 'TYPE OF INCENTIVE', align: 'left' as const },
         { key: 'amount', header: 'AMOUNT', align: 'right' as const },
         { key: 'datetime', header: 'DATE TIME', align: 'right' as const },
     ];
 
+    if (!user || loading) {
+        return <Loader />;
+    }
 
+    if (error || !data) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-red-500">Failed to load incentive data</p>
+            </div>
+        );
+    }
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Incentive Management" />
@@ -41,10 +69,10 @@ const IncentiveManagementPage = () => {
                         <IncentiveCard
                             title="Milestone Bonus"
                             amount={data.summary.milestone_bonus.amount}
-                            badge={{
-                                text: 'Claimed',
-                                type: 'claimed'
-                            }}
+                            // badge={{
+                            //     text: 'Claimed',
+                            //     type: 'claimed'
+                            // }}
                             className="h-full"
                         />
                     </div>
@@ -81,10 +109,10 @@ const IncentiveManagementPage = () => {
                             title="Performance Bonus"
                             amount={data.summary.performance_bonus.amount}
                             className="h-full"
-                            badge={{
-                                text: 'Fulfilled',
-                                type: 'fulfilled'
-                            }}
+                            // badge={{
+                            //     text: 'Fulfilled',
+                            //     type: 'fulfilled'
+                            // }}
                             activeUsers={data.summary.performance_bonus.activeUsers}
                         />
                     </div>

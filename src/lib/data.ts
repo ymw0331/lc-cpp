@@ -1,33 +1,75 @@
 /*** 00 Start of Auth Data ***/
-import { IUser } from "@/types/user";
-import { AgentLevel, KeyMarket, Role } from "./constants/enums";
-
-
-export const userData: IUser = {
-    id: '1',
-    name: 'Joby Tan',
-    email: 'agent@example.com',
-    contactNumber: '1234567890',
-    keyMarket: KeyMarket.HK,
-    role: Role.PARTNER,
-    avatarUrl: '/images/user/user-05.png',
-    level: AgentLevel.LEVEL_5,
-    referralCode: '7HKS56H5',
-    socialMedia: {
-        linkedin: 'https://www.linkedin.com/in/jobytan',
-        facebook: 'https://www.facebook.com/jobytan',
-        instagram: 'https://www.instagram.com/jobytan',
-        twitter: 'https://twitter.com/jobytan'
-    },
-    token: 'mock-jwt-token',
+export enum AgentLevel {
+    LEVEL_1 = 1,
+    LEVEL_2 = 2,
+    LEVEL_3 = 3,
+    LEVEL_4 = 4,
+    LEVEL_5 = 5
 }
+
+// export enum Role {
+//     AGENT = 'agent',
+//     PARTNER = 'partner',
+// }
+
+// export enum KeyMarket {
+//     HK = 'Hong Kong',
+//     SG = 'Singapore',
+//     MY = 'Malaysia',
+//     CN = 'China',
+//     TH = 'Thailand',
+//     PH = 'Philippines',
+//     ID = 'Indonesia',
+//     VN = 'Vietnam',
+// }
+// export interface ISocialMedia {
+//     linkedin?: string;
+//     facebook?: string;
+//     instagram?: string;
+//     twitter?: string;
+// }
+
+// export interface IUser {
+//     id: string;
+//     name: string;
+//     email: string;
+//     contactNumber: string;
+//     keyMarket: KeyMarket;
+//     role: Role;
+//     avatarUrl?: string;
+//     level?: AgentLevel;
+//     referralCode: string;
+//     socialMedia?: ISocialMedia;
+//     token: string;
+// }
+
+// export const userData: IUser = {
+//     id: '1',
+//     name: 'Joby Tan',
+//     email: 'agent@example.com',
+//     contactNumber: '1234567890',
+//     keyMarket: KeyMarket.HK,
+//     role: Role.PARTNER,
+//     avatarUrl: '/images/user/user-05.png',
+//     level: AgentLevel.LEVEL_5,
+//     referralCode: '7HKS56H5',
+//     socialMedia: {
+//         linkedin: 'https://www.linkedin.com/in/jobytan',
+//         facebook: 'https://www.facebook.com/jobytan',
+//         instagram: 'https://www.instagram.com/jobytan',
+//         twitter: 'https://twitter.com/jobytan'
+//     },
+//     token: 'mock-jwt-token',
+// }
+
+
 
 
 /*** 00 End of Auth Data ***/
 
 
 
-/*** 01 Start Agent Dashboard Stats ***/
+// /*** 01 Start Agent Dashboard Stats ***/
 export type CurrencyType = 'USDT' | 'USDC';
 
 const defaultCurrency: CurrencyType = 'USDT';
@@ -43,178 +85,178 @@ export interface ChartRangeData {
     Year: ChartDataPoint[];
 }
 
-export const depositChartData: ChartRangeData = {
-    Week: [
-        { label: 'Mon', value: 1200 },
-        { label: 'Tue', value: 1800 },
-        { label: 'Wed', value: 1400 },
-        { label: 'Thu', value: 2200 },
-        { label: 'Fri', value: 1900 },
-        { label: 'Sat', value: 2400 },
-        { label: 'Sun', value: 2100 },
-    ],
-    Month: [
-        { label: 'Week 1', value: 5200 },
-        { label: 'Week 2', value: 6100 },
-        { label: 'Week 3', value: 4800 },
-        { label: 'Week 4', value: 7300 },
-    ],
-    Year: [
-        { label: 'Jan', value: 605 },
-        { label: 'Feb', value: 1156 },
-        { label: 'Mar', value: 1038 },
-        { label: 'Apr', value: 1789 },
-        { label: 'May', value: 1503 },
-        { label: 'Jun', value: 904 },
-        { label: 'Jul', value: 974 },
-        { label: 'Aug', value: 1414 },
-        { label: 'Sept', value: 1355 },
-        { label: 'Oct', value: 1594 },
-        { label: 'Nov', value: 1762 },
-        { label: 'Dec', value: 2089 },
-    ]
-};
+// export const depositChartData: ChartRangeData = {
+//     Week: [
+//         { label: 'Mon', value: 1200 },
+//         { label: 'Tue', value: 1800 },
+//         { label: 'Wed', value: 1400 },
+//         { label: 'Thu', value: 2200 },
+//         { label: 'Fri', value: 1900 },
+//         { label: 'Sat', value: 2400 },
+//         { label: 'Sun', value: 2100 },
+//     ],
+//     Month: [
+//         { label: 'Week 1', value: 5200 },
+//         { label: 'Week 2', value: 6100 },
+//         { label: 'Week 3', value: 4800 },
+//         { label: 'Week 4', value: 7300 },
+//     ],
+//     Year: [
+//         { label: 'Jan', value: 605 },
+//         { label: 'Feb', value: 1156 },
+//         { label: 'Mar', value: 1038 },
+//         { label: 'Apr', value: 1789 },
+//         { label: 'May', value: 1503 },
+//         { label: 'Jun', value: 904 },
+//         { label: 'Jul', value: 974 },
+//         { label: 'Aug', value: 1414 },
+//         { label: 'Sept', value: 1355 },
+//         { label: 'Oct', value: 1594 },
+//         { label: 'Nov', value: 1762 },
+//         { label: 'Dec', value: 2089 },
+//     ]
+// };
 
-export interface DepositActivity {
-    id: string;
-    description: string;
-    amount: number;
-    dateTime: string;
-    type: 'incentive' | 'rebate' | 'bonus' | 'override';
-    status: 'completed' | 'pending';
-    transactionHash?: string;
-}
+// export interface DepositActivity {
+//     id: string;
+//     description: string;
+//     amount: number;
+//     dateTime: string;
+//     type: 'incentive' | 'rebate' | 'bonus' | 'override';
+//     status: 'completed' | 'pending';
+//     transactionHash?: string;
+// }
 
-export const depositActivities: DepositActivity[] = [
-    {
-        id: "dep_001",
-        description: "Referral Fee Incentive",
-        amount: 24562.56,
-        dateTime: "November 13, 2024 at 9:00PM",
-        type: "incentive",
-        status: "completed",
-        transactionHash: "0x1234...abcd"
-    },
-    {
-        id: "dep_002",
-        description: "Direct Recruit Referral Override Incentive",
-        amount: 1000.00,
-        dateTime: "November 12, 2024 at 1:56PM",
-        type: "override",
-        status: "completed",
-        transactionHash: "0x5678...efgh"
-    },
-    {
-        id: "dep_003",
-        description: "Deposit Admin Charge Rebate",
-        amount: 12212.10,
-        dateTime: "November 12, 2024 at 9:00PM",
-        type: "rebate",
-        status: "completed",
-        transactionHash: "0x90ab...ijkl"
-    },
-    {
-        id: "dep_004",
-        description: "Direct Recruit's Deposit Admin Charge Rebate",
-        amount: 2381.21,
-        dateTime: "November 10, 2024 at 10:24AM",
-        type: "rebate",
-        status: "completed",
-        transactionHash: "0xcdef...mnop"
-    },
-    {
-        id: "dep_005",
-        description: "Direct Recruit Level Advancement Bonus",
-        amount: 500.00,
-        dateTime: "November 08, 2024 at 1:56PM",
-        type: "bonus",
-        status: "completed",
-        transactionHash: "0xfedc...qrst"
-    }
-];
+// export const depositActivities: DepositActivity[] = [
+//     {
+//         id: "dep_001",
+//         description: "Referral Fee Incentive",
+//         amount: 24562.56,
+//         dateTime: "November 13, 2024 at 9:00PM",
+//         type: "incentive",
+//         status: "completed",
+//         transactionHash: "0x1234...abcd"
+//     },
+//     {
+//         id: "dep_002",
+//         description: "Direct Recruit Referral Override Incentive",
+//         amount: 1000.00,
+//         dateTime: "November 12, 2024 at 1:56PM",
+//         type: "override",
+//         status: "completed",
+//         transactionHash: "0x5678...efgh"
+//     },
+//     {
+//         id: "dep_003",
+//         description: "Deposit Admin Charge Rebate",
+//         amount: 12212.10,
+//         dateTime: "November 12, 2024 at 9:00PM",
+//         type: "rebate",
+//         status: "completed",
+//         transactionHash: "0x90ab...ijkl"
+//     },
+//     {
+//         id: "dep_004",
+//         description: "Direct Recruit's Deposit Admin Charge Rebate",
+//         amount: 2381.21,
+//         dateTime: "November 10, 2024 at 10:24AM",
+//         type: "rebate",
+//         status: "completed",
+//         transactionHash: "0xcdef...mnop"
+//     },
+//     {
+//         id: "dep_005",
+//         description: "Direct Recruit Level Advancement Bonus",
+//         amount: 500.00,
+//         dateTime: "November 08, 2024 at 1:56PM",
+//         type: "bonus",
+//         status: "completed",
+//         transactionHash: "0xfedc...qrst"
+//     }
+// ];
 
-export interface DashboardStatistics {
-    rewardWallet: {
-        balance: number;
-        currency: CurrencyType;
-        lastUpdated: string;
-    };
-    totalDeposits: {
-        amount: number;
-        currency: CurrencyType;
-        lastUpdated: string;
-        chartData: ChartDataPoint[];
-    };
-    directRecruitment: {
-        earnings: number;
-        currency: CurrencyType;
-        lastUpdated: string;
-    };
-    agentProfile: {
-        name: string;
-        level: string;
-        activeUsers: {
-            current: number;
-            target: number;
-            percentage: number;
-            remaining: number;
-        };
-    }
-    totalDirectRecruit: {
-        count: number;
-        agentsToPartner: number;
-    };
-    referralCode: string;
-    depositActivities: DepositActivity[];
-}
+// export interface DashboardStatistics {
+//     rewardWallet: {
+//         balance: number;
+//         currency: CurrencyType;
+//         lastUpdated: string;
+//     };
+//     totalDeposits: {
+//         amount: number;
+//         currency: CurrencyType;
+//         lastUpdated: string;
+//         chartData: ChartDataPoint[];
+//     };
+//     directRecruitment: {
+//         earnings: number;
+//         currency: CurrencyType;
+//         lastUpdated: string;
+//     };
+//     agentProfile: {
+//         name: string;
+//         level: string;
+//         activeUsers: {
+//             current: number;
+//             target: number;
+//             percentage: number;
+//             remaining: number;
+//         };
+//     }
+//     totalDirectRecruit: {
+//         count: number;
+//         agentsToPartner: number;
+//     };
+//     referralCode: string;
+//     depositActivities: DepositActivity[];
+// }
 
-export const dashboardData: DashboardStatistics = {
-    rewardWallet: {
-        balance: 18302.34,
-        currency: defaultCurrency,
-        lastUpdated: '2024-02-20T15:30:00Z'
-    },
-    totalDeposits: {
-        amount: 170232.22,
-        currency: defaultCurrency,
-        lastUpdated: '2024-02-20T15:30:00Z',
-        chartData: [
-            { label: 'Jan', value: 605 },
-            { label: 'Feb', value: 1156 },
-            { label: 'Mar', value: 1038 },
-            { label: 'Apr', value: 1789 },
-            { label: 'May', value: 1503 },
-            { label: 'Jun', value: 904 },
-            { label: 'Jul', value: 974 },
-            { label: 'Aug', value: 1414 },
-            { label: 'Sept', value: 1355 },
-            { label: 'Oct', value: 1594 },
-            { label: 'Nov', value: 1762 },
-            { label: 'Dec', value: 2089 }
-        ]
-    },
-    directRecruitment: {
-        earnings: 1855.00,
-        currency: defaultCurrency,
-        lastUpdated: '2024-02-20T15:30:00Z'
-    },
-    agentProfile: {
-        name: "John Smith",
-        level: "LEVEL 5 PARTNER",
-        activeUsers: {
-            current: 42208,
-            target: 50000,
-            percentage: 84.5,
-            remaining: 7792
-        },
-    },
-    totalDirectRecruit: {
-        count: 2146,
-        agentsToPartner: 22
-    },
-    referralCode: "7HKS56H5",
-    depositActivities
-};
+// export const dashboardData: DashboardStatistics = {
+//     rewardWallet: {
+//         balance: 18302.34,
+//         currency: defaultCurrency,
+//         lastUpdated: '2024-02-20T15:30:00Z'
+//     },
+//     totalDeposits: {
+//         amount: 170232.22,
+//         currency: defaultCurrency,
+//         lastUpdated: '2024-02-20T15:30:00Z',
+//         chartData: [
+//             { label: 'Jan', value: 605 },
+//             { label: 'Feb', value: 1156 },
+//             { label: 'Mar', value: 1038 },
+//             { label: 'Apr', value: 1789 },
+//             { label: 'May', value: 1503 },
+//             { label: 'Jun', value: 904 },
+//             { label: 'Jul', value: 974 },
+//             { label: 'Aug', value: 1414 },
+//             { label: 'Sept', value: 1355 },
+//             { label: 'Oct', value: 1594 },
+//             { label: 'Nov', value: 1762 },
+//             { label: 'Dec', value: 2089 }
+//         ]
+//     },
+//     directRecruitment: {
+//         earnings: 1855.00,
+//         currency: defaultCurrency,
+//         lastUpdated: '2024-02-20T15:30:00Z'
+//     },
+//     agentProfile: {
+//         name: "John Smith",
+//         level: "LEVEL 5 PARTNER",
+//         activeUsers: {
+//             current: 42208,
+//             target: 50000,
+//             percentage: 84.5,
+//             remaining: 7792
+//         },
+//     },
+//     totalDirectRecruit: {
+//         count: 2146,
+//         agentsToPartner: 22
+//     },
+//     referralCode: "7HKS56H5",
+//     depositActivities
+// };
 
 /*** 01 End of Agent Dashboard Stats ***/
 
@@ -225,7 +267,7 @@ export const dashboardData: DashboardStatistics = {
 /*** Wallets Page ***/
 export const walletStats = {
     rewardWallet: {
-        amount: dashboardData.rewardWallet.balance,
+        amount: 123123,
         showTransfer: true
     },
     currentWallet: {
@@ -279,7 +321,7 @@ export interface TransferActivityProps {
 
 export const transferData = {
     sourceWallet: {
-        amount: dashboardData.rewardWallet.balance,
+        amount: 123123,
         currency: 'USDT' as CurrencyType
     },
 
@@ -786,11 +828,11 @@ export const performanceData = {
         },
     ],
     nextLevelCard: {
-        currentLevel: userData.level,
+        currentLevel: "userData.level",
         progress: 84.5,
         isMaxLevel: true,
-        avatarUrl: userData.avatarUrl,
-        name: userData.name,
+        avatarUrl: "userData.avatarUrl",
+        name: "ljdfkdsjf",
 
     },
     salesSummary: {

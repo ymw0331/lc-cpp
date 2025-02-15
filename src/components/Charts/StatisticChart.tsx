@@ -4,26 +4,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
 import { useState } from "react";
-import { ChartDataPoint, CurrencyType } from "@/lib/data";
-import { depositChartData } from "@/lib/data";
+import { ChartDataPoint, ChartRangeData, CurrencyType } from "@/types/dashboard";
+// import { depositChartData } from "@/lib/data";
+
+type TimeRange = "Week" | "Month" | "Year";
 
 interface StatisticChartProps {
     title: string;
     total: number;
     currency: CurrencyType;
+    chartData: ChartDataPoint[]; // Changed to match your DashboardStatistics type
+
 }
+
 
 const StatisticChart: React.FC<StatisticChartProps> = ({
     title,
     total,
-    currency
+    currency,
+    chartData
 }) => {
-    const [activeRange, setActiveRange] = useState<"Week" | "Month" | "Year">("Year");
-    const [chartData, setChartData] = useState<ChartDataPoint[]>(depositChartData["Year"]);
 
-    const handleRangeChange = (range: "Week" | "Month" | "Year") => {
+    const [activeRange, setActiveRange] = useState<"Week" | "Month" | "Year">("Year");
+    const [depositChartData, setDepositChartData] = useState<ChartDataPoint[]>(chartData);
+
+
+    const handleRangeChange = (range: TimeRange) => {
         setActiveRange(range);
-        setChartData(depositChartData[range]);
     };
 
     const formatValue = (value: number) => {
@@ -81,6 +88,10 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
         );
     };
 
+
+    const hasData = chartData && chartData.length > 0;
+
+
     return (
         <Card className="w-full bg-white dark:bg-boxdark border border-stroke dark:border-strokedark">
             <CardHeader className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-6">
@@ -99,10 +110,12 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                             key={range}
                             variant={activeRange === range ? "default" : "ghost"}
                             className={`rounded-full px-6 transition-all duration-200 ${activeRange === range
-                                    ? "bg-primary text-white hover:bg-primary/90"
-                                    : "text-black dark:text-white hover:bg-meta-4/50"
+                                ? "bg-primary text-white hover:bg-primary/90"
+                                : "text-black dark:text-white hover:bg-meta-4/50"
                                 }`}
-                            onClick={() => handleRangeChange(range as "Week" | "Month" | "Year")}
+                            onClick={() =>
+                                handleRangeChange(range as "Week" | "Month" | "Year")
+                            }
                         >
                             {range}
                         </Button>
@@ -111,44 +124,50 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
             </CardHeader>
 
             <CardContent>
-                <div className="h-[400px] w-full">
-                    <ResponsiveContainer width="100%" height={400}>
-                        <BarChart
-                            data={chartData}
-                            margin={{ top: 40, right: 10, left: 0, bottom: 0 }}
-                            className="text-black dark:text-white"
-                        >
-                            <XAxis
-                                dataKey="label"
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: '#64748B', fontSize: 12 }}
-                                dy={10}
-                            />
-                            <YAxis
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: '#64748B', fontSize: 12 }}
-                                width={80}
-                                tickFormatter={(value) => value.toLocaleString()}
-                            />
-                            <Tooltip
-                                content={<CustomTooltip />}
-                                cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
-                            />
-                            <Bar
-                                dataKey="value"
-                                barSize={40}
-                                shape={CustomBar}
+                <div className="h-[400px] w-full flex items-center justify-center">
+                    {hasData ? (
+                        <ResponsiveContainer width="100%" height={400}>
+                            <BarChart
+                                data={depositChartData}
+                                margin={{ top: 40, right: 10, left: 0, bottom: 0 }}
+                                className="text-black dark:text-white"
                             >
-                                <LabelList
-                                    dataKey="value"
-                                    position="top"
-                                    content={CustomBarLabel}
+                                <XAxis
+                                    dataKey="label"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: '#64748B', fontSize: 12 }}
+                                    dy={10}
                                 />
-                            </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
+                                <YAxis
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fill: '#64748B', fontSize: 12 }}
+                                    width={80}
+                                    tickFormatter={(value) => value.toLocaleString()}
+                                />
+                                <Tooltip
+                                    content={<CustomTooltip />}
+                                    cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+                                />
+                                <Bar
+                                    dataKey="value"
+                                    barSize={40}
+                                    shape={CustomBar}
+                                >
+                                    <LabelList
+                                        dataKey="value"
+                                        position="top"
+                                        content={CustomBarLabel}
+                                    />
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="text-center text-gray-500 dark:text-gray-400">
+                            No Data Available
+                        </div>
+                    )}
                 </div>
             </CardContent>
         </Card>
