@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
     LineChart,
     Line,
@@ -9,12 +9,13 @@ import {
     CartesianGrid,
     Tooltip,
     ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChartDataPoint } from '@/lib/data';
+import { ChartDataPoint } from "@/lib/data";
+import { useTranslation } from "react-i18next";
 
-type Period = 'Week' | 'Month' | 'Year';
+type Period = "Week" | "Month" | "Year";
 
 interface AnalyticChartProps {
     title: string;
@@ -25,7 +26,7 @@ interface AnalyticChartProps {
     };
     legendLabel?: string;
     showLegend?: boolean;
-    legendPosition?: 'top-right' | 'bottom-right';
+    legendPosition?: "top-right" | "bottom-right";
     lineColor?: string;
     className?: string;
 }
@@ -35,14 +36,15 @@ const AnalyticChart = ({
     chartData,
     legendLabel,
     showLegend = false,
-    legendPosition = 'top-right',
-    lineColor = '#F69732',
-    className
+    legendPosition = "top-right",
+    lineColor = "#F69732",
+    className,
 }: AnalyticChartProps) => {
-    const [activePeriod, setActivePeriod] = useState<Period>('Year');
+    const { t } = useTranslation();
+    const [activePeriod, setActivePeriod] = useState<Period>("Year");
 
     const activeData = chartData[activePeriod];
-    const allValues = activeData.map(d => d.value);
+    const allValues = activeData.map((d) => d.value);
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
 
@@ -67,10 +69,12 @@ const AnalyticChart = ({
         if (!showLegend || !legendLabel) return null;
 
         return (
-            <div className={cn(
-                "flex items-center",
-                legendPosition === 'top-right' ? "justify-end mb-4" : "justify-end mt-2"
-            )}>
+            <div
+                className={cn(
+                    "flex items-center",
+                    legendPosition === "top-right" ? "justify-end mb-4" : "justify-end mt-2"
+                )}
+            >
                 <div className="flex items-center gap-2">
                     <div
                         className="w-3 h-3 rounded-full"
@@ -101,7 +105,12 @@ const AnalyticChart = ({
     };
 
     return (
-        <div className={cn("p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark", className)}>
+        <div
+            className={cn(
+                "p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark",
+                className
+            )}
+        >
             <div className="flex justify-between items-start mb-6">
                 <div>
                     <h4 className="text-2xl font-bold text-black dark:text-white mb-4">
@@ -110,7 +119,7 @@ const AnalyticChart = ({
                 </div>
 
                 <div className="flex gap-2">
-                    {(['Week', 'Month', 'Year'] as Period[]).map((period) => (
+                    {(["Week", "Month", "Year"] as Period[]).map((period) => (
                         <Button
                             key={period}
                             variant={activePeriod === period ? "default" : "outline"}
@@ -128,7 +137,7 @@ const AnalyticChart = ({
                 </div>
             </div>
 
-            {showLegend && legendPosition === 'top-right' && <CustomLegend />}
+            {showLegend && legendPosition === "top-right" && <CustomLegend />}
 
             <div className="h-[250px] sm:h-[300px] w-full mt-4 -mx-4 sm:mx-0">
                 <ResponsiveContainer width="100%" height="100%">
@@ -138,7 +147,7 @@ const AnalyticChart = ({
                             top: 30,
                             right: 10,
                             left: 10,
-                            bottom: 5
+                            bottom: 5,
                         }} // Increased top margin for labels
                     >
                         <CartesianGrid
@@ -151,8 +160,8 @@ const AnalyticChart = ({
                             axisLine={false}
                             tickLine={false}
                             tick={{
-                                fill: '#64748B',
-                                fontSize: window.innerWidth < 640 ? 10 : 12
+                                fill: "#64748B",
+                                fontSize: window.innerWidth < 640 ? 10 : 12,
                             }}
                             dy={10}
                         />
@@ -160,8 +169,8 @@ const AnalyticChart = ({
                             axisLine={false}
                             tickLine={false}
                             tick={{
-                                fill: '#64748B',
-                                fontSize: window.innerWidth < 640 ? 10 : 12
+                                fill: "#64748B",
+                                fontSize: window.innerWidth < 640 ? 10 : 12,
                             }}
                             domain={[yAxisMin, yAxisMax]}
                         />
@@ -174,13 +183,13 @@ const AnalyticChart = ({
                             dot={{
                                 r: 4,
                                 fill: lineColor,
-                                stroke: '#fff',
+                                stroke: "#fff",
                                 strokeWidth: 2,
                             }}
                             activeDot={{
                                 r: 6,
                                 fill: lineColor,
-                                stroke: '#fff',
+                                stroke: "#fff",
                                 strokeWidth: 2,
                             }}
                             label={<CustomLabel />} // Added custom label
@@ -189,7 +198,7 @@ const AnalyticChart = ({
                 </ResponsiveContainer>
             </div>
 
-            {showLegend && legendPosition === 'bottom-right' && <CustomLegend />}
+            {showLegend && legendPosition === "bottom-right" && <CustomLegend />}
         </div>
     );
 };

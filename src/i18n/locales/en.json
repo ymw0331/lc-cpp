@@ -6,59 +6,279 @@
         "messages": "Messages",
         "user": "User"
     },
+    "dropdownUser": {
+        "myProfile": "My Profile",
+        "preference": "Preference",
+        "logOut": "Log Out"
+    },
     "sidebar": {
         "menu": "MENU",
-        "overview": "Overview",
-        "playground": "Playground",
         "dashboard": "Dashboard",
         "account": "Account",
-        "wallets": "Wallets",
-        "transfer": "Transfer",
-        "transaction history": "Transaction History",
         "incentive management": "Incentive Management",
-        "payout": "Payout",
-        "payout summary": "Payout Summary",
-        "payout history": "Payout History",
-        "agents/partners": "Agents/Partners",
-        "recruitment overview": "Recruitment Overview",
-        "manage users": "Manage Users",
-        "level advancement": "Level Advancement",
-        "performance": "Performance",
-        "performance overview": "Performance Overview",
-        "top performance": "Top Performance",
-        "key market": "Key Market",
-        "user management": "User Management",
         "referred users": "Referred Users",
         "manage user": "Manage User",
         "recruit agent": "Recruit Agent",
-        "loyalty programs": "Loyalty Programs",
+        "performance": "Performance",
         "support": "Support",
         "settings": "Settings",
+        "legal & compliance": "Legal & Compliance",
+        "wallets": "Wallets",
+        "transfer": "Transfer",
         "profile": "Profile",
         "password": "Password",
         "preference": "Preference",
-        "legal & compliance": "Legal & Compliance",
-        "code of conduct": "Code of Conduct",
-        "terms and conditions": "Terms and Conditions",
-        "compliance and anti-corruption": "Compliance and Anti-Corruption",
-        "user agreement": "User Agreement",
         "profile policy": "Profile Policy",
-        "program guideline": "Program Guideline",
-        "privacy guideline": "Privacy Guideline",
-        "old calendar": "Old Calendar",
-        "old profile": "Old Profile",
-        "old charts": "Old Charts",
-        "old forms": "Old Forms",
-        "form elements": "Form Elements",
-        "form layout": "Form Layout",
-        "old tables": "Old Tables",
-        "old ui": "Old UI",
-        "alerts": "Alerts",
-        "buttons": "Buttons",
-        "old auth": "Old Auth",
-        "old settings": "Old Settings",
-        "sign in": "Sign In",
-        "sign up": "Sign Up"
+        "terms and conditions": "Terms and Conditions",
+        "user agreement": "User Agreement",
+        "code of conduct": "Code of Conduct",
+        "compliance and anti-corruption": "Compliance and Anti-Corruption",
+        "privacy guideline": "Privacy Guideline"
+    },
+    "loginPage": {
+        "welcomeToLookcard": "Welcome to Lookcard Reseller Portal",
+        "pleaseSignIn": "Please sign in to continue to your dashboard.",
+        "signInToAgentDashboard": "Sign In to Agent Dashboard",
+        "email": "Email",
+        "enterYourEmail": "Enter your email",
+        "password": "Password",
+        "enterYourPassword": "Enter your password",
+        "signIn": "Sign In",
+        "signingIn": "Signing in",
+        "testCredentials": "Test credentials",
+        "error": "Error",
+        "success": "Success",
+        "successfullyLoggedIn": "Successfully logged in!",
+        "loginFailed": "Login failed"
+    },
+    "agentDashboard": {
+        "overview": "Overview",
+        "rewardWalletBalance": "Reward Wallet Balance",
+        "totalDepositAmount": "Total Deposit Amount",
+        "directRecruitIncentiveEarnings": "Direct Recruit Incentive Earnings",
+        "activeUsers": "Active Users",
+        "left": "Left",
+        "totalDirectRecruit": "Total Direct Recruit",
+        "agentsToPartner": "Agents to Partner",
+        "depositSummary": "Deposit Summary",
+        "depositActivity": "Deposit Activity",
+        "description": "Description",
+        "amount": "Amount",
+        "dateTime": "Date Time",
+        "failedToLoadData": "Failed to load dashboard data",
+        "loading": "Loading...",
+        "referralCode": "Referral Code",
+        "recruitment": "Recruitment",
+        "incentives": "Incentives"
+    },
+    "profileCard": {
+        "activeUsersLabel": "Active Users"
+    },
+    "referralCard": {
+        "referralCodeLabel": "Referral Code",
+        "copiedToClipboard": "Copied to clipboard"
+    },
+    "recruitCard": {
+        "totalDirectRecruitLabel": "Total Direct Recruit",
+        "agentsToPartnerLabel": "Agents to Partner"
+    },
+    "statisticChart": {
+        "noDataAvailable": "No Data Available"
+    },
+    "depositActivityTable": {
+        "depositActivityLabel": "Deposit Activity",
+        "descriptionHeader": "Description",
+        "amountHeader": "Amount",
+        "dateTimeHeader": "Date Time",
+        "noDataAvailable": "No Data Available"
+    },
+    "walletsPage": {
+        "walletsBreadcrumb": "Wallets",
+        "rewardWalletBalance": "Reward Wallet Balance",
+        "currentAccountWalletBalance": "Current Account Wallet Balance",
+        "rewardWalletSummary": "Reward Wallet Summary"
+    },
+    "walletCard": {
+        "transferButton": "Transfer"
+    },
+    "transferPage": {
+        "transferToCurrentAccountWalletBreadcrumb": "Transfer to Current Account Wallet"
+    },
+    "walletTransferForm": {
+        "rewardWalletBalance": "Reward Wallet Balance",
+        "selectCurrencyWallet": "Select Currency Wallet",
+        "enterTransferAmount": "Enter Transfer Amount",
+        "fullAmountButton": "Full Amount",
+        "transferFee": "Transfer fee",
+        "totalAmountTransferred": "Total Amount Transferred",
+        "transferButton": "Transfer"
+    },
+    "transferActivityTable": {
+        "transferActivity": "Transfer Activity",
+        "transactionIdHeader": "TRANSACTION ID",
+        "transferredAmountHeader": "TRANSFERRED AMOUNT",
+        "dateTimeHeader": "DATE TIME",
+        "statusHeader": "STATUS"
+    },
+    "incentiveManagementPage": {
+        "incentiveManagementBreadcrumb": "Incentive Management",
+        "totalIncentive": "Total Incentive",
+        "milestoneBonus": "Milestone Bonus",
+        "directRecruitReferral": "Direct Recruit's Referral Overriding Incentive",
+        "directAdminCharge": "Direct Admin Charge Rebate",
+        "directRecruitDeposit": "Direct Recruit's Deposit Admin Charge Overriding Rebate",
+        "directRecruitLevel": "Direct Recruit Level Advancement Bonus",
+        "performanceBonus": "Performance Bonus"
+    },
+    "incentiveCard": {
+        "activeUsersLeft": "Active Users Left"
+    },
+    "dataTable": {
+        "incentiveActivity": "Incentive Activity",
+        "transactionId": "TRANSACTION ID",
+        "transferredAmount": "TRANSFERRED AMOUNT",
+        "dateTime": "DATE TIME",
+        "status": "STATUS",
+        "noDataAvailable": "No data available",
+        "noRecordsToDisplay": "There are no records to display for this period",
+        "showingResults": "Showing {start} to {end} of {total} results"
+    },
+    "referredUsersPage": {
+        "referredUsersBreadcrumb": "Referred Users",
+        "recruitmentSummary": "Recruitment Summary",
+        "totalDirectRecruit": "Total Direct Recruit",
+        "noRecruitmentData": "No recruitment data available",
+        "startRecruiting": "Start recruiting to see your statistics here",
+        "failedToLoadData": "Failed to load dashboard data"
+    },
+    "manageUserPage": {
+        "manageUsersBreadcrumb": "Manage Users"
+    },
+    "usersTable": {
+        "filters": "Filters",
+        "market": "Market",
+        "allMarkets": "All Markets",
+        "ranking": "Ranking",
+        "allRankings": "All Rankings",
+        "dateRange": "Date Range",
+        "from": "From",
+        "to": "To",
+        "searchUser": "Search User",
+        "recruit": "Recruit",
+        "name": "Name",
+        "userId": "User ID",
+        "keyMarket": "Key Market",
+        "joinedSince": "Joined Since",
+        "lastActive": "Last Active"
+    },
+    "recruitAgentPage": {
+        "recruitAgentBreadcrumb": "Recruit Agent",
+        "agentRecruitmentDetails": "Agent Recruitment Details",
+        "referralId": "Referral ID",
+        "fullName": "Full Name",
+        "registeredEmail": "Registered Email",
+        "memberVerification": "Member Verification",
+        "emailVerified": "Email Verified",
+        "matchedEmail": "Matched Email",
+        "check": "Check",
+        "proposedKeyMarket": "Proposed Key Market",
+        "selectMarket": "Select market",
+        "acknowledgement": "Acknowledgement",
+        "acknowledgementItem1": "I confirm that all information provided in this form is accurate and true to the best of my knowledge.",
+        "acknowledgementItem2": "I acknowledge that the person I am referring has given their consent to be contacted by Lookcard Limited regarding this program.",
+        "acknowledgementItem3": "I understand that submitting a referral does not guarantee acceptance into the program for the referred individual.",
+        "acknowledgementItem4": "I acknowledge that any benefits or rewards for this referral are subject to the referred individual meeting the program eligibility and joining requirement.",
+        "agreementLabel": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I understand and accept these terms for both my application and any referrals I submit.",
+        "recruitButton": "Recruit"
+    },
+    "performancePage": {
+        "performanceBreadcrumb": "Performance",
+        "cardActivationVolume": "Card Activation Volume",
+        "totalAgentRecruitment": "Total Agent Recruitment"
+    },
+    "nextLevelCard": {
+        "nextLevel": "Next Level",
+        "maxLevelMessage": "Congratulations! You're already at the highest level.",
+        "progressMessage": "Keep going! You're making great progress.",
+        "level": "Level",
+        "requestLevelUpButton": "Request to Level-up",
+        "levelUpRequestSentTitle": "Level Up Request Sent",
+        "levelUpRequestSentDescription": "We'll review your request and get back to you soon."
+    },
+    "salesSummaryCard": {
+        "salesSummary": "Sales Summary",
+        "groupSales": "Group Sales",
+        "personalSales": "Personal Sales"
+    },
+    "salesVolumeBarChart": {
+        "salesVolume": "Sales Volume",
+        "year": "Year",
+        "week": "Week",
+        "month": "Month",
+        "selectMonth": "Select Month",
+        "selectWeek": "Select Week"
+    },
+    "demographicSalesChart": {
+        "salesVolumeInDemographic": "Sales Volume in Demographic",
+        "year": "Year",
+        "quarter": "Quarter"
+    },
+    "supportPage": {
+        "supportBreadcrumb": "Support",
+        "category": "Category",
+        "selectCategory": "Select category",
+        "title": "Title",
+        "titlePlaceholder": "Brief description of your issue",
+        "description": "Describe Your Issue",
+        "descriptionPlaceholder": "Please provide detailed information about your issue...",
+        "supportingDocuments": "Supporting Documents",
+        "uploadDocuments": "Upload Documents",
+        "saveChanges": "Save Changes",
+        "fileSizeExceeded": "File size should not exceed 5MB",
+        "invalidFileType": "Only JPG and PDF files are allowed"
+    },
+    "profilePage": {
+        "profileBreadcrumb": "Profile",
+        "profileDetail": "Profile Detail",
+        "userId": "User ID",
+        "fullName": "Full Name",
+        "email": "Email",
+        "contactNo": "Contact No.",
+        "referralCode": "Referral Code",
+        "keyMarket": "Key Market",
+        "socialMediaProfiles": "Social Media Profiles",
+        "saveChanges": "Save Changes",
+        "saving": "Saving...",
+        "error": "Error",
+        "success": "Success",
+        "failedToLoadProfileData": "Failed to load profile data",
+        "failedToUpdateProfile": "Failed to update profile",
+        "emailVerified": "Email Verified",
+        "phoneVerified": "Phone Verified",
+        "youCanNowEditEmail": "You can now edit your email address",
+        "youCanNowEditPhone": "You can now edit your phone number",
+        "otpResent": "OTP Resent",
+        "newOtpSent": "A new OTP has been sent to your",
+        "copied": "Copied!",
+        "referralCodeCopied": "Referral code copied to clipboard"
+    },
+    "passwordPage": {
+        "passwordBreadcrumb": "Password",
+        "changePassword": "Change Password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "twoFactorAuth": "Two Factor Authentication (2FA)",
+        "twoFactorAuthDescription": "Enable to receive alerts and updates related to your two-factor authentication activity.",
+        "saveChanges": "Save Changes",
+        "success": "Success",
+        "passwordUpdatedSuccessfully": "Your password has been updated successfully",
+        "error": "Error",
+        "failedToUpdatePassword": "Failed to update password. Please try again.",
+        "2faEnabled": "2FA Enabled",
+        "2faDisabled": "2FA Disabled",
+        "2faEnabledDescription": "Two-factor authentication has been enabled",
+        "2faDisabledDescription": "Two-factor authentication has been disabled"
     },
     "preferences": {
         "title": "Settings",
@@ -82,6 +302,14 @@
                 "zh": "中文"
             }
         },
+        "darkMode": {
+            "title": "Dark Mode",
+            "description": "Enable dark mode for a better viewing experience in low-light conditions.",
+            "enabled": "Dark Mode Enabled",
+            "disabled": "Dark Mode Disabled",
+            "enabledDesc": "Dark mode has been enabled",
+            "disabledDesc": "Dark mode has been disabled"
+        },
         "notifications": {
             "title": "Notification",
             "description": "Enable to receive updates about your account and offers.",
@@ -90,5 +318,15 @@
             "enabledDesc": "You will now receive updates about your account and offers",
             "disabledDesc": "You will no longer receive notifications"
         }
+    },
+    "legal": {
+        "legalAndComplianceBreadcrumb": "Legal and Compliance",
+        "privacyPolicyTitle": "Privacy Policy",
+        "termsAndConditionsTitle": "Terms and Conditions",
+        "userAgreementTitle": "User Agreement",
+        "codeOfConductTitle": "Code Of Conduct",
+        "complianceAndAntiCorruptionTitle": "Compliance and Anti-Corruption",
+        "profilePolicyTitle": "Profile Policy",
+        "programGuidelineTitle": "Program Guideline"
     }
 }

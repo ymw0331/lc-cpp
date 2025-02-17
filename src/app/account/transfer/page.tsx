@@ -1,19 +1,22 @@
-'use client'
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import BalanceWalletDistributionChart from '@/components/Charts/BalanceWalletDistributionChart'
-import WalletTransferForm from '@/components/Forms/WalletTransferForm'
-import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import TransferActivityTable from '@/components/Tables/TransferActivityTable'
-import { USDTIcon, USDCIcon } from '@/components/Icons/dashboard'
-import { transferData } from '@/lib/data'
+"use client";
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import BalanceWalletDistributionChart from "@/components/Charts/BalanceWalletDistributionChart";
+import WalletTransferForm from "@/components/Forms/WalletTransferForm";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import TransferActivityTable from "@/components/Tables/TransferActivityTable";
+import { USDTIcon, USDCIcon } from "@/components/Icons/dashboard";
+import { transferData } from "@/lib/data";
+import { useTranslation } from "react-i18next";
 
 const TransferPage = () => {
+    const { t } = useTranslation();
+
     // Currency Icon Mapping
     const getCurrencyIcon = (currency: string) => {
         switch (currency) {
-            case 'USDT':
+            case "USDT":
                 return <USDTIcon className="w-6 h-6" />;
-            case 'USDC':
+            case "USDC":
                 return <USDCIcon className="w-6 h-6" />;
             default:
                 return null;
@@ -21,17 +24,19 @@ const TransferPage = () => {
     };
 
     // Enhance data with icons
-    const currencyOptionsWithIcons = transferData.currencyOptions.map(currency => ({
-        ...currency,
-        icon: getCurrencyIcon(currency.symbol)
-    }));
+    const currencyOptionsWithIcons = transferData.currencyOptions.map(
+        (currency) => ({
+            ...currency,
+            icon: getCurrencyIcon(currency.symbol),
+        })
+    );
 
     const walletBalanceDistributionWithIcons = {
         ...transferData.walletBalanceDistribution,
-        data: transferData.walletBalanceDistribution.data.map(item => ({
+        data: transferData.walletBalanceDistribution.data.map((item) => ({
             ...item,
-            icon: getCurrencyIcon(item.currency)
-        }))
+            icon: getCurrencyIcon(item.currency),
+        })),
     };
 
     const handleTransfer = (amount: number, currency: string) => {
@@ -40,7 +45,9 @@ const TransferPage = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Transfer to Current Account Wallet" />
+            <Breadcrumb
+                pageName={t("transferPage.transferToCurrentAccountWalletBreadcrumb")}
+            />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-4 sm:mb-6">
                 <WalletTransferForm
                     sourceAmount={transferData.sourceWallet.amount}
@@ -50,16 +57,14 @@ const TransferPage = () => {
                 />
                 <div className="h-full min-h-[400px] sm:min-h-[450px]">
                     <BalanceWalletDistributionChart
-                        title={"Current Account Wallet Balance"}
+                        title={t("walletsPage.currentAccountWalletBalance")}
                         data={walletBalanceDistributionWithIcons.data}
                     />
                 </div>
             </div>
 
             <div className="w-full overflow-hidden">
-                <TransferActivityTable
-                    data={transferData.transferActivity}
-                />
+                <TransferActivityTable data={transferData.transferActivity} />
             </div>
         </DefaultLayout>
     );

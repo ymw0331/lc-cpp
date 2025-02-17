@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 interface ProfileCardProps {
     name: string;
@@ -12,7 +15,14 @@ interface ProfileCardProps {
     avatar?: string;
 }
 
-const ProfileCard = ({ name, level, activeUsers, avatar }: ProfileCardProps) => {
+const ProfileCard = ({
+    name,
+    level,
+    activeUsers,
+    avatar,
+}: ProfileCardProps) => {
+    const { t } = useTranslation();
+
     return (
         <div className="p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
             <div className="flex flex-col">
@@ -24,11 +34,7 @@ const ProfileCard = ({ name, level, activeUsers, avatar }: ProfileCardProps) => 
                     </div>
                     <div className="relative w-20 h-20 rounded-full bg-[#F3F3F3] dark:bg-meta-4 overflow-hidden">
                         {avatar ? (
-                            <Image
-                                src={avatar}
-                                alt={name}
-                                className="w-full h-full object-cover"
-                            />
+                            <Image src={avatar} alt={name} className="w-full h-full object-cover" />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-[#7C74FF]">
                                 {name.charAt(0)}
@@ -44,7 +50,7 @@ const ProfileCard = ({ name, level, activeUsers, avatar }: ProfileCardProps) => 
                             {activeUsers.current.toLocaleString()}
                         </span>
                         <span className="text-2xl text-gray-500 dark:text-gray-400">
-                            / {activeUsers.target.toLocaleString()} Active Users
+                            / {activeUsers.target.toLocaleString()} {t("profileCard.activeUsersLabel")}
                         </span>
                     </div>
                 </div>
@@ -68,7 +74,7 @@ const ProfileCard = ({ name, level, activeUsers, avatar }: ProfileCardProps) => 
                         {activeUsers.remaining.toLocaleString()}
                     </span>
                     <span className="text-2xl text-gray-500 dark:text-gray-400 ml-2">
-                        Left
+                        {t("agentDashboard.left")}
                     </span>
                 </div>
             </div>

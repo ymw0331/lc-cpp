@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import DefaultLayout from '@/components/Layouts/DefaultLayout'
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-
+import { useTranslation } from "react-i18next";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "application/pdf"];
@@ -48,7 +48,7 @@ const categories = [
 ];
 
 const SupportPage = () => {
-
+    const { t } = useTranslation();
     const [files, setFiles] = useState<File[]>([]);
 
     const form = useForm<z.infer<typeof supportFormSchema>>({
@@ -64,23 +64,23 @@ const SupportPage = () => {
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const fileList = e.target.files;
         if (fileList) {
-            const filesArray = Array.from(fileList).filter(file => {
+            const filesArray = Array.from(fileList).filter((file) => {
                 if (file.size > MAX_FILE_SIZE) {
-                    alert("File size should not exceed 5MB");
+                    alert(t("supportPage.fileSizeExceeded"));
                     return false;
                 }
                 if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
-                    alert("Only JPG and PDF files are allowed");
+                    alert(t("supportPage.invalidFileType"));
                     return false;
                 }
                 return true;
             });
-            setFiles(prev => [...prev, ...filesArray]);
+            setFiles((prev) => [...prev, ...filesArray]);
         }
     };
 
     const removeFile = (index: number) => {
-        setFiles(prev => prev.filter((_, i) => i !== index));
+        setFiles((prev) => prev.filter((_, i) => i !== index));
     };
 
     async function onSubmit(values: z.infer<typeof supportFormSchema>) {
@@ -89,7 +89,7 @@ const SupportPage = () => {
             formData.append("category", values.category);
             formData.append("title", values.title);
             formData.append("description", values.description);
-            files.forEach(file => {
+            files.forEach((file) => {
                 formData.append("attachments", file);
             });
 
@@ -101,16 +101,17 @@ const SupportPage = () => {
         }
     }
 
-
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Support" />
+            <Breadcrumb pageName={t("supportPage.supportBreadcrumb")} />
 
             <div className="w-full">
                 <div className="bg-white dark:bg-boxdark rounded-xl shadow-default p-4 md:p-6 space-y-8">
-
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-6"
+                        >
                             <div className="grid gap-6 md:grid-cols-2">
                                 {/* Category Selection */}
                                 <FormField
@@ -118,11 +119,16 @@ const SupportPage = () => {
                                     name="category"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-black dark:text-white">Category</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormLabel className="text-black dark:text-white">
+                                                {t("supportPage.category")}
+                                            </FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
                                                 <FormControl>
                                                     <SelectTrigger className="bg-gray dark:bg-form-input border-stroke dark:border-strokedark">
-                                                        <SelectValue placeholder="Select category" />
+                                                        <SelectValue placeholder={t("supportPage.selectCategory")} />
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent className="bg-white dark:bg-boxdark border-stroke dark:border-strokedark">
@@ -148,10 +154,12 @@ const SupportPage = () => {
                                     name="title"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-black dark:text-white">Title</FormLabel>
+                                            <FormLabel className="text-black dark:text-white">
+                                                {t("supportPage.title")}
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="Brief description of your issue"
+                                                    placeholder={t("supportPage.titlePlaceholder")}
                                                     className="bg-gray dark:bg-form-input border-stroke dark:border-strokedark"
                                                     {...field}
                                                 />
@@ -168,10 +176,12 @@ const SupportPage = () => {
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-black dark:text-white">Describe Your Issue</FormLabel>
+                                        <FormLabel className="text-black dark:text-white">
+                                            {t("supportPage.description")}
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                placeholder="Please provide detailed information about your issue..."
+                                                placeholder={t("supportPage.descriptionPlaceholder")}
                                                 className="min-h-[150px] bg-gray dark:bg-form-input border-stroke dark:border-strokedark"
                                                 {...field}
                                             />
@@ -184,7 +194,7 @@ const SupportPage = () => {
                             {/* File Upload Section */}
                             <div className="space-y-4">
                                 <FormLabel className="text-body dark:text-white">
-                                    Supporting Documents (JPG/PDF)
+                                    {t("supportPage.supportingDocuments")} (JPG/PDF)
                                 </FormLabel>
 
                                 <div className="grid gap-4">
@@ -219,7 +229,7 @@ const SupportPage = () => {
                                             />
                                             <span className="inline-flex items-center gap-2 px-4 py-2 bg-black dark:bg-boxdark-2 text-white rounded-full hover:bg-black/90 dark:hover:bg-boxdark-2/90 transition-colors">
                                                 <Upload className="h-5 w-5" />
-                                                Upload Documents
+                                                {t("supportPage.uploadDocuments")}
                                             </span>
                                         </label>
                                         {/* <p className="text-sm text-body dark:text-bodydark mt-2">
@@ -235,7 +245,7 @@ const SupportPage = () => {
                                     type="submit"
                                     className="bg-primary hover:bg-primary/90 text-white px-8"
                                 >
-                                    Save Changes
+                                    {t("supportPage.saveChanges")}
                                 </Button>
                             </div>
                         </form>
@@ -243,7 +253,7 @@ const SupportPage = () => {
                 </div>
             </div>
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default SupportPage
+export default SupportPage;

@@ -2,9 +2,18 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    ResponsiveContainer,
+    LabelList,
+} from "recharts";
 import { useState } from "react";
 import { ChartDataPoint, ChartRangeData, CurrencyType } from "@/types/dashboard";
+import { useTranslation } from "react-i18next";
 // import { depositChartData } from "@/lib/data";
 
 type TimeRange = "Week" | "Month" | "Year";
@@ -14,34 +23,31 @@ interface StatisticChartProps {
     total: number;
     currency: CurrencyType;
     chartData: ChartDataPoint[]; // Changed to match your DashboardStatistics type
-
 }
-
 
 const StatisticChart: React.FC<StatisticChartProps> = ({
     title,
     total,
     currency,
-    chartData
+    chartData,
 }) => {
-
     const [activeRange, setActiveRange] = useState<"Week" | "Month" | "Year">("Year");
     const [depositChartData, setDepositChartData] = useState<ChartDataPoint[]>(chartData);
-
+    const { t } = useTranslation();
 
     const handleRangeChange = (range: TimeRange) => {
         setActiveRange(range);
     };
 
     const formatValue = (value: number) => {
-        return `${value.toLocaleString('en-US', {
+        return `${value.toLocaleString("en-US", {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            maximumFractionDigits: 2,
         })} ${currency}`;
     };
 
     const formatLabelValue = (value: number) => {
-        return value.toLocaleString('en-US');
+        return value.toLocaleString("en-US");
     };
 
     const CustomBarLabel = (props: any) => {
@@ -88,9 +94,7 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
         );
     };
 
-
     const hasData = chartData && chartData.length > 0;
-
 
     return (
         <Card className="w-full bg-white dark:bg-boxdark border border-stroke dark:border-strokedark">
@@ -113,9 +117,7 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                                 ? "bg-primary text-white hover:bg-primary/90"
                                 : "text-black dark:text-white hover:bg-meta-4/50"
                                 }`}
-                            onClick={() =>
-                                handleRangeChange(range as "Week" | "Month" | "Year")
-                            }
+                            onClick={() => handleRangeChange(range as "Week" | "Month" | "Year")}
                         >
                             {range}
                         </Button>
@@ -136,36 +138,28 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                                     dataKey="label"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: '#64748B', fontSize: 12 }}
+                                    tick={{ fill: "#64748B", fontSize: 12 }}
                                     dy={10}
                                 />
                                 <YAxis
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: '#64748B', fontSize: 12 }}
+                                    tick={{ fill: "#64748B", fontSize: 12 }}
                                     width={80}
                                     tickFormatter={(value) => value.toLocaleString()}
                                 />
                                 <Tooltip
                                     content={<CustomTooltip />}
-                                    cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+                                    cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                                 />
-                                <Bar
-                                    dataKey="value"
-                                    barSize={40}
-                                    shape={CustomBar}
-                                >
-                                    <LabelList
-                                        dataKey="value"
-                                        position="top"
-                                        content={CustomBarLabel}
-                                    />
+                                <Bar dataKey="value" barSize={40} shape={CustomBar}>
+                                    <LabelList dataKey="value" position="top" content={CustomBarLabel} />
                                 </Bar>
                             </BarChart>
                         </ResponsiveContainer>
                     ) : (
                         <div className="text-center text-gray-500 dark:text-gray-400">
-                            No Data Available
+                            {t("statisticChart.noDataAvailable")}
                         </div>
                     )}
                 </div>

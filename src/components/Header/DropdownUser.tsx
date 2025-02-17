@@ -11,17 +11,19 @@ import {
   LogOut,
   ChevronDown,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const DropdownUser = () => {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Get initials from name
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase()
       .slice(0, 2);
   };
@@ -29,21 +31,21 @@ const DropdownUser = () => {
   const menuItems = [
     {
       href: "/settings/profile",
-      label: "My Profile",
-      icon: User
+      label: t("dropdownUser.myProfile"),
+      icon: User,
     },
     {
       href: "/settings/preference",
-      label: "Preference",
-      icon: Settings
-    }
+      label: t("dropdownUser.preference"),
+      icon: Settings,
+    },
   ];
 
   const handleLogout = async () => {
     try {
       await logout();
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
@@ -59,7 +61,9 @@ const DropdownUser = () => {
             alt={`${user?.profileName || user?.fullName}'s avatar`}
           />
           <AvatarFallback className="bg-primary/10">
-            {user?.profileName ? getInitials(user.profileName) : getInitials(user?.fullName || 'User')}
+            {user?.profileName
+              ? getInitials(user.profileName)
+              : getInitials(user?.fullName || "User")}
           </AvatarFallback>
         </Avatar>
 
@@ -73,7 +77,7 @@ const DropdownUser = () => {
         </span>
 
         <ChevronDown
-          className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''
+          className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""
             }`}
         />
       </button>
@@ -109,7 +113,7 @@ const DropdownUser = () => {
               className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors"
             >
               <LogOut className="w-4 h-4" />
-              Log Out
+              {t("dropdownUser.logOut")}
             </button>
           </div>
         </div>

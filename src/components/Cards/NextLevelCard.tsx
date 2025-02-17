@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useToast } from '@/hooks/useToast';
-import Image from 'next/image';
+import { useToast } from "@/hooks/useToast";
+import Image from "next/image";
 import { Avatar } from "../ui/avatar";
-import { AgentLevel } from "@/lib/data";
+import { useTranslation } from "react-i18next";
 
 interface NextLevelCardProps {
-    currentLevel: AgentLevel | string;  // Accept both AgentLevel enum and string
+    currentLevel: string; // Accept both AgentLevel enum and string
     progress: number;
     isMaxLevel?: boolean;
     avatarUrl?: string;
@@ -22,42 +22,45 @@ const NextLevelCard = ({
     isMaxLevel,
     avatarUrl,
     name,
-    className
+    className,
 }: NextLevelCardProps) => {
+    const { t } = useTranslation();
     const { toast } = useToast();
 
     const handleLevelUpRequest = () => {
         toast({
-            title: "Level Up Request Sent",
-            description: "We'll review your request and get back to you soon.",
+            title: t("nextLevelCard.levelUpRequestSentTitle"),
+            description: t("nextLevelCard.levelUpRequestSentDescription"),
             duration: 3000,
         });
     };
 
     // Convert enum value to display text
-    const getLevelDisplay = (level: AgentLevel | string) => {
-        if (typeof level === 'number') {
-            return `Level ${level}`;
+    const getLevelDisplay = (level: string) => {
+        if (typeof level === "number") {
+            return `${t("nextLevelCard.level")} ${level}`;
         }
         return level;
     };
 
     return (
-        <div className={cn(
-            "rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-7.5",
-            className
-        )}>
+        <div
+            className={cn(
+                "rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-7.5",
+                className
+            )}
+        >
             {/* Header Section */}
             <div className="mb-7.5">
                 <h4 className="text-title-sm font-normal text-bodydark2 dark:text-bodydark">
-                    Next Level
+                    {t("nextLevelCard.nextLevel")}
                 </h4>
 
                 <div className="mt-4 flex items-center justify-between">
                     <h2 className="text-title-lg font-bold text-black dark:text-white">
                         {isMaxLevel
-                            ? "Congratulations! You're already at the highest level."
-                            : "Keep going! You're making great progress."}
+                            ? t("nextLevelCard.maxLevelMessage")
+                            : t("nextLevelCard.progressMessage")}
                     </h2>
 
                     {/* Avatar */}
@@ -103,7 +106,7 @@ const NextLevelCard = ({
                     className="whitespace-nowrap rounded-lg bg-bodydark1 px-6 py-3 font-medium text-black hover:bg-bodydark2 dark:bg-meta-4 dark:text-white dark:hover:bg-meta-4/80 transition-all duration-200"
                     disabled={!isMaxLevel}
                 >
-                    Request to Level-up
+                    {t("nextLevelCard.requestLevelUpButton")}
                 </Button>
             </div>
         </div>

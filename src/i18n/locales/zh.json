@@ -6,23 +6,279 @@
         "messages": "消息",
         "user": "用户"
     },
+    "dropdownUser": {
+        "myProfile": "我的个人资料",
+        "preference": "偏好",
+        "logOut": "登出"
+    },
     "sidebar": {
+        "menu": "菜单",
         "dashboard": "仪表板",
-        "ecommerce": "电子商务",
-        "calendar": "日历",
-        "profile": "个人资料",
-        "forms": "表单",
-        "form elements": "表单元素",
-        "form layout": "表单布局",
-        "tables": "表格",
+        "account": "帐户",
+        "incentive management": "激励管理",
+        "referred users": "推荐用户",
+        "manage user": "管理用户",
+        "recruit agent": "招募代理",
+        "performance": "性能",
+        "support": "支持",
         "settings": "设置",
-        "chart": "图表",
-        "ui-elements": "UI 元素",
-        "alerts": "警报",
-        "buttons": "按钮",
-        "authentication": "认证",
-        "sign in": "登录",
-        "sign up": "注册"
+        "legal & compliance": "法律与合规",
+        "wallets": "钱包",
+        "transfer": "转移",
+        "profile": "个人资料",
+        "password": "密码",
+        "preference": "偏好",
+        "profile policy": "个人资料政策",
+        "terms and conditions": "条款和条件",
+        "user agreement": "用户协议",
+        "code of conduct": "行为准则",
+        "compliance and anti-corruption": "合规与反腐败",
+        "privacy guideline": "隐私指南"
+    },
+    "agentDashboard": {
+        "overview": "概览",
+        "rewardWalletBalance": "奖励钱包余额",
+        "totalDepositAmount": "总存款金额",
+        "directRecruitIncentiveEarnings": "直接招募激励收益",
+        "activeUsers": "活跃用户",
+        "left": "剩余",
+        "totalDirectRecruit": "总直接招募",
+        "agentsToPartner": "代理商转合作伙伴",
+        "depositSummary": "存款摘要",
+        "depositActivity": "存款活动",
+        "description": "描述",
+        "amount": "金额",
+        "dateTime": "日期时间",
+        "failedToLoadData": "加载仪表板数据失败",
+        "loading": "加载中...",
+        "referralCode": "推荐码",
+        "recruitment": "招募",
+        "incentives": "激励"
+    },
+    "loginPage": {
+        "welcomeToLookcard": "欢迎来到Lookcard经销商门户",
+        "pleaseSignIn": "请登录以继续访问您的仪表板。",
+        "signInToAgentDashboard": "登录到代理仪表板",
+        "email": "电子邮件",
+        "enterYourEmail": "输入您的电子邮件",
+        "password": "密码",
+        "enterYourPassword": "输入您的密码",
+        "signIn": "登录",
+        "signingIn": "正在登录",
+        "testCredentials": "测试凭据",
+        "error": "错误",
+        "success": "成功",
+        "successfullyLoggedIn": "登录成功！",
+        "loginFailed": "登录失败"
+    },
+    "profileCard": {
+        "activeUsersLabel": "活跃用户"
+    },
+    "referralCard": {
+        "referralCodeLabel": "推荐码",
+        "copiedToClipboard": "已复制到剪贴板"
+    },
+    "recruitCard": {
+        "totalDirectRecruitLabel": "总直接招募",
+        "agentsToPartnerLabel": "代理商转合作伙伴"
+    },
+    "statisticChart": {
+        "noDataAvailable": "无数据可用"
+    },
+    "depositActivityTable": {
+        "depositActivityLabel": "存款活动",
+        "descriptionHeader": "描述",
+        "amountHeader": "金额",
+        "dateTimeHeader": "日期时间",
+        "noDataAvailable": "无数据可用"
+    },
+    "walletsPage": {
+        "walletsBreadcrumb": "钱包",
+        "rewardWalletBalance": "奖励钱包余额",
+        "currentAccountWalletBalance": "当前账户钱包余额",
+        "rewardWalletSummary": "奖励钱包摘要"
+    },
+    "walletCard": {
+        "transferButton": "转移"
+    },
+    "transferPage": {
+        "transferToCurrentAccountWalletBreadcrumb": "转移到当前账户钱包"
+    },
+    "walletTransferForm": {
+        "rewardWalletBalance": "奖励钱包余额",
+        "selectCurrencyWallet": "选择货币钱包",
+        "enterTransferAmount": "输入转账金额",
+        "fullAmountButton": "全额",
+        "transferFee": "转账手续费",
+        "totalAmountTransferred": "转账总额",
+        "transferButton": "转移"
+    },
+    "transferActivityTable": {
+        "transferActivity": "转账活动",
+        "transactionIdHeader": "交易ID",
+        "transferredAmountHeader": "转账金额",
+        "dateTimeHeader": "日期时间",
+        "statusHeader": "状态"
+    },
+    "incentiveManagementPage": {
+        "incentiveManagementBreadcrumb": "激励管理",
+        "totalIncentive": "总激励",
+        "milestoneBonus": "里程碑奖金",
+        "directRecruitReferral": "直接招募推荐覆盖激励",
+        "directAdminCharge": "直接管理费回扣",
+        "directRecruitDeposit": "直接招募存款管理费覆盖回扣",
+        "directRecruitLevel": "直接招募级别晋升奖金",
+        "performanceBonus": "业绩奖金"
+    },
+    "incentiveCard": {
+        "activeUsersLeft": "剩余活跃用户"
+    },
+    "dataTable": {
+        "incentiveActivity": "激励活动",
+        "transactionId": "交易ID",
+        "transferredAmount": "转账金额",
+        "dateTime": "日期时间",
+        "status": "状态",
+        "noDataAvailable": "没有数据",
+        "noRecordsToDisplay": "此期间没有记录可显示",
+        "showingResults": "显示 {start} 到 {end}，共 {total} 条结果"
+    },
+    "referredUsersPage": {
+        "referredUsersBreadcrumb": "推荐用户",
+        "recruitmentSummary": "招募概览",
+        "totalDirectRecruit": "总直接招募",
+        "noRecruitmentData": "没有可用的招募数据",
+        "startRecruiting": "开始招募以查看您的统计信息",
+        "failedToLoadData": "无法加载仪表板数据"
+    },
+    "manageUserPage": {
+        "manageUsersBreadcrumb": "管理用户"
+    },
+    "usersTable": {
+        "filters": "筛选器",
+        "market": "市场",
+        "allMarkets": "所有市场",
+        "ranking": "排名",
+        "allRankings": "所有排名",
+        "dateRange": "日期范围",
+        "from": "从",
+        "to": "至",
+        "searchUser": "搜索用户",
+        "recruit": "招募",
+        "name": "姓名",
+        "userId": "用户ID",
+        "keyMarket": "主要市场",
+        "joinedSince": "加入时间",
+        "lastActive": "上次活跃时间"
+    },
+    "recruitAgentPage": {
+        "recruitAgentBreadcrumb": "招募代理",
+        "agentRecruitmentDetails": "代理招募详情",
+        "referralId": "推荐人ID",
+        "fullName": "全名",
+        "registeredEmail": "注册邮箱",
+        "memberVerification": "会员验证",
+        "emailVerified": "邮箱已验证",
+        "matchedEmail": "邮箱已匹配",
+        "check": "检查",
+        "proposedKeyMarket": "建议的主要市场",
+        "selectMarket": "选择市场",
+        "acknowledgement": "确认",
+        "acknowledgementItem1": "我确认在此表格中提供的所有信息都是准确和真实的。",
+        "acknowledgementItem2": "我确认我推荐的人已同意Lookcard Limited就此计划与其联系。",
+        "acknowledgementItem3": "我理解提交推荐并不能保证被推荐人被该计划接受。",
+        "acknowledgementItem4": "我确认，如果被推荐人符合计划资格并满足加入要求，则此推荐的任何利益或奖励都将受到影响。",
+        "agreementLabel": "我同意上述所有条款，包括遵守计划要求、道德行为和隐私政策。我确认我理解并接受这些条款，包括我的申请和任何我提交的推荐。",
+        "recruitButton": "招募"
+    },
+    "performancePage": {
+        "performanceBreadcrumb": "业绩",
+        "cardActivationVolume": "卡激活量",
+        "totalAgentRecruitment": "总代理招募"
+    },
+    "nextLevelCard": {
+        "nextLevel": "下一级别",
+        "maxLevelMessage": "恭喜！您已经达到了最高级别。",
+        "progressMessage": "继续努力！您正在取得巨大进展。",
+        "level": "级别",
+        "requestLevelUpButton": "请求升级",
+        "levelUpRequestSentTitle": "升级请求已发送",
+        "levelUpRequestSentDescription": "我们将审核您的请求，并尽快回复您。"
+    },
+    "salesSummaryCard": {
+        "salesSummary": "销售概要",
+        "groupSales": "团队销售额",
+        "personalSales": "个人销售额"
+    },
+    "salesVolumeBarChart": {
+        "salesVolume": "销售量",
+        "year": "年份",
+        "week": "周",
+        "month": "月",
+        "selectMonth": "选择月份",
+        "selectWeek": "选择周"
+    },
+    "demographicSalesChart": {
+        "salesVolumeInDemographic": "人口统计销售量",
+        "year": "年份",
+        "quarter": "季度"
+    },
+    "supportPage": {
+        "supportBreadcrumb": "支持",
+        "category": "类别",
+        "selectCategory": "选择类别",
+        "title": "标题",
+        "titlePlaceholder": "简要描述您的问题",
+        "description": "描述您的问题",
+        "descriptionPlaceholder": "请提供有关您的问题的详细信息...",
+        "supportingDocuments": "支持文件",
+        "uploadDocuments": "上传文件",
+        "saveChanges": "保存更改",
+        "fileSizeExceeded": "文件大小不应超过 5MB",
+        "invalidFileType": "仅允许 JPG 和 PDF 文件"
+    },
+    "profilePage": {
+        "profileBreadcrumb": "个人资料",
+        "profileDetail": "个人资料详情",
+        "userId": "用户ID",
+        "fullName": "全名",
+        "email": "电子邮件",
+        "contactNo": "联系电话",
+        "referralCode": "推荐码",
+        "keyMarket": "主要市场",
+        "socialMediaProfiles": "社交媒体资料",
+        "saveChanges": "保存更改",
+        "saving": "保存中...",
+        "error": "错误",
+        "success": "成功",
+        "failedToLoadProfileData": "无法加载个人资料数据",
+        "failedToUpdateProfile": "无法更新个人资料",
+        "emailVerified": "电子邮件已验证",
+        "phoneVerified": "电话已验证",
+        "youCanNowEditEmail": "您现在可以编辑您的电子邮件地址",
+        "youCanNowEditPhone": "您现在可以编辑您的电话号码",
+        "otpResent": "OTP已重新发送",
+        "newOtpSent": "新的OTP已发送到您的",
+        "copied": "已复制！",
+        "referralCodeCopied": "推荐码已复制到剪贴板"
+    },
+    "passwordPage": {
+        "passwordBreadcrumb": "密码",
+        "changePassword": "更改密码",
+        "oldPassword": "旧密码",
+        "newPassword": "新密码",
+        "confirmPassword": "确认密码",
+        "twoFactorAuth": "双重身份验证 (2FA)",
+        "twoFactorAuthDescription": "启用以接收与您的双重身份验证活动相关的警报和更新。",
+        "saveChanges": "保存更改",
+        "success": "成功",
+        "passwordUpdatedSuccessfully": "您的密码已成功更新",
+        "error": "错误",
+        "failedToUpdatePassword": "无法更新密码。请重试。",
+        "2faEnabled": "2FA 已启用",
+        "2faDisabled": "2FA 已禁用",
+        "2faEnabledDescription": "双重身份验证已启用",
+        "2faDisabledDescription": "双重身份验证已禁用"
     },
     "preferences": {
         "title": "设置",
@@ -46,6 +302,14 @@
                 "zh": "中文"
             }
         },
+        "darkMode": {
+            "title": "黑暗模式",
+            "description": "启用黑暗模式，以便在弱光条件下获得更好的观看体验。",
+            "enabled": "已启用黑暗模式",
+            "disabled": "已禁用黑暗模式",
+            "enabledDesc": "已启用黑暗模式",
+            "disabledDesc": "已禁用黑暗模式"
+        },
         "notifications": {
             "title": "通知",
             "description": "启用以接收有关您的帐户和优惠的更新。",
@@ -54,5 +318,15 @@
             "enabledDesc": "您现在将收到有关您的帐户和优惠的更新",
             "disabledDesc": "您将不再收到通知"
         }
+    },
+    "legal": {
+        "legalAndComplianceBreadcrumb": "法律与合规",
+        "privacyPolicyTitle": "隐私政策",
+        "termsAndConditionsTitle": "条款和条件",
+        "userAgreementTitle": "用户协议",
+        "codeOfConductTitle": "行为准则",
+        "complianceAndAntiCorruptionTitle": "合规与反腐败",
+        "profilePolicyTitle": "个人资料政策",
+        "programGuidelineTitle": "项目指南"
     }
 }

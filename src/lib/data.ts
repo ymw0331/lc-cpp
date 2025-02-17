@@ -1,11 +1,11 @@
 /*** 00 Start of Auth Data ***/
-export enum AgentLevel {
-    LEVEL_1 = 1,
-    LEVEL_2 = 2,
-    LEVEL_3 = 3,
-    LEVEL_4 = 4,
-    LEVEL_5 = 5
-}
+// export enum AgentLevel {
+//     LEVEL_1 = 1,
+//     LEVEL_2 = 2,
+//     LEVEL_3 = 3,
+//     LEVEL_4 = 4,
+//     LEVEL_5 = 5
+// }
 
 // export enum Role {
 //     AGENT = 'agent',
@@ -811,22 +811,16 @@ export const activationData: TimeRangeData = {
 
 
 export const performanceData = {
-    progressCards: [
-        {
-            title: "Card Activation Volume",
-            currentValue: 42208,
-            targetValue: 50000,
-            suffix: "Active Users",
-            progressColor: "primary",
-        },
-        {
-            title: "Total Agent Recruitment",
-            currentValue: 2146,
-            targetValue: 3000,
-            suffix: "Agents",
-            progressColor: "primary",
-        },
-    ],
+    cardActivationVolume:
+    {
+        currentValue: 42208,
+        targetValue: 50000,
+    },
+    totalAgentRecruitment:
+    {
+        currentValue: 2146,
+        targetValue: 3000,
+    },
     nextLevelCard: {
         currentLevel: "userData.level",
         progress: 84.5,

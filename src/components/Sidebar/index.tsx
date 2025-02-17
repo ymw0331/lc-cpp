@@ -8,9 +8,14 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
 
 import {
-  AccountIcon, DashboardIcon, IncentiveManagementIcon, PerformanceIcon, ReferredUsersIcon, SettingsIcon, SupportIcon
-} from "@/components/Icons/menu"
-
+  AccountIcon,
+  DashboardIcon,
+  IncentiveManagementIcon,
+  PerformanceIcon,
+  ReferredUsersIcon,
+  SettingsIcon,
+  SupportIcon,
+} from "@/components/Icons/menu";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -103,19 +108,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         lg:translate-x-0 
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <nav 
+        <nav
           className="p-4 pt-[88px] lg:pt-4 lg:p-6"
           style={{
-            transform: 'translate3d(0, 0, 0)',
-            backfaceVisibility: 'hidden',
+            transform: "translate3d(0, 0, 0)",
+            backfaceVisibility: "hidden",
             perspective: 1000,
           }}
         >
           {menuGroups.map((group, groupIndex) => (
-            <div 
-              key={groupIndex}
-              className="will-change-transform"
-            >
+            <div key={groupIndex} className="will-change-transform">
               <ul className="flex flex-col gap-2">
                 {group.menuItems.map((menuItem, menuIndex) => (
                   <SidebarItem
@@ -123,10 +125,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     item={{
                       ...menuItem,
                       label: t(`sidebar.${menuItem.label.toLowerCase()}`),
-                      children: menuItem.children?.map(child => ({
+                      children: menuItem.children?.map((child) => ({
                         ...child,
-                        label: t(`sidebar.${child.label.toLowerCase()}`)
-                      }))
+                        label: t(`sidebar.${child.label.toLowerCase()}`),
+                      })),
                     }}
                     pageName={pageName}
                     setPageName={setPageName}

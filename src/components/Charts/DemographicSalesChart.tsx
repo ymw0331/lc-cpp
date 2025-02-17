@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
-import { Bar } from 'recharts'
+import React, { useState } from "react";
+import { Bar } from "recharts";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
     ResponsiveContainer,
     BarChart,
@@ -22,7 +22,8 @@ import {
     YAxis,
     Tooltip,
     CartesianGrid,
-} from 'recharts'
+} from "recharts";
+import { useTranslation } from "react-i18next";
 
 // Sample data by location and year
 const demographicData = {
@@ -75,21 +76,22 @@ const demographicData = {
         Q2_2023: 9876,
         Q3_2023: 10234,
         Q4_2023: 10456,
-    }
-}
+    },
+};
 
 const DemographicSalesChart = () => {
-    const [selectedYear, setSelectedYear] = useState('2024')
-    const [selectedQuarter, setSelectedQuarter] = useState('Q1')
+    const { t } = useTranslation();
+    const [selectedYear, setSelectedYear] = useState("2024");
+    const [selectedQuarter, setSelectedQuarter] = useState("Q1");
 
     // Format data based on selected filters
     const getData = () => {
-        const period = `${selectedQuarter}_${selectedYear}`
+        const period = `${selectedQuarter}_${selectedYear}`;
         return Object.entries(demographicData).map(([location, values]) => ({
             name: location,
-            value: values[period as keyof typeof values]
-        }))
-    }
+            value: values[period as keyof typeof values],
+        }));
+    };
 
     const CustomBarLabel = ({ x, y, width, value }: any) => {
         return (
@@ -103,29 +105,28 @@ const DemographicSalesChart = () => {
             >
                 {value.toLocaleString()}
             </text>
-        )
-    }
+        );
+    };
 
     return (
         <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
                 <div className="space-y-4">
                     <CardTitle className="text-2xl font-semibold text-black dark:text-white">
-                        Sales Volume in Demographic
+                        {t("demographicSalesChart.salesVolumeInDemographic")}
                     </CardTitle>
                     <div className="text-4xl font-bold text-black dark:text-white">
-                        {getData().reduce((sum, item) => sum + item.value, 0).toLocaleString()}
+                        {getData()
+                            .reduce((sum, item) => sum + item.value, 0)
+                            .toLocaleString()}
                     </div>
                 </div>
 
                 <div className="flex items-center gap-4">
                     {/* Year Filter */}
-                    <Select
-                        value={selectedYear}
-                        onValueChange={setSelectedYear}
-                    >
+                    <Select value={selectedYear} onValueChange={setSelectedYear}>
                         <SelectTrigger className="w-[100px] bg-transparent border-stroke">
-                            <SelectValue placeholder="Year" />
+                            <SelectValue placeholder={t("demographicSalesChart.year")} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="2024">2024</SelectItem>
@@ -134,20 +135,16 @@ const DemographicSalesChart = () => {
                     </Select>
 
                     {/* Quarter Filter */}
-                    <Select
-                        value={selectedQuarter}
-                        onValueChange={setSelectedQuarter}
-                    >
+                    <Select value={selectedQuarter} onValueChange={setSelectedQuarter}>
                         <SelectTrigger className="w-[120px] bg-transparent border-stroke">
-                            <SelectValue placeholder="Quarter" />
+                            <SelectValue placeholder={t("demographicSalesChart.quarter")} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="Q1">Q1</SelectItem>
                             <SelectItem value="Q2">Q2</SelectItem>
                             <SelectItem value="Q3">Q3</SelectItem>
                             <SelectItem value="Q4">Q4</SelectItem>
-                        </SelectContent>
-                    </Select>
+                        </SelectContent>                    </Select>
                 </div>
             </CardHeader>
 
@@ -159,11 +156,7 @@ const DemographicSalesChart = () => {
                             margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
                             barSize={40}
                         >
-                            <CartesianGrid
-                                strokeDasharray="3 3"
-                                vertical={false}
-                                stroke="#E2E8F0"
-                            />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
                             <XAxis
                                 dataKey="name"
                                 axisLine={false}
@@ -183,27 +176,22 @@ const DemographicSalesChart = () => {
                                 domain={[0, 120000]}
                             />
                             <Tooltip
-                                cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
+                                cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                                 contentStyle={{
-                                    backgroundColor: '#fff',
-                                    border: 'none',
-                                    borderRadius: '4px',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                                    backgroundColor: "#fff",
+                                    border: "none",
+                                    borderRadius: "4px",
+                                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                                 }}
-                                formatter={(value: number) => [value.toLocaleString(), 'Sales']}
+                                formatter={(value: number) => [value.toLocaleString(), "Sales"]}
                             />
-                            <Bar
-                                dataKey="value"
-                                fill="#94A3B8"
-                                radius={[0, 0, 0, 0]}
-                                label={CustomBarLabel}
-                            />
+                            <Bar dataKey="value" fill="#94A3B8" radius={[0, 0, 0, 0]} label={CustomBarLabel} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
             </CardContent>
         </Card>
-    )
-}
+    );
+};
 
-export default DemographicSalesChart
+export default DemographicSalesChart;

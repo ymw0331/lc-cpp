@@ -1,9 +1,10 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import TransferConfirmationDialog from '../Dialogs/TransferConfirmationDialog';
+import TransferConfirmationDialog from "../Dialogs/TransferConfirmationDialog";
+import { useTranslation } from "react-i18next";
 
 interface Currency {
     name: string;
@@ -17,12 +18,17 @@ interface WalletTransferProps {
     onTransfer: (amount: number, currency: string) => void;
 }
 
-const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }: WalletTransferProps) => {
+const WalletTransferForm = ({
+    sourceAmount,
+    sourceIcon,
+    currencies,
+    onTransfer,
+}: WalletTransferProps) => {
     const [selectedCurrency, setSelectedCurrency] = useState(currencies[0].name);
     const [amount, setAmount] = useState(sourceAmount.toString());
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const [error, setError] = useState('');
-
+    const [error, setError] = useState("");
+    const { t } = useTranslation();
 
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -33,14 +39,14 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
         }
 
         setAmount(value);
-        setError('');
+        setError("");
 
         // Validate amount
         const numAmount = Number(value);
         if (numAmount > sourceAmount) {
-            setError('Amount exceeds available balance');
+            setError("Amount exceeds available balance");
         } else if (numAmount <= 0) {
-            setError('Amount must be greater than 0');
+            setError("Amount must be greater than 0");
         }
     };
 
@@ -53,18 +59,21 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
     const handleConfirm = () => {
         onTransfer(Number(amount), selectedCurrency);
         setShowConfirmation(false);
-        setAmount('');
+        setAmount("");
     };
 
     return (
         <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
             <h3 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-3 sm:mb-4">
-                Reward Wallet Balance
+                {t("walletTransferForm.rewardWalletBalance")}
             </h3>
 
             <div className="flex items-center gap-2 mb-6 sm:mb-8">
                 <span className="text-2xl sm:text-[32px] font-bold text-black dark:text-white">
-                    {sourceAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {sourceAmount.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    })}
                 </span>
                 <div className="w-5 h-5 sm:w-6 sm:h-6">{sourceIcon}</div>
             </div>
@@ -72,7 +81,7 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
             <div className="space-y-4 sm:space-y-6">
                 <div>
                     <h4 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-3 sm:mb-4">
-                        Select Currency Wallet
+                        {t("walletTransferForm.selectCurrencyWallet")}
                     </h4>
                     <RadioGroup
                         value={selectedCurrency}
@@ -83,13 +92,16 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
                             <div
                                 key={currency.name}
                                 className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg w-full cursor-pointer ${selectedCurrency === currency.name
-                                        ? 'bg-primary/10 dark:bg-primary/10'
-                                        : 'bg-gray-2 dark:bg-meta-4'
+                                        ? "bg-primary/10 dark:bg-primary/10"
+                                        : "bg-gray-2 dark:bg-meta-4"
                                     }`}
                             >
                                 <RadioGroupItem value={currency.name} id={currency.name} />
                                 <div className="w-5 h-5 sm:w-6 sm:h-6">{currency.icon}</div>
-                                <label htmlFor={currency.name} className="text-sm sm:text-base font-medium cursor-pointer">
+                                <label
+                                    htmlFor={currency.name}
+                                    className="text-sm sm:text-base font-medium cursor-pointer"
+                                >
                                     {currency.name}
                                 </label>
                             </div>
@@ -99,14 +111,14 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
 
                 <div>
                     <h4 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-3 sm:mb-4">
-                        Enter Transfer Amount
+                        {t("walletTransferForm.enterTransferAmount")}
                     </h4>
                     <div className="relative">
                         <Input
                             type="text"
                             value={amount}
                             onChange={handleAmountChange}
-                            className={`pr-24 sm:pr-32 h-10 sm:h-12 bg-gray-2 dark:bg-meta-4 border-0 text-sm sm:text-base ${error ? 'border-red-500 focus:border-red-500' : ''
+                            className={`pr-24 sm:pr-32 h-10 sm:h-12 bg-gray-2 dark:bg-meta-4 border-0 text-sm sm:text-base ${error ? "border-red-500 focus:border-red-500" : ""
                                 }`}
                             placeholder="0.00"
                         />
@@ -115,7 +127,7 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
                             className="absolute right-1 top-1 bottom-1 bg-black text-white hover:bg-black/90 text-xs sm:text-sm px-2 sm:px-4"
                             onClick={() => setAmount(sourceAmount.toString())}
                         >
-                            Full Amount
+                            {t("walletTransferForm.fullAmountButton")}
                         </Button>
                     </div>
                     {error && (
@@ -125,12 +137,16 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
 
                 <div className="space-y-2 sm:space-y-3">
                     <div className="flex justify-between text-sm sm:text-base mb-1 sm:mb-2">
-                        <span className="text-black/60 dark:text-white/60">Transfer fee</span>
+                        <span className="text-black/60 dark:text-white/60">
+                            {t("walletTransferForm.transferFee")}
+                        </span>
                         <span className="font-medium">0.00</span>
                     </div>
 
                     <div className="flex justify-between text-sm sm:text-base mb-4 sm:mb-6">
-                        <span className="text-black/60 dark:text-white/60">Total Amount Transferred</span>
+                        <span className="text-black/60 dark:text-white/60">
+                            {t("walletTransferForm.totalAmountTransferred")}
+                        </span>
                         <span className="font-bold">{amount}</span>
                     </div>
                 </div>
@@ -140,7 +156,7 @@ const WalletTransferForm = ({ sourceAmount, sourceIcon, currencies, onTransfer }
                     onClick={handleTransfer}
                     disabled={!!error || !amount}
                 >
-                    Transfer
+                    {t("walletTransferForm.transferButton")}
                 </Button>
 
                 <TransferConfirmationDialog

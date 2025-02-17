@@ -1,7 +1,8 @@
 "use client";
 
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface SalesSummaryProps {
     groupSales: number;
@@ -12,15 +13,16 @@ interface SalesSummaryProps {
 const SalesSummaryCard = ({
     groupSales = 73.2,
     personalSales = 27.8,
-    className
+    className,
 }: SalesSummaryProps) => {
+    const { t } = useTranslation();
     const data = [
-        { name: 'Group Sales', value: groupSales },
-        { name: 'Personal Sales', value: personalSales }
+        { name: t("salesSummaryCard.groupSales"), value: groupSales },
+        { name: t("salesSummaryCard.personalSales"), value: personalSales },
     ];
 
     // Exact colors from the screenshot
-    const COLORS = ['#D61768', '#FFB5D6'];
+    const COLORS = ["#D61768", "#FFB5D6"];
 
     const CustomLegend = ({ payload }: any) => {
         return (
@@ -32,7 +34,7 @@ const SalesSummaryCard = ({
                             style={{ backgroundColor: COLORS[index] }}
                         />
                         <span className="text-base font-medium text-black dark:text-bodydark">
-                            {index === 0 ? 'Group Sales' : 'Personal Sales'}
+                            {entry.name}
                         </span>
                     </div>
                 ))}
@@ -40,7 +42,14 @@ const SalesSummaryCard = ({
         );
     };
 
-    const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value }: any) => {
+    const CustomLabel = ({
+        cx,
+        cy,
+        midAngle,
+        innerRadius,
+        outerRadius,
+        value,
+    }: any) => {
         const RADIAN = Math.PI / 180;
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -52,7 +61,7 @@ const SalesSummaryCard = ({
                 y={y}
                 fill="#000000"
                 className="text-lg font-semibold"
-                textAnchor={x > cx ? 'start' : 'end'}
+                textAnchor={x > cx ? "start" : "end"}
                 dominantBaseline="central"
             >
                 {`${value}%`}
@@ -61,13 +70,15 @@ const SalesSummaryCard = ({
     };
 
     return (
-        <div className={cn(
-            "rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark h-full",
-            className
-        )}>
+        <div
+            className={cn(
+                "rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark h-full",
+                className
+            )}
+        >
             <div className="mb-8">
                 <h4 className="text-2xl font-normal text-gray-500 dark:text-bodydark">
-                    Sales Summary
+                    {t("salesSummaryCard.salesSummary")}
                 </h4>
             </div>
 
@@ -88,11 +99,7 @@ const SalesSummaryCard = ({
                             dataKey="value"
                         >
                             {data.map((_, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index]}
-                                    stroke="none"
-                                />
+                                <Cell key={`cell-${index}`} fill={COLORS[index]} stroke="none" />
                             ))}
                         </Pie>
                         <Legend content={CustomLegend} />

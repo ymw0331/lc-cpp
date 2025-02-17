@@ -1,13 +1,15 @@
+"use client";
 
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import AgentLevelCard from '@/components/Cards/AgentLevelCard';
-import AgentLevelIcon from '@/components/Icons/dashboard/AgentLevelIcon';
-import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import UsersTable from '@/components/Tables/UsersTable';
-import { usersListData, agentLevelsData } from '@/lib/data'; // Import the data
-
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import AgentLevelCard from "@/components/Cards/AgentLevelCard";
+import AgentLevelIcon from "@/components/Icons/dashboard/AgentLevelIcon";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import UsersTable from "@/components/Tables/UsersTable";
+import { usersListData, agentLevelsData } from "@/lib/data"; // Import the data
+import { useTranslation } from "react-i18next";
 
 const ManageUserPage = () => {
+    const { t } = useTranslation();
 
     // Add this to your page file for dummy data:
     // const generateDummyUsers = (count: number) => {
@@ -43,7 +45,7 @@ const ManageUserPage = () => {
     // const MOCK_USERS = generateDummyUsers(30);
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Manage Users" />
+            <Breadcrumb pageName={t("manageUserPage.manageUsersBreadcrumb")} />
 
             <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                 {/* Agent Level Cards */}
@@ -53,7 +55,7 @@ const ManageUserPage = () => {
                             key={index}
                             level={agent.level}
                             count={agent.count}
-                            icon={<AgentLevelIcon/>}
+                            icon={<AgentLevelIcon />}
                         />
                     ))}
                 </div>
@@ -62,9 +64,8 @@ const ManageUserPage = () => {
                     <UsersTable users={usersListData} />
                 </div>
             </div>
-
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default ManageUserPage
+export default ManageUserPage;

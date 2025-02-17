@@ -1,9 +1,10 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "@/hooks/useToast";
+import { useTranslation } from "react-i18next";
 
 interface ReferralCardProps {
     code: string;
@@ -11,6 +12,7 @@ interface ReferralCardProps {
 
 const ReferralCard = ({ code }: ReferralCardProps) => {
     const [copied, setCopied] = useState(false);
+    const { t } = useTranslation();
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(code);
@@ -18,16 +20,14 @@ const ReferralCard = ({ code }: ReferralCardProps) => {
         setTimeout(() => setCopied(false), 2000);
 
         toast({
-            title: "Copied to clipboard",
-        })
+            title: t("referralCard.copiedToClipboard"),
+        });
     };
 
     return (
-        <div
-            className="relative p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark"
-        >
+        <div className="relative p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
             <h3 className="text-xl font-bold text-black dark:text-white mb-4">
-                Referral Code
+                {t("referralCard.referralCodeLabel")}
             </h3>
             <motion.div
                 onClick={copyToClipboard}
@@ -61,7 +61,6 @@ const ReferralCard = ({ code }: ReferralCardProps) => {
                     )}
                 </AnimatePresence>
             </motion.div>
-
         </div>
     );
 };

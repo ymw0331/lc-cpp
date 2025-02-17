@@ -1,49 +1,52 @@
-'use client';
+"use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from "@/contexts/AuthContext";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LockKeyhole, Mail, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
+import { useTranslation } from "react-i18next";
 
 const TEST_CREDENTIALS = {
     email: "alex.wong+knan@one2.cloud",
-    password: "Test1234@"
+    password: "Test1234@",
 };
 
 export default function LoginPage() {
+    const { t } = useTranslation();
     const [email, setEmail] = useState(TEST_CREDENTIALS.email);
     const [password, setPassword] = useState(TEST_CREDENTIALS.password);
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
     const { toast } = useToast();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('[Login] Login attempt started');
-        setError('');
+        console.log("[Login] Login attempt started");
+        setError("");
         setIsLoading(true);
 
         try {
             await login(email, password);
-            console.log('[Login] Login successful');
+            console.log("[Login] Login successful");
             toast({
-                title: "Success",
-                description: "Successfully logged in!",
+                title: t("loginPage.success"),
+                description: t("loginPage.successfullyLoggedIn"),
                 duration: 3000,
             });
         } catch (err: any) {
-            const errorMessage = err.response?.data?.message || err.message || 'Login failed';
-            console.error('[Login] Login failed:', { error: errorMessage });
+            const errorMessage =
+                err.response?.data?.message || err.message || t("loginPage.loginFailed");
+            console.error("[Login] Login failed:", { error: errorMessage });
             setError(errorMessage);
             toast({
                 variant: "destructive",
-                title: "Error",
+                title: t("loginPage.error"),
                 description: errorMessage,
                 duration: 5000,
             });
@@ -70,10 +73,10 @@ export default function LoginPage() {
                             </Link>
 
                             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                                Welcome to Lookcard Reseller Portal
+                                {t("loginPage.welcomeToLookcard")}
                             </h1>
                             <p className="text-gray-600 dark:text-gray-400">
-                                Please sign in to continue to your dashboard.
+                                {t("loginPage.pleaseSignIn")}
                             </p>
                         </div>
                     </div>
@@ -82,7 +85,7 @@ export default function LoginPage() {
                     <div className="w-full xl:w-1/2 border-l border-gray-200 dark:border-gray-700">
                         <div className="w-full p-8 sm:p-12">
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                                Sign In to Agent Dashboard
+                                {t("loginPage.signInToAgentDashboard")}
                             </h2>
 
                             {error && (
@@ -95,14 +98,14 @@ export default function LoginPage() {
                                 {/* Email Input */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Email
+                                        {t("loginPage.email")}
                                     </label>
                                     <div className="relative">
                                         <Input
                                             type="email"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Enter your email"
+                                            placeholder={t("loginPage.enterYourEmail")}
                                             className="pl-4 pr-10 py-2"
                                             disabled={isLoading}
                                             required
@@ -114,14 +117,14 @@ export default function LoginPage() {
                                 {/* Password Input */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Password
+                                        {t("loginPage.password")}
                                     </label>
                                     <div className="relative">
                                         <Input
                                             type="password"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Enter your password"
+                                            placeholder={t("loginPage.enterYourPassword")}
                                             className="pl-4 pr-10 py-2"
                                             disabled={isLoading}
                                             required
@@ -131,25 +134,21 @@ export default function LoginPage() {
                                 </div>
 
                                 {/* Submit Button */}
-                                <Button
-                                    type="submit"
-                                    className="w-full"
-                                    disabled={isLoading}
-                                >
+                                <Button type="submit" className="w-full" disabled={isLoading}>
                                     {isLoading ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Signing in...
+                                            {t("loginPage.signingIn")}...
                                         </>
                                     ) : (
-                                        'Sign In'
+                                        t("loginPage.signIn")
                                     )}
                                 </Button>
 
                                 {/* Test Credentials Info */}
                                 <div className="text-center">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                                        Test credentials: {TEST_CREDENTIALS.email}
+                                        {t("loginPage.testCredentials")}: {TEST_CREDENTIALS.email}
                                     </p>
                                 </div>
                             </form>

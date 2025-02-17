@@ -1,5 +1,4 @@
 "use client";
-
 import Breadcrumb from "../Breadcrumbs/Breadcrumb";
 import ProfileCard from "../Cards/ProfileCard";
 import RecruitCard from "../Cards/RecruitCard";
@@ -15,9 +14,11 @@ import { DashboardStatistics } from "@/types/dashboard";
 import { fetchData } from "@/lib/api-utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { checkTierPermission, TIER_PERMISSIONS } from '@/utils/permissions';
-import clsx from 'clsx'; // Make sure to install clsx if not already installed
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next'; // Import the translation hook
 
 const AgentDashboard: React.FC = () => {
+  const { t } = useTranslation(); // Initialize the translation hook
   const { user } = useAuth();
   const [data, setData] = useState<DashboardStatistics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -39,7 +40,7 @@ const AgentDashboard: React.FC = () => {
   if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500">Failed to load dashboard data</p>
+        <p className="text-red-500">{t('agentDashboard.failedToLoadData')}</p>
       </div>
     );
   }
@@ -57,24 +58,24 @@ const AgentDashboard: React.FC = () => {
   const visibleStatCards = [
     {
       icon: <RewardWalletBalanceIcon />,
-      title: "Reward Wallet Balance",
+      title: t('agentDashboard.rewardWalletBalance'),
       amount: data.rewardWallet.balance,
     },
     {
       icon: <TotalDepositAmountIcon />,
-      title: "Total Deposit Amount",
+      title: t('agentDashboard.totalDepositAmount'),
       amount: data.totalDeposits.amount,
     },
     canAccessIncentives && {
       icon: <DirectRecruitIncentiveIcon />,
-      title: "Direct Recruit Incentive Earnings",
+      title: t('agentDashboard.directRecruitIncentiveEarnings'),
       amount: data.directRecruitment.earnings,
     },
   ].filter(Boolean);
 
   return (
     <>
-      <Breadcrumb pageName="Overview" />
+      <Breadcrumb pageName={t('agentDashboard.overview')} />
 
       {/* Stats Cards with dynamic grid */}
       <div className={clsx(
@@ -135,7 +136,7 @@ const AgentDashboard: React.FC = () => {
       {/* Charts and Tables Section */}
       <div className="space-y-6">
         <StatisticChart
-          title="Deposit Summary"
+          title={t('agentDashboard.depositSummary')}
           total={data.totalDeposits.amount}
           currency={data.totalDeposits.currency}
           chartData={data.totalDeposits.chartData}

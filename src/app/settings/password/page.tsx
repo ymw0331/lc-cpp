@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import DefaultLayout from '@/components/Layouts/DefaultLayout'
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -19,24 +19,27 @@ import { Switch } from "@/components/ui/switch";
 import { useState } from "react";
 import { toast } from "@/hooks/useToast";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-const passwordSchema = z.object({
-    oldPassword: z.string().min(8, "Password must be at least 8 characters"),
-    newPassword: z.string()
-        .min(8, "Password must be at least 8 characters")
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-        .regex(/[0-9]/, "Password must contain at least one number")
-        .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
-    confirmPassword: z.string()
-}).refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-});
-
+const passwordSchema = z
+    .object({
+        oldPassword: z.string().min(8, "Password must be at least 8 characters"),
+        newPassword: z
+            .string()
+            .min(8, "Password must be at least 8 characters")
+            .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+            .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+            .regex(/[0-9]/, "Password must contain at least one number")
+            .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+        confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    });
 
 const PasswordPage = () => {
-
+    const { t } = useTranslation();
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -54,19 +57,19 @@ const PasswordPage = () => {
     async function onSubmit(values: z.infer<typeof passwordSchema>) {
         try {
             // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
 
             toast({
-                title: "Success",
-                description: "Your password has been updated successfully",
+                title: t("passwordPage.success"),
+                description: t("passwordPage.passwordUpdatedSuccessfully"),
                 duration: 3000,
             });
 
             form.reset();
         } catch (error) {
             toast({
-                title: "Error",
-                description: "Failed to update password. Please try again.",
+                title: t("passwordPage.error"),
+                description: t("passwordPage.failedToUpdatePassword"),
                 variant: "destructive",
                 duration: 3000,
             });
@@ -76,24 +79,30 @@ const PasswordPage = () => {
     const handle2FAToggle = (checked: boolean) => {
         setIs2FAEnabled(checked);
         toast({
-            title: checked ? "2FA Enabled" : "2FA Disabled",
+            title: checked
+                ? t("passwordPage.2faEnabled")
+                : t("passwordPage.2faDisabled"),
             description: checked
-                ? "Two-factor authentication has been enabled"
-                : "Two-factor authentication has been disabled",
+                ? t("passwordPage.2faEnabledDescription")
+                : t("passwordPage.2faDisabledDescription"),
             duration: 3000,
         });
     };
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Password" />
+            <Breadcrumb pageName={t("passwordPage.passwordBreadcrumb")} />
             <div className="w-full">
-
                 <div className="rounded-sm border border-stroke bg-white px-7.5 py-6.5 shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <h3 className="mb-5.5 text-title-sm text-black dark:text-white">Change Password</h3>
+                    <h3 className="mb-5.5 text-title-sm text-black dark:text-white">
+                        {t("passwordPage.changePassword")}
+                    </h3>
 
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5.5">
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-5.5"
+                        >
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 {/* Old Password Field */}
                                 <FormField
@@ -102,7 +111,7 @@ const PasswordPage = () => {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
-                                                Old Password
+                                                {t("passwordPage.oldPassword")}
                                             </FormLabel>
                                             <div className="relative">
                                                 <FormControl>
@@ -136,7 +145,7 @@ const PasswordPage = () => {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
-                                                New Password
+                                                {t("passwordPage.newPassword")}
                                             </FormLabel>
                                             <div className="relative">
                                                 <FormControl>
@@ -170,7 +179,7 @@ const PasswordPage = () => {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
-                                                Confirm Password
+                                                {t("passwordPage.confirmPassword")}
                                             </FormLabel>
                                             <div className="relative">
                                                 <FormControl>
@@ -182,7 +191,9 @@ const PasswordPage = () => {
                                                 </FormControl>
                                                 <button
                                                     type="button"
-                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    onClick={() =>
+                                                        setShowConfirmPassword(!showConfirmPassword)
+                                                    }
                                                     className="absolute right-4 top-2 text-body hover:text-primary dark:text-bodydark dark:hover:text-primary"
                                                 >
                                                     {showConfirmPassword ? (
@@ -202,10 +213,10 @@ const PasswordPage = () => {
                             <div className="flex items-center justify-between border-t border-stroke py-5 dark:border-strokedark">
                                 <div>
                                     <h4 className="text-title-sm2 font-semibold text-black dark:text-white">
-                                        Two Factor Authentication (2FA)
+                                        {t("passwordPage.twoFactorAuth")}
                                     </h4>
                                     <p className="mt-1 text-sm text-body dark:text-bodydark">
-                                        Enable to receive alerts and updates related to your two-factor authentication activity.
+                                        {t("passwordPage.twoFactorAuthDescription")}
                                     </p>
                                 </div>
                                 <Switch
@@ -221,7 +232,7 @@ const PasswordPage = () => {
                                     type="submit"
                                     className="flex justify-center rounded bg-primary py-3 px-6 font-medium text-white hover:bg-opacity-95 dark:bg-primary dark:text-white dark:hover:bg-opacity-90"
                                 >
-                                    Save Changes
+                                    {t("passwordPage.saveChanges")}
                                 </Button>
                             </div>
                         </form>
@@ -229,7 +240,7 @@ const PasswordPage = () => {
                 </div>
             </div>
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default PasswordPage
+export default PasswordPage;

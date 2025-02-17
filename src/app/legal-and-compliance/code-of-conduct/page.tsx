@@ -1,22 +1,25 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
-import ContentSection from "@/components/Sections/ContentSection"
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import { legalContentData } from "@/lib/data"
+"use client";
+
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { legalContentData } from "@/lib/data";
+import ContentSection from "@/components/Sections/ContentSection";
+import { useTranslation } from "react-i18next";
 
 const CodeOfConductPage = () => {
+    const { t } = useTranslation();
+
     return (
         <DefaultLayout>
-
-            <Breadcrumb pageName="Legal and Compliance" />
+            <Breadcrumb pageName={t("legal.legalAndComplianceBreadcrumb")} />
 
             <ContentSection
-                title={legalContentData.codeOfConduct.title}
+                title={t("legal.codeOfConductTitle")}
                 lastUpdated={legalContentData.codeOfConduct.lastUpdated}
                 sections={legalContentData.codeOfConduct.sections}
             />
-
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default CodeOfConductPage
+export default CodeOfConductPage;

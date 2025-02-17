@@ -1,22 +1,25 @@
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb"
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import ContentSection from "@/components/Sections/ContentSection"
-import { legalContentData } from "@/lib/data"
+"use client";
+
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import ContentSection from "@/components/Sections/ContentSection";
+import { legalContentData } from "@/lib/data";
+import { useTranslation } from "react-i18next";
 
 const ProfilePolicyPage = () => {
+    const { t } = useTranslation();
+
     return (
         <DefaultLayout>
-
-            <Breadcrumb pageName="Legal and Compliance" />
+            <Breadcrumb pageName={t("legal.legalAndComplianceBreadcrumb")} />
 
             <ContentSection
-                title={legalContentData.profilePolicy.title}
+                title={t("legal.profilePolicyTitle")}
                 lastUpdated={legalContentData.profilePolicy.lastUpdated}
                 sections={legalContentData.profilePolicy.sections}
             />
-
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default ProfilePolicyPage
+export default ProfilePolicyPage;

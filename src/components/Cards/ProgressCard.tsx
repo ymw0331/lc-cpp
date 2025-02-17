@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface ProgressCardProps {
     title: string;
@@ -18,13 +19,16 @@ const ProgressCard = ({
     suffix = "",
     className,
 }: ProgressCardProps) => {
+    const { t } = useTranslation();
     const percentage = (currentValue / targetValue) * 100;
 
     return (
-        <div className={cn(
-            "rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark",
-            className
-        )}>
+        <div
+            className={cn(
+                "rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark",
+                className
+            )}
+        >
             <div className="mb-4">
                 <h4 className="text-title-sm font-normal text-bodydark2 dark:text-bodydark">
                     {title}

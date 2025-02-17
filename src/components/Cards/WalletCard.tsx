@@ -1,5 +1,6 @@
 import Link from "next/link";
 import USDTIcon from "../Icons/dashboard/USDTIcon";
+import { useTranslation } from "react-i18next";
 
 interface WalletCardProps {
     title: string;
@@ -10,7 +11,16 @@ interface WalletCardProps {
     showTransfer?: boolean;
 }
 
-const WalletCard = ({ title, amount, icon, secondaryAmount, secondaryIcon, showTransfer }: WalletCardProps) => {
+const WalletCard = ({
+    title,
+    amount,
+    icon,
+    secondaryAmount,
+    secondaryIcon,
+    showTransfer,
+}: WalletCardProps) => {
+    const { t } = useTranslation();
+
     return (
         <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
             {/* Icon and Title */}
@@ -29,7 +39,10 @@ const WalletCard = ({ title, amount, icon, secondaryAmount, secondaryIcon, showT
                     {/* Primary Amount */}
                     <div className="flex items-center gap-2">
                         <span className="text-2xl sm:text-[32px] font-bold text-black dark:text-white">
-                            {amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            {amount.toLocaleString("en-US", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            })}
                         </span>
                         <USDTIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
@@ -38,11 +51,12 @@ const WalletCard = ({ title, amount, icon, secondaryAmount, secondaryIcon, showT
                     {secondaryAmount && (
                         <div className="flex items-center gap-2">
                             <span className="text-2xl sm:text-[32px] font-bold text-black dark:text-white">
-                                {secondaryAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                {secondaryAmount.toLocaleString("en-US", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })}
                             </span>
-                            <div className="w-5 h-5 sm:w-6 sm:h-6">
-                                {secondaryIcon}
-                            </div>
+                            <div className="w-5 h-5 sm:w-6 sm:h-6">{secondaryIcon}</div>
                         </div>
                     )}
                 </div>
@@ -51,7 +65,7 @@ const WalletCard = ({ title, amount, icon, secondaryAmount, secondaryIcon, showT
                 {showTransfer && (
                     <Link href="/account/transfer" className="w-full sm:w-auto">
                         <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm sm:text-base">
-                            Transfer
+                            {t("walletCard.transferButton")}
                         </button>
                     </Link>
                 )}

@@ -1,24 +1,26 @@
-'use client'
+"use client";
 
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import IncentiveCard from '@/components/Cards/IncentiveCard'
-import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import DataTable from '@/components/Tables/DataTable'
-import { StarBadgeIcon } from '@/components/Icons/dashboard'
-import { IncentivePageData } from '@/types/incentive'
-import React, { useEffect, useState } from 'react'
-import { resellerApi } from '@/api/reseller/reseller.api'
-import { useAuth } from '@/contexts/AuthContext'
-import Loader from '@/components/common/Loader'
-import { fetchData } from '@/lib/api-utils'
+import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import IncentiveCard from "@/components/Cards/IncentiveCard";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import DataTable from "@/components/Tables/DataTable";
+import { StarBadgeIcon } from "@/components/Icons/dashboard";
+import { IncentivePageData } from "@/types/incentive";
+import React, { useEffect, useState } from "react";
+import { resellerApi } from "@/api/reseller/reseller.api";
+import { useAuth } from "@/contexts/AuthContext";
+import Loader from "@/components/common/Loader";
+import { fetchData } from "@/lib/api-utils";
+import { useTranslation } from "react-i18next";
 
 const IncentiveManagementPage = () => {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [data, setData] = useState<IncentivePageData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
     const [currentMonth, setCurrentMonth] = useState<string>(
-        new Date().toLocaleString('en-US', { month: 'short', year: 'numeric' })
+        new Date().toLocaleString("en-US", { month: "short", year: "numeric" })
     );
 
     useEffect(() => {
@@ -34,9 +36,9 @@ const IncentiveManagementPage = () => {
     }, []);
 
     const tableColumns = [
-        { key: 'type', header: 'TYPE OF INCENTIVE', align: 'left' as const },
-        { key: 'amount', header: 'AMOUNT', align: 'right' as const },
-        { key: 'datetime', header: 'DATE TIME', align: 'right' as const },
+        { key: "type", header: t("dataTable.transactionId"), align: "left" as const },
+        { key: "amount", header: t("dataTable.transferredAmount"), align: "right" as const },
+        { key: "datetime", header: t("dataTable.dateTime"), align: "right" as const },
     ];
 
     if (!user || loading) {
@@ -52,14 +54,14 @@ const IncentiveManagementPage = () => {
     }
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Incentive Management" />
+            <Breadcrumb pageName={t("incentiveManagementPage.incentiveManagementBreadcrumb")} />
 
             <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                 {/* Top Row */}
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 2xl:gap-7.5">
                     <div className="col-span-3">
                         <IncentiveCard
-                            title="Total Incentive"
+                            title={t("incentiveManagementPage.totalIncentive")}
                             amount={data.summary.total_incentive}
                             icon={<StarBadgeIcon />}
                             className="bg-primary text-white h-full"
@@ -67,7 +69,7 @@ const IncentiveManagementPage = () => {
                     </div>
                     <div className="col-span-3">
                         <IncentiveCard
-                            title="Milestone Bonus"
+                            title={t("incentiveManagementPage.milestoneBonus")}
                             amount={data.summary.milestone_bonus.amount}
                             // badge={{
                             //     text: 'Claimed',
@@ -81,15 +83,15 @@ const IncentiveManagementPage = () => {
                 {/* Middle Row */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 2xl:gap-7.5">
                     <IncentiveCard
-                        title="Direct Recruit's Referral Overriding Incentive"
+                        title={t("incentiveManagementPage.directRecruitReferral")}
                         amount={data.summary.direct_recruit_referral}
                     />
                     <IncentiveCard
-                        title="Direct Admin Charge Rebate"
+                        title={t("incentiveManagementPage.directAdminCharge")}
                         amount={data.summary.direct_admin_charge}
                     />
                     <IncentiveCard
-                        title="Direct Recruit's Deposit Admin Charge Overriding Rebate"
+                        title={t("incentiveManagementPage.directRecruitDeposit")}
                         amount={data.summary.direct_recruit_deposit}
                     />
                 </div>
@@ -98,7 +100,7 @@ const IncentiveManagementPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 2xl:gap-7.5">
                     <div className="md:col-span-2">
                         <IncentiveCard
-                            title="Direct Recruit Level Advancement Bonus"
+                            title={t("incentiveManagementPage.directRecruitLevel")}
                             amount={data.summary.direct_recruit_level}
                             className="h-full"
                         />
@@ -106,7 +108,7 @@ const IncentiveManagementPage = () => {
 
                     <div className="md:col-span-4">
                         <IncentiveCard
-                            title="Performance Bonus"
+                            title={t("incentiveManagementPage.performanceBonus")}
                             amount={data.summary.performance_bonus.amount}
                             className="h-full"
                             // badge={{
@@ -123,14 +125,14 @@ const IncentiveManagementPage = () => {
                     <DataTable
                         columns={tableColumns}
                         data={data.activities[currentMonth] || []}
-                        title="Incentive Activity"
+                        title={t("dataTable.incentiveActivity")}
                         currentMonth={currentMonth}
                         onMonthChange={(month: string) => setCurrentMonth(month)}
                     />
                 </div>
             </div>
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default IncentiveManagementPage
+export default IncentiveManagementPage;

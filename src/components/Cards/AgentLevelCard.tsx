@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { ReactNode } from "react";  // Changed from ElementType
+import { ReactNode } from "react"; // Changed from ElementType
+import { useTranslation } from "react-i18next";
 
 interface AgentLevelCardProps {
     level: string;
     count: number;
-    icon: ReactNode;  // Changed to ReactNode to accept JSX elements
+    icon: ReactNode; // Changed to ReactNode to accept JSX elements
 }
 
 const AgentLevelCard = ({ level, count, icon }: AgentLevelCardProps) => {
+    const { t } = useTranslation();
+
     return (
         <Card className="bg-white dark:bg-boxdark border-none shadow-card">
             <CardContent className="p-6">
