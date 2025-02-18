@@ -5,31 +5,32 @@ import IncentiveCard from "@/components/Cards/IncentiveCard";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import DataTable from "@/components/Tables/DataTable";
 import { StarBadgeIcon } from "@/components/Icons/dashboard";
-import { IncentivePageData } from "@/types/incentive";
 import React, { useEffect, useState } from "react";
-import { resellerApi } from "@/api/reseller/reseller.api";
-import { useAuth } from "@/contexts/AuthContext";
-import Loader from "@/components/common/Loader";
-import { fetchData } from "@/lib/api-utils";
 import { useTranslation } from "react-i18next";
+// import { incentivePageData } from "@/lib/data";
+import { fetchData } from '@/lib/api-utils';
+import { incentiveApi } from "@/api/6-incentive/incentive.api";
+import { IncentivePageData } from "@/api/6-incentive/incentive.types";
+import Loader from "@/components/common/Loader";
+import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
+import { useAuth } from "@/contexts/AuthContext";
+
 
 const IncentiveManagementPage = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
-    const [data, setData] = useState<IncentivePageData | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<Error | null>(null);
     const [currentMonth, setCurrentMonth] = useState<string>(
         new Date().toLocaleString("en-US", { month: "short", year: "numeric" })
     );
 
+    const [incentiveData, setIncentiveData] = useState<IncentivePageData | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
     useEffect(() => {
         fetchData(
-            async () => {
-                const resellerData = await resellerApi.getResellerInfo();
-                return resellerApi.transformToIncentiveData(resellerData);
-            },
-            setData,
+            incentiveApi.getIncentiveData,
+            setIncentiveData,
             setError,
             setLoading
         );
@@ -41,17 +42,34 @@ const IncentiveManagementPage = () => {
         { key: "datetime", header: t("dataTable.dateTime"), align: "right" as const },
     ];
 
-    if (!user || loading) {
+    if (loading)
         return <Loader />;
-    }
 
-    if (error || !data) {
+    if (error || !incentiveData) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <p className="text-red-500">Failed to load incentive data</p>
+                <p className="text-red-500">{t('incentiveManagementPage.failedToLoadData')}</p>
             </div>
         );
     }
+
+    // Only for level 1 agent can see milestone bonus
+    const canSeeMilestoneBonus = checkTierPermission(
+        user?.tierPriority || 0,
+        TIER_PERMISSIONS.MILESTONE_BONUS_TIER
+    );
+
+    const canSeeIncentives = checkTierPermission(
+        user?.tierPriority || 0,
+        TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
+    );
+
+
+    if (!incentiveData) return null;
+
+    const { summary, activities } = incentiveData;
+
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName={t("incentiveManagementPage.incentiveManagementBreadcrumb")} />
@@ -62,69 +80,73 @@ const IncentiveManagementPage = () => {
                     <div className="col-span-3">
                         <IncentiveCard
                             title={t("incentiveManagementPage.totalIncentive")}
-                            amount={data.summary.total_incentive}
+                            amount={summary.total_incentive}
                             icon={<StarBadgeIcon />}
                             className="bg-primary text-white h-full"
                         />
                     </div>
-                    <div className="col-span-3">
-                        <IncentiveCard
-                            title={t("incentiveManagementPage.milestoneBonus")}
-                            amount={data.summary.milestone_bonus.amount}
-                            // badge={{
-                            //     text: 'Claimed',
-                            //     type: 'claimed'
-                            // }}
-                            className="h-full"
-                        />
-                    </div>
+
+                    {canSeeMilestoneBonus && (
+                        <div className="col-span-3">
+                            <IncentiveCard
+                                title={t("incentiveManagementPage.milestoneBonus")}
+                                amount={summary.milestone_bonus.amount}
+                                // badge={{
+                                //     text: 'Claimed',
+                                //     type: 'claimed'
+                                // }}
+                                className="h-full"
+                            />
+                        </div>
+                    )}
                 </div>
 
-                {/* Middle Row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 2xl:gap-7.5">
-                    <IncentiveCard
-                        title={t("incentiveManagementPage.directRecruitReferral")}
-                        amount={data.summary.direct_recruit_referral}
-                    />
-                    <IncentiveCard
-                        title={t("incentiveManagementPage.directAdminCharge")}
-                        amount={data.summary.direct_admin_charge}
-                    />
-                    <IncentiveCard
-                        title={t("incentiveManagementPage.directRecruitDeposit")}
-                        amount={data.summary.direct_recruit_deposit}
-                    />
-                </div>
-
-                {/* Bottom Row */}
-                <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 2xl:gap-7.5">
-                    <div className="md:col-span-2">
+                {/* Middle Row - Only visible for level 2 and above */}
+                {canSeeIncentives && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 2xl:gap-7.5">
                         <IncentiveCard
-                            title={t("incentiveManagementPage.directRecruitLevel")}
-                            amount={data.summary.direct_recruit_level}
-                            className="h-full"
+                            title={t("incentiveManagementPage.directRecruitReferral")}
+                            amount={summary.direct_recruit_referral}
+                        />
+                        <IncentiveCard
+                            title={t("incentiveManagementPage.directAdminCharge")}
+                            amount={summary.direct_admin_charge}
+                        />
+                        <IncentiveCard
+                            title={t("incentiveManagementPage.directRecruitDeposit")}
+                            amount={summary.direct_recruit_deposit}
                         />
                     </div>
+                )}
 
-                    <div className="md:col-span-4">
-                        <IncentiveCard
-                            title={t("incentiveManagementPage.performanceBonus")}
-                            amount={data.summary.performance_bonus.amount}
-                            className="h-full"
-                            // badge={{
-                            //     text: 'Fulfilled',
-                            //     type: 'fulfilled'
-                            // }}
-                            activeUsers={data.summary.performance_bonus.activeUsers}
-                        />
+
+                {/* Bottom Row - Only visible for level 2 and above */}
+                {canSeeIncentives && (
+                    <div className="grid grid-cols-1 md:grid-cols-6 gap-4 md:gap-6 2xl:gap-7.5">
+                        <div className="md:col-span-2">
+                            <IncentiveCard
+                                title={t("incentiveManagementPage.directRecruitLevelAdvancementBonus")}
+                                amount={summary.direct_recruit_level_advancement_bonus}
+                                className="h-full"
+                            />
+                        </div>
+
+                        <div className="md:col-span-4">
+                            <IncentiveCard
+                                title={t("incentiveManagementPage.performanceBonus")}
+                                amount={summary.performance_bonus.amount}
+                                className="h-full"
+                                activeUsers={summary.performance_bonus.activeUsers}
+                            />
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Activity Table */}
                 <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                     <DataTable
                         columns={tableColumns}
-                        data={data.activities[currentMonth] || []}
+                        data={activities[currentMonth] || []}
                         title={t("dataTable.incentiveActivity")}
                         currentMonth={currentMonth}
                         onMonthChange={(month: string) => setCurrentMonth(month)}

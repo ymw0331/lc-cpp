@@ -2,18 +2,19 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { authApi } from '@/api/auth/auth.api';
-import { profileApi } from '@/api/profile/profile.api'; // Add this
+import { authApi } from '@/api/1-auth/auth.api';
+import { profileApi } from '@/api/2-profile/profile.api'; // Add this
 import { storage } from '@/lib/storage';
-import type { AuthUser } from '@/api/auth/auth.types';
-import type { ProfileResponse } from '@/api/profile/profile.types';
-import { resellerApi } from '@/api/reseller/reseller.api';
+import type { AuthUser } from '@/api/1-auth/auth.types';
+import type { ProfileResponse } from '@/api/2-profile/profile.types';
+import { resellerApi } from '@/api/3-reseller/reseller.api';
 
 // Enhance AuthUser type with additional fields
 interface EnhancedAuthUser extends AuthUser {
     profileName: string;
     avatarUrl: string | null;
     tierPriority: number;
+    referralCode: string | null;
     role: string;
 }
 
@@ -46,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 avatarUrl: profileData.avatarUrl,
                 role: profileData.role,
                 profileName: profileData.name,
+                referralCode: profileData.referralCode,
                 tierPriority: resellerData.tier.priority,
             };
 
@@ -57,6 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 hasAvatar: !!enhancedUser.avatarUrl,
                 tierPriority: enhancedUser.tierPriority,
                 profileName: enhancedUser.profileName,
+                referralCode: enhancedUser.referralCode,
             });
         } catch (error) {
             console.error('[Auth] Error fetching additional user data:', error);

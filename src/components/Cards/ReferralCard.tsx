@@ -21,6 +21,8 @@ const ReferralCard = ({ code }: ReferralCardProps) => {
 
         toast({
             title: t("referralCard.copiedToClipboard"),
+            description: t("referralCard.copiedToClipboardDescription"),
+            duration: 3000,
         });
     };
 

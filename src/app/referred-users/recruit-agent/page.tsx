@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 const formSchema = z.object({
     referralId: z.string(),
@@ -88,15 +89,16 @@ const MARKETS: Market[] = [
 
 const RecruitAgentPage = () => {
     const { t } = useTranslation();
+    const { user } = useAuth();
 
     // Initial state values
-    const [initialValues] = useState({
-        referralId: "AS7JDS38",
-        fullName: "Joby Tan",
-        email: "joby.tan@lookcard.io",
-        market: MARKETS[0].value,
-        agreed: false,
-    });
+    // const [initialValues] = useState({
+    //     referralId: "AS7JDS38",
+    //     fullName: "Joby Tan",
+    //     email: "joby.tan@lookcard.io",
+    //     market: MARKETS[0].value,
+    //     agreed: false,
+    // });
 
     // Verification states
     const [isVerified, setIsVerified] = useState(false);
@@ -105,7 +107,14 @@ const RecruitAgentPage = () => {
     // Form definition
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialValues,
+        // defaultValues: initialValues,
+        defaultValues: {
+            referralId: user?.referralCode || '', // Populate referralId from auth context
+            fullName: '',
+            email: '',
+            market: '',
+            agreed: false,
+        },
     });
 
     const handleVerify = () => {

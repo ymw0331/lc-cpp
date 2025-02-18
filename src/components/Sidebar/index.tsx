@@ -6,6 +6,8 @@ import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/contexts/AuthContext";
+import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
 
 import {
   AccountIcon,
@@ -22,80 +24,90 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 
-const menuGroups = [
-  {
-    name: "MENU",
-    menuItems: [
-      {
-        icon: <DashboardIcon />,
-        label: "Dashboard",
-        route: "/",
-      },
-      {
-        icon: <AccountIcon />,
-        label: "Account",
-        route: "#",
-        children: [
-          { label: "Wallets", route: "/account/wallets" },
-          { label: "Transfer", route: "/account/transfer" },
-        ],
-      },
-      {
-        icon: <IncentiveManagementIcon />,
-        label: "Incentive Management",
-        route: "/incentive-management",
-      },
-      {
-        icon: <ReferredUsersIcon />,
-        label: "Referred Users",
-        route: "#",
-        children: [
-          { label: "Referred Users", route: "/referred-users" },
-          { label: "Manage User", route: "/referred-users/manage-user" },
-          { label: "Recruit Agent", route: "/referred-users/recruit-agent" },
-        ],
-      },
-      {
-        icon: <PerformanceIcon />,
-        label: "Performance",
-        route: "/performance",
-      },
-      {
-        icon: <SupportIcon />,
-        label: "Support",
-        route: "/support",
-      },
-      {
-        icon: <SettingsIcon />,
-        label: "Settings",
-        route: "#",
-        children: [
-          { label: "Profile", route: "/settings/profile" },
-          { label: "Password", route: "/settings/password" },
-          { label: "Preference", route: "/settings/preference" },
-        ],
-      },
-      {
-        icon: <SupportIcon />,
-        label: "Legal & Compliance",
-        route: "#",
-        children: [
-          { label: "Profile Policy", route: "/legal-and-compliance/profile-policy" },
-          { label: "Terms and Conditions", route: "/legal-and-compliance/terms-and-conditions" },
-          { label: "User Agreement", route: "/legal-and-compliance/user-agreement" },
-          { label: "Code of Conduct", route: "/legal-and-compliance/code-of-conduct" },
-          { label: "Compliance and Anti-Corruption", route: "/legal-and-compliance/compliance-and-anti-corruption" },
-          { label: "Privacy Guideline", route: "/legal-and-compliance/program-guideline" },
-        ],
-      },
-    ],
-  },
-];
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+
+  // Check if the user has the required permission for "Recruit Agent"
+  const canAccessRecruitment = checkTierPermission(
+    user?.tierPriority || 0,
+    TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+  );
+
+  const menuGroups = [
+    {
+      name: "MENU",
+      menuItems: [
+        {
+          icon: <DashboardIcon />,
+          label: "Dashboard",
+          route: "/",
+        },
+        {
+          icon: <AccountIcon />,
+          label: "Account",
+          route: "#",
+          children: [
+            { label: "Wallets", route: "/account/wallets" },
+            { label: "Transfer", route: "/account/transfer" },
+          ],
+        },
+        {
+          icon: <IncentiveManagementIcon />,
+          label: "Incentive Management",
+          route: "/incentive-management",
+        },
+        {
+          icon: <ReferredUsersIcon />,
+          label: "Referred Users",
+          route: "#",
+          children: [
+            { label: "Referred Users", route: "/referred-users" },
+            { label: "Manage User", route: "/referred-users/manage-user" },
+            // Conditionally render Recruit Agent based on permission
+            ...(canAccessRecruitment
+              ? [{ label: "Recruit Agent", route: "/referred-users/recruit-agent" }]
+              : []),
+          ],
+        },
+        {
+          icon: <PerformanceIcon />,
+          label: "Performance",
+          route: "/performance",
+        },
+        {
+          icon: <SupportIcon />,
+          label: "Support",
+          route: "/support",
+        },
+        {
+          icon: <SettingsIcon />,
+          label: "Settings",
+          route: "#",
+          children: [
+            { label: "Profile", route: "/settings/profile" },
+            { label: "Password", route: "/settings/password" },
+            { label: "Preference", route: "/settings/preference" },
+          ],
+        },
+        {
+          icon: <SupportIcon />,
+          label: "Legal & Compliance",
+          route: "#",
+          children: [
+            { label: "Profile Policy", route: "/legal-and-compliance/profile-policy" },
+            { label: "Terms and Conditions", route: "/legal-and-compliance/terms-and-conditions" },
+            { label: "User Agreement", route: "/legal-and-compliance/user-agreement" },
+            { label: "Code of Conduct", route: "/legal-and-compliance/code-of-conduct" },
+            { label: "Compliance and Anti-Corruption", route: "/legal-and-compliance/compliance-and-anti-corruption" },
+            { label: "Privacy Guideline", route: "/legal-and-compliance/program-guideline" },
+          ],
+        },
+      ],
+    },
+  ];
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -118,22 +130,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         >
           {menuGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="will-change-transform">
+              <p className="font-bold text-bodydark px-3">{t(`sidebar.${group.name.toLowerCase()}`)}</p>
               <ul className="flex flex-col gap-2">
-                {group.menuItems.map((menuItem, menuIndex) => (
-                  <SidebarItem
-                    key={menuIndex}
-                    item={{
-                      ...menuItem,
-                      label: t(`sidebar.${menuItem.label.toLowerCase()}`),
-                      children: menuItem.children?.map((child) => ({
-                        ...child,
-                        label: t(`sidebar.${child.label.toLowerCase()}`),
-                      })),
-                    }}
-                    pageName={pageName}
-                    setPageName={setPageName}
-                  />
-                ))}
+                {menuGroups[0].menuItems.map((menuItem, menuIndex) => {
+                  return (
+                    <SidebarItem
+                      key={menuIndex}
+                      item={{
+                        ...menuItem,
+                        label: t(`sidebar.${menuItem.label.toLowerCase()}`),
+                        children: menuItem.children?.map((child) => ({
+                          ...child,
+                          label: t(`sidebar.${child.label.toLowerCase()}`),
+                        })),
+                      }}
+                      pageName={pageName}
+                      setPageName={setPageName}
+                    />
+                  );
+                })}
               </ul>
             </div>
           ))}

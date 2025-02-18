@@ -5,8 +5,9 @@ export const API_ENDPOINTS = {
     },
     RESELLER: {
         BASE_URL: 'https://api.reseller.lookcard.io/',
-        PROFILE: '/app/reseller/profile',
         INFO: '/app/reseller',
+        PROFILE: '/app/reseller/profile',
         DASHBOARD: '/app/reseller/dashboard',
+        REWARDS: '/app/reseller/rewards',
     },
 } as const;

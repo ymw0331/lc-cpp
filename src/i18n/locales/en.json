@@ -76,7 +76,8 @@
     },
     "referralCard": {
         "referralCodeLabel": "Referral Code",
-        "copiedToClipboard": "Copied to clipboard"
+        "copiedToClipboard": "Copied to clipboard",
+        "copiedToClipboardDescription": "Referral code copied to clipboard"
     },
     "recruitCard": {
         "totalDirectRecruitLabel": "Total Direct Recruit",
@@ -127,8 +128,9 @@
         "directRecruitReferral": "Direct Recruit's Referral Overriding Incentive",
         "directAdminCharge": "Direct Admin Charge Rebate",
         "directRecruitDeposit": "Direct Recruit's Deposit Admin Charge Overriding Rebate",
-        "directRecruitLevel": "Direct Recruit Level Advancement Bonus",
-        "performanceBonus": "Performance Bonus"
+        "directRecruitLevelAdvancementBonus": "Direct Recruit Level Advancement Bonus",
+        "performanceBonus": "Performance Bonus",
+        "failedToLoadData": "Failed to load incentive data"
     },
     "incentiveCard": {
         "activeUsersLeft": "Active Users Left"

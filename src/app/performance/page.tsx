@@ -6,10 +6,15 @@ import DemographicSalesChart from "@/components/Charts/DemographicSalesChart";
 import SalesSummaryCard from "@/components/Charts/SalesSummaryCard";
 import SalesVolumeBarChart from "@/components/Charts/SalesVolumeBarChart";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { performanceData } from "@/lib/data"; // Adjusted import to match the export
+import { AgentLevel, performanceData } from "@/lib/data"; // Adjusted import to match the export
+import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/contexts/AuthContext";
+import clsx from "clsx";
 
 const PerformancePage = () => {
+    const { user } = useAuth();
+
     const { t } = useTranslation();
     const {
         cardActivationVolume,
@@ -18,6 +23,11 @@ const PerformancePage = () => {
         salesSummary,
         salesVolumeData,
     } = performanceData;
+
+    const canAccessRecruitment = checkTierPermission(
+        user?.tierPriority || 0,
+        TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+    );
 
     return (
         <DefaultLayout>
@@ -28,8 +38,12 @@ const PerformancePage = () => {
                 {/* Left Column - Takes 8 columns (2/3 of space) */}
                 <div className="col-span-12 xl:col-span-8 h-full">
                     {/* Top Cards Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        {/* Card Activation Volume */}
+                    <div className={clsx(
+                        "grid gap-4 mb-4",
+                        canAccessRecruitment
+                            ? "grid-cols-1 md:grid-cols-2"
+                            : "grid-cols-1"
+                    )}>
                         <ProgressCard
                             title={t("performancePage.cardActivationVolume")}
                             currentValue={cardActivationVolume.currentValue}
@@ -38,19 +52,20 @@ const PerformancePage = () => {
                             progressColor={"primary"}
                         />
 
-                        <ProgressCard
-                            title={t("performancePage.totalAgentRecruitment")}
-                            currentValue={totalAgentRecruitment.currentValue}
-                            targetValue={totalAgentRecruitment.targetValue}
-                            suffix={"Agents"}
-                            progressColor={"primary"}
-                        />
-
+                        {canAccessRecruitment && (
+                            <ProgressCard
+                                title={t("performancePage.totalAgentRecruitment")}
+                                currentValue={totalAgentRecruitment.currentValue}
+                                targetValue={totalAgentRecruitment.targetValue}
+                                suffix={"Agents"}
+                                progressColor={"primary"}
+                            />
+                        )}
                     </div>
-
+                    
                     {/* Next Level Card */}
                     <NextLevelCard
-                        currentLevel={nextLevelCard.currentLevel}
+                        currentLevel={nextLevelCard.currentLevel ?? AgentLevel.LEVEL_1}
                         progress={nextLevelCard.progress}
                         isMaxLevel={nextLevelCard.isMaxLevel}
                         avatarUrl={nextLevelCard.avatarUrl}

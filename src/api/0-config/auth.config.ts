@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_ENDPOINTS } from './endpoints';
 import { storage } from '@/lib/storage';
 
-const axiosInstance = axios.create({
+const authInstance = axios.create({
     baseURL: API_ENDPOINTS.AUTH.BASE_URL,
     headers: {
         'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 });
 
 // Request interceptor
-axiosInstance.interceptors.request.use(
+authInstance.interceptors.request.use(
     (config) => {
         const token = storage.getToken();
         if (token) {
@@ -30,7 +30,7 @@ axiosInstance.interceptors.request.use(
 );
 
 // Response interceptor
-axiosInstance.interceptors.response.use(
+authInstance.interceptors.response.use(
     (response) => {
         console.log('[API] Response:', {
             url: response.config.url,
@@ -55,4 +55,4 @@ axiosInstance.interceptors.response.use(
 );
 
 
-export default axiosInstance;
+export default authInstance;

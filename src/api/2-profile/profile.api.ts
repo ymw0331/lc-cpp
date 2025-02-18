@@ -1,5 +1,5 @@
-import resellerAxios from '@/api/config/reseller.config';
-import { API_ENDPOINTS } from '@/api/config/endpoints';
+import resellerAxios from '@/api/0-config/reseller.config';
+import { API_ENDPOINTS } from '@/api/0-config/endpoints';
 import type { ProfileResponse } from './profile.types';
 
 export const profileApi = {

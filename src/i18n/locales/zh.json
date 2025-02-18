@@ -127,8 +127,9 @@
         "directRecruitReferral": "直接招募推荐覆盖激励",
         "directAdminCharge": "直接管理费回扣",
         "directRecruitDeposit": "直接招募存款管理费覆盖回扣",
-        "directRecruitLevel": "直接招募级别晋升奖金",
-        "performanceBonus": "业绩奖金"
+        "directRecruitLevelAdvancementBonus": "直接招募级别晋升奖金",
+        "performanceBonus": "业绩奖金",
+        "failedToLoadData": "无法加载激励数据"
     },
     "incentiveCard": {
         "activeUsersLeft": "剩余活跃用户"
