@@ -6,7 +6,7 @@ import DemographicSalesChart from "@/components/Charts/DemographicSalesChart";
 import SalesSummaryCard from "@/components/Charts/SalesSummaryCard";
 import SalesVolumeBarChart from "@/components/Charts/SalesVolumeBarChart";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { AgentLevel, performanceData } from "@/lib/data"; // Adjusted import to match the export
+import { performanceData } from "@/lib/data"; // Adjusted import to match the export
 import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
@@ -62,10 +62,10 @@ const PerformancePage = () => {
                             />
                         )}
                     </div>
-                    
+
                     {/* Next Level Card */}
                     <NextLevelCard
-                        currentLevel={nextLevelCard.currentLevel ?? AgentLevel.LEVEL_1}
+                        currentLevel={nextLevelCard.currentLevel}
                         progress={nextLevelCard.progress}
                         isMaxLevel={nextLevelCard.isMaxLevel}
                         avatarUrl={nextLevelCard.avatarUrl}

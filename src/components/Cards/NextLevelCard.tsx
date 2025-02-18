@@ -5,11 +5,10 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/useToast";
 import Image from "next/image";
 import { Avatar } from "../ui/avatar";
-import { AgentLevel } from "@/lib/data";
 import { useTranslation } from "react-i18next";
 
 interface NextLevelCardProps {
-    currentLevel: AgentLevel | string; // Accept both AgentLevel enum and string
+    currentLevel: string; // Accept both AgentLevel enum and string
     progress: number;
     isMaxLevel?: boolean;
     avatarUrl?: string;
@@ -37,7 +36,7 @@ const NextLevelCard = ({
     };
 
     // Convert enum value to display text
-    const getLevelDisplay = (level: AgentLevel | string) => {
+    const getLevelDisplay = (level: string) => {
         if (typeof level === "number") {
             return `${t("nextLevelCard.level")} ${level}`;
         }
