@@ -49,7 +49,28 @@
         "error": "Error",
         "success": "Success",
         "successfullyLoggedIn": "Successfully logged in!",
-        "loginFailed": "Login failed"
+        "loginFailed": "Login failed",
+        "rememberMe": "Remember Me",
+        "forgotPassword": "Forgot Password",
+        "warning": "Warning",
+        "warningDescription": "To access this portal, you must first register as a Lookcard.io App user and log in with your credentials. If you are not a registered user, please exit this page. Unauthorized access may lead to disciplinary action or legal consequences.",
+        "signInTo": "Sign in to",
+        "communityPartnershipProgramPortal": "Community Partnership Program Portal",
+        "editYourInformation": "Edit your information in a swipe",
+        "sintOccaecat": "Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
+        "longEstablishedFact": "It is a long established fact",
+        "readable": "that a reader will be distracted by the readable.",
+        "manyVariations": "There are many variations",
+        "available": "of passages of Lorem Ipsum available, but the majority have suffered"
+    },
+    "forgotPasswordDialog": {
+        "close": "Close",
+        "forgotPassword": "Forgot Password?",
+        "passwordResetUnavailable": "Password reset is unavailable on",
+        "communityPartnershipProgramPortal": "the Community Partnership Program portal.",
+        "toResetYourCredentials": "To reset your login credentials, please use the",
+        "useLookCardApp": "LookCard.io app. Open the app to update your password securely.",
+        "backToLogin": "Back to Login"
     },
     "agentDashboard": {
         "overview": "Overview",
@@ -97,10 +118,14 @@
         "walletsBreadcrumb": "Wallets",
         "rewardWalletBalance": "Reward Wallet Balance",
         "currentAccountWalletBalance": "Current Account Wallet Balance",
-        "rewardWalletSummary": "Reward Wallet Summary"
+        "rewardWalletSummary": "Reward Wallet Summary",
+        "failedToLoadData": "Failed to load wallet data"
     },
     "walletCard": {
         "transferButton": "Transfer"
+    },
+    "analyticChart": {
+        "noDataAvailable": "No Data Available"
     },
     "transferPage": {
         "transferToCurrentAccountWalletBreadcrumb": "Transfer to Current Account Wallet"

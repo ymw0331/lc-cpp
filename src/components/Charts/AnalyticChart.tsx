@@ -44,7 +44,9 @@ const AnalyticChart = ({
     const [activePeriod, setActivePeriod] = useState<Period>("Year");
 
     const activeData = chartData[activePeriod];
-    const allValues = activeData.map((d) => d.value);
+    const hasData = activeData && activeData.length > 0;
+
+    const allValues = hasData ? activeData.map((d) => d.value) : [0];
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
 
@@ -140,62 +142,70 @@ const AnalyticChart = ({
             {showLegend && legendPosition === "top-right" && <CustomLegend />}
 
             <div className="h-[250px] sm:h-[300px] w-full mt-4 -mx-4 sm:mx-0">
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                        data={chartData[activePeriod]}
-                        margin={{
-                            top: 30,
-                            right: 10,
-                            left: 10,
-                            bottom: 5,
-                        }} // Increased top margin for labels
-                    >
-                        <CartesianGrid
-                            strokeDasharray="5 5"
-                            vertical={false}
-                            stroke="rgba(226, 232, 240, 0.5)"
-                        />
-                        <XAxis
-                            dataKey="label"
-                            axisLine={false}
-                            tickLine={false}
-                            tick={{
-                                fill: "#64748B",
-                                fontSize: window.innerWidth < 640 ? 10 : 12,
+                {hasData ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                        <LineChart
+                            data={chartData[activePeriod]}
+                            margin={{
+                                top: 30,
+                                right: 10,
+                                left: 10,
+                                bottom: 5,
                             }}
-                            dy={10}
-                        />
-                        <YAxis
-                            axisLine={false}
-                            tickLine={false}
-                            tick={{
-                                fill: "#64748B",
-                                fontSize: window.innerWidth < 640 ? 10 : 12,
-                            }}
-                            domain={[yAxisMin, yAxisMax]}
-                        />
-                        <Tooltip content={<CustomTooltip />} />
-                        <Line
-                            type="monotone"
-                            dataKey="value"
-                            stroke={lineColor}
-                            strokeWidth={2}
-                            dot={{
-                                r: 4,
-                                fill: lineColor,
-                                stroke: "#fff",
-                                strokeWidth: 2,
-                            }}
-                            activeDot={{
-                                r: 6,
-                                fill: lineColor,
-                                stroke: "#fff",
-                                strokeWidth: 2,
-                            }}
-                            label={<CustomLabel />} // Added custom label
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                        >
+                            <CartesianGrid
+                                strokeDasharray="5 5"
+                                vertical={false}
+                                stroke="rgba(226, 232, 240, 0.5)"
+                            />
+                            <XAxis
+                                dataKey="label"
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{
+                                    fill: "#64748B",
+                                    fontSize: window.innerWidth < 640 ? 10 : 12,
+                                }}
+                                dy={10}
+                            />
+                            <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{
+                                    fill: "#64748B",
+                                    fontSize: window.innerWidth < 640 ? 10 : 12,
+                                }}
+                                domain={[yAxisMin, yAxisMax]}
+                            />
+                            <Tooltip content={<CustomTooltip />} />
+                            <Line
+                                type="monotone"
+                                dataKey="value"
+                                stroke={lineColor}
+                                strokeWidth={2}
+                                dot={{
+                                    r: 4,
+                                    fill: lineColor,
+                                    stroke: "#fff",
+                                    strokeWidth: 2,
+                                }}
+                                activeDot={{
+                                    r: 6,
+                                    fill: lineColor,
+                                    stroke: "#fff",
+                                    strokeWidth: 2,
+                                }}
+                                label={<CustomLabel />}
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <div className="flex items-center justify-center h-full">
+                        <p className="text-lg text-gray-500 dark:text-gray-400">
+                            {t('analyticChart.noDataAvailable')}
+                        </p>
+                    </div>
+                )}
             </div>
 
             {showLegend && legendPosition === "bottom-right" && <CustomLegend />}

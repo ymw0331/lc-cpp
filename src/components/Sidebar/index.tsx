@@ -88,7 +88,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           route: "#",
           children: [
             { label: "Profile", route: "/settings/profile" },
-            { label: "Password", route: "/settings/password" },
+            // { label: "Password", route: "/settings/password" },
             { label: "Preference", route: "/settings/preference" },
           ],
         },

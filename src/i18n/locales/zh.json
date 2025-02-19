@@ -69,7 +69,28 @@
         "error": "错误",
         "success": "成功",
         "successfullyLoggedIn": "登录成功！",
-        "loginFailed": "登录失败"
+        "loginFailed": "登录失败",
+        "rememberMe": "记住我",
+        "forgotPassword": "忘记密码",
+        "warning": "警告",
+        "warningDescription": "要访问此门户，您必须首先注册为Lookcard.io App用户并使用您的凭据登录。如果您不是注册用户，请退出此页面。未经授权的访问可能会导致纪律处分或法律后果。",
+        "signInTo": "登录到",
+        "communityPartnershipProgramPortal": "社区合作计划门户",
+        "editYourInformation": "滑动即可编辑您的信息",
+        "sintOccaecat": "Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
+        "longEstablishedFact": "这是一个长期存在的事实",
+        "readable": "读者会被可读的内容分散注意力。",
+        "manyVariations": "有很多变体",
+        "available": "大多数可用的段落都受到了影响"
+    },
+    "forgotPasswordDialog": {
+        "close": "关闭",
+        "forgotPassword": "忘记密码？",
+        "passwordResetUnavailable": "密码重置在以下位置不可用",
+        "communityPartnershipProgramPortal": "社区合作计划门户。",
+        "toResetYourCredentials": "要重置您的登录凭据，请使用",
+        "useLookCardApp": "LookCard.io应用程序。打开该应用程序以安全地更新您的密码。",
+        "backToLogin": "返回登录"
     },
     "profileCard": {
         "activeUsersLabel": "活跃用户"
@@ -96,7 +117,11 @@
         "walletsBreadcrumb": "钱包",
         "rewardWalletBalance": "奖励钱包余额",
         "currentAccountWalletBalance": "当前账户钱包余额",
-        "rewardWalletSummary": "奖励钱包摘要"
+        "rewardWalletSummary": "奖励钱包摘要",
+        "failedToLoadData": "无法加载钱包数据"
+    },
+    "analyticChart": {
+        "noDataAvailable": "无数据可用"
     },
     "walletCard": {
         "transferButton": "转移"
