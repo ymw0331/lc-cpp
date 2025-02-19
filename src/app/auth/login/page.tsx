@@ -12,24 +12,28 @@ import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRememberCredentials } from "@/hooks/useRememberCredentials";
-import { Eye, EyeOff, Loader2, LockKeyhole, Mail } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail } from "lucide-react";
 import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
 
 const carouselImages = [
     {
-        src: "/images/login/Slider-Banner-06.jpg",
+        src: "/images/login/slider-01.jpg",
         alt: "Earn Up to $80 Per Referral",
     },
     {
-        src: "/images/login/Slider-Banner-07.jpg",
+        src: "/images/login/slider-02.jpg",
         alt: "Earn Rewards Effortlessly",
     },
     {
-        src: "/images/login/Slider-Banner-08.jpg",
+        src: "/images/login/slider-03.jpg",
         alt: "No Passport Fret Not",
     },
     {
-        src: "/images/login/Slider-Banner-09.jpg",
+        src: "/images/login/slider-04.jpg",
+        alt: "Exclusive Limited Offer",
+    },
+    {
+        src: "/images/login/slider-05.jpg",
         alt: "Exclusive Limited Offer",
     },
 ];
