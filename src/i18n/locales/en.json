@@ -53,7 +53,9 @@
         "rememberMe": "Remember Me",
         "forgotPassword": "Forgot Password",
         "warning": "Warning",
-        "warningDescription": "To access this portal, you must first register as a Lookcard.io App user and log in with your credentials. If you are not a registered user, please exit this page. Unauthorized access may lead to disciplinary action or legal consequences.",
+        "warningDescription1": "To access this portal, ",
+        "warningDescription2": "you must first register as a Lookcard.io App user and log in with your credentials.",
+        "warningDescription3": " If you are not a registered user, please exit this page. Unauthorized access may lead to disciplinary action or legal consequences.",
         "signInTo": "Sign in to",
         "communityPartnershipProgramPortal": "Community Partnership Program Portal",
         "editYourInformation": "Edit your information in a swipe",
@@ -63,6 +65,38 @@
         "manyVariations": "There are many variations",
         "available": "of passages of Lorem Ipsum available, but the majority have suffered"
     },
+    "registerPage": {
+        "agentRecruitmentDetails": "Agent Recruitment Details",
+        "joinOurCommunity": "Join Our Community Partnership Program",
+        "referralId": "Referral ID",
+        "enterReferralId": "Enter referral ID (optional)",
+        "fullName": "Full Name",
+        "enterFullName": "Enter your full name",
+        "email": "Registered Email",
+        "enterEmail": "Enter your registered email",
+        "coreMarket": "Core Market Segment [Country]",
+        "enterCoreMarket": "Enter your core market segment",
+        "agentAcknowledgement": "Acknowledgement",
+        "termsAgreement": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I understand and accept these terms for both my application and any referrals I submit.",
+        "success": "Registration Successful",
+        "successfullyRegistered": "You have successfully registered as a reseller",
+        "error": "Registration Error",
+        "processing": "Processing",
+        "signUp": "Sign Up",
+        "acknowledgementPoints": {
+            "bySubmitting": "By submitting this form, you acknowledge and agree to the following:",
+            "accuracy": "All information provided in this form is accurate and complete to the best of your knowledge.",
+            "verification": "Admission into the program is subject to verification and approval.",
+            "misrepresentation": "Any misrepresentation or breach of program guidelines may result in disqualification or termination of participation.",
+            "privacy": "Your personal information will be handled securely and used solely for the purpose of evaluating and facilitating the partnership.",
+            "terms": "This submission is subject to additional terms and conditions, which will be shared upon successful onboarding."
+        },
+        "thankYou": "Thank You for Your Application!",
+        "receivedSubmission": "We've received your submission.",
+        "confirmationEmail": "A confirmation email will be sent to your inbox (or spam folder)",
+        "withinDays": " within 3 working days.",
+        "done": "DONE"
+    },
     "forgotPasswordDialog": {
         "close": "Close",
         "forgotPassword": "Forgot Password?",
@@ -71,6 +105,15 @@
         "toResetYourCredentials": "To reset your login credentials, please use the",
         "useLookCardApp": "LookCard.io app. Open the app to update your password securely.",
         "backToLogin": "Back to Login"
+    },
+    "notRegisteredDialog": {
+        "imageAlt": "Not Registered",
+        "title": "Not Registered",
+        "noAccess": "Your account currently does not have access to this portal. To proceed, please register as a LookCard reseller and unlock exclusive opportunities.",
+        "benefits": "As a reseller, you can enjoy special benefits and earn up to",
+        "referralAmount": " $80+ per referral",
+        "callToAction": ". Don't miss out—join today and start maximizing your earnings!",
+        "becomeAgent": "Become an Agent"
     },
     "agentDashboard": {
         "overview": "Overview",

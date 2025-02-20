@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -13,7 +13,9 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRememberCredentials } from "@/hooks/useRememberCredentials";
 import { Eye, EyeOff, Loader2, Mail } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
+import NotRegisteredDialog from "@/components/Dialogs/NotRegisteredDialog";
 
 const carouselImages = [
     {
@@ -40,34 +42,43 @@ const carouselImages = [
 
 export default function LoginPage() {
     const { t } = useTranslation();
+    const router = useRouter();
+    const { toast } = useToast();
+    const { login } = useAuth();
+    const { saveCredentials, clearCredentials, getCredentials } = useRememberCredentials();
+
+    // State management
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const { login } = useAuth();
-    const { toast } = useToast();
     const [showPassword, setShowPassword] = useState(false);
-    const { saveCredentials, clearCredentials, getCredentials } =
-        useRememberCredentials();
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
+    const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
 
     // Carousel Auto-rotation
     useEffect(() => {
+        console.log('[Login] Setting up carousel rotation');
         const timer = setInterval(() => {
             setCurrentImageIndex((prev) =>
                 prev === carouselImages.length - 1 ? 0 : prev + 1
             );
         }, 10000);
 
-        return () => clearInterval(timer);
+        return () => {
+            console.log('[Login] Cleaning up carousel timer');
+            clearInterval(timer);
+        };
     }, []);
 
     // Load remembered credentials on mount
     useEffect(() => {
+        console.log('[Login] Checking for saved credentials');
         const savedCredentials = getCredentials();
         if (savedCredentials) {
+            console.log('[Login] Found saved credentials, pre-filling form');
             setEmail(savedCredentials.email);
             setPassword(savedCredentials.password);
             setRememberMe(true);
@@ -79,26 +90,47 @@ export default function LoginPage() {
         setError("");
         setIsLoading(true);
 
+        console.log('[Login] Attempting login:', { email });
+
         try {
-            await login(email, password);
+            const isReseller = await login(email, password);
+            console.log('[Login] Login response:', { isReseller });
+
+            if (!isReseller) {
+                console.log('[Login] User is not a reseller, showing registration dialog');
+                setShowRegistrationDialog(true);
+                return;
+            }
 
             // Handle remember me
             if (rememberMe) {
+                console.log('[Login] Saving credentials');
                 saveCredentials(email, password);
             } else {
+                console.log('[Login] Clearing saved credentials');
                 clearCredentials();
             }
 
+            console.log('[Login] Login successful, showing success toast');
             toast({
                 title: t("loginPage.success"),
                 description: t("loginPage.successfullyLoggedIn"),
                 duration: 3000,
             });
+
+            // Login successful and user is a reseller, redirect to dashboard
+            console.log('[Login] Redirecting to dashboard');
+            router.push('/');
+
         } catch (err: any) {
-            const errorMessage =
-                err.response?.data?.message || err.message || t("loginPage.loginFailed");
-            console.error("[Login] Login failed:", { error: errorMessage });
+            console.error('[Login] Login failed:', {
+                error: err,
+                response: err.response?.data,
+            });
+
+            const errorMessage = err.response?.data?.message || err.message || t("loginPage.loginFailed");
             setError(errorMessage);
+
             toast({
                 variant: "destructive",
                 title: t("loginPage.error"),
@@ -110,17 +142,27 @@ export default function LoginPage() {
         }
     };
 
+    const handleBecomeAgent = () => {
+        console.log('[Login] Navigating to registration page');
+        // router.push('/auth/register');
+
+        window.location.href = 'https://lookcard.io/agent-form/';
+    };
+
     const handleRememberMeChange = (checked: boolean) => {
+        console.log('[Login] Remember me changed:', { checked });
         setRememberMe(checked);
         if (!checked) {
+            console.log('[Login] Clearing saved credentials');
             clearCredentials();
         }
     };
 
+    // Rendering
     return (
         <div className="min-h-screen flex">
             {/* Left Side - Carousel */}
-            <div className="hidden lg:block lg:w-[55%] relative overflow-hidden  ">
+            <div className="hidden lg:block lg:w-[55%] relative overflow-hidden">
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={currentImageIndex}
@@ -177,6 +219,7 @@ export default function LoginPage() {
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-4">
+                            {/* Email Field */}
                             <div>
                                 <label className="text-sm text-gray-600 dark:text-gray-400">
                                     {t("loginPage.email")}
@@ -194,6 +237,7 @@ export default function LoginPage() {
                                 </div>
                             </div>
 
+                            {/* Password Field */}
                             <div>
                                 <label className="text-sm text-gray-600 dark:text-gray-400">
                                     {t("loginPage.password")}
@@ -203,7 +247,7 @@ export default function LoginPage() {
                                         type={showPassword ? "text" : "password"}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="mt-1 pr-24" // Increased right padding for both icons
+                                        className="mt-1 pr-24"
                                         placeholder={t("loginPage.enterYourPassword")}
                                         required
                                     />
@@ -212,7 +256,7 @@ export default function LoginPage() {
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
                                             className="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
-                                            tabIndex={-1} // Prevents tab focus on the button
+                                            tabIndex={-1}
                                         >
                                             {showPassword ? (
                                                 <EyeOff className="h-5 w-5" aria-label="Hide password" />
@@ -225,6 +269,7 @@ export default function LoginPage() {
                             </div>
                         </div>
 
+                        {/* Remember Me & Forgot Password */}
                         <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                                 <Checkbox
@@ -251,17 +296,26 @@ export default function LoginPage() {
                             </Link>
                         </div>
 
+                        {/* Dialogs */}
                         <ForgotPasswordDialog
                             open={forgotPasswordOpen}
                             onOpenChange={setForgotPasswordOpen}
                         />
 
+                        <NotRegisteredDialog
+                            open={showRegistrationDialog}
+                            onOpenChange={setShowRegistrationDialog}
+                            onBecomeAgent={handleBecomeAgent}
+                        />
+
+                        {/* Error Alert */}
                         {error && (
                             <Alert variant="destructive">
                                 <AlertDescription>{error}</AlertDescription>
                             </Alert>
                         )}
 
+                        {/* Submit Button */}
                         <Button
                             type="submit"
                             className="w-full bg-[#E31C5F] hover:bg-[#c4164f] text-white"
@@ -285,7 +339,9 @@ export default function LoginPage() {
                                 </b>
                             </p>
                             <p>
-                                {t("loginPage.warningDescription")}
+                                {t("loginPage.warningDescription1")}
+                                <b>{t("loginPage.warningDescription2")}</b>
+                                {t("loginPage.warningDescription3")}
                             </p>
                         </div>
                     </form>

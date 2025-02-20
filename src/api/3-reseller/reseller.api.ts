@@ -30,4 +30,14 @@ export const resellerApi = {
         return response.data;
     },
 
+
+    registerReseller: async () => {
+        // The auth token will be automatically included in the request headers
+        // through your axios interceptor configuration
+        const response = await resellerAxios.post<ResellerResponse>(
+            API_ENDPOINTS.RESELLER.INFO
+        );
+        return response.data;
+    },
+
 };

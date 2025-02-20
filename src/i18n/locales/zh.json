@@ -73,7 +73,9 @@
         "rememberMe": "记住我",
         "forgotPassword": "忘记密码",
         "warning": "警告",
-        "warningDescription": "要访问此门户，您必须首先注册为Lookcard.io App用户并使用您的凭据登录。如果您不是注册用户，请退出此页面。未经授权的访问可能会导致纪律处分或法律后果。",
+        "warningDescription1": "要访问此门户网站，",
+        "warningDescription2": "您必须先注册为 Lookcard.io App 用户并使用您的凭据登录。",
+        "warningDescription3": "如果您不是注册用户，请退出此页面。未经授权的访问可能会导致纪律处分或法律后果。",
         "signInTo": "登录到",
         "communityPartnershipProgramPortal": "社区合作计划门户",
         "editYourInformation": "滑动即可编辑您的信息",
@@ -83,6 +85,38 @@
         "manyVariations": "有很多变体",
         "available": "大多数可用的段落都受到了影响"
     },
+    "registerPage": {
+        "agentRecruitmentDetails": "代理招募详情",
+        "joinOurCommunity": "加入我们的社区合作伙伴计划",
+        "referralId": "推荐ID",
+        "enterReferralId": "输入推荐ID（选填）",
+        "fullName": "全名",
+        "enterFullName": "输入您的全名",
+        "email": "注册邮箱",
+        "enterEmail": "输入您的注册邮箱",
+        "coreMarket": "核心市场领域 [国家]",
+        "enterCoreMarket": "输入您的核心市场领域",
+        "agentAcknowledgement": "确认声明",
+        "termsAgreement": "我同意上述所有条款，包括遵守项目要求、道德行为和隐私政策。我确认我理解并接受这些条款，适用于我的申请和我提交的任何推荐。",
+        "success": "注册成功",
+        "successfullyRegistered": "您已成功注册为经销商",
+        "error": "注册错误",
+        "processing": "处理中",
+        "signUp": "注册",
+        "acknowledgementPoints": {
+            "bySubmitting": "提交此表格，您确认并同意以下内容：",
+            "accuracy": "本表格中提供的所有信息据我所知是准确和完整的。",
+            "verification": "加入计划需要经过验证和批准。",
+            "misrepresentation": "任何虚假陈述或违反计划指南可能导致取消资格或终止参与。",
+            "privacy": "您的个人信息将被安全处理，仅用于评估和促进合作伙伴关系。",
+            "terms": "此提交受附加条款和条件约束，这些条款将在成功加入后分享。"
+        },
+        "thankYou": "感谢您的申请！",
+        "receivedSubmission": "我们已收到您的提交。",
+        "confirmationEmail": "确认电子邮件将发送至您的收件箱（或垃圾邮件文件夹）",
+        "withinDays": " 3个工作日内。",
+        "done": "完成"
+    },
     "forgotPasswordDialog": {
         "close": "关闭",
         "forgotPassword": "忘记密码？",
@@ -91,6 +125,15 @@
         "toResetYourCredentials": "要重置您的登录凭据，请使用",
         "useLookCardApp": "LookCard.io应用程序。打开该应用程序以安全地更新您的密码。",
         "backToLogin": "返回登录"
+    },
+    "notRegisteredDialog": {
+        "imageAlt": "未注册",
+        "title": "未注册",
+        "noAccess": "您的账户目前无法访问此门户。要继续，请注册成为LookCard经销商并解锁独家机会。",
+        "benefits": "作为经销商，您可以享受特别优惠并赚取高达",
+        "referralAmount": " 每次推荐80美元以上",
+        "callToAction": "。不要错过—立即加入并开始最大化您的收益！",
+        "becomeAgent": "成为代理"
     },
     "profileCard": {
         "activeUsersLabel": "活跃用户"
