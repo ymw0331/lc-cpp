@@ -144,9 +144,7 @@ export default function LoginPage() {
 
     const handleBecomeAgent = () => {
         console.log('[Login] Navigating to registration page');
-        // router.push('/auth/register');
-
-        window.location.href = 'https://lookcard.io/agent-form/';
+        window.location.href = 'https://lookcard.io/cpprogram/#cppform';
     };
 
     const handleRememberMeChange = (checked: boolean) => {
