@@ -76,11 +76,11 @@ const ProfilePage = () => {
             setProfileData(data);
             form.reset({
                 userId: data.id,
-                fullName: data.name,
-                email: data.email,
-                contactNo: data.contactNumber,
+                fullName: data.name || '',
+                email: data.email || '',
+                contactNo: data.contactNumber || '',
                 referralCode: data.referralCode || '',
-                keyMarket: data.keyMarket,
+                keyMarket: data.keyMarket || '',
                 linkedin: data.linkedin || '',
                 facebook: data.facebook || '',
                 instagram: data.instagram || '',

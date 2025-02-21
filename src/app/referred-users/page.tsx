@@ -3,15 +3,40 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import RecruitCard from '@/components/Cards/RecruitCard';
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import AnalyticChart from '@/components/Charts/AnalyticChart';
-import { recruitData } from '@/lib/data';
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
+import { fetchData } from '@/lib/api-utils';
+import { recruitApi } from '@/api/referral/referral.api';
+import Loader from '@/components/common/Loader';
 
 
 const ReferredUsersPage = () => {
+
     const { t } = useTranslation();
 
-    const { count, agentsToPartner, chartData } = recruitData; // Destructure the imported data
+    const [recruitData, setRecruitData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
+
+    useEffect(() => {
+        fetchData(
+            recruitApi.getRecruitData,
+            setRecruitData,
+            setError,
+            setLoading
+        );
+    }, []);
+
+    if (loading) return <Loader />;
+
+    if (error) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-red-500">{t('referredUsersPage.failedToLoadData')}</p>
+            </div>
+        );
+    }
 
     return (
         <DefaultLayout>
@@ -21,13 +46,10 @@ const ReferredUsersPage = () => {
                 <div className="w-full md:w-2/4">
                     {/* Top Row */}
                     <RecruitCard
-                        count={count}
+                        count={recruitData.count}
                         agentsToPartner={{
-                            count: agentsToPartner.count ?? 0,
-                            trend:
-                                (agentsToPartner.count ?? 0) >= 0
-                                    ? "up"
-                                    : "down",
+                            count: recruitData.agentsToPartner.count ?? 0,
+                            trend: recruitData.agentsToPartner.trend
                         }}
                     />
                 </div>
@@ -35,11 +57,12 @@ const ReferredUsersPage = () => {
                 {/* Chart */}
                 <AnalyticChart
                     title={t("referredUsersPage.recruitmentSummary")}
-                    chartData={chartData}
+                    chartData={recruitData.chartData}
                     showLegend={true}
                     legendLabel={t("referredUsersPage.totalDirectRecruit")}
                     legendPosition="top-right"
                     lineColor="#F69732"
+                    comingSoon={true} 
                 />
             </div>
 

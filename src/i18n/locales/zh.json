@@ -230,6 +230,7 @@
         "manageUsersBreadcrumb": "管理用户"
     },
     "usersTable": {
+        "users": "用户",
         "filters": "筛选器",
         "market": "市场",
         "allMarkets": "所有市场",
@@ -269,7 +270,8 @@
     "performancePage": {
         "performanceBreadcrumb": "业绩",
         "cardActivationVolume": "卡激活量",
-        "totalAgentRecruitment": "总代理招募"
+        "totalAgentRecruitment": "总代理招募",
+        "failedToLoadData": "无法加载业绩数据"
     },
     "nextLevelCard": {
         "nextLevel": "下一级别",

@@ -48,8 +48,8 @@ export default function NotRegisteredDialog({
                             <Image
                                 src="/images/login/not-registered.svg"
                                 alt={t("notRegisteredDialog.imageAlt")}
-                                width={50}
-                                height={50}
+                                width={70}
+                                height={70}
                             />
                         </div>
                     </motion.div>

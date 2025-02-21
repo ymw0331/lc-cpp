@@ -45,20 +45,6 @@ const BalanceWalletDistributionChart = ({ data, title, comingSoon = false }: Bal
     const renderActiveShape = (props: any) => {
         const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
 
-        if (comingSoon) {
-            return (
-                <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark h-full">
-                    <h3 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-4 sm:mb-6">
-                        {title}
-                    </h3>
-                    <div className="flex items-center justify-center h-[calc(100%-4rem)]">
-                        <p className="text-lg text-gray-500 dark:text-gray-400">
-                            {t('common.comingSoon')}
-                        </p>
-                    </div>
-                </div>
-            );
-        }
 
 
         return (
@@ -106,6 +92,22 @@ const BalanceWalletDistributionChart = ({ data, title, comingSoon = false }: Bal
             </text>
         );
     };
+
+
+    if (comingSoon) {
+        return (
+            <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark h-full">
+                <h3 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-4 sm:mb-6">
+                    {title}
+                </h3>
+                <div className="flex items-center justify-center h-[calc(100%-4rem)]">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('common.comingSoon')}
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark h-full">

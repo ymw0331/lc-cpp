@@ -1,10 +1,10 @@
 "use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
 import { useState, useEffect } from "react";
-import { recruitData, ChartDataPoint } from "@/lib/data"; // Import recruitData
+import { recruitApi } from "@/api/referral/referral.api"; // Import recruit API
+import Loader from "@/components/common/Loader";
 
 const CustomBarLabel = ({ x, y, width, value }: any) => (
     <text
@@ -19,19 +19,45 @@ const CustomBarLabel = ({ x, y, width, value }: any) => (
     </text>
 );
 
-type TimeRange = 'Week' | 'Month' | 'Year'; // Define TimeRange type
+type TimeRange = 'Week' | 'Month' | 'Year';
 
 const ActivationVolumeChart = () => {
-    const [activeYear] = useState<string>("2023"); // You might want to make this dynamic later
     const [activeRange, setActiveRange] = useState<TimeRange>("Year");
-    const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
+    const [chartData, setChartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        // Access data from recruitData
-        const newData = recruitData.chartData[activeRange] || [];
-        setChartData(newData);
+        const fetchRecruitData = async () => {
+            try {
+                setLoading(true);
+                const data = await recruitApi.getRecruitData();
+
+                // Assuming the API returns chartData with Week, Month, Year keys
+                const newData = data.chartData[activeRange] || [];
+                setChartData(newData);
+            } catch (err) {
+                console.error('Failed to fetch recruit data:', err);
+                setError(err instanceof Error ? err : new Error('Failed to fetch recruit data'));
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRecruitData();
     }, [activeRange]);
 
+    if (loading) return <Loader />;
+
+    if (error) {
+        return (
+            <Card className="w-full bg-white dark:bg-boxdark border-none">
+                <CardContent className="flex items-center justify-center h-[500px]">
+                    <p className="text-red-500">{error.message}</p>
+                </CardContent>
+            </Card>
+        );
+    }
 
     const totalVolume = chartData.reduce((sum, item) => sum + item.value, 0);
 
@@ -79,7 +105,6 @@ const ActivationVolumeChart = () => {
                 </div>
 
                 <div className="flex space-x-2 bg-gray-100 dark:bg-meta-4 p-1 rounded-full">
-                    {/* Include 'Week' in the time range options */}
                     {(['Week', 'Month', 'Year'] as TimeRange[]).map((range) => (
                         <Button
                             key={range}
@@ -108,7 +133,7 @@ const ActivationVolumeChart = () => {
                             className="text-black dark:text-white"
                         >
                             <XAxis
-                                dataKey="label" // Use "label" as dataKey
+                                dataKey="label"
                                 axisLine={false}
                                 tickLine={false}
                                 tick={{ fill: '#94A3B8', fontSize: 12 }}
@@ -127,7 +152,7 @@ const ActivationVolumeChart = () => {
                             />
                             <Bar
                                 dataKey="value"
-                                barSize={activeRange === "Year" ? 40 : (activeRange === "Month" ? 60 : 30)} // Adjust bar size for 'Week'
+                                barSize={activeRange === "Year" ? 40 : (activeRange === "Month" ? 60 : 30)}
                                 shape={<CustomBar />}
                                 isAnimationActive={false}
                                 label={<CustomBarLabel />}

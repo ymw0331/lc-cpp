@@ -118,8 +118,6 @@ const AgentDashboard: React.FC = () => {
 
         {/* Right Column - Referral and Recruitment */}
         <div className="space-y-6">
-          {/* Referral Card - Available to all tiers */}
-          <ReferralCard code={data.referralCode} />
 
           {/* Recruitment Card - Only for higher tiers */}
           {canAccessRecruitment && (
@@ -130,6 +128,10 @@ const AgentDashboard: React.FC = () => {
               }}
             />
           )}
+
+          {/* Referral Card - Available to all tiers */}
+          <ReferralCard code={data.referralCode} />
+
         </div>
       </div>
 

@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/useToast";
 import Image from "next/image";
-import { Avatar } from "../ui/avatar";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NextLevelCardProps {
     currentLevel: string; // Accept both AgentLevel enum and string
@@ -26,6 +27,17 @@ const NextLevelCard = ({
 }: NextLevelCardProps) => {
     const { t } = useTranslation();
     const { toast } = useToast();
+    const { user } = useAuth();
+
+    // Get initials from name
+    const getInitials = (name: string) => {
+        return name
+            .split(" ")
+            .map((word) => word[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+    };
 
     const handleLevelUpRequest = () => {
         toast({
@@ -64,14 +76,27 @@ const NextLevelCard = ({
                     </h2>
 
                     {/* Avatar */}
-                    <Avatar className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4">
-                        {/* <Image
+                    {/* <Avatar className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4"> */}
+                    {/* <Image
                             src={avatarUrl || "/images/user/user-07.png"}
                             alt={name || "User avatar"}
                             className="rounded-full"
                             fill
                             sizes="(max-width: 60px) 100vw"
                         /> */}
+                    {/* </Avatar> */}
+
+
+                    <Avatar className="relative h-15 w-15 rounded-full bg-gray-2 dark:bg-meta-4">
+                        {/* <AvatarImage
+                            src={user}
+                            alt={`${user?.fullName}'s avatar`}
+                        /> */}
+                        <AvatarFallback className="bg-primary/10">
+                            {user?.fullName
+                                ? getInitials(user.fullName)
+                                : getInitials(user?.fullName || "User")}
+                        </AvatarFallback>
                     </Avatar>
                 </div>
             </div>

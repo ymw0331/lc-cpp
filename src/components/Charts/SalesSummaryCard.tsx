@@ -1,21 +1,53 @@
 "use client";
-
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
-import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
+import { cn } from "@/lib/utils";
+import {
+    PieChart,
+    Pie,
+    Cell,
+    ResponsiveContainer,
+    Legend
+} from "recharts";
 
 interface SalesSummaryProps {
-    groupSales: number;
-    personalSales: number;
+    groupSales?: number;
+    personalSales?: number;
     className?: string;
+    comingSoon?: boolean;
 }
 
 const SalesSummaryCard = ({
     groupSales = 73.2,
     personalSales = 27.8,
     className,
+    comingSoon = false,
 }: SalesSummaryProps) => {
     const { t } = useTranslation();
+
+    // If comingSoon is true, render coming soon state
+    if (comingSoon) {
+        return (
+            <div
+                className={cn(
+                    "rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark h-full",
+                    className
+                )}
+            >
+                <div className="mb-8">
+                    <h4 className="text-2xl font-normal text-gray-500 dark:text-bodydark">
+                        {t("salesSummaryCard.salesSummary")}
+                    </h4>
+                </div>
+
+                <div className="flex items-center justify-center h-[300px] w-full">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('common.comingSoon')}
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     const data = [
         { name: t("salesSummaryCard.groupSales"), value: groupSales },
         { name: t("salesSummaryCard.personalSales"), value: personalSales },

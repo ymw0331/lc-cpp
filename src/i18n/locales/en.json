@@ -228,9 +228,11 @@
         "failedToLoadData": "Failed to load dashboard data"
     },
     "manageUserPage": {
-        "manageUsersBreadcrumb": "Manage Users"
+        "manageUsersBreadcrumb": "Manage Users",
+        "failedToLoadData": "Failed to load recruitment data"
     },
     "usersTable": {
+        "users": "Users",
         "filters": "Filters",
         "market": "Market",
         "allMarkets": "All Markets",
@@ -270,7 +272,8 @@
     "performancePage": {
         "performanceBreadcrumb": "Performance",
         "cardActivationVolume": "Card Activation Volume",
-        "totalAgentRecruitment": "Total Agent Recruitment"
+        "totalAgentRecruitment": "Total Agent Recruitment",
+        "failedToLoadData": "Failed to load performance data"
     },
     "nextLevelCard": {
         "nextLevel": "Next Level",

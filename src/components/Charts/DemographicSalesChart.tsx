@@ -1,7 +1,5 @@
 "use client";
-
 import React, { useState } from "react";
-import { Bar } from "recharts";
 import {
     Select,
     SelectContent,
@@ -22,8 +20,13 @@ import {
     YAxis,
     Tooltip,
     CartesianGrid,
+    Bar
 } from "recharts";
 import { useTranslation } from "react-i18next";
+
+interface DemographicSalesChartProps {
+    comingSoon?: boolean;
+}
 
 // Sample data by location and year
 const demographicData = {
@@ -79,7 +82,9 @@ const demographicData = {
     },
 };
 
-const DemographicSalesChart = () => {
+const DemographicSalesChart = ({
+    comingSoon = false
+}: DemographicSalesChartProps) => {
     const { t } = useTranslation();
     const [selectedYear, setSelectedYear] = useState("2024");
     const [selectedQuarter, setSelectedQuarter] = useState("Q1");
@@ -92,6 +97,53 @@ const DemographicSalesChart = () => {
             value: values[period as keyof typeof values],
         }));
     };
+
+    // If comingSoon is true, render coming soon state
+    if (comingSoon) {
+        return (
+            <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
+                    <div className="space-y-4">
+                        <CardTitle className="text-2xl font-semibold text-black dark:text-white">
+                            {t("demographicSalesChart.salesVolumeInDemographic")}
+                        </CardTitle>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        {/* Year Filter */}
+                        <Select value={selectedYear} onValueChange={setSelectedYear} disabled>
+                            <SelectTrigger className="w-[100px] bg-transparent border-stroke">
+                                <SelectValue placeholder={t("demographicSalesChart.year")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="2024">2024</SelectItem>
+                                <SelectItem value="2023">2023</SelectItem>
+                            </SelectContent>
+                        </Select>
+
+                        {/* Quarter Filter */}
+                        <Select value={selectedQuarter} onValueChange={setSelectedQuarter} disabled>
+                            <SelectTrigger className="w-[120px] bg-transparent border-stroke">
+                                <SelectValue placeholder={t("demographicSalesChart.quarter")} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Q1">Q1</SelectItem>
+                                <SelectItem value="Q2">Q2</SelectItem>
+                                <SelectItem value="Q3">Q3</SelectItem>
+                                <SelectItem value="Q4">Q4</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </CardHeader>
+
+                <CardContent className="flex items-center justify-center h-[400px]">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('common.comingSoon')}
+                    </p>
+                </CardContent>
+            </Card>
+        );
+    }
 
     const CustomBarLabel = ({ x, y, width, value }: any) => {
         return (
@@ -144,7 +196,8 @@ const DemographicSalesChart = () => {
                             <SelectItem value="Q2">Q2</SelectItem>
                             <SelectItem value="Q3">Q3</SelectItem>
                             <SelectItem value="Q4">Q4</SelectItem>
-                        </SelectContent>                    </Select>
+                        </SelectContent>
+                    </Select>
                 </div>
             </CardHeader>
 

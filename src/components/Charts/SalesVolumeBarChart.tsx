@@ -1,7 +1,5 @@
 "use client";
-
 import React, { useState } from "react";
-import { Bar } from "recharts";
 import {
     Select,
     SelectContent,
@@ -22,6 +20,7 @@ import {
     YAxis,
     Tooltip,
     CartesianGrid,
+    Bar
 } from "recharts";
 import { useTranslation } from "react-i18next";
 
@@ -45,8 +44,10 @@ interface SalesVolumeData {
 
 const SalesVolumeBarChart = ({
     salesVolumeData,
+    comingSoon = false,
 }: {
     salesVolumeData: SalesVolumeData;
+    comingSoon?: boolean;
 }) => {
     const { t } = useTranslation();
     const [viewMode, setViewMode] = useState<"week" | "month" | "year">("year");
@@ -56,6 +57,8 @@ const SalesVolumeBarChart = ({
 
     // Get data based on filters
     const getData = () => {
+        if (comingSoon) return []; // Return empty array when coming soon
+
         if (viewMode === "year") {
             return selectedYear === "2024"
                 ? salesVolumeData.monthlyData2024
@@ -74,7 +77,9 @@ const SalesVolumeBarChart = ({
 
     // Calculate total
     const data = getData();
-    const total = data.reduce((sum, item) => sum + item.value, 0);
+    const total = data.length > 0
+        ? data.reduce((sum, item) => sum + item.value, 0)
+        : 0;
 
     interface CustomBarLabelProps {
         x: number;
@@ -96,14 +101,33 @@ const SalesVolumeBarChart = ({
         );
     };
 
+    if (comingSoon) {
+        return (
+            <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
+                    <div className="space-y-4">
+                        <CardTitle className="text-2xl font-semibold text-black dark:text-white">
+                            {t("salesVolumeBarChart.salesVolume")}
+                        </CardTitle>
+                    </div>
+                </CardHeader>
+
+                <CardContent className="flex items-center justify-center h-[400px]">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('common.comingSoon')}
+                    </p>
+                </CardContent>
+            </Card>
+        );
+    }
+
     return (
         <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
                 <div className="space-y-4">
                     <CardTitle className="text-2xl font-semibold text-black dark:text-white">
                         {t("salesVolumeBarChart.salesVolume")}
-                    </CardTitle>
-                    <div className="text-4xl font-bold text-black dark:text-white">
+                    </CardTitle>                    <div className="text-4xl font-bold text-black dark:text-white">
                         ${(total / 1000).toFixed(3)}K
                     </div>
                 </div>
@@ -125,8 +149,8 @@ const SalesVolumeBarChart = ({
                         <button
                             onClick={() => setViewMode("week")}
                             className={`rounded-md px-3 py-1 text-sm ${viewMode === "week"
-                                    ? "bg-primary text-white"
-                                    : "bg-white text-black dark:bg-boxdark dark:text-white"
+                                ? "bg-primary text-white"
+                                : "bg-white text-black dark:bg-boxdark dark:text-white"
                                 }`}
                         >
                             {t("salesVolumeBarChart.week")}
@@ -134,8 +158,8 @@ const SalesVolumeBarChart = ({
                         <button
                             onClick={() => setViewMode("month")}
                             className={`rounded-md px-3 py-1 text-sm ${viewMode === "month"
-                                    ? "bg-primary text-white"
-                                    : "bg-white text-black dark:bg-boxdark dark:text-white"
+                                ? "bg-primary text-white"
+                                : "bg-white text-black dark:bg-boxdark dark:text-white"
                                 }`}
                         >
                             {t("salesVolumeBarChart.month")}
@@ -143,8 +167,8 @@ const SalesVolumeBarChart = ({
                         <button
                             onClick={() => setViewMode("year")}
                             className={`rounded-md px-3 py-1 text-sm ${viewMode === "year"
-                                    ? "bg-primary text-white"
-                                    : "bg-white text-black dark:bg-boxdark dark:text-white"
+                                ? "bg-primary text-white"
+                                : "bg-white text-black dark:bg-boxdark dark:text-white"
                                 }`}
                         >
                             {t("salesVolumeBarChart.year")}
@@ -198,7 +222,7 @@ const SalesVolumeBarChart = ({
                 <div className="h-[400px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
-                            data={data} // Use the data variable
+                            data={data}
                             margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
                             barSize={40}
                         >

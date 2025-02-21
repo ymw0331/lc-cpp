@@ -39,6 +39,7 @@ interface UserData {
 
 interface UsersTableProps {
     users: UserData[];
+    comingSoon?: boolean;
 }
 
 // Filter Component
@@ -206,7 +207,7 @@ const FilterPopup = ({
 };
 
 // Main Component
-const UsersTable = ({ users }: UsersTableProps) => {
+const UsersTable = ({ users, comingSoon = false }: UsersTableProps) => {
     const { t } = useTranslation();
     // For single user view
     const router = useRouter();
@@ -260,6 +261,22 @@ const UsersTable = ({ users }: UsersTableProps) => {
         filterOptions.ranking !== "all" ||
         filterOptions.dateRange.from ||
         filterOptions.dateRange.to;
+
+
+    if (comingSoon) {
+        return (
+            <div className="rounded-sm border border-stroke bg-white px-4 sm:px-7.5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <h4 className="text-xl font-semibold text-black dark:text-white mb-6">
+                    {t("usersTable.users")}
+                </h4>
+                <div className="flex items-center justify-center h-64">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('common.comingSoon')}
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">

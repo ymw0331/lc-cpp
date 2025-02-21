@@ -1,48 +1,74 @@
 "use client";
 
+import { resellerApi } from "@/api/reseller/reseller.api";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import AgentLevelCard from "@/components/Cards/AgentLevelCard";
+import Loader from "@/components/common/Loader";
 import AgentLevelIcon from "@/components/Icons/dashboard/AgentLevelIcon";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import UsersTable from "@/components/Tables/UsersTable";
-import { usersListData, agentLevelsData } from "@/lib/data"; // Import the data
+import { useEffect, useState } from "react";
+// import { usersListData, agentLevelsData } from "@/lib/data"; // Import the data
 import { useTranslation } from "react-i18next";
 
 const ManageUserPage = () => {
     const { t } = useTranslation();
+    const [resellerData, setResellerData] = useState<any>(null);
+    const [downstreamCounts, setDownstreamCounts] = useState<Record<string, number>>({});
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
-    // Add this to your page file for dummy data:
-    // const generateDummyUsers = (count: number) => {
-    //     const rankings = ['Partner 3', 'Agent 2', 'Agent 1', 'User'];
-    //     const markets = ['Malaysia', 'Thailand', 'Singapore', 'HongKong'];
-    //     const names = ['John Smith', 'Jane Doe', 'Robert Johnson', 'Emily Brown', 'Michael Wilson'];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Fetch reseller info
+                const resellerResponse = await resellerApi.getResellerInfo();
+                setResellerData(resellerResponse);
 
-    //     return Array.from({ length: count }, (_, i) => {
-    //         const date = new Date();
-    //         date.setDate(date.getDate() - Math.floor(Math.random() * 90)); // Random date within last 90 days
+                // Count downstream users
+                const counts = resellerApi.countDownstreamByTier(resellerResponse.downstreams);
+                setDownstreamCounts(counts);
 
-    //         const formattedDate = date.toLocaleDateString('en-US', {
-    //             month: 'short',
-    //             day: '2-digit',
-    //             year: 'numeric'
-    //         });
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching reseller data:', err);
+                setError(err instanceof Error ? err : new Error('Failed to fetch data'));
+                setLoading(false);
+            }
+        };
 
-    //         const formattedDateTime = `${formattedDate} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
+        fetchData();
+    }, []);
 
-    //         return {
-    //             id: `user${i + 1}`,
-    //             name: names[Math.floor(Math.random() * names.length)],
-    //             userId: '10118237',
-    //             ranking: rankings[Math.floor(Math.random() * rankings.length)],
-    //             keyMarket: markets[Math.floor(Math.random() * markets.length)],
-    //             joinedSince: formattedDate,
-    //             lastActive: formattedDateTime
-    //         };
-    //     });
-    // };
+    if (loading) return <Loader />;
 
-    // In your page component:
-    // const MOCK_USERS = generateDummyUsers(30);
+    if (error || !resellerData) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-red-500">{t('manageUserPage.failedToLoadData')}</p>
+                <p className="text-red-500">{error?.message}</p>
+            </div>
+        );
+    }
+
+
+    // Determine accessible tier levels based on current tier
+    const currentTierPriority = resellerData?.tier?.priority || 0;
+    const accessibleTiers = resellerApi.getAccessibleTierLevels(currentTierPriority);
+
+    // Filter and map agent level cards
+    const agentLevelCards = accessibleTiers.map((tier, index) => {
+        const count = downstreamCounts[tier] || 0;
+        return (
+            <AgentLevelCard
+                key={tier}
+                level={`Level ${index} Agent`}
+                count={count}
+                icon={<AgentLevelIcon />}
+            />
+        );
+    });
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName={t("manageUserPage.manageUsersBreadcrumb")} />
@@ -50,18 +76,18 @@ const ManageUserPage = () => {
             <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                 {/* Agent Level Cards */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-                    {agentLevelsData.map((agent, index) => (
-                        <AgentLevelCard
-                            key={index}
-                            level={agent.level}
-                            count={agent.count}
-                            icon={<AgentLevelIcon />}
-                        />
-                    ))}
+                    {agentLevelCards}
                 </div>
 
+                {/* <div className="mt-4">
+                    <UsersTable users={usersListData} comingSoon={true} />
+                </div> */}
+
                 <div className="mt-4">
-                    <UsersTable users={usersListData} />
+                    <UsersTable 
+                        users={[]} 
+                        comingSoon={true} 
+                    />
                 </div>
             </div>
         </DefaultLayout>

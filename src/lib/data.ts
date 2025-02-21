@@ -69,21 +69,21 @@
 
 
 
-// /*** 01 Start Agent Dashboard Stats ***/
-export type CurrencyType = 'USDT' | 'USDC';
+// // /*** 01 Start Agent Dashboard Stats ***/
+// export type CurrencyType = 'USDT' | 'USDC';
 
-const defaultCurrency: CurrencyType = 'USDT';
+// const defaultCurrency: CurrencyType = 'USDT';
 
-export interface ChartDataPoint {
-    label: string;
-    value: number;
-}
+// export interface ChartDataPoint {
+//     label: string;
+//     value: number;
+// }
 
-export interface ChartRangeData {
-    Week: ChartDataPoint[];
-    Month: ChartDataPoint[];
-    Year: ChartDataPoint[];
-}
+// export interface ChartRangeData {
+//     Week: ChartDataPoint[];
+//     Month: ChartDataPoint[];
+//     Year: ChartDataPoint[];
+// }
 
 // export const depositChartData: ChartRangeData = {
 //     Week: [
@@ -524,59 +524,59 @@ export interface ChartRangeData {
 
 /*** 04 Start of Referred Users Page ***/
 /*** Referred Users Page Data ***/
-export interface RecruitData {
-    count: number;
-    agentsToPartner: {
-        count: number;
-        trend: 'up' | 'down'; // Explicitly type 'trend'
-    };
-    chartData: {
-        Week: ChartDataPoint[];
-        Month: ChartDataPoint[];
-        Year: ChartDataPoint[];
-    };
-}
+// export interface RecruitData {
+//     count: number;
+//     agentsToPartner: {
+//         count: number;
+//         trend: 'up' | 'down'; // Explicitly type 'trend'
+//     };
+//     chartData: {
+//         Week: ChartDataPoint[];
+//         Month: ChartDataPoint[];
+//         Year: ChartDataPoint[];
+//     };
+// }
 
 
 
-export const recruitData: RecruitData = {
-    count: 2146,
-    agentsToPartner: {
-        count: 22,
-        trend: 'up',
-    },
-    chartData: {
-        Week: [
-            { label: 'Mon', value: 300 },
-            { label: 'Tue', value: 310 },
-            { label: 'Wed', value: 305 },
-            { label: 'Thu', value: 320 },
-            { label: 'Fri', value: 315 },
-            { label: 'Sat', value: 325 },
-            { label: 'Sun', value: 330 },
-        ],
-        Month: [
-            { label: 'Week 1', value: 800 },
-            { label: 'Week 2', value: 820 },
-            { label: 'Week 3', value: 850 },
-            { label: 'Week 4', value: 830 },
-        ],
-        Year: [
-            { label: 'Jan', value: 1800 },
-            { label: 'Feb', value: 1850 },
-            { label: 'Mar', value: 1900 },
-            { label: 'Apr', value: 1950 },
-            { label: 'May', value: 2000 },
-            { label: 'Jun', value: 2050 },
-            { label: 'Jul', value: 2080 },
-            { label: 'Aug', value: 2100 },
-            { label: 'Sep', value: 2050 },
-            { label: 'Oct', value: 2120 },
-            { label: 'Nov', value: 2150 },
-            { label: 'Dec', value: 2146 }, // Matches the count for demonstration
-        ],
-    },
-};
+// export const recruitData: RecruitData = {
+//     count: 2146,
+//     agentsToPartner: {
+//         count: 22,
+//         trend: 'up',
+//     },
+//     chartData: {
+//         Week: [
+//             { label: 'Mon', value: 300 },
+//             { label: 'Tue', value: 310 },
+//             { label: 'Wed', value: 305 },
+//             { label: 'Thu', value: 320 },
+//             { label: 'Fri', value: 315 },
+//             { label: 'Sat', value: 325 },
+//             { label: 'Sun', value: 330 },
+//         ],
+//         Month: [
+//             { label: 'Week 1', value: 800 },
+//             { label: 'Week 2', value: 820 },
+//             { label: 'Week 3', value: 850 },
+//             { label: 'Week 4', value: 830 },
+//         ],
+//         Year: [
+//             { label: 'Jan', value: 1800 },
+//             { label: 'Feb', value: 1850 },
+//             { label: 'Mar', value: 1900 },
+//             { label: 'Apr', value: 1950 },
+//             { label: 'May', value: 2000 },
+//             { label: 'Jun', value: 2050 },
+//             { label: 'Jul', value: 2080 },
+//             { label: 'Aug', value: 2100 },
+//             { label: 'Sep', value: 2050 },
+//             { label: 'Oct', value: 2120 },
+//             { label: 'Nov', value: 2150 },
+//             { label: 'Dec', value: 2146 }, // Matches the count for demonstration
+//         ],
+//     },
+// };
 
 
 

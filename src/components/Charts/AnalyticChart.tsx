@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ChartDataPoint } from "@/lib/data";
+import { ChartDataPoint } from "@/types/dashboard";
 import { useTranslation } from "react-i18next";
 
 type Period = "Week" | "Month" | "Year";
