@@ -1,4 +1,3 @@
-// WalletCard.tsx
 import Link from "next/link";
 import USDTIcon from "../Icons/dashboard/USDTIcon";
 import { useTranslation } from "react-i18next";
@@ -10,6 +9,7 @@ interface WalletCardProps {
     secondaryAmount?: number | null;
     secondaryIcon?: React.ReactNode;
     showTransfer?: boolean;
+    comingSoon?: boolean;
 }
 
 const WalletCard = ({
@@ -19,6 +19,7 @@ const WalletCard = ({
     secondaryAmount,
     secondaryIcon,
     showTransfer,
+    comingSoon = false, // Default to false
 }: WalletCardProps) => {
     const { t } = useTranslation();
 
@@ -30,6 +31,23 @@ const WalletCard = ({
             maximumFractionDigits: 2,
         });
     };
+
+    // Coming Soon state
+    if (comingSoon) {
+        return (
+            <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark flex flex-col items-center justify-center">
+                <div className="flex w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 mb-3 sm:mb-4">
+                    {icon}
+                </div>
+                <h3 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-4">
+                    {title}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {t("walletCard.comingSoon")}
+                </p>
+            </div>
+        );
+    }
 
     return (
         <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">

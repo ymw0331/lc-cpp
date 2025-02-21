@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, User, Building, Loader2 } from "lucide-react";
-import { resellerApi } from "@/api/3-reseller/reseller.api";
+import { resellerApi } from "@/api/reseller/reseller.api";
 import { useAuth } from "@/contexts/AuthContext";
 import { storage } from "@/lib/storage";
 import RegistrationSuccessDialog from "@/components/Dialogs/RegistrationSuccessDialog";

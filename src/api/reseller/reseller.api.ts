@@ -1,8 +1,10 @@
-import resellerAxios from '@/api/0-config/reseller.config';
-import { API_ENDPOINTS } from '@/api/0-config/endpoints';
+import resellerAxios from '@/api/config/reseller.config';
+import { API_ENDPOINTS } from '@/api/config/endpoints';
 
 interface ResellerResponse {
     id: string;
+    ownerProfileId: string;
+    tierId: string;
     tier: {
         id: string;
         priority: number;
@@ -20,6 +22,7 @@ interface ResellerResponse {
         downstreamLimit: number;
     };
     downstreams: any[];
+    code: string;
 }
 
 export const resellerApi = {

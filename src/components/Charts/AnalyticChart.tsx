@@ -29,6 +29,7 @@ interface AnalyticChartProps {
     legendPosition?: "top-right" | "bottom-right";
     lineColor?: string;
     className?: string;
+    comingSoon?: boolean;
 }
 
 const AnalyticChart = ({
@@ -39,9 +40,31 @@ const AnalyticChart = ({
     legendPosition = "top-right",
     lineColor = "#F69732",
     className,
+    comingSoon = false
 }: AnalyticChartProps) => {
     const { t } = useTranslation();
     const [activePeriod, setActivePeriod] = useState<Period>("Year");
+
+    // If comingSoon is true, render coming soon state
+    if (comingSoon) {
+        return (
+            <div
+                className={cn(
+                    "p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark flex items-center justify-center",
+                    className
+                )}
+            >
+                <div className="text-center">
+                    <h4 className="text-2xl font-bold text-black dark:text-white mb-4">
+                        {title}
+                    </h4>
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('analyticChart.comingSoon')}
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     const activeData = chartData[activePeriod];
     const hasData = activeData && activeData.length > 0;

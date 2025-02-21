@@ -2,6 +2,7 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Sector } from 'recharts';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface BalanceWalletDistributionProps {
     data: Array<{
@@ -11,9 +12,14 @@ interface BalanceWalletDistributionProps {
         icon: React.ReactNode;
     }>;
     title: string;
+    comingSoon?: boolean;
 }
 
-const BalanceWalletDistributionChart = ({ data, title }: BalanceWalletDistributionProps) => {
+const BalanceWalletDistributionChart = ({ data, title, comingSoon = false }: BalanceWalletDistributionProps) => {
+    const { t } = useTranslation();
+
+
+
     const [activeIndex, setActiveIndex] = useState<number | undefined>();
     const [chartSize, setChartSize] = useState({ outerRadius: 100, labelRadius: 35 });
     const COLORS = ['#7C74FF', '#E4E2FF'];
@@ -38,6 +44,22 @@ const BalanceWalletDistributionChart = ({ data, title }: BalanceWalletDistributi
 
     const renderActiveShape = (props: any) => {
         const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+
+        if (comingSoon) {
+            return (
+                <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark h-full">
+                    <h3 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-4 sm:mb-6">
+                        {title}
+                    </h3>
+                    <div className="flex items-center justify-center h-[calc(100%-4rem)]">
+                        <p className="text-lg text-gray-500 dark:text-gray-400">
+                            {t('common.comingSoon')}
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
 
         return (
             <g>

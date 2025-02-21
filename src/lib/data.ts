@@ -265,140 +265,140 @@ export interface ChartRangeData {
 /*** 02 Start of Account Stats ***/
 
 /*** Wallets Page ***/
-export const walletStats = {
-    rewardWallet: {
-        amount: 123123,
-        showTransfer: true
-    },
-    currentWallet: {
-        amount: 14863.09,
-        secondaryAmount: 6369.89
-    },
-    walletSummary: {
-        Week: [
-            { label: 'Mon', value: 1687.71 },
-            { label: 'Tue', value: 1723.45 },
-            { label: 'Wed', value: 1698.32 },
-            { label: 'Thu', value: 1756.89 },
-            { label: 'Fri', value: 1789.23 },
-            { label: 'Sat', value: 1802.45 },
-            { label: 'Sun', value: 1832.34 },
-        ],
-        Month: [
-            { label: 'Week 1', value: 1687.71 },
-            { label: 'Week 2', value: 1723.45 },
-            { label: 'Week 3', value: 1798.32 },
-            { label: 'Week 4', value: 1832.34 },
-        ],
-        Year: [
-            { label: 'Jan', value: 1287.99 },
-            { label: 'Feb', value: 1636.24 },
-            { label: 'Mar', value: 1520.99 },
-            { label: 'Apr', value: 1439.70 },
-            { label: 'May', value: 1499.44 },
-            { label: 'Jun', value: 1568.83 },
-            { label: 'Jul', value: 1574.56 },
-            { label: 'Aug', value: 1687.71 },
-            { label: 'Sep', value: 1582.92 },
-            { label: 'Oct', value: 1730.35 },
-            { label: 'Nov', value: 1748.00 },
-            { label: 'Dec', value: 1527.61 },
-        ],
-    }
-};
+// export const walletStats = {
+//     rewardWallet: {
+//         amount: 123123,
+//         showTransfer: true
+//     },
+//     currentWallet: {
+//         amount: 14863.09,
+//         secondaryAmount: 6369.89
+//     },
+//     walletSummary: {
+//         Week: [
+//             { label: 'Mon', value: 1687.71 },
+//             { label: 'Tue', value: 1723.45 },
+//             { label: 'Wed', value: 1698.32 },
+//             { label: 'Thu', value: 1756.89 },
+//             { label: 'Fri', value: 1789.23 },
+//             { label: 'Sat', value: 1802.45 },
+//             { label: 'Sun', value: 1832.34 },
+//         ],
+//         Month: [
+//             { label: 'Week 1', value: 1687.71 },
+//             { label: 'Week 2', value: 1723.45 },
+//             { label: 'Week 3', value: 1798.32 },
+//             { label: 'Week 4', value: 1832.34 },
+//         ],
+//         Year: [
+//             { label: 'Jan', value: 1287.99 },
+//             { label: 'Feb', value: 1636.24 },
+//             { label: 'Mar', value: 1520.99 },
+//             { label: 'Apr', value: 1439.70 },
+//             { label: 'May', value: 1499.44 },
+//             { label: 'Jun', value: 1568.83 },
+//             { label: 'Jul', value: 1574.56 },
+//             { label: 'Aug', value: 1687.71 },
+//             { label: 'Sep', value: 1582.92 },
+//             { label: 'Oct', value: 1730.35 },
+//             { label: 'Nov', value: 1748.00 },
+//             { label: 'Dec', value: 1527.61 },
+//         ],
+//     }
+// };
 
 
 /*** Transfer Page ***/
-export type StatusType = 'SUCCEED' | 'FAILED';
+// export type StatusType = 'SUCCEED' | 'FAILED';
 
-export interface TransferActivityProps {
-    id: string;
-    amount: number;
-    currency: CurrencyType;
-    dateTime: string;
-    status: StatusType;
-}
+// export interface TransferActivityProps {
+//     id: string;
+//     amount: number;
+//     currency: CurrencyType;
+//     dateTime: string;
+//     status: StatusType;
+// }
 
-export const transferData = {
-    sourceWallet: {
-        amount: 123123,
-        currency: 'USDT' as CurrencyType
-    },
+// export const transferData = {
+//     sourceWallet: {
+//         amount: 123123,
+//         currency: 'USDT' as CurrencyType
+//     },
 
-    currencyOptions: [
-        { name: 'USDT' as CurrencyType, symbol: 'USDT' as CurrencyType },
-        { name: 'USDC' as CurrencyType, symbol: 'USDC' as CurrencyType }
-    ],
+//     currencyOptions: [
+//         { name: 'USDT' as CurrencyType, symbol: 'USDT' as CurrencyType },
+//         { name: 'USDC' as CurrencyType, symbol: 'USDC' as CurrencyType }
+//     ],
 
-    walletBalanceDistribution: {
-        data: [
-            {
-                name: 'USDT',
-                value: 71,
-                amount: 14863.09,
-                currency: 'USDT' as CurrencyType
-            },
-            {
-                name: 'USDC',
-                value: 29,
-                amount: 6369.89,
-                currency: 'USDC' as CurrencyType
-            }
-        ]
-    },
+//     walletBalanceDistribution: {
+//         data: [
+//             {
+//                 name: 'USDT',
+//                 value: 71,
+//                 amount: 14863.09,
+//                 currency: 'USDT' as CurrencyType
+//             },
+//             {
+//                 name: 'USDC',
+//                 value: 29,
+//                 amount: 6369.89,
+//                 currency: 'USDC' as CurrencyType
+//             }
+//         ]
+//     },
 
-    transferActivity: [
-        {
-            id: 'TID-982374523',
-            amount: 1000.00,
-            currency: 'USDC',
-            dateTime: 'November 07, 2024 at 9:00PM',
-            status: 'SUCCEED'
-        },
-        {
-            id: 'TID-743826195',
-            amount: 1000.00,
-            currency: 'USDT',
-            dateTime: 'November 01, 2024 at 1:56PM',
-            status: 'SUCCEED'
-        },
-        {
-            id: 'TID-156849372',
-            amount: 500.00,
-            currency: 'USDT',
-            dateTime: 'October 12, 2024 at 4:38PM',
-            status: 'FAILED'
-        },
-        {
-            id: 'TID-493720586',
-            amount: 1000.00,
-            currency: 'USDT',
-            dateTime: 'October 03, 2024 at 10:24AM',
-            status: 'SUCCEED'
-        },
-        {
-            id: 'TID-672481930',
-            amount: 500.00,
-            currency: 'USDT',
-            dateTime: 'September 29, 2024 at 1:56PM',
-            status: 'SUCCEED'
-        },
-        {
-            id: 'TID-810293746',
-            amount: 200.00,
-            currency: 'USDC',
-            dateTime: 'November 07, 2024 at 9:00PM',
-            status: 'SUCCEED'
-        },
-        {
-            id: 'TID-325749681',
-            amount: 1000.00,
-            currency: 'USDT',
-            dateTime: 'November 03, 2024 at 1:56PM',
-            status: 'SUCCEED'
-        }
-    ] as TransferActivityProps[]
-};
+//     transferActivity: [
+//         {
+//             id: 'TID-982374523',
+//             amount: 1000.00,
+//             currency: 'USDC',
+//             dateTime: 'November 07, 2024 at 9:00PM',
+//             status: 'SUCCEED'
+//         },
+//         {
+//             id: 'TID-743826195',
+//             amount: 1000.00,
+//             currency: 'USDT',
+//             dateTime: 'November 01, 2024 at 1:56PM',
+//             status: 'SUCCEED'
+//         },
+//         {
+//             id: 'TID-156849372',
+//             amount: 500.00,
+//             currency: 'USDT',
+//             dateTime: 'October 12, 2024 at 4:38PM',
+//             status: 'FAILED'
+//         },
+//         {
+//             id: 'TID-493720586',
+//             amount: 1000.00,
+//             currency: 'USDT',
+//             dateTime: 'October 03, 2024 at 10:24AM',
+//             status: 'SUCCEED'
+//         },
+//         {
+//             id: 'TID-672481930',
+//             amount: 500.00,
+//             currency: 'USDT',
+//             dateTime: 'September 29, 2024 at 1:56PM',
+//             status: 'SUCCEED'
+//         },
+//         {
+//             id: 'TID-810293746',
+//             amount: 200.00,
+//             currency: 'USDC',
+//             dateTime: 'November 07, 2024 at 9:00PM',
+//             status: 'SUCCEED'
+//         },
+//         {
+//             id: 'TID-325749681',
+//             amount: 1000.00,
+//             currency: 'USDT',
+//             dateTime: 'November 03, 2024 at 1:56PM',
+//             status: 'SUCCEED'
+//         }
+//     ] as TransferActivityProps[]
+// };
 
 /*** 02 End of Account Stats ***/
 

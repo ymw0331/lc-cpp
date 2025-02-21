@@ -9,7 +9,7 @@ import { DepositActivityTable } from "../Tables/DepositActivityTable";
 import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
 import Loader from "../common/Loader";
 import { useEffect, useState } from "react";
-import { dashboardApi } from "@/api/4-dashboard/dashboard.api";
+import { dashboardApi } from "@/api/dashboard/dashboard.api";
 import { DashboardStatistics } from "@/types/dashboard";
 import { fetchData } from "@/lib/api-utils";
 import { useAuth } from "@/contexts/AuthContext";

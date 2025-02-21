@@ -1,6 +1,3 @@
-// src/lib/api-utils.ts
-import { useState, useEffect } from 'react';
-
 export const fetchData = async <T>(
     apiCall: () => Promise<T>,
     setData: (data: T) => void,

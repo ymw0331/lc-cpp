@@ -1,4 +1,7 @@
 {
+    "common": {
+        "comingSoon": "即将推出"
+    },
     "header": {
         "searchPlaceholder": "输入搜索...",
         "darkMode": "黑暗模式",
@@ -161,13 +164,16 @@
         "rewardWalletBalance": "奖励钱包余额",
         "currentAccountWalletBalance": "当前账户钱包余额",
         "rewardWalletSummary": "奖励钱包摘要",
-        "failedToLoadData": "无法加载钱包数据"
+        "failedToLoadData": "无法加载钱包数据",
+        "walletSummaryComingSoon": "钱包摘要即将推出"
     },
     "analyticChart": {
-        "noDataAvailable": "无数据可用"
+        "noDataAvailable": "无数据可用",
+        "comingSoon": "即将推出"
     },
     "walletCard": {
-        "transferButton": "转移"
+        "transferButton": "转移",
+        "comingSoon": "即将推出"
     },
     "transferPage": {
         "transferToCurrentAccountWalletBreadcrumb": "转移到当前账户钱包"

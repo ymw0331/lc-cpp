@@ -1,4 +1,7 @@
 {
+    "common": {
+        "comingSoon": "Coming Soon"
+    },
     "header": {
         "searchPlaceholder": "Type to search...",
         "darkMode": "Dark Mode",
@@ -162,13 +165,16 @@
         "rewardWalletBalance": "Reward Wallet Balance",
         "currentAccountWalletBalance": "Current Account Wallet Balance",
         "rewardWalletSummary": "Reward Wallet Summary",
-        "failedToLoadData": "Failed to load wallet data"
+        "failedToLoadData": "Failed to load wallet data",
+        "walletSummaryComingSoon": "Wallet summary is coming soon"
     },
     "walletCard": {
-        "transferButton": "Transfer"
+        "transferButton": "Transfer",
+        "comingSoon": "Coming Soon"
     },
     "analyticChart": {
-        "noDataAvailable": "No Data Available"
+        "noDataAvailable": "No Data Available",
+        "comingSoon": "Coming Soon"
     },
     "transferPage": {
         "transferToCurrentAccountWalletBreadcrumb": "Transfer to Current Account Wallet"

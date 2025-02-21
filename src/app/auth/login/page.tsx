@@ -83,7 +83,7 @@ export default function LoginPage() {
             setPassword(savedCredentials.password);
             setRememberMe(true);
         }
-    }, []);
+    }, [getCredentials]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

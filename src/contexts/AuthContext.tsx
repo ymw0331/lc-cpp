@@ -2,18 +2,16 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { authApi } from '@/api/1-auth/auth.api';
-import { profileApi } from '@/api/2-profile/profile.api';
-import { resellerApi } from '@/api/3-reseller/reseller.api';
+import { authApi } from '@/api/auth/auth.api';
+import { profileApi } from '@/api/profile/profile.api';
+import { resellerApi } from '@/api/reseller/reseller.api';
 import { storage } from '@/lib/storage';
-import type { AuthUser } from '@/api/1-auth/auth.types';
+import type { AuthUser } from '@/api/auth/auth.types';
 
 interface EnhancedAuthUser extends AuthUser {
-    profileName: string;
-    avatarUrl: string | null;
+    resellerId: string;
     tierPriority: number;
-    referralCode: string | null;
-    role: string;
+    referralCode: string;
 }
 
 interface AuthContextType {
@@ -55,11 +53,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             const enhancedUser: EnhancedAuthUser = {
                 ...baseUser,
-                avatarUrl: profileData.avatarUrl,
-                role: profileData.role,
-                profileName: profileData.name,
-                referralCode: profileData.referralCode,
                 tierPriority: resellerData?.tier?.priority || 0,
+                referralCode: resellerData?.code || '',
+                resellerId: resellerData?.id || '',
             };
 
             storage.setUser(enhancedUser);
@@ -67,11 +63,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
             console.log('[Auth] Enhanced user data:', {
                 userId: enhancedUser.userId,
-                hasAvatar: !!enhancedUser.avatarUrl,
                 tierPriority: enhancedUser.tierPriority,
-                profileName: enhancedUser.profileName,
-                referralCode: enhancedUser.referralCode,
                 isReseller: !!resellerData,
+                referralCode: enhancedUser.referralCode,
+                resellerId: enhancedUser.resellerId,
             });
         } catch (error) {
             console.error('[Auth] Error fetching additional user data:', error);
@@ -178,24 +173,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     //     }
     // }, [pathname, router]);
 
+
     useEffect(() => {
         const storedUser = storage.getUser();
         console.log('[Auth] Initial auth check:', { hasStoredUser: !!storedUser, pathname });
 
         if (storedUser) {
-            if (!('avatarUrl' in storedUser) || !('level' in storedUser)) {
-                fetchUserData(storedUser);
-            } else {
-                setUser(storedUser as EnhancedAuthUser);
-                // Check reseller status on initial load
-                checkResellerStatus().then(setIsReseller);
-            }
-        } else if (pathname !== '/auth/login' && pathname !== '/auth/register') { // Add this condition
+            // Simply set user and check reseller status
+            setUser(storedUser as EnhancedAuthUser);
+            // Check reseller status on initial load
+            checkResellerStatus().then(setIsReseller);
+        } else if (pathname !== '/auth/login' && pathname !== '/auth/register') {
             console.log('[Auth] No stored user, redirecting to login');
             router.push('/auth/login');
         }
     }, [pathname, router]);
 
+    
     return (
         <AuthContext.Provider value={{
             user,

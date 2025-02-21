@@ -1,4 +1,4 @@
-import { AuthUser } from "@/api/1-auth/auth.types";
+import { AuthUser } from "@/api/auth/auth.types";
 
 const STORAGE_KEYS = {
     AUTH_TOKEN: 'auth_token',

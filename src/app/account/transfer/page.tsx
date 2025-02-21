@@ -1,15 +1,21 @@
 "use client";
+import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import BalanceWalletDistributionChart from "@/components/Charts/BalanceWalletDistributionChart";
 import WalletTransferForm from "@/components/Forms/WalletTransferForm";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TransferActivityTable from "@/components/Tables/TransferActivityTable";
 import { USDTIcon, USDCIcon } from "@/components/Icons/dashboard";
-import { transferData } from "@/lib/data";
+import { transferApi } from "@/api/transfer/transfer.api";
 import { useTranslation } from "react-i18next";
+import Loader from "@/components/common/Loader";
+import { fetchData } from '@/lib/api-utils';
 
 const TransferPage = () => {
     const { t } = useTranslation();
+    const [transferData, setTransferData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
     // Currency Icon Mapping
     const getCurrencyIcon = (currency: string) => {
@@ -23,25 +29,36 @@ const TransferPage = () => {
         }
     };
 
-    // Enhance data with icons
-    const currencyOptionsWithIcons = transferData.currencyOptions.map(
-        (currency) => ({
-            ...currency,
-            icon: getCurrencyIcon(currency.symbol),
-        })
-    );
-
-    const walletBalanceDistributionWithIcons = {
-        ...transferData.walletBalanceDistribution,
-        data: transferData.walletBalanceDistribution.data.map((item) => ({
-            ...item,
-            icon: getCurrencyIcon(item.currency),
-        })),
-    };
+    useEffect(() => {
+        fetchData(
+            transferApi.getTransferData,
+            setTransferData,
+            setError,
+            setLoading
+        );
+    }, []);
 
     const handleTransfer = (amount: number, currency: string) => {
         console.log(`Transferring ${amount} ${currency}`);
     };
+
+    if (loading) return <Loader />;
+
+    if (error) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <p className="text-red-500">{t('transferPage.failedToLoadData')}</p>
+            </div>
+        );
+    }
+
+    // Enhance data with icons
+    const currencyOptionsWithIcons = transferData.currencyOptions.map(
+        (currency: any) => ({
+            ...currency,
+            icon: getCurrencyIcon(currency.symbol),
+        })
+    );
 
     return (
         <DefaultLayout>
@@ -58,13 +75,17 @@ const TransferPage = () => {
                 <div className="h-full min-h-[400px] sm:min-h-[450px]">
                     <BalanceWalletDistributionChart
                         title={t("walletsPage.currentAccountWalletBalance")}
-                        data={walletBalanceDistributionWithIcons.data}
+                        data={[]} // Empty data to show "Coming Soon"
+                        comingSoon={true}
                     />
                 </div>
             </div>
 
             <div className="w-full overflow-hidden">
-                <TransferActivityTable data={transferData.transferActivity} />
+                <TransferActivityTable
+                    data={[]} // Empty data to show "Coming Soon"
+                    comingSoon={true}
+                />
             </div>
         </DefaultLayout>
     );

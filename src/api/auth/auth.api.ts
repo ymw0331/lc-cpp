@@ -1,6 +1,6 @@
-import axios from '@/api/0-config/auth.config';
-import { API_ENDPOINTS } from '@/api/0-config/endpoints';
-import type { LoginRequest, AuthResponse } from '@/api/1-auth/auth.types';
+import axios from '@/api/config/auth.config';
+import { API_ENDPOINTS } from '@/api/config/endpoints';
+import type { LoginRequest, AuthResponse } from '@/api/auth/auth.types';
 
 export const authApi = {
     login: async (credentials: LoginRequest) => {

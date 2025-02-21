@@ -10,10 +10,10 @@ import {
     WalletIcon,
 } from "@/components/Icons/dashboard";
 import { useTranslation } from "react-i18next";
-import { walletApi } from "@/api/5-wallet/wallet.api";
+import { walletApi } from "@/api/wallet/wallet.api";
 import Loader from "@/components/common/Loader";
 import { fetchData } from '@/lib/api-utils';
-import { WalletData } from "@/api/5-wallet/wallet.types";
+import { WalletData } from "@/api/wallet/wallet.types";
 
 const WalletsPage = () => {
     const { t } = useTranslation();
@@ -59,6 +59,7 @@ const WalletsPage = () => {
                     secondaryAmount={walletData.currentWallet.secondaryAmount}
                     icon={<WalletIcon />}
                     secondaryIcon={<USDCIcon />}
+                    comingSoon={true} // Add a prop to indicate coming soon
                 />
             </div>
 
@@ -68,6 +69,7 @@ const WalletsPage = () => {
                     chartData={walletData.walletSummary}
                     lineColor="#7C74FF"
                     className="overflow-x-auto"
+                    comingSoon={true}
                 />
             </div>
         </DefaultLayout>

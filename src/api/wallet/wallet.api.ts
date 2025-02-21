@@ -1,5 +1,5 @@
 // wallet.api.ts
-import { dashboardApi } from "../4-dashboard/dashboard.api";
+import { dashboardApi } from "../dashboard/dashboard.api";
 import { WalletData } from "./wallet.types";
 
 export const walletApi = {

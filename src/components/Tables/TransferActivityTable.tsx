@@ -8,17 +8,34 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { TransferActivityProps } from "@/lib/data";
+import { TransferActivityProps } from "@/api/transfer/transfer.types";
 import USDCIcon from "../Icons/dashboard/USDCIcon";
 import USDTIcon from "../Icons/dashboard/USDTIcon";
 import { useTranslation } from "react-i18next";
 
 interface TransferActivityTableProps {
     data: TransferActivityProps[];
+    comingSoon?: boolean;
 }
 
-const TransferActivityTable = ({ data }: TransferActivityTableProps) => {
+const TransferActivityTable = ({ data, comingSoon = false }: TransferActivityTableProps) => {
     const { t } = useTranslation();
+
+    // If comingSoon is true, render coming soon state
+    if (comingSoon) {
+        return (
+            <div className="rounded-sm border border-stroke bg-white px-4 sm:px-7.5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <h4 className="mb-4 sm:mb-6 text-lg sm:text-xl font-semibold text-black dark:text-white px-2">
+                    {t("transferActivityTable.transferActivity")}
+                </h4>
+                <div className="flex items-center justify-center h-64">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('common.comingSoon')}
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-4 sm:px-7.5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark">

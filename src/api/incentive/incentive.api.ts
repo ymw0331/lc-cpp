@@ -1,7 +1,7 @@
 // src/api/5-incentive-management/incentive.api.ts
-import resellerAxios from '@/api/0-config/reseller.config';
-import { API_ENDPOINTS } from '@/api/0-config/endpoints';
-import { dashboardApi } from '@/api/4-dashboard/dashboard.api';
+import resellerAxios from '@/api/config/reseller.config';
+import { API_ENDPOINTS } from '@/api/config/endpoints';
+import { dashboardApi } from '@/api/dashboard/dashboard.api';
 import type { IncentivePageData } from './incentive.types';
 
 interface IncentiveResponse {

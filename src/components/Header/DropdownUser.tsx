@@ -56,20 +56,20 @@ const DropdownUser = () => {
         className="flex items-center gap-4 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-lg transition-colors"
       >
         <Avatar className="h-10 w-10 border-2 border-gray-200 dark:border-gray-700">
-          <AvatarImage
-            src={user?.avatarUrl || undefined}
-            alt={`${user?.profileName || user?.fullName}'s avatar`}
-          />
+          {/* <AvatarImage
+            src={user}
+            alt={`${user?.fullName}'s avatar`}
+          /> */}
           <AvatarFallback className="bg-primary/10">
-            {user?.profileName
-              ? getInitials(user.profileName)
+            {user?.fullName
+              ? getInitials(user.fullName)
               : getInitials(user?.fullName || "User")}
           </AvatarFallback>
         </Avatar>
 
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">
-            {user?.profileName || user?.fullName}
+            {user?.fullName}
           </span>
           {/* <span className="block text-xs text-gray-500 dark:text-gray-400 capitalize">
             {user?.tierPriority ? `Level ${user.tierPriority} Member` : user?.role}
@@ -86,7 +86,7 @@ const DropdownUser = () => {
         <div className="absolute right-0 mt-2 w-60 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg overflow-hidden">
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-              {user?.profileName || user?.fullName}
+              {user?.fullName}
             </p>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               {user?.email}
