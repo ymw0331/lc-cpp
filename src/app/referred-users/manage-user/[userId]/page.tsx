@@ -95,7 +95,7 @@ const SingleUserPage = () => {
                 <div className="grid lg:grid-cols-12 gap-6">
                     {/* Left Column - Profile Cards */}
                     <div className="lg:col-span-7">
-                        <ProfileHeaderCard data={singleUserData} />
+                        {/* <ProfileHeaderCard data={singleUserData} /> */}
                     </div>
 
                     {/* Right Column - Stats */}

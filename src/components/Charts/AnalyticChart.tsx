@@ -11,6 +11,11 @@ import {
     ResponsiveContainer,
 } from "recharts";
 import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ChartDataPoint } from "@/types/dashboard";
 import { useTranslation } from "react-i18next";
@@ -48,7 +53,7 @@ const AnalyticChart = ({
     // If comingSoon is true, render coming soon state
     if (comingSoon) {
         return (
-            <div
+            <Card
                 className={cn(
                     "p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark flex items-center justify-center",
                     className
@@ -62,7 +67,7 @@ const AnalyticChart = ({
                         {t('analyticChart.comingSoon')}
                     </p>
                 </div>
-            </div>
+            </Card>
         );
     }
 
@@ -130,109 +135,113 @@ const AnalyticChart = ({
     };
 
     return (
-        <div
+        <Card
             className={cn(
-                "p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark",
+                "bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark",
                 className
             )}
         >
-            <div className="flex justify-between items-start mb-6">
-                <div>
-                    <h4 className="text-2xl font-bold text-black dark:text-white mb-4">
-                        {title}
-                    </h4>
-                </div>
-
-                <div className="flex gap-2">
-                    {(["Week", "Month", "Year"] as Period[]).map((period) => (
-                        <Button
-                            key={period}
-                            variant={activePeriod === period ? "default" : "outline"}
-                            className={cn(
-                                "px-4 py-2 rounded-full text-sm",
-                                activePeriod === period
-                                    ? "bg-primary hover:bg-primary/90 text-white"
-                                    : "bg-gray-2 dark:bg-meta-4 hover:bg-gray-3"
-                            )}
-                            onClick={() => setActivePeriod(period)}
-                        >
-                            {period}
-                        </Button>
-                    ))}
-                </div>
-            </div>
-
-            {showLegend && legendPosition === "top-right" && <CustomLegend />}
-
-            <div className="h-[250px] sm:h-[300px] w-full mt-4 -mx-4 sm:mx-0">
-                {hasData ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                        <LineChart
-                            data={chartData[activePeriod]}
-                            margin={{
-                                top: 30,
-                                right: 10,
-                                left: 10,
-                                bottom: 5,
-                            }}
-                        >
-                            <CartesianGrid
-                                strokeDasharray="5 5"
-                                vertical={false}
-                                stroke="rgba(226, 232, 240, 0.5)"
-                            />
-                            <XAxis
-                                dataKey="label"
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{
-                                    fill: "#64748B",
-                                    fontSize: window.innerWidth < 640 ? 10 : 12,
-                                }}
-                                dy={10}
-                            />
-                            <YAxis
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{
-                                    fill: "#64748B",
-                                    fontSize: window.innerWidth < 640 ? 10 : 12,
-                                }}
-                                domain={[yAxisMin, yAxisMax]}
-                            />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Line
-                                type="monotone"
-                                dataKey="value"
-                                stroke={lineColor}
-                                strokeWidth={2}
-                                dot={{
-                                    r: 4,
-                                    fill: lineColor,
-                                    stroke: "#fff",
-                                    strokeWidth: 2,
-                                }}
-                                activeDot={{
-                                    r: 6,
-                                    fill: lineColor,
-                                    stroke: "#fff",
-                                    strokeWidth: 2,
-                                }}
-                                label={<CustomLabel />}
-                            />
-                        </LineChart>
-                    </ResponsiveContainer>
-                ) : (
-                    <div className="flex items-center justify-center h-full">
-                        <p className="text-lg text-gray-500 dark:text-gray-400">
-                            {t('analyticChart.noDataAvailable')}
-                        </p>
+            <CardHeader className="p-6 pb-0">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <h4 className="text-2xl font-bold text-black dark:text-white mb-4">
+                            {title}
+                        </h4>
                     </div>
-                )}
-            </div>
 
-            {showLegend && legendPosition === "bottom-right" && <CustomLegend />}
-        </div>
+                    <div className="flex gap-2">
+                        {(["Week", "Month", "Year"] as Period[]).map((period) => (
+                            <Button
+                                key={period}
+                                variant={activePeriod === period ? "default" : "outline"}
+                                className={cn(
+                                    "px-4 py-2 rounded-full text-sm",
+                                    activePeriod === period
+                                        ? "bg-primary hover:bg-primary/90 text-white"
+                                        : "bg-gray-2 dark:bg-meta-4 hover:bg-gray-3"
+                                )}
+                                onClick={() => setActivePeriod(period)}
+                            >
+                                {period}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+
+                {showLegend && legendPosition === "top-right" && <CustomLegend />}
+            </CardHeader>
+
+            <CardContent className="p-6 pt-0">
+                <div className="h-[250px] sm:h-[300px] w-full mt-4 -mx-4 sm:mx-0">
+                    {hasData ? (
+                        <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                                data={chartData[activePeriod]}
+                                margin={{
+                                    top: 30,
+                                    right: 10,
+                                    left: 10,
+                                    bottom: 5,
+                                }}
+                            >
+                                <CartesianGrid
+                                    strokeDasharray="5 5"
+                                    vertical={false}
+                                    stroke="rgba(226, 232, 240, 0.5)"
+                                />
+                                <XAxis
+                                    dataKey="label"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{
+                                        fill: "#64748B",
+                                        fontSize: window.innerWidth < 640 ? 10 : 12,
+                                    }}
+                                    dy={10}
+                                />
+                                <YAxis
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{
+                                        fill: "#64748B",
+                                        fontSize: window.innerWidth < 640 ? 10 : 12,
+                                    }}
+                                    domain={[yAxisMin, yAxisMax]}
+                                />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Line
+                                    type="monotone"
+                                    dataKey="value"
+                                    stroke={lineColor}
+                                    strokeWidth={2}
+                                    dot={{
+                                        r: 4,
+                                        fill: lineColor,
+                                        stroke: "#fff",
+                                        strokeWidth: 2,
+                                    }}
+                                    activeDot={{
+                                        r: 6,
+                                        fill: lineColor,
+                                        stroke: "#fff",
+                                        strokeWidth: 2,
+                                    }}
+                                    label={<CustomLabel />}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="flex items-center justify-center h-full">
+                            <p className="text-lg text-gray-500 dark:text-gray-400">
+                                {t('analyticChart.noDataAvailable')}
+                            </p>
+                        </div>
+                    )}
+                </div>
+
+                {showLegend && legendPosition === "bottom-right" && <CustomLegend />}
+            </CardContent>
+        </Card>
     );
 };
 
