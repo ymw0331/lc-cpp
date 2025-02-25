@@ -7,7 +7,6 @@ import DataTable from "@/components/Tables/DataTable";
 import { StarBadgeIcon } from "@/components/Icons/dashboard";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-// import { incentivePageData } from "@/lib/data";
 import { fetchData } from '@/lib/api-utils';
 import { incentiveApi } from "@/api/incentive/incentive.api";
 import { IncentivePageData } from "@/api/incentive/incentive.types";
@@ -89,7 +88,7 @@ const IncentiveManagementPage = () => {
                     {canSeeMilestoneBonus && (
                         <div className="col-span-3">
                             <IncentiveCard
-                                title={t("incentiveManagementPage.milestoneBonus")}
+                                title={t("incentiveManagementPage.milestoneAchievementBonus")}
                                 amount={summary.milestone_bonus.amount}
                                 // badge={{
                                 //     text: 'Claimed',
@@ -109,11 +108,11 @@ const IncentiveManagementPage = () => {
                             amount={summary.direct_recruit_referral}
                         />
                         <IncentiveCard
-                            title={t("incentiveManagementPage.directAdminCharge")}
+                            title={t("incentiveManagementPage.directDepositAdminChargeRebate")}
                             amount={summary.direct_admin_charge}
                         />
                         <IncentiveCard
-                            title={t("incentiveManagementPage.directRecruitDeposit")}
+                            title={t("incentiveManagementPage.directRecruitDepositAdminChargeOverridingRebate")}
                             amount={summary.direct_recruit_deposit}
                         />
                     </div>
@@ -147,7 +146,7 @@ const IncentiveManagementPage = () => {
                     <DataTable
                         columns={tableColumns}
                         data={activities[currentMonth] || []}
-                        title={t("dataTable.incentiveActivity")}
+                        title={t("dataTable.incentivePayoutRecords")}
                         currentMonth={currentMonth}
                         onMonthChange={(month: string) => setCurrentMonth(month)}
                     />

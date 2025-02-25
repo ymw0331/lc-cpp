@@ -102,7 +102,7 @@ const SingleUserPage = () => {
                     <div className="lg:col-span-5 space-y-6">
                         <div className="grid grid-cols-2 gap-6">
                             <AgentLevelCard
-                                level="Total Direct Recruit"
+                                level="Direct Recruit Active Agent(s)"
                                 count={singleUserData.stats.directRecruit}
                                 icon={<AgentLevelIcon />}
                             />

@@ -16,6 +16,8 @@ import { Eye, EyeOff, Loader2, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
 import NotRegisteredDialog from "@/components/Dialogs/NotRegisteredDialog";
+import AccessDeniedDialog from "@/components/Dialogs/AccessDeniedDialog";
+
 
 const carouselImages = [
     {
@@ -57,10 +59,11 @@ export default function LoginPage() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
     const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
+    const [showAccessDeniedDialog, setShowAccessDeniedDialog] = useState(false);
 
     // Carousel Auto-rotation
     useEffect(() => {
-        console.log('[Login] Setting up carousel rotation');
+        // console.log('[Login] Setting up carousel rotation');
         const timer = setInterval(() => {
             setCurrentImageIndex((prev) =>
                 prev === carouselImages.length - 1 ? 0 : prev + 1
@@ -68,7 +71,7 @@ export default function LoginPage() {
         }, 10000);
 
         return () => {
-            console.log('[Login] Cleaning up carousel timer');
+            // console.log('[Login] Cleaning up carousel timer');
             clearInterval(timer);
         };
     }, []);
@@ -98,7 +101,8 @@ export default function LoginPage() {
 
             if (!isReseller) {
                 console.log('[Login] User is not a reseller, showing registration dialog');
-                setShowRegistrationDialog(true);
+                // setShowRegistrationDialog(true);
+                setShowAccessDeniedDialog(true);
                 return;
             }
 
@@ -142,6 +146,18 @@ export default function LoginPage() {
         }
     };
 
+
+    const handleContactSupport = () => {
+        console.log('[Login] Navigating to contact support page');
+        // window.location.href = 'https://web.whatsapp.com/send?phone=85230011108';
+        window.location.href = 'https://wa.me/85230011108';
+    };
+
+    const handleRegister = () => {
+        console.log('[Login] Navigating to registration page');
+        window.location.href = 'https://lookcard.io/cpprogram/#cppform';
+    };
+
     const handleBecomeAgent = () => {
         console.log('[Login] Navigating to registration page');
         window.location.href = 'https://lookcard.io/cpprogram/#cppform';
@@ -158,7 +174,7 @@ export default function LoginPage() {
 
     // Rendering
     return (
-        <div className="min-h-screen flex">
+        <div className="min-h-screen flex bg-white dark:bg-boxdark">
             {/* Left Side - Carousel */}
             <div className="hidden lg:block lg:w-[55%] relative overflow-hidden">
                 <AnimatePresence mode="wait">
@@ -187,7 +203,9 @@ export default function LoginPage() {
                         <button
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
-                            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentImageIndex ? "bg-white w-4" : "bg-white/50"
+                            className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentImageIndex
+                                ? "bg-white w-4"
+                                : "bg-white/50"
                                 }`}
                         />
                     ))}
@@ -195,7 +213,7 @@ export default function LoginPage() {
             </div>
 
             {/* Right Side - Login Form */}
-            <div className="w-full lg:w-[45%] px-8 lg:px-16 flex flex-col justify-center">
+            <div className="w-full lg:w-[45%] px-8 lg:px-16 flex flex-col justify-center bg-white dark:bg-boxdark">
                 <div className="max-w-md w-full mx-auto">
                     {/* Logo */}
                     <div className="mb-8">
@@ -208,10 +226,10 @@ export default function LoginPage() {
                         />
                     </div>
 
-                    <h1 className="text-2xl font-semibold mb-2">
+                    <h1 className="text-2xl font-semibold mb-2 text-black dark:text-white">
                         {t("loginPage.signInTo")}
                     </h1>
-                    <h2 className="text-xl mb-8">
+                    <h2 className="text-xl mb-8 text-body dark:text-bodydark">
                         {t("loginPage.communityPartnershipProgramPortal")}
                     </h2>
 
@@ -219,7 +237,7 @@ export default function LoginPage() {
                         <div className="space-y-4">
                             {/* Email Field */}
                             <div>
-                                <label className="text-sm text-gray-600 dark:text-gray-400">
+                                <label className="text-sm text-body dark:text-bodydark">
                                     {t("loginPage.email")}
                                 </label>
                                 <div className="relative">
@@ -227,17 +245,17 @@ export default function LoginPage() {
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="mt-1"
+                                        className="mt-1 bg-white dark:bg-form-input text-black dark:text-white border-stroke dark:border-form-strokedark"
                                         placeholder={t("loginPage.enterYourEmail")}
                                         required
                                     />
-                                    <Mail className="absolute right-3 top-2 h-5 w-5 text-gray-400" />
+                                    <Mail className="absolute right-3 top-2 h-5 w-5 text-body dark:text-bodydark" />
                                 </div>
                             </div>
 
                             {/* Password Field */}
                             <div>
-                                <label className="text-sm text-gray-600 dark:text-gray-400">
+                                <label className="text-sm text-body dark:text-bodydark">
                                     {t("loginPage.password")}
                                 </label>
                                 <div className="relative">
@@ -245,7 +263,7 @@ export default function LoginPage() {
                                         type={showPassword ? "text" : "password"}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="mt-1 pr-24"
+                                        className="mt-1 pr-24 bg-white dark:bg-form-input text-black dark:text-white border-stroke dark:border-form-strokedark"
                                         placeholder={t("loginPage.enterYourPassword")}
                                         required
                                     />
@@ -253,7 +271,7 @@ export default function LoginPage() {
                                         <button
                                             type="button"
                                             onClick={() => setShowPassword(!showPassword)}
-                                            className="text-gray-400 hover:text-gray-600 transition-colors focus:outline-none"
+                                            className="text-body hover:text-black dark:text-bodydark dark:hover:text-white transition-colors focus:outline-none"
                                             tabIndex={-1}
                                         >
                                             {showPassword ? (
@@ -277,7 +295,7 @@ export default function LoginPage() {
                                 />
                                 <label
                                     htmlFor="remember"
-                                    className="text-sm text-gray-600 cursor-pointer dark:text-gray-400"
+                                    className="text-sm text-body dark:text-bodydark cursor-pointer"
                                 >
                                     {t("loginPage.rememberMe")}
                                 </label>
@@ -288,7 +306,7 @@ export default function LoginPage() {
                                     e.preventDefault();
                                     setForgotPasswordOpen(true);
                                 }}
-                                className="text-sm text-gray-600 hover:text-gray-800 underline"
+                                className="text-sm text-body hover:text-black dark:text-bodydark dark:hover:text-white underline"
                             >
                                 {t("loginPage.forgotPassword")}
                             </Link>
@@ -306,6 +324,13 @@ export default function LoginPage() {
                             onBecomeAgent={handleBecomeAgent}
                         />
 
+                        <AccessDeniedDialog
+                            open={showAccessDeniedDialog}
+                            onOpenChange={setShowAccessDeniedDialog}
+                            onContactSupport={handleContactSupport}
+                            onRegister={handleRegister}
+                        />
+
                         {/* Error Alert */}
                         {error && (
                             <Alert variant="destructive">
@@ -316,7 +341,7 @@ export default function LoginPage() {
                         {/* Submit Button */}
                         <Button
                             type="submit"
-                            className="w-full bg-[#E31C5F] hover:bg-[#c4164f] text-white"
+                            className="w-full bg-primary hover:bg-primary/90 text-white"
                             disabled={isLoading}
                         >
                             {isLoading ? (
@@ -330,7 +355,7 @@ export default function LoginPage() {
                         </Button>
 
                         {/* Warning Message */}
-                        <div className="mt-6 text-sm text-red-500">
+                        {/* <div className="mt-6 text-sm text-red-500">
                             <p>
                                 <b>
                                     <u>{t("loginPage.warning")}!</u>
@@ -341,7 +366,7 @@ export default function LoginPage() {
                                 <b>{t("loginPage.warningDescription2")}</b>
                                 {t("loginPage.warningDescription3")}
                             </p>
-                        </div>
+                        </div> */}
                     </form>
                 </div>
             </div>

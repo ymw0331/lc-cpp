@@ -55,7 +55,8 @@ const LanguageSwitcher: React.FC = () => {
 
     const languages = [
         { code: 'en', label: 'English', flag: '🇺🇸' },
-        { code: 'zh', label: '中文', flag: '🇨🇳' }
+        { code: 'zh', label: '简体中文', flag: '🇨🇳' },
+        { code: 'zh-hk', label: '繁體中文', flag: '🇭🇰' }
     ];
 
     return (

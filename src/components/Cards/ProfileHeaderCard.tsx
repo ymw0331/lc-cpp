@@ -19,7 +19,7 @@ interface ProfileData {
     status: {
         deposit: boolean;
         eKYC: boolean;
-        activatedCard: boolean;
+        accountActivation: boolean;
         physicalCard: boolean;
     };
     socialLinks?: {
@@ -46,7 +46,7 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
     const statusLabels = {
         deposit: "Deposit",
         eKYC: "eKYC",
-        activatedCard: "Activated Card",
+        accountActivation: "Account Activation",
         physicalCard: "Physical Card"
     };
 

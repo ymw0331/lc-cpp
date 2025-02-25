@@ -1,0 +1,417 @@
+{
+    "common": {
+        "comingSoon": "即將推出"
+    },
+    "header": {
+        "searchPlaceholder": "輸入搜尋...",
+        "darkMode": "黑暗模式",
+        "notifications": "通知",
+        "messages": "訊息",
+        "user": "用戶"
+    },
+    "dropdownUser": {
+        "myProfile": "我的個人資料",
+        "preference": "偏好設定",
+        "logOut": "登出"
+    },
+    "sidebar": {
+        "menu": "選單",
+        "dashboard": "儀表板",
+        "account": "帳戶",
+        "incentive management": "激勵管理",
+        "referred users": "推薦用戶",
+        "manage user": "管理用戶",
+        "recruit agent": "招募代理",
+        "performance": "效能表現",
+        "support": "支援",
+        "settings": "設定",
+        "legal & compliance": "法律與合規",
+        "wallets": "錢包",
+        "transfer": "轉帳",
+        "profile": "個人資料",
+        "password": "密碼",
+        "preference": "偏好設定",
+        "profile policy": "個人資料政策",
+        "terms and conditions": "條款及條件",
+        "user agreement": "用戶協議",
+        "code of conduct": "行為守則",
+        "compliance and anti-corruption": "合規與反腐敗",
+        "privacy guideline": "隱私指南"
+    },
+    "agentDashboard": {
+        "overview": "總覽",
+        "rewardWalletBalance": "獎勵錢包餘額",
+        "totalDepositAmount": "總存款金額",
+        "directRecruitIncentiveEarnings": "直接招募激勵收益",
+        "activeUsers": "活躍用戶",
+        "left": "剩餘",
+        "totalDirectRecruit": "總直接招募",
+        "agentsToPartner": "代理商轉合作夥伴",
+        "depositSummary": "存款摘要",
+        "depositActivity": "存款活動",
+        "description": "描述",
+        "amount": "金額",
+        "dateTime": "日期時間",
+        "failedToLoadData": "載入儀表板資料失敗",
+        "loading": "載入中...",
+        "referralCode": "推薦碼",
+        "recruitment": "招募",
+        "incentives": "激勵"
+    },
+    "loginPage": {
+        "welcomeToLookcard": "歡迎來到Lookcard經銷商入口網站",
+        "pleaseSignIn": "請登入以繼續存取您的儀表板。",
+        "signInToAgentDashboard": "登入代理儀表板",
+        "email": "電子郵件",
+        "enterYourEmail": "輸入您的電子郵件",
+        "password": "密碼",
+        "enterYourPassword": "輸入您的密碼",
+        "signIn": "登入",
+        "signingIn": "正在登入",
+        "testCredentials": "測試憑證",
+        "error": "錯誤",
+        "success": "成功",
+        "successfullyLoggedIn": "登入成功！",
+        "loginFailed": "登入失敗",
+        "rememberMe": "記住我",
+        "forgotPassword": "忘記密碼",
+        "warning": "警告",
+        "warningDescription1": "要存取此入口網站，",
+        "warningDescription2": "您必須先註冊為 Lookcard.io 應用程式用戶並使用您的憑證登入。",
+        "warningDescription3": "如果您不是註冊用戶，請離開此頁面。未經授權的存取可能會導致紀律處分或法律後果。",
+        "signInTo": "登入",
+        "communityPartnershipProgramPortal": "社區合作計劃入口網站",
+        "editYourInformation": "滑動即可編輯您的資訊",
+        "sintOccaecat": "Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
+        "longEstablishedFact": "這是一個長期存在的事實",
+        "readable": "讀者會被可讀的內容分散注意力。",
+        "manyVariations": "有很多變體",
+        "available": "大多數可用的段落都受到了影響"
+    },
+    "registerPage": {
+        "agentRecruitmentDetails": "代理招募詳情",
+        "joinOurCommunity": "加入我們的社區合作夥伴計劃",
+        "referralId": "推薦ID",
+        "enterReferralId": "輸入推薦ID（選填）",
+        "fullName": "全名",
+        "enterFullName": "輸入您的全名",
+        "email": "註冊電郵",
+        "enterEmail": "輸入您的註冊電郵",
+        "coreMarket": "核心市場領域 [國家]",
+        "enterCoreMarket": "輸入您的核心市場領域",
+        "agentAcknowledgement": "確認聲明",
+        "termsAgreement": "我同意上述所有條款，包括遵守項目要求、道德行為和隱私政策。我確認我理解並接受這些條款，適用於我的申請和我提交的任何推薦。",
+        "success": "註冊成功",
+        "successfullyRegistered": "您已成功註冊為經銷商",
+        "error": "註冊錯誤",
+        "processing": "處理中",
+        "signUp": "註冊",
+        "acknowledgementPoints": {
+            "bySubmitting": "提交此表格，您確認並同意以下內容：",
+            "accuracy": "本表格中提供的所有資訊據我所知是準確和完整的。",
+            "verification": "加入計劃需要經過驗證和批准。",
+            "misrepresentation": "任何虛假陳述或違反計劃指南可能導致取消資格或終止參與。",
+            "privacy": "您的個人資訊將被安全處理，僅用於評估和促進合作夥伴關係。",
+            "terms": "此提交受附加條款及條件約束，這些條款將在成功加入後分享。"
+        },
+        "thankYou": "感謝您的申請！",
+        "receivedSubmission": "我們已收到您的提交。",
+        "confirmationEmail": "確認電子郵件將傳送至您的收件匣（或垃圾郵件資料夾）",
+        "withinDays": " 3個工作日內。",
+        "done": "完成"
+    },
+    "forgotPasswordDialog": {
+        "close": "關閉",
+        "forgotPassword": "忘記密碼？",
+        "passwordResetUnavailable": "密碼重設在以下位置不可用",
+        "communityPartnershipProgramPortal": "社區合作計劃入口網站。",
+        "toResetYourCredentials": "要重設您的登入憑證，請使用",
+        "useLookCardApp": "LookCard.io應用程式。開啟該應用程式以安全地更新您的密碼。",
+        "backToLogin": "返回登入"
+    },
+    "notRegisteredDialog": {
+        "imageAlt": "未註冊",
+        "title": "未註冊",
+        "noAccess": "您的帳戶目前無法存取此入口網站。要繼續，請註冊成為LookCard經銷商並解鎖獨家機會。",
+        "benefits": "作為經銷商，您可以享受特別優惠並賺取高達",
+        "referralAmount": " 每次推薦80美元以上",
+        "callToAction": "。不要錯過—立即加入並開始最大化您的收益！",
+        "becomeAgent": "成為代理"
+    },
+    "accessDeniedDialog": {
+        "accessDeniedAlt": "拒絕存取",
+        "title": "存取被拒絕",
+        "mainMessage": "您的帳戶沒有存取此入口網站的必要權限，因此入口網站僅限註冊的經銷商使用。",
+        "supportMessage": "如果您認為這是一個錯誤，請聯絡我們的支援團隊尋求協助。",
+        "contactSupport": "聯絡支援",
+        "registerAsReseller": "註冊為經銷商"
+    },
+    "profileCard": {
+        "activeUsersLabel": "活躍用戶"
+    },
+    "referralCard": {
+        "referralCodeLabel": "推薦碼",
+        "copiedToClipboard": "已複製到剪貼簿"
+    },
+    "recruitCard": {
+        "totalDirectRecruitLabel": "總直接招募",
+        "agentsToPartnerLabel": "代理商轉合作夥伴"
+    },
+    "statisticChart": {
+        "noDataAvailable": "無資料可用"
+    },
+    "depositActivityTable": {
+        "depositActivityLabel": "存款活動",
+        "descriptionHeader": "描述",
+        "amountHeader": "金額",
+        "dateTimeHeader": "日期時間",
+        "noDataAvailable": "無資料可用"
+    },
+    "walletsPage": {
+        "walletsBreadcrumb": "錢包",
+        "rewardWalletBalance": "獎勵錢包餘額",
+        "currentAccountWalletBalance": "往來帳戶錢包餘額",
+        "rewardWalletSummary": "獎勵錢包摘要",
+        "failedToLoadData": "無法載入錢包資料",
+        "walletSummaryComingSoon": "錢包摘要即將推出"
+    },
+    "analyticChart": {
+        "noDataAvailable": "無數據可用",
+        "comingSoon": "即將推出"
+    },
+    "walletCard": {
+        "transferButton": "轉移",
+        "comingSoon": "即將推出"
+    },
+    "transferPage": {
+        "transferToCurrentAccountWalletBreadcrumb": "轉移到往來賬戶錢包"
+    },
+    "walletTransferForm": {
+        "rewardWalletBalance": "獎勵錢包餘額",
+        "selectCurrencyWallet": "選擇貨幣錢包",
+        "enterTransferAmount": "輸入轉賬金額",
+        "fullAmountButton": "全額",
+        "transferFee": "轉賬手續費",
+        "totalAmountTransferred": "轉賬總額",
+        "transferButton": "轉移"
+    },
+    "transferActivityTable": {
+        "transferActivity": "轉賬活動",
+        "transactionIdHeader": "交易ID",
+        "transferredAmountHeader": "轉賬金額",
+        "dateTimeHeader": "日期時間",
+        "statusHeader": "狀態"
+    },
+    "incentiveManagementPage": {
+        "incentiveManagementBreadcrumb": "激勵管理",
+        "totalIncentive": "總激勵",
+        "milestoneBonus": "里程碑獎金",
+        "directRecruitReferral": "直接招募推薦覆蓋激勵",
+        "directAdminCharge": "直接管理費回扣",
+        "directRecruitDeposit": "直接招募存款管理費覆蓋回扣",
+        "directRecruitLevelAdvancementBonus": "直接招募級別晉升獎金",
+        "performanceBonus": "業績獎金",
+        "failedToLoadData": "無法加載激勵數據"
+    },
+    "incentiveCard": {
+        "activeUsersLeft": "剩餘活躍用戶"
+    },
+    "dataTable": {
+        "incentiveActivity": "激勵活動",
+        "transactionId": "交易ID",
+        "transferredAmount": "轉賬金額",
+        "dateTime": "日期時間",
+        "status": "狀態",
+        "noDataAvailable": "沒有數據",
+        "noRecordsToDisplay": "此期間沒有記錄可顯示",
+        "showingResults": "顯示 {start} 到 {end}，共 {total} 條結果"
+    },
+    "referredUsersPage": {
+        "referredUsersBreadcrumb": "推薦用戶",
+        "recruitmentSummary": "招募概覽",
+        "totalDirectRecruit": "總直接招募",
+        "noRecruitmentData": "沒有可用的招募數據",
+        "startRecruiting": "開始招募以查看您的統計信息",
+        "failedToLoadData": "無法加載儀表板數據"
+    },
+    "manageUserPage": {
+        "manageUsersBreadcrumb": "管理用戶"
+    },
+    "usersTable": {
+        "users": "用戶",
+        "filters": "篩選器",
+        "market": "市場",
+        "allMarkets": "所有市場",
+        "ranking": "排名",
+        "allRankings": "所有排名",
+        "dateRange": "日期範圍",
+        "from": "從",
+        "to": "至",
+        "searchUser": "搜索用戶",
+        "recruit": "招募",
+        "name": "姓名",
+        "userId": "用戶ID",
+        "keyMarket": "主要市場",
+        "joinedSince": "加入時間",
+        "lastActive": "上次活躍時間"
+    },
+    "recruitAgentPage": {
+        "recruitAgentBreadcrumb": "招募代理",
+        "agentRecruitmentDetails": "代理招募詳情",
+        "referralId": "推薦人ID",
+        "fullName": "全名",
+        "registeredEmail": "註冊郵箱",
+        "memberVerification": "會員驗證",
+        "emailVerified": "郵箱已驗證",
+        "matchedEmail": "郵箱已匹配",
+        "check": "檢查",
+        "proposedKeyMarket": "建議的主要市場",
+        "selectMarket": "選擇市場",
+        "acknowledgement": "確認",
+        "acknowledgementItem1": "我確認在此表格中提供的所有信息都是準確和真實的。",
+        "acknowledgementItem2": "我確認我推薦的人已同意Lookcard Limited就此計劃與其聯繫。",
+        "acknowledgementItem3": "我理解提交推薦並不能保證被推薦人被該計劃接受。",
+        "acknowledgementItem4": "我確認，如果被推薦人符合計劃資格並滿足加入要求，則此推薦的任何利益或獎勵都將受到影響。",
+        "agreementLabel": "我同意上述所有條款，包括遵守計劃要求、道德行為和隱私政策。我確認我理解並接受這些條款，包括我的申請和任何我提交的推薦。",
+        "recruitButton": "招募"
+    },
+    "performancePage": {
+        "performanceBreadcrumb": "業績",
+        "cardActivationVolume": "卡激活量",
+        "totalAgentRecruitment": "總代理招募",
+        "failedToLoadData": "無法加載業績數據"
+    },
+    "nextLevelCard": {
+        "nextLevel": "下一級別",
+        "maxLevelMessage": "恭喜！您已經達到了最高級別。",
+        "progressMessage": "繼續努力！您正在取得巨大進展。",
+        "level": "級別",
+        "requestLevelUpButton": "請求升級",
+        "levelUpRequestSentTitle": "升級請求已發送",
+        "levelUpRequestSentDescription": "我們將審核您的請求，並儘快回覆您。"
+    },
+    "salesSummaryCard": {
+        "salesSummary": "銷售概要",
+        "groupSales": "團隊銷售額",
+        "personalSales": "個人銷售額"
+    },
+    "salesVolumeBarChart": {
+        "salesVolume": "銷售量",
+        "year": "年份",
+        "week": "週",
+        "month": "月",
+        "selectMonth": "選擇月份",
+        "selectWeek": "選擇週"
+    },
+    "demographicSalesChart": {
+        "salesVolumeInDemographic": "人口統計銷售量",
+        "year": "年份",
+        "quarter": "季度"
+    },
+    "supportPage": {
+        "supportBreadcrumb": "支援",
+        "category": "類別",
+        "selectCategory": "選擇類別",
+        "title": "標題",
+        "titlePlaceholder": "簡要描述您的問題",
+        "description": "描述您的問題",
+        "descriptionPlaceholder": "請提供有關您的問題的詳細信息...",
+        "supportingDocuments": "支援文件",
+        "uploadDocuments": "上傳文件",
+        "saveChanges": "保存更改",
+        "fileSizeExceeded": "文件大小不應超過 5MB",
+        "invalidFileType": "僅允許 JPG 和 PDF 文件"
+    },
+    "profilePage": {
+        "profileBreadcrumb": "個人資料",
+        "profileDetail": "個人資料詳情",
+        "userId": "用戶ID",
+        "fullName": "全名",
+        "email": "電子郵件",
+        "contactNo": "聯繫電話",
+        "referralCode": "推薦碼",
+        "keyMarket": "主要市場",
+        "socialMediaProfiles": "社交媒體資料",
+        "saveChanges": "保存更改",
+        "saving": "保存中...",
+        "error": "錯誤",
+        "success": "成功",
+        "failedToLoadProfileData": "無法加載個人資料數據",
+        "failedToUpdateProfile": "無法更新個人資料",
+        "emailVerified": "電子郵件已驗證",
+        "phoneVerified": "電話已驗證",
+        "youCanNowEditEmail": "您現在可以編輯您的電子郵件地址",
+        "youCanNowEditPhone": "您現在可以編輯您的電話號碼",
+        "otpResent": "OTP已重新發送",
+        "newOtpSent": "新的OTP已發送到您的",
+        "copied": "已複製！",
+        "referralCodeCopied": "推薦碼已複製到剪貼板"
+    },
+    "passwordPage": {
+        "passwordBreadcrumb": "密碼",
+        "changePassword": "更改密碼",
+        "oldPassword": "舊密碼",
+        "newPassword": "新密碼",
+        "confirmPassword": "確認密碼",
+        "twoFactorAuth": "雙重身份驗證 (2FA)",
+        "twoFactorAuthDescription": "啟用以接收與您的雙重身份驗證活動相關的警報和更新。",
+        "saveChanges": "保存更改",
+        "success": "成功",
+        "passwordUpdatedSuccessfully": "您的密碼已成功更新",
+        "error": "錯誤",
+        "failedToUpdatePassword": "無法更新密碼。請重試。",
+        "2faEnabled": "2FA 已啟用",
+        "2faDisabled": "2FA 已禁用",
+        "2faEnabledDescription": "雙重身份驗證已啟用",
+        "2faDisabledDescription": "雙重身份驗證已禁用"
+    },
+    "preferences": {
+        "title": "設置",
+        "saveChanges": "保存更改",
+        "saving": "正在保存...",
+        "success": {
+            "title": "成功",
+            "description": "您的偏好設置已成功更新"
+        },
+        "error": {
+            "title": "錯誤",
+            "description": "更新偏好設置失敗。請重試。"
+        },
+        "language": {
+            "title": "語言",
+            "select": "選擇語言",
+            "changed": "語言已更改",
+            "restart": "某些更改可能需要刷新頁面",
+            "options": {
+                "en": "English (Default)",
+                "zh": "中文"
+            }
+        },
+        "darkMode": {
+            "title": "黑暗模式",
+            "description": "啟用黑暗模式，以便在弱光條件下獲得更好的觀看體驗。",
+            "enabled": "已啟用黑暗模式",
+            "disabled": "已禁用黑暗模式",
+            "enabledDesc": "已啟用黑暗模式",
+            "disabledDesc": "已禁用黑暗模式"
+        },
+        "notifications": {
+            "title": "通知",
+            "description": "啟用以接收有關您的帳戶和優惠的更新。",
+            "enabled": "已啟用通知",
+            "disabled": "已禁用通知",
+            "enabledDesc": "您現在將收到有關您的帳戶和優惠的更新",
+            "disabledDesc": "您將不再收到通知"
+        }
+    },
+    "legal": {
+        "legalAndComplianceBreadcrumb": "法律與合規",
+        "privacyPolicyTitle": "隱私政策",
+        "termsAndConditionsTitle": "條款和條件",
+        "userAgreementTitle": "用戶協議",
+        "codeOfConductTitle": "行為準則",
+        "complianceAndAntiCorruptionTitle": "合規與反腐敗",
+        "profilePolicyTitle": "個人資料政策",
+        "programGuidelineTitle": "項目指南"
+    }
+}

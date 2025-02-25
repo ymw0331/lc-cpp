@@ -8,7 +8,6 @@ import AgentLevelIcon from "@/components/Icons/dashboard/AgentLevelIcon";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import UsersTable from "@/components/Tables/UsersTable";
 import { useEffect, useState } from "react";
-// import { usersListData, agentLevelsData } from "@/lib/data"; // Import the data
 import { useTranslation } from "react-i18next";
 
 const ManageUserPage = () => {
@@ -57,12 +56,33 @@ const ManageUserPage = () => {
     const accessibleTiers = resellerApi.getAccessibleTierLevels(currentTierPriority);
 
     // Filter and map agent level cards
+    // const agentLevelCards = accessibleTiers.map((tier, index) => {
+    //     const count = downstreamCounts[tier] || 0;
+
+    //     return (
+    //         <AgentLevelCard
+    //             key={tier}
+    //             level={`Level ${index} Agent`}
+    //             count={count}
+    //             icon={<AgentLevelIcon />}
+    //         />
+    //     );
+    // });
+
     const agentLevelCards = accessibleTiers.map((tier, index) => {
         const count = downstreamCounts[tier] || 0;
+
+        let levelText;
+        if (tier === "tier 0") {
+            levelText = "Level 0 User";
+        } else {
+            levelText = `Level ${index} Agent`;
+        }
+
         return (
             <AgentLevelCard
                 key={tier}
-                level={`Level ${index} Agent`}
+                level={levelText}
                 count={count}
                 icon={<AgentLevelIcon />}
             />
@@ -84,9 +104,9 @@ const ManageUserPage = () => {
                 </div> */}
 
                 <div className="mt-4">
-                    <UsersTable 
-                        users={[]} 
-                        comingSoon={true} 
+                    <UsersTable
+                        users={[]}
+                        comingSoon={true}
                     />
                 </div>
             </div>

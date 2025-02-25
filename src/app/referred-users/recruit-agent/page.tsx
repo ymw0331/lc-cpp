@@ -29,7 +29,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 
 const formSchema = z.object({
-    referralId: z.string(),
+    referralId: z.string(), // TODO: change to reseller id of the profile
     fullName: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
     market: z.string(),
@@ -47,6 +47,203 @@ interface Market {
     timezone?: string; // optional timezone
     active?: boolean; // to control availability
 }
+
+// Afghanistan  
+// Albania  
+// Algeria  
+// Andorra  
+// Angola  
+// Antigua and Barbuda  
+// Argentina  
+// Armenia  
+// Australia  
+// Austria  
+// Azerbaijan  
+// Bahamas  
+// Bahrain  
+// Bangladesh  
+// Barbados  
+// Belarus  
+// Belgium  
+// Belize  
+// Benin  
+// Bhutan  
+// Bolivia  
+// Bosnia and Herzegovina  
+// Botswana  
+// Brazil  
+// Brunei  
+// Bulgaria  
+// Burkina Faso  
+// Burundi  
+// Cabo Verde  
+// Cambodia  
+// Cameroon  
+// Canada  
+// Central African Republic  
+// Chad  
+// Chile  
+// China  
+// Colombia  
+// Comoros  
+// Congo (Congo-Brazzaville)  
+// Congo (Democratic Republic of the)  
+// Costa Rica  
+// Croatia  
+// Cuba  
+// Cyprus  
+// Czechia (Czech Republic)  
+// Denmark  
+// Djibouti  
+// Dominica  
+// Dominican Republic  
+// Ecuador  
+// Egypt  
+// El Salvador  
+// Equatorial Guinea  
+// Eritrea  
+// Estonia  
+// Eswatini (Swaziland)  
+// Ethiopia  
+// Fiji  
+// Finland  
+// France  
+// Gabon  
+// Gambia  
+// Georgia  
+// Germany  
+// Ghana  
+// Greece  
+// Grenada  
+// Guatemala  
+// Guinea  
+// Guinea-Bissau  
+// Guyana  
+// Haiti  
+// Honduras  
+// Hong Kong
+// Hungary  
+// Iceland  
+// India  
+// Indonesia  
+// Iran  
+// Iraq  
+// Ireland  
+// Israel  
+// Italy  
+// Jamaica  
+// Japan  
+// Jordan  
+// Kazakhstan  
+// Kenya  
+// Kiribati  
+// Korea (North)  
+// Korea (South)  
+// Kuwait  
+// Kyrgyzstan  
+// Laos  
+// Latvia  
+// Lebanon  
+// Lesotho  
+// Liberia  
+// Libya  
+// Liechtenstein  
+// Lithuania  
+// Luxembourg  
+// Madagascar  
+// Malawi  
+// Malaysia  
+// Maldives  
+// Mali  
+// Malta  
+// Marshall Islands  
+// Mauritania  
+// Mauritius  
+// Mexico  
+// Micronesia  
+// Moldova  
+// Monaco  
+// Mongolia  
+// Montenegro  
+// Morocco  
+// Mozambique  
+// Myanmar (Burma)  
+// Namibia  
+// Nauru  
+// Nepal  
+// Netherlands  
+// New Zealand  
+// Nicaragua  
+// Niger  
+// Nigeria  
+// North Macedonia (Macedonia)  
+// Norway  
+// Oman  
+// Pakistan  
+// Palau  
+// Palestine State  
+// Panama  
+// Papua New Guinea  
+// Paraguay  
+// Peru  
+// Philippines  
+// Poland  
+// Portugal  
+// Qatar  
+// Romania  
+// Russia  
+// Rwanda  
+// Saint Kitts and Nevis  
+// Saint Lucia  
+// Saint Vincent and the Grenadines  
+// Samoa  
+// San Marino  
+// Sao Tome and Principe  
+// Saudi Arabia  
+// Senegal  
+// Serbia  
+// Seychelles  
+// Sierra Leone  
+// Singapore  
+// Slovakia  
+// Slovenia  
+// Solomon Islands  
+// Somalia  
+// South Africa  
+// South Sudan  
+// Spain  
+// Sri Lanka  
+// Sudan  
+// Suriname  
+// Sweden  
+// Switzerland  
+// Syria  
+// Tajikistan  
+// Taiwan
+// Tanzania  
+// Thailand  
+// Timor-Leste  
+// Togo  
+// Tonga  
+// Trinidad and Tobago  
+// Tunisia  
+// Turkey  
+// Turkmenistan  
+// Tuvalu  
+// Uganda  
+// Ukraine  
+// United Arab Emirates  
+// United Kingdom  
+// United States of America  
+// Uruguay  
+// Uzbekistan  
+// Vanuatu  
+// Vatican City (Holy See)  
+// Venezuela  
+// Vietnam  
+// Yemen  
+// Zambia  
+// Zimbabwe
 
 const MARKETS: Market[] = [
     {

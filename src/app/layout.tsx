@@ -7,6 +7,8 @@ import Loader from "@/components/common/Loader";
 import useColorMode from "@/hooks/useColorMode";
 import { AuthProvider } from '@/contexts/AuthContext';
 import { Toaster } from "@/components/ui/toaster";
+import i18n from "@/i18n/i18n";
+import { storage } from "@/lib/storage";
 
 // Auth wrapper component to handle auth-specific loading
 const AuthWrapper = ({ children }: { children: ReactNode }) => {
@@ -14,19 +16,28 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Check if we have a stored token/user
-    const checkAuth = async () => {
+    const checkAuthAndLanguage = async () => {
       try {
         const token = localStorage.getItem('auth_token');
+
+        // Check and set language preference
+        const preferredLanguage = storage.getLanguagePreference();
+
+        // Change language if needed
+        await i18n.changeLanguage(preferredLanguage);
+
         // Add a small delay to prevent flash of loading state
         await new Promise(resolve => setTimeout(resolve, 500));
         setIsAuthChecking(false);
+
+
       } catch (error) {
-        console.error('Auth check failed:', error);
+        console.error('Auth and languagecheck failed:', error);
         setIsAuthChecking(false);
       }
     };
 
-    checkAuth();
+    checkAuthAndLanguage();
   }, []);
 
   if (isAuthChecking) {

@@ -60,7 +60,7 @@ export default function RegisterPage() {
 
     // Carousel Auto-rotation
     useEffect(() => {
-        console.log('[Register] Setting up carousel rotation');
+        // console.log('[Register] Setting up carousel rotation');
         const timer = setInterval(() => {
             setCurrentImageIndex((prev) =>
                 prev === carouselImages.length - 1 ? 0 : prev + 1
@@ -68,7 +68,7 @@ export default function RegisterPage() {
         }, 10000);
 
         return () => {
-            console.log('[Register] Cleaning up carousel timer');
+            // console.log('[Register] Cleaning up carousel timer');
             clearInterval(timer);
         };
     }, []);

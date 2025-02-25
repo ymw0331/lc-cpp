@@ -97,4 +97,16 @@ export const storage = {
             localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
         }
     },
+
+    getLanguagePreference: () => {
+        const language = localStorage.getItem('preferredLanguage');
+        console.log('[Storage] Getting language preference:', { language });
+        return language || 'en';
+    },
+
+    setLanguagePreference: (language: string) => {
+        console.log('[Storage] Setting language preference:', { language });
+        localStorage.setItem('preferredLanguage', language);
+    },
+
 };

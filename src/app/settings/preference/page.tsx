@@ -1,11 +1,9 @@
 "use client";
-
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -22,41 +20,19 @@ import { useTranslation } from "react-i18next";
 import useColorMode from "@/hooks/useColorMode";
 
 const preferenceSchema = z.object({
-    language: z.enum(["en", "zh"]),
+    language: z.enum(["en", "zh", "zh-hk"]),
     notifications: z.boolean(),
     darkMode: z.boolean(),
 });
 
 const languages = [
-    { value: "en", label: "English (Default)" },
-    { value: "zh", label: "中文" },
+    { value: "en", label: "English", flag: '🇺🇸' },
+    { value: "zh", label: "简体中文", flag: '🇨🇳' },
+    { value: "zh-hk", label: "繁體中文", flag: '🇭🇰' },
 ];
 
-// Custom hook for managing language preference
-const useLanguagePreference = () => {
-    const { i18n } = useTranslation();
-
-    const setLanguagePreference = async (language: string) => {
-        // Update i18n
-        await i18n.changeLanguage(language);
-
-        // Store in localStorage
-        localStorage.setItem("preferredLanguage", language);
-
-        // Store in database
-        // try {
-        //     await axios.post('/api/preferences/language', { language });
-        // } catch (error) {
-        //     console.error('Failed to save language preference to database:', error);
-        // }
-    };
-
-    return { setLanguagePreference };
-};
-
 const PreferencePage = () => {
-    const { t } = useTranslation();
-    const { setLanguagePreference } = useLanguagePreference();
+    const { i18n, t } = useTranslation();
     const [colorMode, setColorMode] = useColorMode();
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,32 +52,29 @@ const PreferencePage = () => {
             try {
                 // Load language preference from localStorage
                 const savedLanguage = localStorage.getItem("preferredLanguage") || "en";
-                form.setValue("language", savedLanguage as "en" | "zh");
 
-                // Load preferences from database
-                // const response = await axios.get('/api/preferences');
-                // const dbPreferences = response.data;
+                // Set form value
+                form.setValue("language", savedLanguage as "en" | "zh" | "zh-hk");
 
-                // if (dbPreferences) {
-                //     setIsNotificationsEnabled(dbPreferences.notifications);
-                //     form.setValue('notifications', dbPreferences.notifications);
-                // }
+                // Change language if needed
+                await i18n.changeLanguage(savedLanguage);
+
             } catch (error) {
                 console.error("Failed to load preferences:", error);
             }
         };
 
         loadPreferences();
-    }, [form]);
+    }, [form, i18n]);
 
     async function onSubmit(values: z.infer<typeof preferenceSchema>) {
         setIsSubmitting(true);
         try {
             // Update language
-            await setLanguagePreference(values.language);
+            await i18n.changeLanguage(values.language);
 
-            // Update preferences in database
-            // await axios.post('/api/preferences', values);
+            // Store in localStorage
+            localStorage.setItem("preferredLanguage", values.language);
 
             toast({
                 title: t("preferences.success.title"),
@@ -121,14 +94,24 @@ const PreferencePage = () => {
     }
 
     const handleLanguageChange = async (language: string) => {
-        form.setValue("language", language as "en" | "zh");
-        await setLanguagePreference(language);
+        try {
+            // Update form value
+            form.setValue("language", language as "en" | "zh" | "zh-hk");
 
-        toast({
-            title: t("preferences.language.changed"),
-            description: t("preferences.language.restart"),
-            duration: 3000,
-        });
+            // Change language
+            await i18n.changeLanguage(language);
+
+            // Store in localStorage
+            localStorage.setItem("preferredLanguage", language);
+
+            toast({
+                title: t("preferences.language.changed"),
+                description: t("preferences.language.restart"),
+                duration: 3000,
+            });
+        } catch (error) {
+            console.error('Language change failed:', error);
+        }
     };
 
     const handleDarkModeToggle = (checked: boolean) => {
@@ -153,8 +136,6 @@ const PreferencePage = () => {
         form.setValue("notifications", checked);
 
         try {
-            // await axios.post('/api/preferences/notifications', { enabled: checked });
-
             toast({
                 title: checked
                     ? t("preferences.notifications.enabled")
@@ -186,11 +167,13 @@ const PreferencePage = () => {
                                     {t("preferences.language.title")}
                                 </h3>
                                 <Select
-                                    defaultValue={form.getValues("language")}
+                                    value={form.getValues("language")}
                                     onValueChange={handleLanguageChange}
                                 >
                                     <SelectTrigger className="w-[200px] rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-form-input dark:text-white">
-                                        <SelectValue placeholder={t("preferences.language.select")} />
+                                        <SelectValue placeholder={t("preferences.language.select")}>
+                                            {languages.find(lang => lang.value === form.getValues("language"))?.label}
+                                        </SelectValue>
                                     </SelectTrigger>
                                     <SelectContent className="border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
                                         <SelectGroup>
@@ -198,8 +181,9 @@ const PreferencePage = () => {
                                                 <SelectItem
                                                     key={language.value}
                                                     value={language.value}
-                                                    className="cursor-pointer hover:bg-primary/5 dark:hover:bg-primary/10"
+                                                    className="cursor-pointer hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center"
                                                 >
+                                                    <span className="mr-2">{language.flag}</span>
                                                     {language.label}
                                                 </SelectItem>
                                             ))}
@@ -241,24 +225,6 @@ const PreferencePage = () => {
                                     className="bg-stroke data-[state=checked]:bg-primary"
                                 />
                             </div>
-
-                            {/* Save Button */}
-                            <div className="flex justify-end">
-                                <Button
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                    className="flex justify-center rounded bg-primary py-3 px-6 font-medium text-white hover:bg-opacity-95 dark:bg-primary dark:text-white dark:hover:bg-opacity-90"
-                                >
-                                    {isSubmitting ? (
-                                        <span className="flex items-center gap-2">
-                                            <span className="animate-spin">⏳</span>
-                                            {t("preferences.saving")}
-                                        </span>
-                                    ) : (
-                                        t("preferences.saveChanges")
-                                    )}
-                                </Button>
-                            </div>
                         </form>
                     </Form>
                 </div>
@@ -267,4 +233,4 @@ const PreferencePage = () => {
     );
 };
 
-export default PreferencePage
+export default PreferencePage;

@@ -308,10 +308,14 @@ const UsersTable = ({ users, comingSoon = false }: UsersTableProps) => {
                                 </span>
                             )}
                         </Button>
-                        <Button className="bg-primary hover:bg-primary/90">
+
+                        <Button
+                            onClick={() => router.push("/referred-users/recruit-agent")}
+                            className="bg-primary hover:bg-primary/90">
                             <Plus className="mr-2 h-5 w-5" />
                             {t("usersTable.recruit")}
                         </Button>
+
                     </div>
                 </div>
 
@@ -334,7 +338,7 @@ const UsersTable = ({ users, comingSoon = false }: UsersTableProps) => {
                                     {t("usersTable.name")}
                                 </th>
                                 <th className="py-4 px-4 text-left font-medium">
-                                    {t("usersTable.userId")}
+                                    {t("usersTable.email")}
                                 </th>
                                 <th className="py-4 px-4 text-left font-medium">
                                     {t("usersTable.ranking")}

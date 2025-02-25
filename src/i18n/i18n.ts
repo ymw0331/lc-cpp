@@ -1,10 +1,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-// Import your translation files
 import enTranslation from './locales/en.json';
-import zhTranslation from './locales/zh.json';
-
+import zhSimplifiedTranslation from './locales/zh.json';
+import zhTraditionalTranslation from './locales/zh-hk.json';
 i18n
     .use(initReactI18next)
     .init({
@@ -13,11 +12,15 @@ i18n
                 translation: enTranslation,
             },
             zh: {
-                translation: zhTranslation,
+                translation: zhSimplifiedTranslation,
+            },
+            'zh-HK': {
+                translation: zhTraditionalTranslation,
             },
         },
-        lng: 'en', // default language
+        lng: 'en',
         fallbackLng: 'en',
+        supportedLngs: ['en', 'zh', 'zh-HK'],
         interpolation: {
             escapeValue: false, // react already safes from xss
         },

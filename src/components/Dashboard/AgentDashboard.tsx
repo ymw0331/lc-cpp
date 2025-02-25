@@ -10,34 +10,49 @@ import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentive
 import Loader from "../common/Loader";
 import { useEffect, useState } from "react";
 import { dashboardApi } from "@/api/dashboard/dashboard.api";
+import { incentiveApi } from "@/api/incentive/incentive.api";
 import { DashboardStatistics } from "@/types/dashboard";
-import { fetchData } from "@/lib/api-utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { checkTierPermission, TIER_PERMISSIONS } from '@/utils/permissions';
 import clsx from 'clsx';
-import { useTranslation } from 'react-i18next'; // Import the translation hook
+import { useTranslation } from 'react-i18next';
+import ProfileWithReferralCard from "../Cards/ProfileWithReferralCard";
+import AgentLevelIcon from "../Icons/dashboard/AgentLevelIcon";
 
 const AgentDashboard: React.FC = () => {
-  const { t } = useTranslation(); // Initialize the translation hook
+  const { t } = useTranslation();
   const { user } = useAuth();
-  const [data, setData] = useState<DashboardStatistics | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardStatistics | null>(null);
+  const [incentiveData, setIncentiveData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    fetchData(
-      dashboardApi.getDashboardData,
-      setData,
-      setError,
-      setLoading
-    );
+    const fetchAllData = async () => {
+      try {
+        // Fetch both dashboard and incentive data
+        const [dashboardData, incentiveResult] = await Promise.all([
+          dashboardApi.getDashboardData(),
+          incentiveApi.getIncentiveData()
+        ]);
+
+        setDashboardData(dashboardData);
+        setIncentiveData(incentiveResult);
+        setLoading(false);
+      } catch (err) {
+        setError(err as Error);
+        setLoading(false);
+      }
+    };
+
+    fetchAllData();
   }, []);
 
   if (!user || loading) {
     return <Loader />;
   }
 
-  if (error || !data) {
+  if (error || !dashboardData || !incentiveData) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-red-500">{t('agentDashboard.failedToLoadData')}</p>
@@ -55,21 +70,89 @@ const AgentDashboard: React.FC = () => {
     TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
   );
 
+  // For Level 1 agents
+  if (user.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER) {
+    return (
+      <>
+        <Breadcrumb pageName={t('agentDashboard.overview')} />
+
+        {/* Main Dashboard Layout - Following Screenshot */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Left Column - Profile With Referral */}
+          <div className="lg:col-span-2">
+            <ProfileWithReferralCard
+              name={dashboardData.agentProfile.name}
+              level={dashboardData.agentProfile.level}
+              activeUsers={dashboardData.agentProfile.activeUsers}
+              referralCode={dashboardData.referralCode}
+            />
+          </div>
+
+          {/* Right Column - 2x2 Grid of Cards */}
+          <div className="lg:col-span-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+              {/* Top Row */}
+              <AgentStatCard
+                icon={<RewardWalletBalanceIcon />}
+                title={t('agentDashboard.rewardWalletBalance')}
+                amount={dashboardData.rewardWallet.balance}
+              />
+
+              <AgentStatCard
+                icon={<DirectRecruitIncentiveIcon />}
+                title={t('agentDashboard.referralFeeBonus')}
+                amount={dashboardData.directRecruitment.earnings}
+              />
+
+              {/* Bottom Row */}
+              <AgentStatCard
+                icon={<TotalDepositAmountIcon />}
+                title={t('agentDashboard.referredDepositAmount')}
+                amount={dashboardData.totalDeposits.amount}
+              />
+
+              <AgentStatCard
+                icon={<AgentLevelIcon />}
+                title={t('agentDashboard.depositAdminChargeRebate')}
+                amount={incentiveData.summary.direct_admin_charge}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Charts and Tables Section */}
+        <div className="space-y-6">
+          <StatisticChart
+            title={t('agentDashboard.referredDepositVolume')}
+            total={dashboardData.totalDeposits.amount}
+            currency={dashboardData.totalDeposits.currency}
+            chartData={dashboardData.totalDeposits.chartData}
+          />
+
+          <DepositActivityTable
+            activities={dashboardData.depositActivities}
+          />
+        </div>
+      </>
+    );
+  }
+
+  // For other agent tiers, maintain the original layout
   const visibleStatCards = [
     {
       icon: <RewardWalletBalanceIcon />,
       title: t('agentDashboard.rewardWalletBalance'),
-      amount: data.rewardWallet.balance,
+      amount: dashboardData.rewardWallet.balance,
     },
     {
       icon: <TotalDepositAmountIcon />,
-      title: t('agentDashboard.totalDepositAmount'),
-      amount: data.totalDeposits.amount,
+      title: t('agentDashboard.referredDepositAmount'),
+      amount: dashboardData.totalDeposits.amount,
     },
     canAccessIncentives && {
       icon: <DirectRecruitIncentiveIcon />,
-      title: t('agentDashboard.directRecruitIncentiveEarnings'),
-      amount: data.directRecruitment.earnings,
+      title: t('agentDashboard.referralFeeBonus'),
+      amount: dashboardData.directRecruitment.earnings,
     },
   ].filter(Boolean);
 
@@ -97,55 +180,55 @@ const AgentDashboard: React.FC = () => {
         ))}
       </div>
 
-      {/* Profile, Referral, and Recruitment Section */}
-      <div className={clsx(
-        "grid gap-6 mb-6",
-        {
-          'grid-cols-1 lg:grid-cols-3': canAccessRecruitment,
-          'grid-cols-1 lg:grid-cols-2': !canAccessRecruitment,
-        }
-      )}>
+      {/* Profile and Referral/Recruitment Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         {/* Profile Card - Always spans first column */}
-        <div className={clsx(
-          canAccessRecruitment ? 'lg:col-span-2' : 'lg:col-span-1'
-        )}>
+        <div className="lg:col-span-2">
           <ProfileCard
-            name={data.agentProfile.name}
-            level={data.agentProfile.level}
-            activeUsers={data.agentProfile.activeUsers}
+            name={dashboardData.agentProfile.name}
+            level={dashboardData.agentProfile.level}
+            activeUsers={dashboardData.agentProfile.activeUsers}
           />
         </div>
 
         {/* Right Column - Referral and Recruitment */}
         <div className="space-y-6">
-
           {/* Recruitment Card - Only for higher tiers */}
           {canAccessRecruitment && (
             <RecruitCard
-              count={data.totalDirectRecruit.count}
+              count={dashboardData.totalDirectRecruit.count}
               agentsToPartner={{
-                count: data.totalDirectRecruit.agentsToPartner
+                count: dashboardData.totalDirectRecruit.agentsToPartner
               }}
             />
           )}
 
           {/* Referral Card - Available to all tiers */}
-          <ReferralCard code={data.referralCode} />
-
+          <ReferralCard code={dashboardData.referralCode} />
         </div>
       </div>
+
+      {/* Incentive Card (for non-Level 1 agents) */}
+      {/* {canAccessIncentives && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <IncentiveCard
+            title={t("incentiveManagementPage.directDepositAdminChargeRebate")}
+            amount={incentiveData.summary.direct_admin_charge}
+          />
+        </div>
+      )} */}
 
       {/* Charts and Tables Section */}
       <div className="space-y-6">
         <StatisticChart
-          title={t('agentDashboard.depositSummary')}
-          total={data.totalDeposits.amount}
-          currency={data.totalDeposits.currency}
-          chartData={data.totalDeposits.chartData}
+          title={t('agentDashboard.referredDepositVolume')}
+          total={dashboardData.totalDeposits.amount}
+          currency={dashboardData.totalDeposits.currency}
+          chartData={dashboardData.totalDeposits.chartData}
         />
 
         <DepositActivityTable
-          activities={data.depositActivities}
+          activities={dashboardData.depositActivities}
         />
       </div>
     </>

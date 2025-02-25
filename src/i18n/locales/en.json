@@ -118,17 +118,25 @@
         "callToAction": ". Don't miss out—join today and start maximizing your earnings!",
         "becomeAgent": "Become an Agent"
     },
+    "accessDeniedDialog": {
+        "accessDeniedAlt": "Access Denied",
+        "title": "ACCESS DENIED",
+        "mainMessage": "Your account does not have the necessary permissions to access this portal, as it is exclusive to registered resellers.",
+        "supportMessage": "If you believe this is an error, please contact our support team for assistance.",
+        "contactSupport": "Contact Support",
+        "registerAsReseller": "Register as Reseller"
+    },
     "agentDashboard": {
         "overview": "Overview",
         "rewardWalletBalance": "Reward Wallet Balance",
-        "totalDepositAmount": "Total Deposit Amount",
-        "directRecruitIncentiveEarnings": "Direct Recruit Incentive Earnings",
+        "referredDepositAmount": "Referred Deposit Amount",
+        "referralFeeBonus": "Referral Fee Bonus",
         "activeUsers": "Active Users",
         "left": "Left",
         "totalDirectRecruit": "Total Direct Recruit",
         "agentsToPartner": "Agents to Partner",
-        "depositSummary": "Deposit Summary",
-        "depositActivity": "Deposit Activity",
+        "referredDepositVolume": "Referred Deposit Volume",
+        "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
         "description": "Description",
         "amount": "Amount",
         "dateTime": "Date Time",
@@ -154,7 +162,7 @@
         "noDataAvailable": "No Data Available"
     },
     "depositActivityTable": {
-        "depositActivityLabel": "Deposit Activity",
+        "incomeEarningSummaryLabel": "Income / Earning Summary",
         "descriptionHeader": "Description",
         "amountHeader": "Amount",
         "dateTimeHeader": "Date Time",
@@ -189,8 +197,8 @@
         "transferButton": "Transfer"
     },
     "transferActivityTable": {
-        "transferActivity": "Transfer Activity",
-        "transactionIdHeader": "TRANSACTION ID",
+        "transactionHistory": "Transaction History",
+        "descriptionHeader": "DESCRIPTION",
         "transferredAmountHeader": "TRANSFERRED AMOUNT",
         "dateTimeHeader": "DATE TIME",
         "statusHeader": "STATUS"
@@ -198,10 +206,10 @@
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "Incentive Management",
         "totalIncentive": "Total Incentive",
-        "milestoneBonus": "Milestone Bonus",
+        "milestoneAchievementBonus": "Milestone Achievement Bonus",
         "directRecruitReferral": "Direct Recruit's Referral Overriding Incentive",
-        "directAdminCharge": "Direct Admin Charge Rebate",
-        "directRecruitDeposit": "Direct Recruit's Deposit Admin Charge Overriding Rebate",
+        "directDepositAdminChargeRebate": "Direct Deposit Admin Charge Rebate",
+        "directRecruitDepositAdminChargeOverridingRebate": "Direct Recruit's Deposit Admin Charge Overriding Rebate",
         "directRecruitLevelAdvancementBonus": "Direct Recruit Level Advancement Bonus",
         "performanceBonus": "Performance Bonus",
         "failedToLoadData": "Failed to load incentive data"
@@ -210,7 +218,7 @@
         "activeUsersLeft": "Active Users Left"
     },
     "dataTable": {
-        "incentiveActivity": "Incentive Activity",
+        "incentivePayoutRecords": "Incentive Payout Records",
         "transactionId": "TRANSACTION ID",
         "transferredAmount": "TRANSFERRED AMOUNT",
         "dateTime": "DATE TIME",
@@ -244,7 +252,7 @@
         "searchUser": "Search User",
         "recruit": "Recruit",
         "name": "Name",
-        "userId": "User ID",
+        "email": "User Email",
         "keyMarket": "Key Market",
         "joinedSince": "Joined Since",
         "lastActive": "Last Active"
