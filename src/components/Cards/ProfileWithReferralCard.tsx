@@ -43,8 +43,8 @@ const ProfileWithReferralCard = ({
         setTimeout(() => setCopied(false), 2000);
 
         toast({
-            title: t("referralCard.copiedToClipboard"),
-            description: t("referralCard.copiedToClipboardDescription"),
+            title: t("profileWithReferralCard.copiedToClipboard"),
+            description: t("profileWithReferralCard.copiedToClipboardDescription"),
             duration: 3000,
         });
     };
@@ -117,7 +117,7 @@ const ProfileWithReferralCard = ({
                             {activeUsers.current.toLocaleString()}
                         </span>
                         <span className="text-2xl text-body dark:text-bodydark">
-                            / {activeUsers.target.toLocaleString()} {t("profileCard.activeUsersLabel")}
+                            / {activeUsers.target.toLocaleString()} {t("profileWithReferralCard.activeUsersLabel")}
                         </span>
                     </div>
                 </div>
@@ -142,7 +142,7 @@ const ProfileWithReferralCard = ({
                         {activeUsers.remaining.toLocaleString()}
                     </span>
                     <span className="text-lg text-body dark:text-bodydark ml-2">
-                        {t("agentDashboard.left")}
+                        {t("profileWithReferralCard.left")}
                     </span>
                 </div>
             </CardContent>

@@ -137,7 +137,7 @@ const AnalyticChart = ({
     return (
         <Card
             className={cn(
-                "bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark",
+                "bg-white dark:bg-boxdark border border-stroke dark:border-strokedark",
                 className
             )}
         >

@@ -13,6 +13,30 @@ export interface RecruitData {
         Month: ChartDataPoint[];
         Year: ChartDataPoint[];
     };
+
+    // Recruitment summary data
+    recruitmentSummary: {
+        directReferralsCount: number;
+        depositVolume: number;
+    };
+
+    // Agent recruitment summary data
+    agentRecruitmentSummary: {
+        directRecruitVolume: number | null;
+        depositVolume: number | null;
+    };
+
+    // Milestone achievement data (for Level 1 agents)
+    milestoneAchievement: {
+        activatedUsers: number;
+        targetUsers: number;
+        milestones: Array<{
+            months: number;
+            reward: number;
+            isCompleted?: boolean;
+            isCurrent?: boolean;
+        }>;
+    };
 }
 
 export const recruitApi = {
@@ -30,6 +54,28 @@ export const recruitApi = {
                     Week: [], // Empty until backend provides data
                     Month: [],
                     Year: []
+                },
+                // Placeholder data for recruitment summary
+                recruitmentSummary: {
+                    directReferralsCount: 0, // Placeholder
+                    depositVolume: 0, // Placeholder
+                },
+
+                // Placeholder data for agent recruitment summary
+                agentRecruitmentSummary: {
+                    directRecruitVolume: null, // N/A as shown in screenshot
+                    depositVolume: null, // N/A as shown in screenshot
+                },
+
+                // Placeholder data for milestone achievement
+                milestoneAchievement: {
+                    activatedUsers: dashboardData.totalDirectRecruit.count ?? 0, // Placeholder
+                    targetUsers: 80,
+                    milestones: [
+                        { months: 3, reward: 500, isCurrent: true },
+                        { months: 4, reward: 400 },
+                        { months: 6, reward: 300 }
+                    ]
                 }
             };
         } catch (error) {
@@ -44,6 +90,23 @@ export const recruitApi = {
                     Week: [],
                     Month: [],
                     Year: []
+                },
+                recruitmentSummary: {
+                    directReferralsCount: 0,
+                    depositVolume: 0,
+                },
+                agentRecruitmentSummary: {
+                    directRecruitVolume: null,
+                    depositVolume: null,
+                },
+                milestoneAchievement: {
+                    activatedUsers: 0,
+                    targetUsers: 80,
+                    milestones: [
+                        { months: 3, reward: 500 },
+                        { months: 4, reward: 400 },
+                        { months: 6, reward: 300 }
+                    ]
                 }
             };
         }

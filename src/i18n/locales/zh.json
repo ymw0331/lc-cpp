@@ -147,7 +147,16 @@
         "registerAsReseller": "注册为经销商"
     },
     "profileCard": {
-        "activeUsersLabel": "活跃用户"
+        "activeUsersLabel": "活跃用户",
+        "left": "剩余完成目标"
+    },
+    "profileWithReferralCard": {
+        "copiedToClipboard": "已复制到剪贴板",
+        "copiedToClipboardDescription": "推荐码已复制到您的剪贴板",
+        "activatedUsersLabel": "已激活用户",
+        "remainingToComplete": "剩余完成目标",
+        "activeUsersLabel": "活跃用户",
+        "left": "剩余完成目标"
     },
     "referralCard": {
         "referralCodeLabel": "推荐码",
@@ -156,6 +165,25 @@
     "recruitCard": {
         "totalDirectRecruitLabel": "总直接招募",
         "agentsToPartnerLabel": "代理商转合作伙伴"
+    },
+    "recruitmentSummaryCard": {
+        "recruitmentSummary": "招募摘要",
+        "referralFeeBonus": "推荐费奖金",
+        "depositAdminChargeRebate": "存款管理费回扣"
+    },
+    "agentRecruitmentSummaryCard": {
+        "agentRecruitmentSummary": "代理招募摘要",
+        "referralFeeBonus": "推荐费奖金",
+        "depositAdminChargeRebate": "存款管理费回扣"
+    },
+    "milestoneAchievementCard": {
+        "milestoneAchievementBonus": "里程碑成就奖金",
+        "exclusivelyForLevel1": "仅限1级代理",
+        "achieveActivationsMessage": "在指定时间内完成{targetUsers}次成功卡激活。保持进度，达成里程碑，最大化您的收益。",
+        "activatedUsers": "已激活用户",
+        "month": "月",
+        "months": "月",
+        "congratulations": "恭喜"
     },
     "statisticChart": {
         "noDataAvailable": "无数据可用"

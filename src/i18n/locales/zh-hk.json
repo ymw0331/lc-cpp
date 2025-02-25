@@ -147,7 +147,16 @@
         "registerAsReseller": "註冊為經銷商"
     },
     "profileCard": {
-        "activeUsersLabel": "活躍用戶"
+        "activeUsersLabel": "活躍用戶",
+        "left": "剩餘完成目標"
+    },
+    "profileWithReferralCard": {
+        "copiedToClipboard": "已複製到剪貼簿",
+        "copiedToClipboardDescription": "推薦碼已複製到您的剪貼簿",
+        "activatedUsersLabel": "已啟用用戶",
+        "remainingToComplete": "剩餘完成目標",
+        "activeUsersLabel": "活躍用戶",
+        "left": "剩餘完成目標"
     },
     "referralCard": {
         "referralCodeLabel": "推薦碼",
@@ -156,6 +165,25 @@
     "recruitCard": {
         "totalDirectRecruitLabel": "總直接招募",
         "agentsToPartnerLabel": "代理商轉合作夥伴"
+    },
+    "recruitmentSummaryCard": {
+        "recruitmentSummary": "招募摘要",
+        "directReferralsVolumeLabel": "直接推薦量/\n個人銷售",
+        "depositVolumeLabel": "直接推薦存款\n量 (美元)"
+    },
+    "agentRecruitmentSummaryCard": {
+        "agentRecruitmentSummary": "代理招募摘要",
+        "referralFeeBonus": "推薦費獎金",
+        "depositAdminChargeRebate": "存款管理費回扣"
+    },
+    "milestoneAchievementCard": {
+        "milestoneAchievementBonus": "里程碑成就獎金",
+        "exclusivelyForLevel1": "僅限1級代理",
+        "achieveActivationsMessage": "在指定時間內完成{targetUsers}次成功卡啟用。保持進度，達成里程碑，最大化您的收益。",
+        "activatedUsers": "已啟用用戶",
+        "month": "月",
+        "months": "月",
+        "congratulations": "恭喜"
     },
     "statisticChart": {
         "noDataAvailable": "無資料可用"
