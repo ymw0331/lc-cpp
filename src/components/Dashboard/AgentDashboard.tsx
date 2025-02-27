@@ -46,8 +46,6 @@ const AgentDashboard: React.FC = () => {
     };
 
     fetchAllData();
-
-    console.log("user:", user)
   }, []);
 
   if (!user || loading) {

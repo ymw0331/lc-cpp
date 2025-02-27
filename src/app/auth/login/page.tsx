@@ -17,32 +17,86 @@ import { useAuth } from "@/contexts/AuthContext";
 import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
 import NotRegisteredDialog from "@/components/Dialogs/NotRegisteredDialog";
 import AccessDeniedDialog from "@/components/Dialogs/AccessDeniedDialog";
+import LanguageSwitcher from "@/components/Header/LanguageSwitcher";
 
 
-const carouselImages = [
-    {
-        src: "/images/login/slider-01.jpg",
-        alt: "Earn Up to $80 Per Referral",
-    },
-    {
-        src: "/images/login/slider-02.jpg",
-        alt: "Earn Rewards Effortlessly",
-    },
-    {
-        src: "/images/login/slider-03.jpg",
-        alt: "No Passport Fret Not",
-    },
-    {
-        src: "/images/login/slider-04.jpg",
-        alt: "Exclusive Limited Offer",
-    },
-    {
-        src: "/images/login/slider-05.jpg",
-        alt: "Exclusive Limited Offer",
-    },
-];
+const getCarouselImages = (language: string) => {
+    switch (language) {
+        case 'zh':
+            return [
+                {
+                    src: "/images/login/zh-simplified/slider-01.jpg",
+                    alt: "每次推荐最高可赚取80美元",
+                },
+                {
+                    src: "/images/login/zh-simplified/slider-02.jpg",
+                    alt: "轻松赚取奖励",
+                },
+                {
+                    src: "/images/login/zh-simplified/slider-03.jpg",
+                    alt: "无需护照",
+                },
+                {
+                    src: "/images/login/zh-simplified/slider-04.jpg",
+                    alt: "独家限时优惠",
+                },
+                {
+                    src: "/images/login/zh-simplified/slider-05.jpg",
+                    alt: "独家限时优惠",
+                },
+            ];
+        case 'zh-hk':
+            return [
+                {
+                    src: "/images/login/zh-traditional/slider-01.jpg",
+                    alt: "每次推薦最高可賺取80美元",
+                },
+                {
+                    src: "/images/login/zh-traditional/slider-02.jpg",
+                    alt: "輕鬆賺取獎勵",
+                },
+                {
+                    src: "/images/login/zh-traditional/slider-03.jpg",
+                    alt: "無需護照",
+                },
+                {
+                    src: "/images/login/zh-traditional/slider-04.jpg",
+                    alt: "獨家限時優惠",
+                },
+                {
+                    src: "/images/login/zh-traditional/slider-05.jpg",
+                    alt: "獨家限時優惠",
+                },
+            ];
+        default: // 'en'
+            return [
+                {
+                    src: "/images/login/en/slider-01.jpg",
+                    alt: "Earn Up to $80 Per Referral",
+                },
+                {
+                    src: "/images/login/en/slider-02.jpg",
+                    alt: "Earn Rewards Effortlessly",
+                },
+                {
+                    src: "/images/login/en/slider-03.jpg",
+                    alt: "No Passport Fret Not",
+                },
+                {
+                    src: "/images/login/en/slider-04.jpg",
+                    alt: "Exclusive Limited Offer",
+                },
+                {
+                    src: "/images/login/en/slider-05.jpg",
+                    alt: "Exclusive Limited Offer",
+                },
+            ];
+    }
+};
+
 
 export default function LoginPage() {
+    const { i18n } = useTranslation();
     const { t } = useTranslation();
     const router = useRouter();
     const { toast } = useToast();
@@ -50,16 +104,24 @@ export default function LoginPage() {
     const { saveCredentials, clearCredentials, getCredentials } = useRememberCredentials();
 
     // State management
+    const [carouselImages, setCarouselImages] = useState(getCarouselImages(i18n.language));
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
     const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
     const [showAccessDeniedDialog, setShowAccessDeniedDialog] = useState(false);
+
+
+    // Update carousel images when language changes
+    useEffect(() => {
+        setCarouselImages(getCarouselImages(i18n.language));
+        // setCurrentImageIndex(0);
+    }, [i18n.language]);
 
     // Carousel Auto-rotation
     useEffect(() => {
@@ -74,7 +136,7 @@ export default function LoginPage() {
             // console.log('[Login] Cleaning up carousel timer');
             clearInterval(timer);
         };
-    }, []);
+    }, [carouselImages]);
 
     // Load remembered credentials on mount
     useEffect(() => {
@@ -172,9 +234,13 @@ export default function LoginPage() {
         }
     };
 
-    // Rendering
     return (
         <div className="min-h-screen flex bg-white dark:bg-boxdark">
+            {/* Language Switcher - Absolute positioned in top right */}
+            <div className="absolute top-4 right-4 z-50">
+                <LanguageSwitcher />
+            </div>
+
             {/* Left Side - Carousel */}
             <div className="hidden lg:block lg:w-[55%] relative overflow-hidden">
                 <AnimatePresence mode="wait">
@@ -301,7 +367,7 @@ export default function LoginPage() {
                                     {t("loginPage.rememberMe")}
                                 </label>
                             </div>
-                            <Link
+                            {/* <Link
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -310,20 +376,20 @@ export default function LoginPage() {
                                 className="text-sm text-body hover:text-black dark:text-bodydark dark:hover:text-white underline"
                             >
                                 {t("loginPage.forgotPassword")}
-                            </Link>
+                            </Link> */}
                         </div>
 
                         {/* Dialogs */}
-                        <ForgotPasswordDialog
+                        {/* <ForgotPasswordDialog
                             open={forgotPasswordOpen}
                             onOpenChange={setForgotPasswordOpen}
-                        />
+                        /> */}
 
-                        <NotRegisteredDialog
+                        {/* <NotRegisteredDialog
                             open={showRegistrationDialog}
                             onOpenChange={setShowRegistrationDialog}
                             onBecomeAgent={handleBecomeAgent}
-                        />
+                        /> */}
 
                         <AccessDeniedDialog
                             open={showAccessDeniedDialog}
