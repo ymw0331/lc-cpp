@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import TransferConfirmationDialog from "../Dialogs/TransferConfirmationDialog";
 import { useTranslation } from "react-i18next";
+import Loader from "../common/Loader";
 
 interface Currency {
     name: string;
@@ -16,6 +17,7 @@ interface WalletTransferProps {
     sourceIcon: React.ReactNode;
     currencies: Currency[];
     onTransfer: (amount: number, currency: string) => void;
+    isLoading?: boolean;
 }
 
 const WalletTransferForm = ({
@@ -23,8 +25,9 @@ const WalletTransferForm = ({
     sourceIcon,
     currencies,
     onTransfer,
+    isLoading = false
 }: WalletTransferProps) => {
-    const [selectedCurrency, setSelectedCurrency] = useState(currencies[0].name);
+    const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]?.name || "USDT");
     const [amount, setAmount] = useState(sourceAmount.toString());
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [error, setError] = useState("");
@@ -44,9 +47,9 @@ const WalletTransferForm = ({
         // Validate amount
         const numAmount = Number(value);
         if (numAmount > sourceAmount) {
-            setError("Amount exceeds available balance");
-        } else if (numAmount <= 0) {
-            setError("Amount must be greater than 0");
+            setError(t("walletTransferForm.errorExceedsBalance"));
+        } else if (numAmount <= 0 && value !== "") {
+            setError(t("walletTransferForm.errorMustBePositive"));
         }
     };
 
@@ -59,8 +62,15 @@ const WalletTransferForm = ({
     const handleConfirm = () => {
         onTransfer(Number(amount), selectedCurrency);
         setShowConfirmation(false);
-        setAmount("");
+        // setAmount("");
+
     };
+
+    const handleSetMaxAmount = () => {
+        setAmount(sourceAmount.toString());
+        setError("");
+    };
+
 
     return (
         <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
@@ -69,7 +79,9 @@ const WalletTransferForm = ({
             </h3>
 
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 sm:mb-8">
-                {t("walletTransferForm.rewardWalletBalanceDescription")}
+                <i>
+                    {t("walletTransferForm.rewardWalletBalanceDescription")}
+                </i>
             </p>
 
             <div className="flex items-center gap-2 mb-6 sm:mb-8">
@@ -83,7 +95,8 @@ const WalletTransferForm = ({
             </div>
 
             <div className="space-y-4 sm:space-y-6">
-                <div>
+                {/* TODO: add more currencies in the future */}
+                {/* <div>
                     <h4 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-3 sm:mb-4">
                         {t("walletTransferForm.selectCurrencyWallet")}
                     </h4>
@@ -111,12 +124,13 @@ const WalletTransferForm = ({
                             </div>
                         ))}
                     </RadioGroup>
-                </div>
+                </div> */}
 
                 <div>
                     <h4 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-3 sm:mb-4">
                         {t("walletTransferForm.enterTransferAmount")}
                     </h4>
+
                     <div className="relative">
                         <Input
                             type="text"
@@ -125,11 +139,14 @@ const WalletTransferForm = ({
                             className={`pr-24 sm:pr-32 h-10 sm:h-12 bg-gray-2 dark:bg-meta-4 border-0 text-sm sm:text-base ${error ? "border-red-500 focus:border-red-500" : ""
                                 }`}
                             placeholder="0.00"
+                            inputMode="decimal"
+                            disabled={isLoading}
                         />
                         <Button
                             variant="secondary"
                             className="absolute right-1 top-1 bottom-1 bg-black text-white hover:bg-black/90 text-xs sm:text-sm px-2 sm:px-4"
-                            onClick={() => setAmount(sourceAmount.toString())}
+                            onClick={handleSetMaxAmount}
+                            disabled={isLoading}
                         >
                             {t("walletTransferForm.fullAmountButton")}
                         </Button>
@@ -140,27 +157,39 @@ const WalletTransferForm = ({
                 </div>
 
                 <div className="space-y-2 sm:space-y-3">
-                    <div className="flex justify-between text-sm sm:text-base mb-1 sm:mb-2">
+
+                    {/* Todo: add transfer fee in the future */}
+                    {/* <div className="flex justify-between text-sm sm:text-base mb-1 sm:mb-2">
                         <span className="text-black/60 dark:text-white/60">
                             {t("walletTransferForm.transferFee")}
                         </span>
                         <span className="font-medium">0.00</span>
-                    </div>
+                    </div> */}
 
                     <div className="flex justify-between text-sm sm:text-base mb-4 sm:mb-6">
                         <span className="text-black/60 dark:text-white/60">
                             {t("walletTransferForm.totalAmountTransferred")}
                         </span>
-                        <span className="font-bold">{amount}</span>
+                        <span className="font-bold">{amount || "0.00"}</span>
                     </div>
                 </div>
 
                 <Button
                     className="w-full sm:w-40 mx-auto block bg-primary hover:bg-primary/90 text-white h-10 sm:h-12 text-sm sm:text-base"
                     onClick={handleTransfer}
-                    disabled={!!error || !amount}
+                    disabled={!!error || !amount || isLoading || Number(amount) <= 0 || Number(amount) > sourceAmount}
+
                 >
-                    {t("walletTransferForm.transferButton")}
+                    {/* {t("walletTransferForm.transferButton")} */}
+
+                    {isLoading ? (
+                        <>
+                            <Loader className="mr-2 h-4 w-4 animate-spin" />
+                            {t("common.processing")}
+                        </>
+                    ) : (
+                        t("walletTransferForm.transferButton")
+                    )}
                 </Button>
 
                 <TransferConfirmationDialog

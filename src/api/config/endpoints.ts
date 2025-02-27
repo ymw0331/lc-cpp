@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
         DASHBOARD: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/dashboard`,
         REWARDS: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/rewards`,
         ACCOUNT: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/account`,
+        TRANSFER: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/aggregate`,
     },
 } as const;
 

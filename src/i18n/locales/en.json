@@ -1,6 +1,7 @@
 {
     "common": {
-        "comingSoon": "Coming Soon"
+        "comingSoon": "Coming Soon",
+        "processing": "Processing"
     },
     "header": {
         "searchPlaceholder": "Type to search...",
@@ -208,19 +209,6 @@
     "analyticChart": {
         "noDataAvailable": "No Data Available",
         "comingSoon": "Coming Soon"
-    },
-    "transferPage": {
-        "transferToCurrentAccountWalletBreadcrumb": "Transfer to Current Account Wallet"
-    },
-    "walletTransferForm": {
-        "rewardWalletBalance": "Reward Wallet Balance",
-        "rewardWalletBalanceDescription": "The amount in your reward wallet is available for transfer to your current account wallet.",
-        "selectCurrencyWallet": "Select Currency Wallet",
-        "enterTransferAmount": "Enter Transfer Amount",
-        "fullAmountButton": "Full Amount",
-        "transferFee": "Transfer fee",
-        "totalAmountTransferred": "Total Amount Transferred",
-        "transferButton": "Transfer"
     },
     "transferActivityTable": {
         "transactionHistory": "Transaction History",
@@ -441,5 +429,40 @@
         "complianceAndAntiCorruptionTitle": "Compliance and Anti-Corruption",
         "profilePolicyTitle": "Profile Policy",
         "programGuidelineTitle": "Program Guideline"
+    },
+    "walletTransferForm": {
+        "rewardWalletBalance": "Reward Wallet Balance",
+        "rewardWalletBalanceDescription": "Transfer funds from your reward wallet to your current account wallet.",
+        "selectCurrencyWallet": "Select Currency Wallet",
+        "enterTransferAmount": "Enter Transfer Amount",
+        "fullAmountButton": "Full Amount",
+        "transferFee": "Transfer Fee",
+        "totalAmountTransferred": "Total Amount Transferred",
+        "transferButton": "Transfer",
+        "errorExceedsBalance": "Amount exceeds available balance",
+        "errorMustBePositive": "Amount must be greater than 0"
+    },
+    "transferPage": {
+        "transferToCurrentAccountWalletBreadcrumb": "Transfer to Current Account Wallet",
+        "failedToLoadData": "Failed to load transfer data. Please try again later.",
+        "successTitle": "Transfer Successful",
+        "successDescription": "Successfully transferred {{amount}} {{currency}} to your current account wallet.",
+        "errorTitle": "Transfer Failed",
+        "errorDescription": "There was an error processing your transfer. Please try again.",
+        "errorGeneric": "An unexpected error occurred. Please try again later."
+    },
+    "transferConfirmationDialog": {
+        "title": "Transfer to Current Account Wallet",
+        "subtitle": "Confirm Transfer",
+        "transferMessage": "You are about to transfer {{amount}} {{currency}} to your Current Account Wallet",
+        "disclaimers": "DISCLAIMERS",
+        "disclaimer1": "Please ensure all details and amounts are correct before confirming the transaction. Once submitted, transactions cannot be reversed.",
+        "disclaimer2": "Transfers may be subject to delays due to network availability, processing time, or external factors beyond our control.",
+        "disclaimer3": "Applicable transaction fees, exchange rates, and processing charges will be displayed before confirmation (if any).",
+        "disclaimer4": "All transactions are encrypted for security. For added protection, please do not share your login credentials with others.",
+        "disclaimer5": "Lookcard Limited is not liable for incorrect details entered by the user.",
+        "disclaimer6": "Transactions may be reviewed in compliance with local and international anti-money laundering (AML) and counter-terrorism financing (CTF) regulations. This may lead to processing delays or cancellations.",
+        "cancelButton": "Cancel",
+        "confirmButton": "Confirm"
     }
 }

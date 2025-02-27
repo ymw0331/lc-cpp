@@ -10,12 +10,17 @@ import { transferApi } from "@/api/transfer/transfer.api";
 import { useTranslation } from "react-i18next";
 import Loader from "@/components/common/Loader";
 import { fetchData } from '@/lib/api-utils';
+import { toast } from "@/hooks/useToast";
+import { TransferSuccessDialog } from "@/components/Dialogs/TransferSuccessDialog";
 
 const TransferPage = () => {
     const { t } = useTranslation();
     const [transferData, setTransferData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [isTransferring, setIsTransferring] = useState(false);
     const [error, setError] = useState<Error | null>(null);
+    const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+    const [transferDetails, setTransferDetails] = useState({ amount: 0, currency: "USDT" });
 
     // Currency Icon Mapping
     const getCurrencyIcon = (currency: string) => {
@@ -29,18 +34,83 @@ const TransferPage = () => {
         }
     };
 
-    useEffect(() => {
+
+    const loadTransferData = () => {
         fetchData(
             transferApi.getTransferData,
             setTransferData,
             setError,
             setLoading
         );
+    };
+
+
+    useEffect(() => {
+        loadTransferData();
     }, []);
 
-    const handleTransfer = (amount: number, currency: string) => {
-        console.log(`Transferring ${amount} ${currency}`);
+    const handleTransfer = async (amount: number, currency: string) => {
+        try {
+            setIsTransferring(true);
+            console.log("Starting transfer:", { amount, currency, fromType: "REBATE" });
+
+            // Call the transfer API (only once)
+            try {
+                const response = await transferApi.transferToCurrentWallet({
+                    amount: amount,
+                    fromType: "REBATE"
+                });
+
+                console.log("Transfer API response:", response);
+
+                // If we reach here, the transfer was successful
+                setTransferDetails({ amount, currency });
+                setShowSuccessDialog(true);
+
+                // Reload data after successful transfer
+                loadTransferData();
+
+                // Optional: show success toast
+                toast({
+                    title: t("transferPage.successTitle"),
+                    description: t("transferPage.successDescription", { amount, currency }),
+                    variant: "success",
+                    duration: 5000,
+                });
+            } catch (apiError: any) {
+                console.error("API specific error:", apiError);
+
+                // Handle specific error cases from the API
+                const errorMessage = apiError?.response?.data?.message || t("transferPage.errorGeneric");
+
+                toast({
+                    title: t("transferPage.errorTitle"),
+                    description: errorMessage,
+                    variant: "destructive",
+                    duration: 5000,
+                });
+            }
+        } catch (error: any) {
+            // This is a general error, not specifically from the API call
+            console.error("General transfer error:", error);
+
+            toast({
+                title: t("transferPage.errorTitle"),
+                description: t("transferPage.errorDescription"),
+                variant: "destructive",
+                duration: 5000,
+            });
+        } finally {
+            setIsTransferring(false);
+        }
     };
+    
+
+    const handleCloseSuccessDialog = () => {
+        setShowSuccessDialog(false);
+        // You can reset form or do additional actions here if needed
+    };
+
 
     if (loading) return <Loader />;
 
@@ -51,7 +121,6 @@ const TransferPage = () => {
             </div>
         );
     }
-
     // Enhance data with icons
     const currencyOptionsWithIcons = transferData.currencyOptions.map(
         (currency: any) => ({
@@ -65,7 +134,7 @@ const TransferPage = () => {
             <Breadcrumb
                 pageName={t("transferPage.transferToCurrentAccountWalletBreadcrumb")}
             />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-4 sm:mb-6">
+            {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-4 sm:mb-6">
                 <WalletTransferForm
                     sourceAmount={transferData.sourceWallet.amount}
                     sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
@@ -75,18 +144,47 @@ const TransferPage = () => {
                 <div className="h-full min-h-[400px] sm:min-h-[450px]">
                     <BalanceWalletDistributionChart
                         title={t("walletsPage.currentAccountWalletBalance")}
-                        data={[]} // Empty data to show "Coming Soon"
+                        data={transferData.walletBalanceDistribution.data} // Empty data to show "Coming Soon"
                         comingSoon={true}
                     />
                 </div>
+            </div> */}
+
+
+            {/* <div className="w-full overflow-hidden mb-4">
+                <WalletTransferForm
+                    sourceAmount={transferData.sourceWallet.amount}
+                    sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
+                    currencies={currencyOptionsWithIcons}
+                    onTransfer={handleTransfer}
+                />
+            </div> */}
+
+            <div className="w-full overflow-hidden mb-4">
+                <WalletTransferForm
+                    sourceAmount={transferData.sourceWallet.amount}
+                    sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
+                    currencies={currencyOptionsWithIcons}
+                    onTransfer={handleTransfer}
+                    isLoading={isTransferring}
+                />
             </div>
 
             <div className="w-full overflow-hidden">
+                {/* todo: move this to wallet page, reward wallet summary in wallet to be in incentive */}
                 <TransferActivityTable
                     data={[]} // Empty data to show "Coming Soon"
                     comingSoon={true}
                 />
             </div>
+
+            {/* Success Dialog */}
+            {showSuccessDialog && (
+                <TransferSuccessDialog
+                    onClose={handleCloseSuccessDialog}
+                />
+            )}
+
         </DefaultLayout>
     );
 };

@@ -1,6 +1,7 @@
 {
     "common": {
-        "comingSoon": "即将推出"
+        "comingSoon": "即将推出",
+        "processing": "处理中"
     },
     "header": {
         "searchPlaceholder": "输入搜索...",
@@ -205,18 +206,6 @@
     "walletCard": {
         "transferButton": "转移",
         "comingSoon": "即将推出"
-    },
-    "transferPage": {
-        "transferToCurrentAccountWalletBreadcrumb": "转移到往来账户钱包"
-    },
-    "walletTransferForm": {
-        "rewardWalletBalance": "奖励钱包余额",
-        "selectCurrencyWallet": "选择货币钱包",
-        "enterTransferAmount": "输入转账金额",
-        "fullAmountButton": "全额",
-        "transferFee": "转账手续费",
-        "totalAmountTransferred": "转账总额",
-        "transferButton": "转移"
     },
     "transferActivityTable": {
         "transferActivity": "转账活动",
@@ -437,5 +426,40 @@
         "complianceAndAntiCorruptionTitle": "合规与反腐败",
         "profilePolicyTitle": "个人资料政策",
         "programGuidelineTitle": "项目指南"
+    },
+    "walletTransferForm": {
+        "rewardWalletBalance": "奖励钱包余额",
+        "rewardWalletBalanceDescription": "将资金从您的奖励钱包转移到您的当前账户钱包。",
+        "selectCurrencyWallet": "选择货币钱包",
+        "enterTransferAmount": "输入转账金额",
+        "fullAmountButton": "最大金额",
+        "transferFee": "转账费用",
+        "totalAmountTransferred": "转账总额",
+        "transferButton": "转账",
+        "errorExceedsBalance": "金额超过可用余额",
+        "errorMustBePositive": "金额必须大于0"
+    },
+    "transferPage": {
+        "transferToCurrentAccountWalletBreadcrumb": "转账到当前账户钱包",
+        "failedToLoadData": "加载转账数据失败。请稍后再试。",
+        "successTitle": "转账成功",
+        "successDescription": "成功将 {{amount}} {{currency}} 转账到您的当前账户钱包。",
+        "errorTitle": "转账失败",
+        "errorDescription": "处理您的转账时出错。请再试一次。",
+        "errorGeneric": "发生意外错误。请稍后再试。"
+    },
+    "transferConfirmationDialog": {
+        "title": "转账至当前账户钱包",
+        "subtitle": "确认转账",
+        "transferMessage": "您即将转账 {{amount}} {{currency}} 到您的当前账户钱包",
+        "disclaimers": "免责声明",
+        "disclaimer1": "请在确认交易前确保所有详细信息和金额正确无误。一旦提交，交易将无法撤销。",
+        "disclaimer2": "因网络可用性、处理时间或我们无法控制的外部因素，转账可能会有延迟。",
+        "disclaimer3": "适用的交易费用、汇率和处理费用将在确认前显示（如有）。",
+        "disclaimer4": "所有交易均已加密以确保安全。为了额外保护，请勿与他人共享您的登录凭证。",
+        "disclaimer5": "Lookcard Limited 对用户输入的错误详细信息不承担责任。",
+        "disclaimer6": "交易可能会根据当地和国际反洗钱(AML)和反恐融资(CTF)法规进行审核。这可能导致处理延迟或取消。",
+        "cancelButton": "取消",
+        "confirmButton": "确认"
     }
 }

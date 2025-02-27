@@ -74,6 +74,7 @@ const WalletsPage = () => {
             </div>
 
             <div className="w-full">
+                {/* TODO: move this to incentive page or discard this */}
                 <AnalyticChart
                     title={t("walletsPage.rewardWalletSummary")}
                     chartData={walletData.walletSummary}

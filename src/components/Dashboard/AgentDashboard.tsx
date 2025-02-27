@@ -61,17 +61,17 @@ const AgentDashboard: React.FC = () => {
   }
 
   const canAccessRecruitment = checkTierPermission(
-    user.tierPriority,
+    user?.tierPriority ?? 0,
     TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
   );
 
   const canAccessIncentives = checkTierPermission(
-    user.tierPriority,
+    user?.tierPriority ?? 0,
     TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
   );
 
   // For Level 1 agents
-  if (user.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER) {
+  if (user?.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER) {
     return (
       <>
         <Breadcrumb pageName={t('agentDashboard.overview')} />
@@ -189,8 +189,8 @@ const AgentDashboard: React.FC = () => {
         {/* Profile Card - Always spans first column */}
         <div className="lg:col-span-2">
           <ProfileCard
-            name={user.fullName ?? user.email}
-            level={user.tierPriority.toString()}
+            name={user?.fullName ?? user?.email ?? ''}
+            level={user?.tierPriority?.toString() ?? ''}
             activeUsers={dashboardData.agentProfile.activeUsers}
           />
         </div>
