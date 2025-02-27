@@ -47,6 +47,11 @@ const config: Config = {
 					DEFAULT: "#F69732",
 					foreground: "hsl(var(--secondary-foreground))",
 				},
+				// Add destructive color definition here
+				destructive: {
+					DEFAULT: "hsl(var(--destructive))",
+					foreground: "hsl(var(--destructive-foreground))",
+				},
 				stroke: "#E2E8F0",
 				gray: {
 					...colors.gray,

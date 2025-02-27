@@ -6,13 +6,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/useToast";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRememberCredentials } from "@/hooks/useRememberCredentials";
-import { Eye, EyeOff, Loader2, Mail } from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Loader2, Mail } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
 import NotRegisteredDialog from "@/components/Dialogs/NotRegisteredDialog";
@@ -401,7 +401,11 @@ export default function LoginPage() {
                         {/* Error Alert */}
                         {error && (
                             <Alert variant="destructive">
-                                <AlertDescription>{error}</AlertDescription>
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertTitle>Error</AlertTitle>
+                                <AlertDescription>
+                                    {error}
+                                </AlertDescription>
                             </Alert>
                         )}
 
