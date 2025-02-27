@@ -146,7 +146,7 @@ const IncentiveManagementPage = () => {
                     <DataTable
                         columns={tableColumns}
                         data={activities[currentMonth] || []}
-                        title={t("dataTable.incentivePayoutRecords")}
+                        title={t("incentiveManagementPage.incentivePayoutRecords")}
                         currentMonth={currentMonth}
                         onMonthChange={(month: string) => setCurrentMonth(month)}
                     />

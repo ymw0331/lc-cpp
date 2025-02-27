@@ -14,14 +14,25 @@ import { walletApi } from "@/api/wallet/wallet.api";
 import Loader from "@/components/common/Loader";
 import { fetchData } from '@/lib/api-utils';
 import { WalletData } from "@/api/wallet/wallet.types";
+import { accountApi } from "@/api/account/account.api";
 
 const WalletsPage = () => {
     const { t } = useTranslation();
     const [walletData, setWalletData] = useState<WalletData | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
+    const [accountData, setAccountData] = useState(null);
 
     useEffect(() => {
+
+        // console.log("accountData:", accountApi.getAccountData())
+
+        // accountApi.getAccountData().then(data => {
+        //     console.log("Account Data:", data);
+        // }).catch(error => {
+        //     console.error("Error fetching account data:", error);
+        // });
+
         fetchData(
             walletApi.getWalletData,
             setWalletData,
@@ -56,10 +67,9 @@ const WalletsPage = () => {
                 <WalletCard
                     title={t("walletsPage.currentAccountWalletBalance")}
                     amount={walletData.currentWallet.amount}
-                    secondaryAmount={walletData.currentWallet.secondaryAmount}
+                    // secondaryAmount={walletData.currentWallet.secondaryAmount}
                     icon={<WalletIcon />}
-                    secondaryIcon={<USDCIcon />}
-                    comingSoon={true} // Add a prop to indicate coming soon
+                    // secondaryIcon={<USDCIcon />}
                 />
             </div>
 

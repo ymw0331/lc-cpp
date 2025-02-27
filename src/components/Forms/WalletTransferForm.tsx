@@ -68,6 +68,10 @@ const WalletTransferForm = ({
                 {t("walletTransferForm.rewardWalletBalance")}
             </h3>
 
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 sm:mb-8">
+                {t("walletTransferForm.rewardWalletBalanceDescription")}
+            </p>
+
             <div className="flex items-center gap-2 mb-6 sm:mb-8">
                 <span className="text-2xl sm:text-[32px] font-bold text-black dark:text-white">
                     {sourceAmount.toLocaleString("en-US", {

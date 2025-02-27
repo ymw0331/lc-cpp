@@ -11,18 +11,26 @@ import {
     ResponsiveContainer,
     LabelList,
 } from "recharts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChartDataPoint, ChartRangeData, CurrencyType } from "@/types/dashboard";
 import { useTranslation } from "react-i18next";
-// import { depositChartData } from "@/lib/data";
 
 type TimeRange = "Week" | "Month" | "Year";
 
 interface StatisticChartProps {
     title: string;
-    total: number;
+    total?: number; // Make total optional as we'll calculate it from chartData
     currency: CurrencyType;
-    chartData: ChartDataPoint[]; // Changed to match your DashboardStatistics type
+    chartData: {
+        Week?: ChartDataPoint[];
+        Month?: ChartDataPoint[];
+        Year?: ChartDataPoint[];
+    } | ChartDataPoint[]; // Support both formats for backward compatibility
+    comingSoon?: boolean;
+    showLegend?: boolean;
+    legendLabel?: string;
+    legendPosition?: "top-left" | "top-right";
+    lineColor?: string;
 }
 
 const StatisticChart: React.FC<StatisticChartProps> = ({
@@ -30,10 +38,36 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
     total,
     currency,
     chartData,
+    comingSoon = false,
+    showLegend = false,
+    legendLabel = "",
+    legendPosition = "top-right",
+    lineColor = "#7C74FF"
 }) => {
-    const [activeRange, setActiveRange] = useState<"Week" | "Month" | "Year">("Year");
-    const [depositChartData, setDepositChartData] = useState<ChartDataPoint[]>(chartData);
+    const [activeRange, setActiveRange] = useState<TimeRange>("Year");
+    const [currentChartData, setCurrentChartData] = useState<ChartDataPoint[]>([]);
+    const [calculatedTotal, setCalculatedTotal] = useState<number>(total || 0);
     const { t } = useTranslation();
+
+    // Process chartData based on its type and the active range
+    useEffect(() => {
+        let newData: ChartDataPoint[] = [];
+
+        // Check if chartData is an array or an object with range keys
+        if (Array.isArray(chartData)) {
+            // It's a simple array, use it directly
+            newData = chartData;
+        } else {
+            // It's an object with range keys
+            newData = chartData[activeRange] || [];
+        }
+
+        setCurrentChartData(newData);
+
+        // Calculate total from the current range data
+        const newTotal = newData.reduce((sum, item) => sum + item.value, 0);
+        setCalculatedTotal(total !== undefined ? total : newTotal);
+    }, [chartData, activeRange, total]);
 
     const handleRangeChange = (range: TimeRange) => {
         setActiveRange(range);
@@ -81,20 +115,21 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
 
     const CustomBar = (props: any) => {
         const { x, y, width, height, index } = props;
+        const alternateColor = lineColor === "#7C74FF" ? "#E9E7FD" : `${lineColor}50`;
         return (
             <rect
                 x={x}
                 y={y}
                 width={width}
                 height={height}
-                fill={index % 2 === 0 ? "#7C74FF" : "#E9E7FD"}
+                fill={index % 2 === 0 ? lineColor : alternateColor}
                 rx={0}
                 ry={0}
             />
         );
     };
 
-    const hasData = chartData && chartData.length > 0;
+    const hasData = currentChartData && currentChartData.length > 0;
 
     return (
         <Card className="w-full bg-white dark:bg-boxdark border border-stroke dark:border-strokedark">
@@ -104,7 +139,7 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                         {title}
                     </CardTitle>
                     <p className="text-4xl font-bold mt-2 text-black dark:text-white">
-                        {formatValue(total)}
+                        {formatValue(calculatedTotal)}
                     </p>
                 </div>
 
@@ -117,7 +152,7 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                                 ? "bg-primary text-white hover:bg-primary/90"
                                 : "text-black dark:text-white hover:bg-meta-4/50"
                                 }`}
-                            onClick={() => handleRangeChange(range as "Week" | "Month" | "Year")}
+                            onClick={() => handleRangeChange(range as TimeRange)}
                         >
                             {range}
                         </Button>
@@ -126,14 +161,33 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
             </CardHeader>
 
             <CardContent>
-                <div className="h-[400px] w-full flex items-center justify-center">
+                <div className="h-[400px] w-full flex items-center justify-center relative">
+                    {comingSoon && (
+                        <div className="absolute inset-0 bg-black/50 dark:bg-boxdark/70 z-10 flex items-center justify-center">
+                            <div className="text-white text-xl font-bold bg-primary/80 px-6 py-3 rounded-md">
+                                {t("common.comingSoon")}
+                            </div>
+                        </div>
+                    )}
+
                     {hasData ? (
                         <ResponsiveContainer width="100%" height={400}>
                             <BarChart
-                                data={depositChartData}
+                                data={currentChartData}
                                 margin={{ top: 40, right: 10, left: 0, bottom: 0 }}
                                 className="text-black dark:text-white"
                             >
+                                {showLegend && legendLabel && (
+                                    <text
+                                        x={legendPosition === "top-right" ? "90%" : "10%"}
+                                        y={20}
+                                        textAnchor={legendPosition === "top-right" ? "end" : "start"}
+                                        fill="#64748B"
+                                        fontSize={12}
+                                    >
+                                        {legendLabel}
+                                    </text>
+                                )}
                                 <XAxis
                                     dataKey="label"
                                     axisLine={false}

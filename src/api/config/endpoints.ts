@@ -9,6 +9,7 @@ export const API_ENDPOINTS = {
         PROFILE: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/profile`,
         DASHBOARD: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/dashboard`,
         REWARDS: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/rewards`,
+        ACCOUNT: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/account`,
     },
 } as const;
 

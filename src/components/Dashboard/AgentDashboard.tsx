@@ -31,13 +31,13 @@ const AgentDashboard: React.FC = () => {
     const fetchAllData = async () => {
       try {
         // Fetch both dashboard and incentive data
-        const [dashboardData, incentiveResult] = await Promise.all([
+        const [dashboardData, incentiveData] = await Promise.all([
           dashboardApi.getDashboardData(),
           incentiveApi.getIncentiveData()
         ]);
 
         setDashboardData(dashboardData);
-        setIncentiveData(incentiveResult);
+        setIncentiveData(incentiveData);
         setLoading(false);
       } catch (err) {
         setError(err as Error);
@@ -46,6 +46,8 @@ const AgentDashboard: React.FC = () => {
     };
 
     fetchAllData();
+
+    console.log("user:", user)
   }, []);
 
   if (!user || loading) {
@@ -81,8 +83,8 @@ const AgentDashboard: React.FC = () => {
           {/* Left Column - Profile With Referral */}
           <div className="lg:col-span-2">
             <ProfileWithReferralCard
-              name={dashboardData.agentProfile.name}
-              level={dashboardData.agentProfile.level}
+              name={user.fullName ?? user.email}
+              level={user.tierPriority.toString()}
               activeUsers={dashboardData.agentProfile.activeUsers}
               referralCode={dashboardData.referralCode}
             />
@@ -107,7 +109,8 @@ const AgentDashboard: React.FC = () => {
               {/* Bottom Row */}
               <AgentStatCard
                 icon={<TotalDepositAmountIcon />}
-                title={t('agentDashboard.referredDepositAmount')}
+                title={t('agentDashboard.referralDepositVolume')}
+                // title={t('agentDashboard.referredDepositAmount')}
                 amount={dashboardData.totalDeposits.amount}
               />
 
@@ -123,7 +126,8 @@ const AgentDashboard: React.FC = () => {
         {/* Charts and Tables Section */}
         <div className="space-y-6">
           <StatisticChart
-            title={t('agentDashboard.referredDepositVolume')}
+            title={t('agentDashboard.referralDepositVolume')}
+            // title={t('agentDashboard.referredDepositVolume')}
             total={dashboardData.totalDeposits.amount}
             currency={dashboardData.totalDeposits.currency}
             chartData={dashboardData.totalDeposits.chartData}
@@ -146,7 +150,8 @@ const AgentDashboard: React.FC = () => {
     },
     {
       icon: <TotalDepositAmountIcon />,
-      title: t('agentDashboard.referredDepositAmount'),
+      // title: t('agentDashboard.referredDepositAmount'),
+      title: t('agentDashboard.referralDepositVolume'),
       amount: dashboardData.totalDeposits.amount,
     },
     canAccessIncentives && {
@@ -156,6 +161,7 @@ const AgentDashboard: React.FC = () => {
     },
   ].filter(Boolean);
 
+  // For other agent tiers, maintain the original layout
   return (
     <>
       <Breadcrumb pageName={t('agentDashboard.overview')} />
@@ -185,8 +191,8 @@ const AgentDashboard: React.FC = () => {
         {/* Profile Card - Always spans first column */}
         <div className="lg:col-span-2">
           <ProfileCard
-            name={dashboardData.agentProfile.name}
-            level={dashboardData.agentProfile.level}
+            name={user.fullName ?? user.email}
+            level={user.tierPriority.toString()}
             activeUsers={dashboardData.agentProfile.activeUsers}
           />
         </div>
@@ -208,20 +214,12 @@ const AgentDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Incentive Card (for non-Level 1 agents) */}
-      {/* {canAccessIncentives && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <IncentiveCard
-            title={t("incentiveManagementPage.directDepositAdminChargeRebate")}
-            amount={incentiveData.summary.direct_admin_charge}
-          />
-        </div>
-      )} */}
 
       {/* Charts and Tables Section */}
       <div className="space-y-6">
         <StatisticChart
-          title={t('agentDashboard.referredDepositVolume')}
+          title={t('agentDashboard.referralDepositVolume')}
+          // title={t('agentDashboard.referredDepositVolume')}
           total={dashboardData.totalDeposits.amount}
           currency={dashboardData.totalDeposits.currency}
           chartData={dashboardData.totalDeposits.chartData}

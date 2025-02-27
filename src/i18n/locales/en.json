@@ -12,7 +12,9 @@
     "dropdownUser": {
         "myProfile": "My Profile",
         "preference": "Preference",
-        "logOut": "Log Out"
+        "logOut": "Log Out",
+        "success": "Success",
+        "successfullyLoggedOut": "Successfully logged out!"
     },
     "sidebar": {
         "menu": "MENU",
@@ -61,12 +63,7 @@
         "warningDescription3": " If you are not a registered user, please exit this page. Unauthorized access may lead to disciplinary action or legal consequences.",
         "signInTo": "Sign in to",
         "communityPartnershipProgramPortal": "Community Partnership Program Portal",
-        "editYourInformation": "Edit your information in a swipe",
-        "sintOccaecat": "Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
-        "longEstablishedFact": "It is a long established fact",
-        "readable": "that a reader will be distracted by the readable.",
-        "manyVariations": "There are many variations",
-        "available": "of passages of Lorem Ipsum available, but the majority have suffered"
+        "editYourInformation": "Edit your information in a swipe"
     },
     "registerPage": {
         "agentRecruitmentDetails": "Agent Recruitment Details",
@@ -135,7 +132,7 @@
         "left": "Left",
         "totalDirectRecruit": "Total Direct Recruit",
         "agentsToPartner": "Agents to Partner",
-        "referredDepositVolume": "Referred Deposit Volume",
+        "referralDepositVolume": "Referral Deposit Volume",
         "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
         "description": "Description",
         "amount": "Amount",
@@ -217,6 +214,7 @@
     },
     "walletTransferForm": {
         "rewardWalletBalance": "Reward Wallet Balance",
+        "rewardWalletBalanceDescription": "The amount in your reward wallet is available for transfer to your current account wallet.",
         "selectCurrencyWallet": "Select Currency Wallet",
         "enterTransferAmount": "Enter Transfer Amount",
         "fullAmountButton": "Full Amount",

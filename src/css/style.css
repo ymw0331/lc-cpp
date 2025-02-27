@@ -131,59 +131,6 @@
 
 /* third-party libraries CSS */
 
-.tableCheckbox:checked ~ div span {
-  @apply opacity-100;
-}
-
-.tableCheckbox:checked ~ div {
-  @apply border-primary bg-primary;
-}
-
-.map-btn .jvm-zoom-btn {
-  @apply flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white px-0 pb-0.5 pt-0 text-2xl leading-none text-body hover:border-primary hover:bg-primary hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-bodydark dark:hover:border-primary dark:hover:bg-primary dark:hover:text-white;
-}
-
-.mapOne .jvm-zoom-btn {
-  @apply !bottom-0 !left-auto !top-auto;
-}
-
-.mapOne .jvm-zoom-btn.jvm-zoomin {
-  @apply !right-10;
-}
-
-.mapOne .jvm-zoom-btn.jvm-zoomout {
-  @apply !right-0;
-}
-
-.taskCheckbox:checked ~ .box span {
-  @apply opacity-100;
-}
-
-.taskCheckbox:checked ~ p {
-  @apply line-through;
-}
-
-.taskCheckbox:checked ~ .box {
-  @apply border-primary bg-primary dark:border-primary;
-}
-
-.custom-input-date::-webkit-calendar-picker-indicator {
-  background: transparent;
-}
-
-input[type="search"]::-webkit-search-cancel-button {
-  @apply appearance-none;
-}
-
-.custom-input-date::-webkit-calendar-picker-indicator {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 20px;
-}
-
-[x-cloak] {
-  display: none !important;
-}
 
 /* @layer base {
   * {

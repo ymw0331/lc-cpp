@@ -1,4 +1,5 @@
 // transfer.api.ts
+import { accountApi } from "../account/account.api";
 import { dashboardApi } from "../dashboard/dashboard.api";
 import { CurrencyType, TransferActivityProps } from "./transfer.types";
 
@@ -6,7 +7,11 @@ export const transferApi = {
     getTransferData: async () => {
         try {
             // Fetch dashboard data for reward wallet balance
-            const dashboardData = await dashboardApi.getDashboardData();
+            // const dashboardData = await dashboardApi.getDashboardData();
+            const [dashboardData, accountData] = await Promise.all([
+                dashboardApi.getDashboardData(),
+                accountApi.getAccountData()
+            ]);
 
             return {
                 sourceWallet: {

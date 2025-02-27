@@ -438,14 +438,14 @@ const ProfilePage = () => {
                                     </div>
                                 )}
 
-                            <div className="flex justify-end mt-6 pt-5 border-t border-stroke dark:border-strokedark">
+                            {/* <div className="flex justify-end mt-6 pt-5 border-t border-stroke dark:border-strokedark">
                                 <Button
                                     type="submit"
                                     className="flex justify-center rounded bg-primary py-3 px-6 font-medium text-white hover:bg-opacity-95 dark:bg-primary dark:text-white dark:hover:bg-opacity-90 transition-all duration-300"
                                 >
                                     {isSubmitting ? "Saving..." : "Save Changes"}
                                 </Button>
-                            </div>
+                            </div> */}
                         </form>
                     </Form>
                 </div>

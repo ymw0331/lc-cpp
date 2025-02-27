@@ -12,6 +12,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "@/hooks/useToast";
 
 const DropdownUser = () => {
   const { t } = useTranslation();
@@ -44,6 +45,13 @@ const DropdownUser = () => {
   const handleLogout = async () => {
     try {
       await logout();
+
+      toast({
+        title: t("dropdownUser.success"),
+        description: t("dropdownUser.successfullyLoggedOut"),
+        duration: 3000,
+      });
+
     } catch (error) {
       console.error("Logout failed:", error);
     }
