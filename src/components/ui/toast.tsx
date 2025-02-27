@@ -17,7 +17,7 @@ const ToastViewport = React.forwardRef<
     ref={ref}
     className={cn(
       // Changed positioning to bottom for all screen sizes
-      "fixed top-0 right-0 z-[9999] flex max-h-screen w-full flex-col p-4 md:max-w-[420px]",
+      "fixed top-20 right-0 z-[9999] flex max-h-screen w-full flex-col p-4 md:max-w-[420px]",
       className
     )}
     {...props}
