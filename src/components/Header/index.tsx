@@ -70,8 +70,8 @@ const Header = (props: {
 
           <div className="flex items-center gap-2 sm:gap-3 2xsm:gap-7">
             <ul className="flex items-center gap-2 sm:gap-2 2xsm:gap-4">
-              <LanguageSwitcher />
-              <DarkModeSwitcher />
+              {/* <LanguageSwitcher />
+              <DarkModeSwitcher /> */}
               <DropdownNotification />
               <LevelBadge />
               <DropdownUser />
