@@ -5,6 +5,7 @@ import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useTranslation } from "react-i18next";
 import {
     Form,
     FormControl,
@@ -15,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { CopyIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "@/hooks/useToast";
 import { useAuth } from '@/contexts/AuthContext';
 import Loader from '@/components/common/Loader';
@@ -29,7 +30,7 @@ const formSchema = z.object({
     keyMarket: z.string(),
 });
 
-// Define types for country data
+// Country data types and constants remain the same
 type CountryCode = keyof typeof countryData;
 type CallingCode = keyof typeof callingCodes;
 
@@ -124,6 +125,7 @@ const callingCodes: Record<string, string> = {
 };
 
 const ProfilePage = () => {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -139,47 +141,34 @@ const ProfilePage = () => {
         },
     });
 
-    // Map country code to country name
-    const getCountryName = (countryCode: string | undefined | null): string => {
-        // Handle null, undefined, or non-string values
-        if (!countryCode || typeof countryCode !== 'string') return "Unknown";
-
-        // Convert to uppercase for consistency
+    // Memoize these functions with useCallback
+    const getCountryName = useCallback((countryCode: string | undefined | null): string => {
+        if (!countryCode || typeof countryCode !== 'string') return t("common.unknown");
         const code = countryCode.toUpperCase();
         return countryData[code] || countryCode;
-    };
+    }, [t]);
 
-    // Get calling code for a country
-    const getCallingCode = (countryCode: string | undefined | null): string => {
+    const getCallingCode = useCallback((countryCode: string | undefined | null): string => {
         if (!countryCode || typeof countryCode !== 'string') return "";
-
         const code = countryCode.toUpperCase();
         return callingCodes[code] || "";
-    };
+    }, []);
 
-    // Format phone number with country code
-    const formatPhoneWithCountryCode = (phoneNumber: string | undefined | null, countryCode: string | undefined | null): string => {
+    const formatPhoneWithCountryCode = useCallback((
+        phoneNumber: string | undefined | null,
+        countryCode: string | undefined | null
+    ): string => {
         if (!phoneNumber) return "";
-
         const callingCode = getCallingCode(countryCode);
-
-        // If phone already has a + prefix, assume it already has a country code
         if (phoneNumber.startsWith('+')) return phoneNumber;
-
-        // If no calling code found, just return the phone number
         if (!callingCode) return phoneNumber;
-
-        // Remove any leading zeros from the phone number
         const cleanedPhone = phoneNumber.replace(/^0+/, '');
-
-        // Combine the calling code and cleaned phone number
         return `${callingCode} ${cleanedPhone}`;
-    };
+    }, [getCallingCode]);
 
-    // Populate form from auth context
+    // Initialize form data once when user data is available
     useEffect(() => {
-        if (user) {
-            // Safe access to country_code with additional type checking
+        if (user && isLoading) {
             const countryCode = user.country_code;
             const countryName = getCountryName(countryCode);
             const formattedPhone = formatPhoneWithCountryCode(user.phoneNumber, countryCode);
@@ -194,17 +183,18 @@ const ProfilePage = () => {
             });
             setIsLoading(false);
         }
-    }, [user, form]);
+    }, [user, form, getCountryName, formatPhoneWithCountryCode, isLoading]);
 
-    const handleCopyReferralCode = () => {
+    const handleCopyReferralCode = useCallback(() => {
         const referralCode = form.getValues("referralCode");
         navigator.clipboard.writeText(referralCode);
         toast({
-            title: "Copied!",
-            description: "Referral code copied to clipboard",
+            title: t("profilePage.copy.success.title"),
+            description: t("profilePage.copy.success.description"),
             duration: 2000,
         });
-    };
+    }, [form, t]);
+
 
     if (isLoading) {
         return <Loader />;
@@ -212,11 +202,13 @@ const ProfilePage = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Profile" />
+            <Breadcrumb pageName={t("profilePage.profileBreadcrumb")} />
 
             <div className="w-full">
                 <div className="rounded-sm border border-stroke bg-white px-7.5 py-6.5 shadow-default dark:border-strokedark dark:bg-boxdark">
-                    <h3 className="mb-5.5 text-title-sm text-black dark:text-white">Profile Detail</h3>
+                    <h3 className="mb-5.5 text-title-sm text-black dark:text-white">
+                        {t("profilePage.profileDetail")}
+                    </h3>
 
                     <Form {...form}>
                         <form className="space-y-5.5">
@@ -227,7 +219,9 @@ const ProfilePage = () => {
                                     name="resellerId"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">Reseller ID</FormLabel>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                {t("profilePage.userId")}
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -247,7 +241,9 @@ const ProfilePage = () => {
                                     name="fullName"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">Full Name</FormLabel>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                {t("profilePage.fullName")}
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -267,7 +263,9 @@ const ProfilePage = () => {
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">Email</FormLabel>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                {t("profilePage.email")}
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -287,7 +285,9 @@ const ProfilePage = () => {
                                     name="contactNo"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">Contact No.</FormLabel>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                {t("profilePage.contactNo")}
+                                            </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -307,7 +307,9 @@ const ProfilePage = () => {
                                     name="referralCode"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">Referral Code</FormLabel>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                {t("profilePage.referralCode")}
+                                            </FormLabel>
                                             <div className="relative">
                                                 <FormControl>
                                                     <Input
@@ -327,14 +329,14 @@ const ProfilePage = () => {
                                     )}
                                 />
 
-                                {/* Key Market (from country_code) */}
+                                {/* Key Market Field */}
                                 <FormField
                                     control={form.control}
                                     name="keyMarket"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
-                                                Key Market
+                                                {t("profilePage.keyMarket")}
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
@@ -354,6 +356,7 @@ const ProfilePage = () => {
                 </div>
             </div>
         </DefaultLayout>
+
     )
 }
 

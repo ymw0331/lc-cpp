@@ -122,7 +122,7 @@ const AgentDashboard: React.FC = () => {
         </div>
 
         {/* Charts and Tables Section */}
-        <div className="space-y-6">
+        {/* <div className="space-y-6">
           <StatisticChart
             title={t('agentDashboard.referralDepositVolume')}
             // title={t('agentDashboard.referredDepositVolume')}
@@ -134,7 +134,8 @@ const AgentDashboard: React.FC = () => {
           <DepositActivityTable
             activities={dashboardData.depositActivities}
           />
-        </div>
+        </div> */}
+        {/* add  */}
       </>
     );
   }
@@ -214,7 +215,7 @@ const AgentDashboard: React.FC = () => {
 
 
       {/* Charts and Tables Section */}
-      <div className="space-y-6">
+      {/* <div className="space-y-6">
         <StatisticChart
           title={t('agentDashboard.referralDepositVolume')}
           // title={t('agentDashboard.referredDepositVolume')}
@@ -226,7 +227,7 @@ const AgentDashboard: React.FC = () => {
         <DepositActivityTable
           activities={dashboardData.depositActivities}
         />
-      </div>
+      </div> */}
     </>
   );
 };

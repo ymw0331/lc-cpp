@@ -13,6 +13,7 @@ import { IncentivePageData } from "@/api/incentive/incentive.types";
 import Loader from "@/components/common/Loader";
 import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
 import { useAuth } from "@/contexts/AuthContext";
+import { dashboardApi } from "@/api/dashboard/dashboard.api";
 
 
 const IncentiveManagementPage = () => {
@@ -22,6 +23,7 @@ const IncentiveManagementPage = () => {
         new Date().toLocaleString("en-US", { month: "short", year: "numeric" })
     );
 
+    const [dashboardData, setDashboardData] = useState<null>(null);
     const [incentiveData, setIncentiveData] = useState<IncentivePageData | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
@@ -30,6 +32,13 @@ const IncentiveManagementPage = () => {
         fetchData(
             incentiveApi.getIncentiveData,
             setIncentiveData,
+            setError,
+            setLoading
+        );
+
+        fetchData(
+            dashboardApi.getDashboardData,
+            setDashboardData,
             setError,
             setLoading
         );
@@ -52,22 +61,18 @@ const IncentiveManagementPage = () => {
         );
     }
 
-    // Only for level 1 agent can see milestone bonus
-    const canSeeMilestoneBonus = checkTierPermission(
-        user?.tierPriority || 0,
-        TIER_PERMISSIONS.MILESTONE_BONUS_TIER
-    );
+    // Check if user is a Level 1 agent - FIXED: Check for tierPriority === 1 instead of >= 1
+    const isLevelOneAgent = user?.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER;
 
+    // Check if user can see incentives (Level 2 and above)
     const canSeeIncentives = checkTierPermission(
         user?.tierPriority || 0,
         TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
     );
 
-
     if (!incentiveData) return null;
 
     const { summary, activities } = incentiveData;
-
 
     return (
         <DefaultLayout>
@@ -85,19 +90,23 @@ const IncentiveManagementPage = () => {
                         />
                     </div>
 
-                    {canSeeMilestoneBonus && (
-                        <div className="col-span-3">
+                    <div className="col-span-3">
+                        {isLevelOneAgent ? (
+                            // Show Milestone Bonus for Level 1 agents only
                             <IncentiveCard
                                 title={t("incentiveManagementPage.milestoneAchievementBonus")}
                                 amount={summary.milestone_bonus.amount}
-                                // badge={{
-                                //     text: 'Claimed',
-                                //     type: 'claimed'
-                                // }}
                                 className="h-full"
                             />
-                        </div>
-                    )}
+                        ) : (
+                            // Show Referral Bonus for other agents
+                            <IncentiveCard
+                                title={t('agentDashboard.referralFeeBonus')}
+                                amount={dashboardData?.directRecruitment?.earnings || 0}
+                                className="h-full"
+                            />
+                        )}
+                    </div>
                 </div>
 
                 {/* Middle Row - Only visible for level 2 and above */}
@@ -108,7 +117,7 @@ const IncentiveManagementPage = () => {
                             amount={summary.direct_recruit_referral}
                         />
                         <IncentiveCard
-                            title={t("incentiveManagementPage.directDepositAdminChargeRebate")}
+                            title={t("incentiveManagementPage.depositAdminChargeRebate")}
                             amount={summary.direct_admin_charge}
                         />
                         <IncentiveCard
@@ -117,7 +126,6 @@ const IncentiveManagementPage = () => {
                         />
                     </div>
                 )}
-
 
                 {/* Bottom Row - Only visible for level 2 and above */}
                 {canSeeIncentives && (

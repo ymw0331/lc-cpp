@@ -103,12 +103,12 @@ const ManageUserPage = () => {
                     <UsersTable users={usersListData} comingSoon={true} />
                 </div> */}
 
-                <div className="mt-4">
+                {/* <div className="mt-4">
                     <UsersTable
                         users={[]}
                         comingSoon={true}
                     />
-                </div>
+                </div> */}
             </div>
         </DefaultLayout>
     );

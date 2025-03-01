@@ -172,10 +172,10 @@ const TransferPage = () => {
 
             <div className="w-full overflow-hidden">
                 {/* todo: move this to wallet page, reward wallet summary in wallet to be in incentive */}
-                <TransferActivityTable
+                {/* <TransferActivityTable
                     data={[]} // Empty data to show "Coming Soon"
                     comingSoon={true}
-                />
+                /> */}
             </div>
 
             {/* Success Dialog */}

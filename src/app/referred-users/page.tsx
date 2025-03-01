@@ -104,7 +104,7 @@ const ReferredUsersPage = () => {
                 )}
 
                 {/* Chart customized based on level */}
-                <AnalyticChart
+                {/* <AnalyticChart
                     title={t("referredUsersPage.recruitmentSummary")}
                     chartData={recruitData.chartData}
                     showLegend={true}
@@ -112,7 +112,7 @@ const ReferredUsersPage = () => {
                     legendPosition="top-right"
                     lineColor="#F69732"
                     comingSoon={true} 
-                />
+                /> */}
             </div>
         </DefaultLayout>
     )

@@ -67,7 +67,7 @@ const ProfileWithReferralCard = ({
                         </div>
                         <div className="ml-4">
                             <h2 className="text-xl md:text-2xl font-bold text-black dark:text-white">{name}</h2>
-                            <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 mt-1">Level {level}</p>
+                            <p className="text-base md:text-lg text-gray-500 dark:text-gray-400 mt-1">{t("profileWithReferralCard.level")} {level}</p>
                         </div>
                     </div>
 

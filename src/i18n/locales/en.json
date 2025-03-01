@@ -1,7 +1,8 @@
 {
     "common": {
         "comingSoon": "Coming Soon",
-        "processing": "Processing"
+        "processing": "Processing",
+        "unknown": "Unknown"
     },
     "header": {
         "searchPlaceholder": "Type to search...",
@@ -9,6 +10,9 @@
         "notifications": "Notifications",
         "messages": "Messages",
         "user": "User"
+    },
+    "breadcrumb": {
+        "dashboard": "Dashboard"
     },
     "dropdownUser": {
         "myProfile": "My Profile",
@@ -19,16 +23,17 @@
     },
     "sidebar": {
         "menu": "MENU",
-        "dashboard": "Dashboard",
-        "account": "Account",
-        "incentive management": "Incentive Management",
-        "referred users": "Referred Users",
+        "dashboard": "HOME PAGE",
+        "account": "ACCOUNT",
+        "incentive management": "INCENTIVE MANAGEMENT",
+        "referred users": "REFERRED USERS",
+        "referred-users": "Referred Users",
         "manage user": "Manage User",
         "recruit agent": "Recruit Agent",
-        "performance": "Performance",
-        "support": "Support",
-        "settings": "Settings",
-        "legal & compliance": "Legal & Compliance",
+        "performance": "PERFORMANCE",
+        "support": "SUPPORT",
+        "settings": "SETTINGS",
+        "legal & compliance": "LEGAL & COMPLIANCE",
         "wallets": "Wallets",
         "transfer": "Transfer",
         "profile": "Profile",
@@ -42,9 +47,9 @@
         "privacy guideline": "Privacy Guideline"
     },
     "loginPage": {
-        "welcomeToLookcard": "Welcome to Lookcard Reseller Portal",
-        "pleaseSignIn": "Please sign in to continue to your dashboard.",
-        "signInToAgentDashboard": "Sign In to Agent Dashboard",
+        "welcomeToLookcard": "Welcome to LookCard Reseller Portal",
+        "pleaseSignIn": "Please sign in to access to your portal.",
+        "signInToAgentDashboard": "Sign In to Reseller Portal",
         "email": "Email",
         "enterYourEmail": "Enter your email",
         "password": "Password",
@@ -59,11 +64,11 @@
         "rememberMe": "Remember Me",
         "forgotPassword": "Forgot Password",
         "warning": "Warning",
-        "warningDescription1": "To access this portal, ",
-        "warningDescription2": "you must first register as a Lookcard.io App user and log in with your credentials.",
-        "warningDescription3": " If you are not a registered user, please exit this page. Unauthorized access may lead to disciplinary action or legal consequences.",
+        "warningDescription1": "Your account does not have permission to access this portal. ",
+        "warningDescription2": "This portal is exclusively for registered reseller agents.",
+        "warningDescription3": "If you believe this is an error, please contact our support team for assistance.",
         "signInTo": "Sign in to",
-        "communityPartnershipProgramPortal": "Community Partnership Program Portal",
+        "communityPartnershipProgramPortal": "Community Partnership Program Reseller Portal",
         "editYourInformation": "Edit your information in a swipe"
     },
     "registerPage": {
@@ -75,10 +80,10 @@
         "enterFullName": "Enter your full name",
         "email": "Registered Email",
         "enterEmail": "Enter your registered email",
-        "coreMarket": "Core Market Segment [Country]",
-        "enterCoreMarket": "Enter your core market segment",
-        "agentAcknowledgement": "Acknowledgement",
-        "termsAgreement": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I understand and accept these terms for both my application and any referrals I submit.",
+        "coreMarket": "Key Market [Country]",
+        "enterCoreMarket": "Enter your key market",
+        "agentAcknowledgement": "Acknowledgment",
+        "termsAgreement": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I have read, understood and accept these terms, both for my application and any referrals I submit.",
         "success": "Registration Successful",
         "successfullyRegistered": "You have successfully registered as a reseller",
         "error": "Registration Error",
@@ -86,40 +91,40 @@
         "signUp": "Sign Up",
         "acknowledgementPoints": {
             "bySubmitting": "By submitting this form, you acknowledge and agree to the following:",
-            "accuracy": "All information provided in this form is accurate and complete to the best of your knowledge.",
+            "accuracy": "All information provided in this form is true, accurate and complete to the best of your knowledge.",
             "verification": "Admission into the program is subject to verification and approval.",
-            "misrepresentation": "Any misrepresentation or breach of program guidelines may result in disqualification or termination of participation.",
-            "privacy": "Your personal information will be handled securely and used solely for the purpose of evaluating and facilitating the partnership.",
-            "terms": "This submission is subject to additional terms and conditions, which will be shared upon successful onboarding."
+            "misrepresentation": "Any misrepresentation or violation of program guidelines may result in disqualification or termination of participation.",
+            "privacy": "Your personal information will be handled securely and used solely for evaluating and facilitating the partnership.",
+            "terms": "This submission is subject to additional terms and conditions, which will be provided upon successful onboarding."
         },
         "thankYou": "Thank You for Your Application!",
         "receivedSubmission": "We've received your submission.",
-        "confirmationEmail": "A confirmation email will be sent to your inbox (or spam folder)",
-        "withinDays": " within 3 working days.",
+        "confirmationEmail": "A confirmation email will be sent to your inbox (please check your  spam folder if necessary)",
+        "withinDays": " within three (3) working days.",
         "done": "DONE"
     },
     "forgotPasswordDialog": {
         "close": "Close",
         "forgotPassword": "Forgot Password?",
         "passwordResetUnavailable": "Password reset is unavailable on",
-        "communityPartnershipProgramPortal": "the Community Partnership Program portal.",
-        "toResetYourCredentials": "To reset your login credentials, please use the",
-        "useLookCardApp": "LookCard.io app. Open the app to update your password securely.",
+        "communityPartnershipProgramPortal": "the Community Partnership Program Reseller portal.",
+        "toResetYourCredentials": "To reset your login credentials, please login to lookcard.io app",
+        "useLookCardApp": "and follow the password reset instructions.",
         "backToLogin": "Back to Login"
     },
     "notRegisteredDialog": {
         "imageAlt": "Not Registered",
         "title": "Not Registered",
-        "noAccess": "Your account currently does not have access to this portal. To proceed, please register as a LookCard reseller and unlock exclusive opportunities.",
-        "benefits": "As a reseller, you can enjoy special benefits and earn up to",
-        "referralAmount": " $80+ per referral",
-        "callToAction": ". Don't miss out—join today and start maximizing your earnings!",
-        "becomeAgent": "Become an Agent"
+        "noAccess": "Your email is yet to registered as  lookcard.io platform user.",
+        "benefits": "To become a reseller, you must first register for a platform account and sign up as a reseller agent,",
+        "referralAmount": " earning up to $80 per referral",
+        "callToAction": ". Don't miss out—join now and maximize your earnings!",
+        "becomeAgent": "Sign Up"
     },
     "accessDeniedDialog": {
         "accessDeniedAlt": "Access Denied",
         "title": "ACCESS DENIED",
-        "mainMessage": "Your account does not have the necessary permissions to access this portal, as it is exclusive to registered resellers.",
+        "mainMessage": "Your account does not have the necessary permissions to access this portal, as it is restricted to registered resellers only.",
         "supportMessage": "If you believe this is an error, please contact our support team for assistance.",
         "contactSupport": "Contact Support",
         "registerAsReseller": "Register as Reseller"
@@ -127,10 +132,10 @@
     "agentDashboard": {
         "overview": "Overview",
         "rewardWalletBalance": "Reward Wallet Balance",
-        "referredDepositAmount": "Referred Deposit Amount",
+        "referredDepositAmount": "Referrals Deposit Amount",
         "referralFeeBonus": "Referral Fee Bonus",
         "activeUsers": "Active Users",
-        "left": "Left",
+        "left": "remaining to complete your goals",
         "totalDirectRecruit": "Total Direct Recruit",
         "agentsToPartner": "Agents to Partner",
         "referralDepositVolume": "Referral Deposit Volume",
@@ -138,17 +143,19 @@
         "description": "Description",
         "amount": "Amount",
         "dateTime": "Date Time",
-        "failedToLoadData": "Failed to load dashboard data",
+        "failedToLoadData": "Failed to load data",
         "loading": "Loading...",
         "referralCode": "Referral Code",
         "recruitment": "Recruitment",
         "incentives": "Incentives"
     },
     "profileCard": {
+        "level": "Level",
         "activeUsersLabel": "Active Users",
         "left": "Remaining to complete your goals"
     },
     "profileWithReferralCard": {
+        "level": "Level",
         "copiedToClipboard": "Copied to clipboard",
         "copiedToClipboardDescription": "Referral code has been copied to your clipboard",
         "activatedUsersLabel": "Activated Users",
@@ -199,8 +206,8 @@
         "rewardWalletBalance": "Reward Wallet Balance",
         "currentAccountWalletBalance": "Current Account Wallet Balance",
         "rewardWalletSummary": "Reward Wallet Summary",
-        "failedToLoadData": "Failed to load wallet data",
-        "walletSummaryComingSoon": "Wallet summary is coming soon"
+        "failedToLoadData": "Failed to load data",
+        "walletSummaryComingSoon": "Coming Soon"
     },
     "walletCard": {
         "transferButton": "Transfer",
@@ -214,28 +221,29 @@
         "transactionHistory": "Transaction History",
         "descriptionHeader": "DESCRIPTION",
         "transferredAmountHeader": "TRANSFERRED AMOUNT",
-        "dateTimeHeader": "DATE TIME",
+        "dateTimeHeader": "DATE & TIME",
         "statusHeader": "STATUS"
     },
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "Incentive Management",
-        "totalIncentive": "Total Incentive",
+        "totalIncentive": "Total Incentive Earned",
+        "incentivePayoutRecords": "Incentive Payout Records",
         "milestoneAchievementBonus": "Milestone Achievement Bonus",
-        "directRecruitReferral": "Direct Recruit's Referral Overriding Incentive",
-        "directDepositAdminChargeRebate": "Direct Deposit Admin Charge Rebate",
-        "directRecruitDepositAdminChargeOverridingRebate": "Direct Recruit's Deposit Admin Charge Overriding Rebate",
+        "directRecruitReferral": "Direct Recruit's Referral Fee Override Bonus",
+        "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
+        "directRecruitDepositAdminChargeOverridingRebate": "Direct Recruit's Deposit Admin Charge Override Rebate",
         "directRecruitLevelAdvancementBonus": "Direct Recruit Level Advancement Bonus",
         "performanceBonus": "Performance Bonus",
-        "failedToLoadData": "Failed to load incentive data"
+        "failedToLoadData": "Failed to load data"
     },
     "incentiveCard": {
         "activeUsersLeft": "Active Users Left"
     },
     "dataTable": {
-        "incentivePayoutRecords": "Incentive Payout Records",
-        "transactionId": "TRANSACTION ID",
-        "transferredAmount": "TRANSFERRED AMOUNT",
-        "dateTime": "DATE TIME",
+        "incentivePayoutRecords": "Incentive, Bonus & Reward Records",
+        "transactionId": "Incentives Records",
+        "transferredAmount": "AMOUNT (USD)",
+        "dateTime": "DATE & TIME",
         "status": "STATUS",
         "noDataAvailable": "No data available",
         "noRecordsToDisplay": "There are no records to display for this period",
@@ -251,7 +259,7 @@
     },
     "manageUserPage": {
         "manageUsersBreadcrumb": "Manage Users",
-        "failedToLoadData": "Failed to load recruitment data"
+        "failedToLoadData": "Failed to load data"
     },
     "usersTable": {
         "users": "Users",
@@ -295,7 +303,7 @@
         "performanceBreadcrumb": "Performance",
         "cardActivationVolume": "Card Activation Volume",
         "totalAgentRecruitment": "Total Agent Recruitment",
-        "failedToLoadData": "Failed to load performance data"
+        "failedToLoadData": "Failed to load data"
     },
     "nextLevelCard": {
         "nextLevel": "Next Level",
@@ -304,7 +312,7 @@
         "level": "Level",
         "requestLevelUpButton": "Request to Level-up",
         "levelUpRequestSentTitle": "Level Up Request Sent",
-        "levelUpRequestSentDescription": "We'll review your request and get back to you soon."
+        "levelUpRequestSentDescription": "Your request has been received. We will review it and notify you of the result as soon as possible."
     },
     "salesSummaryCard": {
         "salesSummary": "Sales Summary",
@@ -320,7 +328,7 @@
         "selectWeek": "Select Week"
     },
     "demographicSalesChart": {
-        "salesVolumeInDemographic": "Sales Volume in Demographic",
+        "salesVolumeInDemographic": "Sales Volume Based on Demographic",
         "year": "Year",
         "quarter": "Quarter"
     },
@@ -352,7 +360,7 @@
         "saving": "Saving...",
         "error": "Error",
         "success": "Success",
-        "failedToLoadProfileData": "Failed to load profile data",
+        "failedToLoadProfileData": "Failed to load data",
         "failedToUpdateProfile": "Failed to update profile",
         "emailVerified": "Email Verified",
         "phoneVerified": "Phone Verified",
@@ -397,7 +405,7 @@
             "title": "Language",
             "select": "Select language",
             "changed": "Language Changed",
-            "restart": "Some changes may require a page refresh",
+            "restart": "Some changes may require refreshing the page before they take effect",
             "options": {
                 "en": "English (Default)",
                 "zh": "中文"
@@ -416,8 +424,8 @@
             "description": "Enable to receive updates about your account and offers.",
             "enabled": "Notifications Enabled",
             "disabled": "Notifications Disabled",
-            "enabledDesc": "You will now receive updates about your account and offers",
-            "disabledDesc": "You will no longer receive notifications"
+            "enabledDesc": "You will now receive updates about your account and special offers",
+            "disabledDesc": "You have turned off notifications and will no longer receive updates."
         }
     },
     "legal": {
@@ -464,5 +472,13 @@
         "disclaimer6": "Transactions may be reviewed in compliance with local and international anti-money laundering (AML) and counter-terrorism financing (CTF) regulations. This may lead to processing delays or cancellations.",
         "cancelButton": "Cancel",
         "confirmButton": "Confirm"
+    },
+    "transferSuccessDialog": {
+        "title": "Transfer Successful",
+        "description": "Your transfer has been completed successfully.",
+        "amount": "Amount",
+        "status": "Status",
+        "completed": "Completed",
+        "closeButton": "Make Another Transfer"
     }
 }

@@ -210,7 +210,7 @@ const PreferencePage = () => {
                             </div>
 
                             {/* Notification Section */}
-                            <div className="flex items-center justify-between border-t border-stroke py-5 dark:border-strokedark">
+                            {/* <div className="flex items-center justify-between border-t border-stroke py-5 dark:border-strokedark">
                                 <div>
                                     <h4 className="text-title-sm2 font-semibold text-black dark:text-white">
                                         {t("preferences.notifications.title")}
@@ -224,7 +224,7 @@ const PreferencePage = () => {
                                     onCheckedChange={handleNotificationToggle}
                                     className="bg-stroke data-[state=checked]:bg-primary"
                                 />
-                            </div>
+                            </div> */}
                         </form>
                     </Form>
                 </div>

@@ -75,13 +75,13 @@ const WalletsPage = () => {
 
             <div className="w-full">
                 {/* TODO: move this to incentive page or discard this */}
-                <AnalyticChart
+                {/* <AnalyticChart
                     title={t("walletsPage.rewardWalletSummary")}
                     chartData={walletData.walletSummary}
                     lineColor="#7C74FF"
                     className="overflow-x-auto"
                     comingSoon={true}
-                />
+                /> */}
             </div>
         </DefaultLayout>
     );

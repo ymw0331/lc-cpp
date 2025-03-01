@@ -34,7 +34,7 @@ const ProfileCard = ({
                 <div className="flex justify-between items-start">
                     <div>
                         <h2 className="text-2xl font-bold text-black dark:text-white">{name}</h2>
-                        <p className="text-lg text-body dark:text-bodydark mt-1">Level {level}</p>
+                        <p className="text-lg text-body dark:text-bodydark mt-1">{t("profileCard.level")} {level}</p>
                     </div>
                     <div className="relative w-20 h-20 rounded-full bg-[#F3F3F3] dark:bg-meta-4 overflow-hidden">
                         {avatar ? (

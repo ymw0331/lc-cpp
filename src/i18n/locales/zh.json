@@ -1,34 +1,39 @@
 {
     "common": {
+        "processing": "处理中",
         "comingSoon": "即将推出",
-        "processing": "处理中"
+        "unknown": "未知"
     },
     "header": {
         "searchPlaceholder": "输入搜索...",
         "darkMode": "黑暗模式",
         "notifications": "通知",
-        "messages": "消息",
+        "messages": "信息",
         "user": "用户"
+    },
+    "breadcrumb": {
+        "dashboard": "主页"
     },
     "dropdownUser": {
         "myProfile": "我的个人资料",
         "preference": "偏好设定",
-        "logOut": "登出"
+        "logOut": "退出登入"
     },
     "sidebar": {
-        "menu": "菜单",
-        "dashboard": "仪表板",
+        "menu": "功能选单",
+        "dashboard": "主页",
         "account": "帐户",
-        "incentive management": "激励管理",
+        "incentive management": "绩效激励管理",
         "referred users": "推荐用户",
+        "referred-users": "推荐用户",
         "manage user": "管理用户",
         "recruit agent": "招募代理",
-        "performance": "性能",
-        "support": "支持",
+        "performance": "业绩",
+        "support": "客服",
         "settings": "设置",
         "legal & compliance": "法律与合规",
-        "wallets": "钱包",
-        "transfer": "转移",
+        "wallets": "电子钱包",
+        "transfer": "转账",
         "profile": "个人资料",
         "password": "密码",
         "preference": "偏好设定",
@@ -42,269 +47,273 @@
     "agentDashboard": {
         "overview": "概览",
         "rewardWalletBalance": "奖励钱包余额",
-        "totalDepositAmount": "总存款金额",
-        "directRecruitIncentiveEarnings": "直接招募激励收益",
+        "referredDepositAmount": "直推充值数额",
+        "referralFeeBonus": "直推佣金",
         "activeUsers": "活跃用户",
-        "left": "剩余",
-        "totalDirectRecruit": "总直接招募",
-        "agentsToPartner": "代理商转合作伙伴",
-        "depositSummary": "存款摘要",
-        "depositActivity": "存款活动",
-        "description": "描述",
-        "amount": "金额",
-        "dateTime": "日期时间",
-        "failedToLoadData": "加载仪表板数据失败",
+        "left": "（距离达成KPI差额）",
+        "totalDirectRecruit": "直推总数额",
+        "agentsToPartner": "代理晋升为合作伙伴",
+        "referralDepositVolume": "推荐充值总额",
+        "depositSummary": "充值总览",
+        "depositActivity": "充值记录",
+        "description": "详情",
+        "amount": "数额",
+        "dateTime": "日期与时间",
+        "failedToLoadData": "数据加载失败",
         "loading": "加载中...",
         "referralCode": "推荐码",
         "recruitment": "招募",
-        "incentives": "激励"
+        "incentives": "佣金"
     },
     "loginPage": {
-        "welcomeToLookcard": "欢迎来到Lookcard经销商门户",
-        "pleaseSignIn": "请登录以继续访问您的仪表板。",
-        "signInToAgentDashboard": "登录到代理仪表板",
+        "welcomeToLookcard": "欢迎来到Lookcard经销商代理管理系统",
+        "pleaseSignIn": "请登录",
+        "signInToAgentDashboard": "登录到经销商代理管理系统",
         "email": "电子邮件",
         "enterYourEmail": "输入您的电子邮件",
         "password": "密码",
         "enterYourPassword": "输入您的密码",
         "signIn": "登录",
         "signingIn": "正在登录",
-        "testCredentials": "测试凭据",
-        "error": "错误",
+        "testCredentials": "测试账号信息",
+        "error": "功能出错",
         "success": "成功",
         "successfullyLoggedIn": "登录成功！",
         "loginFailed": "登录失败",
         "rememberMe": "记住我",
         "forgotPassword": "忘记密码",
-        "warning": "警告",
-        "warningDescription1": "要访问此门户网站，",
-        "warningDescription2": "您必须先注册为 Lookcard.io App 用户并使用您的凭据登录。",
-        "warningDescription3": "如果您不是注册用户，请退出此页面。未经授权的访问可能会导致纪律处分或法律后果。",
+        "warning": "注意",
+        "warningDescription1": "您的账户无权登入此系统，",
+        "warningDescription2": "该系统仅限已注册的经销商代理使用。",
+        "warningDescription3": "如果您认为这是错误信息，请联系客服团队以便获取协助。",
         "signInTo": "登录到",
-        "communityPartnershipProgramPortal": "社区合作计划门户",
-        "editYourInformation": "滑动即可编辑您的信息"
+        "communityPartnershipProgramPortal": "经销商代理管理系统",
+        "editYourInformation": "修改/更新您的信息"
     },
     "registerPage": {
-        "agentRecruitmentDetails": "代理招募详情",
-        "joinOurCommunity": "加入我们的社区合作伙伴计划",
-        "referralId": "推荐ID",
-        "enterReferralId": "输入推荐ID（选填）",
+        "agentRecruitmentDetails": "经销商代理招募详情",
+        "joinOurCommunity": "加入社区合作伙伴计划",
+        "referralId": "推荐码",
+        "enterReferralId": "输入推荐码",
         "fullName": "全名",
         "enterFullName": "输入您的全名",
         "email": "注册邮箱",
         "enterEmail": "输入您的注册邮箱",
-        "coreMarket": "核心市场领域 [国家]",
-        "enterCoreMarket": "输入您的核心市场领域",
-        "agentAcknowledgement": "确认声明",
-        "termsAgreement": "我同意上述所有条款，包括遵守项目要求、道德行为和隐私政策。我确认我理解并接受这些条款，适用于我的申请和我提交的任何推荐。",
+        "coreMarket": "主力市场[国家]",
+        "enterCoreMarket": "输入您的主力市场",
+        "agentAcknowledgement": "同意并确认",
+        "termsAgreement": "本人同意上述所有条款，包括遵守项目要求、道德规范及隐私政策。本人确认已充分理解并接受这些条款，适用于本人申请及本人提交的任何推荐。",
         "success": "注册成功",
-        "successfullyRegistered": "您已成功注册为经销商",
-        "error": "注册错误",
+        "successfullyRegistered": "您已成功注册为经销商代理",
+        "error": "注册出错",
         "processing": "处理中",
         "signUp": "注册",
         "acknowledgementPoints": {
-            "bySubmitting": "提交此表格，您确认并同意以下内容：",
-            "accuracy": "本表格中提供的所有信息据我所知是准确和完整的。",
-            "verification": "加入计划需要经过验证和批准。",
-            "misrepresentation": "任何虚假陈述或违反计划指南可能导致取消资格或终止参与。",
-            "privacy": "您的个人信息将被安全处理，仅用于评估和促进合作伙伴关系。",
-            "terms": "此提交受附加条款和条件约束，这些条款将在成功加入后分享。"
+            "bySubmitting": "提交此表格即表示您确认并同意以下内容",
+            "accuracy": "本人承诺，所提供的所有信息均真实、准确且完整，尽本人所知无误。",
+            "verification": "申请参与本项目需经过审核和批准。",
+            "misrepresentation": "任何虚假陈述或违反项目规定的行为，可能导致资格取消或终止合作。",
+            "privacy": "您的个人信息将被严格保密，仅用于评估和推进合作。",
+            "terms": "本次提交受额外条款与条件约束，完整条款将在成功入驻后提供。"
         },
         "thankYou": "感谢您的申请！",
-        "receivedSubmission": "我们已收到您的提交。",
-        "confirmationEmail": "确认电子邮件将发送至您的收件箱（或垃圾邮件文件夹）",
+        "receivedSubmission": "我们已收到您的申请。",
+        "confirmationEmail": "您将收到一封确认邮件，若未收到，请检查您的垃圾邮件文件夹",
         "withinDays": " 3个工作日内。",
         "done": "完成"
     },
     "forgotPasswordDialog": {
         "close": "关闭",
         "forgotPassword": "忘记密码？",
-        "passwordResetUnavailable": "密码重置在以下位置不可用",
-        "communityPartnershipProgramPortal": "社区合作计划门户。",
-        "toResetYourCredentials": "要重置您的登录凭据，请使用",
-        "useLookCardApp": "LookCard.io应用程序。打开该应用程序以安全地更新您的密码。",
-        "backToLogin": "返回登录"
+        "passwordResetUnavailable": "经销商代理管理系统",
+        "communityPartnershipProgramPortal": "暂不提供密码重置功能。",
+        "toResetYourCredentials": "如需重置登入账号信息，请通过lookcard.io应用程序进行，",
+        "useLookCardApp": "以安全更新您的密码。",
+        "backToLogin": "返回"
     },
     "notRegisteredDialog": {
-        "imageAlt": "未注册",
+        "imageAlt": "登入拒绝",
         "title": "未注册",
-        "noAccess": "您的账户目前无法访问此门户。要继续，请注册成为LookCard经销商并解锁独家机会。",
-        "benefits": "作为经销商，您可以享受特别优惠并赚取高达",
-        "referralAmount": " 每次推荐80美元以上",
-        "callToAction": "。不要错过—立即加入并开始最大化您的收益！",
-        "becomeAgent": "成为代理"
+        "noAccess": "您的邮箱尚未注册为lookcard.io平台用户。",
+        "benefits": "若需成为经销商代理，您必须先完成平台账户注册，",
+        "referralAmount": " 并注册成为经销商代理，通过推荐赚取高达每人80美元",
+        "callToAction": "抓紧机会，立即加入，最大化您的收入！",
+        "becomeAgent": "平台用户注册"
     },
     "accessDeniedDialog": {
-        "accessDeniedAlt": "拒绝访问",
-        "title": "访问被拒绝",
+        "accessDeniedAlt": "登入拒绝",
+        "title": "登入被拒绝",
         "mainMessage": "您的账户没有访问此门户的必要权限，因为此门户仅限注册的经销商使用。",
         "supportMessage": "如果您认为这是一个错误，请联系我们的支持团队寻求帮助。",
         "contactSupport": "联系支持",
         "registerAsReseller": "注册为经销商"
     },
     "profileCard": {
+        "level": "等级",
         "activeUsersLabel": "活跃用户",
-        "left": "剩余完成目标"
+        "left": "（距离达成KPI差额）"
     },
     "profileWithReferralCard": {
-        "copiedToClipboard": "已复制到剪贴板",
-        "copiedToClipboardDescription": "推荐码已复制到您的剪贴板",
+        "level": "等级",
+        "copiedToClipboard": "已成功复制到剪贴板",
+        "copiedToClipboardDescription": "推荐码已成功复制到剪贴板",
         "activatedUsersLabel": "已激活用户",
-        "remainingToComplete": "剩余完成目标",
+        "remainingToComplete": "（距离达成KPI差额）",
         "activeUsersLabel": "活跃用户",
-        "left": "剩余完成目标"
+        "left": "（距离达成KPI差额）"
     },
     "referralCard": {
         "referralCodeLabel": "推荐码",
-        "copiedToClipboard": "已复制到剪贴板"
+        "copiedToClipboard": "已成功复制到剪贴板",
+        "copiedToClipboardDescription": "推荐码已成功复制到剪贴板"
     },
     "recruitCard": {
-        "totalDirectRecruitLabel": "总直接招募",
-        "agentsToPartnerLabel": "代理商转合作伙伴"
+        "totalDirectRecruitLabel": "直推总数额",
+        "agentsToPartnerLabel": "经销商代理晋升合作伙伴"
     },
     "recruitmentSummaryCard": {
-        "recruitmentSummary": "招募摘要",
-        "referralFeeBonus": "推荐费奖金",
-        "depositAdminChargeRebate": "存款管理费回扣"
+        "recruitmentSummary": "招募详情",
+        "referralFeeBonus": "推荐佣金",
+        "depositAdminChargeRebate": "充值管理费返利"
     },
     "agentRecruitmentSummaryCard": {
-        "agentRecruitmentSummary": "代理招募摘要",
-        "referralFeeBonus": "推荐费奖金",
-        "depositAdminChargeRebate": "存款管理费回扣"
+        "agentRecruitmentSummary": "经销商代理招募详情",
+        "referralFeeBonus": "推荐佣金",
+        "depositAdminChargeRebate": "充值管理费返利"
     },
     "milestoneAchievementCard": {
-        "milestoneAchievementBonus": "里程碑成就奖金",
-        "exclusivelyForLevel1": "仅限1级代理",
-        "achieveActivationsMessage": "在指定时间内完成{targetUsers}次成功卡激活。保持进度，达成里程碑，最大化您的收益。",
+        "milestoneAchievementBonus": "目标达成奖金",
+        "exclusivelyForLevel1": "仅限初级经销商代理",
+        "achieveActivationsMessage": "在限定时间内成功激活{targetUsers}张卡，以便达成目标并提升收益。",
         "activatedUsers": "已激活用户",
-        "month": "月",
-        "months": "月",
+        "month": "个月",
+        "months": "个月",
         "congratulations": "恭喜"
     },
     "statisticChart": {
-        "noDataAvailable": "无数据可用"
+        "noDataAvailable": "暂无数据"
     },
     "depositActivityTable": {
-        "depositActivityLabel": "存款活动",
-        "descriptionHeader": "描述",
-        "amountHeader": "金额",
-        "dateTimeHeader": "日期时间",
-        "noDataAvailable": "无数据可用"
+        "incomeEarningSummaryLabel": "收入/收益总览",
+        "descriptionHeader": "详情",
+        "amountHeader": "数额",
+        "dateTimeHeader": "日期与时间",
+        "noDataAvailable": "暂无数据"
     },
     "walletsPage": {
-        "walletsBreadcrumb": "钱包",
+        "walletsBreadcrumb": "电子钱包",
         "rewardWalletBalance": "奖励钱包余额",
         "currentAccountWalletBalance": "往来账户钱包余额",
-        "rewardWalletSummary": "奖励钱包摘要",
-        "failedToLoadData": "无法加载钱包数据",
-        "walletSummaryComingSoon": "钱包摘要即将推出"
+        "rewardWalletSummary": "奖励钱包记录",
+        "failedToLoadData": "无法加载数据",
+        "walletSummaryComingSoon": "奖励钱包记录即将推出"
     },
     "analyticChart": {
-        "noDataAvailable": "无数据可用",
+        "noDataAvailable": "暂无数据",
         "comingSoon": "即将推出"
     },
     "walletCard": {
-        "transferButton": "转移",
+        "transferButton": "转账",
         "comingSoon": "即将推出"
     },
     "transferActivityTable": {
-        "transferActivity": "转账活动",
-        "transactionIdHeader": "交易ID",
+        "transactionHistory": "转账历史",
+        "descriptionHeader": "详情",
         "transferredAmountHeader": "转账金额",
-        "dateTimeHeader": "日期时间",
+        "dateTimeHeader": "日期与时间",
         "statusHeader": "状态"
     },
     "incentiveManagementPage": {
-        "incentiveManagementBreadcrumb": "激励管理",
-        "totalIncentive": "总激励",
-        "incentivePayoutRecords": "激励支付记录",
-        "milestoneBonus": "里程碑奖金",
-        "directRecruitReferral": "直接招募推荐覆盖激励",
-        "directAdminCharge": "直接管理费回扣",
-        "directRecruitDeposit": "直接招募存款管理费覆盖回扣",
-        "directRecruitLevelAdvancementBonus": "直接招募级别晋升奖金",
-        "performanceBonus": "业绩奖金",
-        "failedToLoadData": "无法加载激励数据"
+        "incentiveManagementBreadcrumb": "绩效激励管理",
+        "totalIncentive": "总激励金额",
+        "incentivePayoutRecords": "激励结算记录",
+        "milestoneAchievementBonus": "目标达成奖金",
+        "directRecruitReferral": "推荐佣金覆盖奖励",
+        "depositAdminChargeRebate": "充值手续费返利覆盖奖励",
+        "directRecruitDepositAdminChargeOverridingRebate": "直推充值手续费返利覆盖奖励",
+        "directRecruitLevelAdvancementBonus": "直推代理晋升奖励",
+        "performanceBonus": "绩效奖励",
+        "failedToLoadData": "无法加载数据"
     },
     "incentiveCard": {
-        "activeUsersLeft": "剩余活跃用户"
+        "activeUsersLeft": "(距离达成目标所需活跃用户）"
     },
     "dataTable": {
-        "incentiveActivity": "激励活动",
-        "transactionId": "交易ID",
-        "transferredAmount": "转账金额",
-        "dateTime": "日期时间",
+        "incentivePayoutRecords": "激励奖金记录",
+        "transactionId": "交易编码",
+        "transferredAmount": "结算金额",
+        "dateTime": "日期与时间",
         "status": "状态",
-        "noDataAvailable": "没有数据",
-        "noRecordsToDisplay": "此期间没有记录可显示",
-        "showingResults": "显示 {start} 到 {end}，共 {total} 条结果"
+        "noDataAvailable": "暂无数据",
+        "noRecordsToDisplay": "当前时间段无记录显示",
+        "showingResults": "展示 {start} 到 {end}，共 {total} 条数据结果"
     },
     "referredUsersPage": {
         "referredUsersBreadcrumb": "推荐用户",
-        "recruitmentSummary": "招募概览",
-        "totalDirectRecruit": "总直接招募",
-        "noRecruitmentData": "没有可用的招募数据",
-        "startRecruiting": "开始招募以查看您的统计信息",
-        "failedToLoadData": "无法加载仪表板数据"
+        "recruitmentSummary": "招募记录",
+        "totalDirectRecruit": "直推总数额",
+        "noRecruitmentData": "暂无数据",
+        "startRecruiting": "开始招募代理，您的统计数据将在此显示",
+        "failedToLoadData": "无法加载数据"
     },
     "manageUserPage": {
-        "manageUsersBreadcrumb": "管理用户"
+        "manageUsersBreadcrumb": "用户管理"
     },
     "usersTable": {
         "users": "用户",
-        "filters": "筛选器",
+        "filters": "筛选",
         "market": "市场",
         "allMarkets": "所有市场",
-        "ranking": "排名",
-        "allRankings": "所有排名",
+        "ranking": "等级",
+        "allRankings": "所有等级",
         "dateRange": "日期范围",
         "from": "从",
         "to": "至",
         "searchUser": "搜索用户",
         "recruit": "招募",
         "name": "姓名",
-        "userId": "用户ID",
-        "keyMarket": "主要市场",
+        "userId": "用户编码",
+        "keyMarket": "主力市场",
         "joinedSince": "加入时间",
-        "lastActive": "上次活跃时间"
+        "lastActive": "最后上线时间"
     },
     "recruitAgentPage": {
-        "recruitAgentBreadcrumb": "招募代理",
-        "agentRecruitmentDetails": "代理招募详情",
-        "referralId": "推荐人ID",
+        "recruitAgentBreadcrumb": "招募经销商代理",
+        "agentRecruitmentDetails": "经销商代理招募详情",
+        "referralId": "推荐码",
         "fullName": "全名",
         "registeredEmail": "注册邮箱",
         "memberVerification": "会员验证",
-        "emailVerified": "邮箱已验证",
-        "matchedEmail": "邮箱已匹配",
-        "check": "检查",
-        "proposedKeyMarket": "建议的主要市场",
+        "emailVerified": "邮箱验证成功",
+        "matchedEmail": "邮箱匹配",
+        "check": "核对",
+        "proposedKeyMarket": "建议的主力市场",
         "selectMarket": "选择市场",
-        "acknowledgement": "确认",
-        "acknowledgementItem1": "我确认在此表格中提供的所有信息都是准确和真实的。",
-        "acknowledgementItem2": "我确认我推荐的人已同意Lookcard Limited就此计划与其联系。",
-        "acknowledgementItem3": "我理解提交推荐并不能保证被推荐人被该计划接受。",
-        "acknowledgementItem4": "我确认，如果被推荐人符合计划资格并满足加入要求，则此推荐的任何利益或奖励都将受到影响。",
-        "agreementLabel": "我同意上述所有条款，包括遵守计划要求、道德行为和隐私政策。我确认我理解并接受这些条款，包括我的申请和任何我提交的推荐。",
-        "recruitButton": "招募"
+        "acknowledgement": "条款确认",
+        "acknowledgementItem1": "本人确认，表格内所提供的所有信息均为真实、准确，并符合本人所知情况。",
+        "acknowledgementItem2": "本人确认并知悉，我所推荐的人员已授权 Lookcard Limited 就此项目与其联系。",
+        "acknowledgementItem3": "本人理解，推荐申请的提交不意味着被推荐人将被本项目正式接受。",
+        "acknowledgementItem4": "本人确认，推荐所涉及的任何福利或奖励，需被推荐人符合项目标准并完成加入流程后方可生效",
+        "agreementLabel": "本人确认已阅读、理解并同意上述条款，包括项目要求、道德准则及隐私政策，并接受这些条款适用于本人申请及推荐。",
+        "recruitButton": "立即招募"
     },
     "performancePage": {
-        "performanceBreadcrumb": "业绩",
-        "cardActivationVolume": "卡激活量",
-        "totalAgentRecruitment": "总代理招募",
-        "failedToLoadData": "无法加载业绩数据"
+        "performanceBreadcrumb": "绩效",
+        "cardActivationVolume": "卡片激活量",
+        "totalAgentRecruitment": "代理总数",
+        "failedToLoadData": "无法加载数据"
     },
     "nextLevelCard": {
-        "nextLevel": "下一级别",
-        "maxLevelMessage": "恭喜！您已经达到了最高级别。",
-        "progressMessage": "继续努力！您正在取得巨大进展。",
+        "nextLevel": "下一等级",
+        "maxLevelMessage": "恭喜！您已晋升至最高级别。",
+        "progressMessage": "保持这个势头！您的进展非常顺利。",
         "level": "级别",
-        "requestLevelUpButton": "请求升级",
-        "levelUpRequestSentTitle": "升级请求已发送",
-        "levelUpRequestSentDescription": "我们将审核您的请求，并尽快回复您。"
+        "requestLevelUpButton": "提交升级请求",
+        "levelUpRequestSentTitle": "升级请求已提交",
+        "levelUpRequestSentDescription": "您的请求已收到，我们将进行审核，并尽快通知您结果。"
     },
     "salesSummaryCard": {
-        "salesSummary": "销售概要",
+        "salesSummary": "销售报告",
         "groupSales": "团队销售额",
         "personalSales": "个人销售额"
     },
@@ -317,46 +326,46 @@
         "selectWeek": "选择周"
     },
     "demographicSalesChart": {
-        "salesVolumeInDemographic": "人口统计销售量",
+        "salesVolumeInDemographic": "按市场人群划分的销售总量",
         "year": "年份",
         "quarter": "季度"
     },
     "supportPage": {
-        "supportBreadcrumb": "支持",
+        "supportBreadcrumb": "客服",
         "category": "类别",
         "selectCategory": "选择类别",
         "title": "标题",
-        "titlePlaceholder": "简要描述您的问题",
+        "titlePlaceholder": "请提供问题概要",
         "description": "描述您的问题",
-        "descriptionPlaceholder": "请提供有关您的问题的详细信息...",
-        "supportingDocuments": "支持文件",
+        "descriptionPlaceholder": "请提供关于您问题的详细说明...",
+        "supportingDocuments": "相关文件",
         "uploadDocuments": "上传文件",
         "saveChanges": "保存更改",
-        "fileSizeExceeded": "文件大小不应超过 5MB",
-        "invalidFileType": "仅允许 JPG 和 PDF 文件"
+        "fileSizeExceeded": "文件大小不能超过 5MB",
+        "invalidFileType": "仅支持 JPG 和 PDF 格式的文件"
     },
     "profilePage": {
-        "profileBreadcrumb": "个人资料",
-        "profileDetail": "个人资料详情",
-        "userId": "用户ID",
+        "profileBreadcrumb": "个人信息",
+        "profileDetail": "个人信息详情",
+        "userId": "用户编码",
         "fullName": "全名",
         "email": "电子邮件",
         "contactNo": "联系电话",
         "referralCode": "推荐码",
-        "keyMarket": "主要市场",
-        "socialMediaProfiles": "社交媒体资料",
+        "keyMarket": "主力市场",
+        "socialMediaProfiles": "社交平台个人资料",
         "saveChanges": "保存更改",
         "saving": "保存中...",
-        "error": "错误",
+        "error": "功能出错",
         "success": "成功",
-        "failedToLoadProfileData": "无法加载个人资料数据",
-        "failedToUpdateProfile": "无法更新个人资料",
-        "emailVerified": "电子邮件已验证",
-        "phoneVerified": "电话已验证",
-        "youCanNowEditEmail": "您现在可以编辑您的电子邮件地址",
-        "youCanNowEditPhone": "您现在可以编辑您的电话号码",
+        "failedToLoadProfileData": "无法加载数据",
+        "failedToUpdateProfile": "无法更新个人信息",
+        "emailVerified": "邮件验证成功",
+        "phoneVerified": "电话验证成功",
+        "youCanNowEditEmail": "您可以现在更新您的电子邮件地址",
+        "youCanNowEditPhone": "您可以现在更新您的电话号码",
         "otpResent": "OTP已重新发送",
-        "newOtpSent": "新的OTP已发送到您的",
+        "newOtpSent": "新的验证码已发送至您的",
         "copied": "已复制！",
         "referralCodeCopied": "推荐码已复制到剪贴板"
     },
@@ -387,34 +396,34 @@
             "description": "您的偏好设置已成功更新"
         },
         "error": {
-            "title": "错误",
+            "title": "功能出错",
             "description": "更新偏好设置失败。请重试。"
         },
         "language": {
             "title": "语言",
             "select": "选择语言",
             "changed": "语言已更改",
-            "restart": "某些更改可能需要刷新页面",
+            "restart": "某些更改生效前可能需要刷新页面",
             "options": {
                 "en": "English (Default)",
                 "zh": "中文"
             }
         },
         "darkMode": {
-            "title": "黑暗模式",
-            "description": "启用黑暗模式，以便在弱光条件下获得更好的观看体验。",
-            "enabled": "已启用黑暗模式",
-            "disabled": "已禁用黑暗模式",
-            "enabledDesc": "已启用黑暗模式",
-            "disabledDesc": "已禁用黑暗模式"
+            "title": "暗黑模式",
+            "description": "开启暗黑模式，在低光环境下享受更舒适的视觉体验",
+            "enabled": "暗黑模式已启用",
+            "disabled": "暗黑模式已关闭",
+            "enabledDesc": "暗黑模式已启用",
+            "disabledDesc": "暗黑模式已关闭"
         },
         "notifications": {
             "title": "通知",
             "description": "启用以接收有关您的帐户和优惠的更新。",
             "enabled": "已启用通知",
             "disabled": "已禁用通知",
-            "enabledDesc": "您现在将收到有关您的帐户和优惠的更新",
-            "disabledDesc": "您将不再收到通知"
+            "enabledDesc": "开启通知，以接收您的账户更新和优惠信息",
+            "disabledDesc": "您已关闭通知，将不会再接收更新"
         }
     },
     "legal": {
@@ -423,7 +432,7 @@
         "termsAndConditionsTitle": "条款和条件",
         "userAgreementTitle": "用户协议",
         "codeOfConductTitle": "行为准则",
-        "complianceAndAntiCorruptionTitle": "合规与反腐败",
+        "complianceAndAntiCorruptionTitle": "合规与反贪腐",
         "profilePolicyTitle": "个人资料政策",
         "programGuidelineTitle": "项目指南"
     },
@@ -461,5 +470,13 @@
         "disclaimer6": "交易可能会根据当地和国际反洗钱(AML)和反恐融资(CTF)法规进行审核。这可能导致处理延迟或取消。",
         "cancelButton": "取消",
         "confirmButton": "确认"
+    },
+    "transferSuccessDialog": {
+        "title": "转账成功",
+        "description": "您的转账已成功完成。",
+        "amount": "金额",
+        "status": "状态",
+        "completed": "已完成",
+        "closeButton": "进行另一笔转账"
     }
 }

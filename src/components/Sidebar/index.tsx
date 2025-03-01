@@ -64,24 +64,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           label: "Referred Users",
           route: "#",
           children: [
-            { label: "Referred Users", route: "/referred-users" },
+            { label: "Referred-Users", route: "/referred-users" },
             { label: "Manage User", route: "/referred-users/manage-user" },
             // Conditionally render Recruit Agent based on permission
-            ...(canAccessRecruitment
-              ? [{ label: "Recruit Agent", route: "/referred-users/recruit-agent" }]
-              : []),
+            // ...(canAccessRecruitment
+            //   ? [{ label: "Recruit Agent", route: "/referred-users/recruit-agent" }]
+            //   : []),
           ],
         },
-        {
-          icon: <PerformanceIcon />,
-          label: "Performance",
-          route: "/performance",
-        },
-        {
-          icon: <SupportIcon />,
-          label: "Support",
-          route: "/support",
-        },
+        // TODO: add performance and support (implement its functionality)
+        // {
+        //   icon: <PerformanceIcon />,
+        //   label: "Performance",
+        //   route: "/performance",
+        // },
+        // {
+        //   icon: <SupportIcon />,
+        //   label: "Support",
+        //   route: "/support",
+        // },
         {
           icon: <SettingsIcon />,
           label: "Settings",
@@ -129,7 +130,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           }}
         >
           {menuGroups.map((group, groupIndex) => (
-            <div key={groupIndex} className="will-change-transform">
+            <div key={groupIndex} className="will-change-transform mt-4">
               <p className="font-bold text-bodydark px-3">{t(`sidebar.${group.name.toLowerCase()}`)}</p>
               <ul className="flex flex-col gap-2">
                 {menuGroups[0].menuItems.map((menuItem, menuIndex) => {
