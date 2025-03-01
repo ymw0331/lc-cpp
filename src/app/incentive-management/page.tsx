@@ -16,6 +16,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { dashboardApi } from "@/api/dashboard/dashboard.api";
 
 
+interface DashboardData {
+    directRecruitment: {
+        earnings: number;
+    };
+}
+
 const IncentiveManagementPage = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
@@ -23,7 +29,7 @@ const IncentiveManagementPage = () => {
         new Date().toLocaleString("en-US", { month: "short", year: "numeric" })
     );
 
-    const [dashboardData, setDashboardData] = useState<null>(null);
+    const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
     const [incentiveData, setIncentiveData] = useState<IncentivePageData | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
@@ -102,7 +108,7 @@ const IncentiveManagementPage = () => {
                             // Show Referral Bonus for other agents
                             <IncentiveCard
                                 title={t('agentDashboard.referralFeeBonus')}
-                                amount={dashboardData?.directRecruitment?.earnings || 0}
+                                amount={dashboardData?.directRecruitment.earnings || 0}
                                 className="h-full"
                             />
                         )}
