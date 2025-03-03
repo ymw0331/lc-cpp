@@ -41,6 +41,7 @@
         "preference": "Preference",
         "profile policy": "Profile Policy",
         "terms and conditions": "Terms and Conditions",
+        "circle of growth campaign": "Circle of Growth Campaign",
         "user agreement": "User Agreement",
         "code of conduct": "Code of Conduct",
         "compliance and anti-corruption": "Compliance and Anti-Corruption",
@@ -165,8 +166,8 @@
     },
     "recruitmentSummaryCard": {
         "recruitmentSummary": "RECRUITMENT SUMMARY",
-        "referralFeeBonus": "Referral Fee Bonus",
-        "depositAdminChargeRebate": "Deposit Admin Charge Rebate"
+        "noOfDirectReferral": "No of Direct Referral",
+        "totalDepositFromDirectReferral": "Total Deposit from Direct Referral"
     },
     "agentRecruitmentSummaryCard": {
         "agentRecruitmentSummary": "AGENT RECRUITMENT SUMMARY",
@@ -432,6 +433,7 @@
         "legalAndComplianceBreadcrumb": "Legal and Compliance",
         "privacyPolicyTitle": "Privacy Policy",
         "termsAndConditionsTitle": "Terms and Conditions",
+        "circleOfGrowthBreadcrumb": "Circle of Growth Campaign",
         "userAgreementTitle": "User Agreement",
         "codeOfConductTitle": "Code Of Conduct",
         "complianceAndAntiCorruptionTitle": "Compliance and Anti-Corruption",

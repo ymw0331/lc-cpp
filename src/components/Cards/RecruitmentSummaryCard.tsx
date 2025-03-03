@@ -92,8 +92,6 @@ const RecruitmentSummaryCard = ({
 
             <CardContent className="p-0">
                 <div className="flex flex-col divide-y divide-stroke dark:divide-strokedark">
-                    {/* referral fee bonus */}
-
                     <div className="grid grid-cols-2 items-center">
                         <div className="p-6 bg-gray-100 dark:bg-meta-4 flex items-center">
                             <div className="mr-3 text-primary">
@@ -106,7 +104,8 @@ const RecruitmentSummaryCard = ({
                             </div>
                             <div className="text-center">
                                 <p className="text-base font-bold text-black dark:text-white">
-                                    {t("recruitmentSummaryCard.referralFeeBonus")}
+                                    {/* no of direct referral */}
+                                    {t("recruitmentSummaryCard.noOfDirectReferral")}
                                 </p>
                             </div>
                         </div>
@@ -117,7 +116,6 @@ const RecruitmentSummaryCard = ({
                         </div>
                     </div>
 
-                    {/* deposit admin charge rebate */}
                     <div className="grid grid-cols-2 items-center">
                         <div className="p-6 flex items-center">
                             <div className="mr-3 text-primary">
@@ -127,7 +125,9 @@ const RecruitmentSummaryCard = ({
                             </div>
                             <div className="text-center">
                                 <p className="text-base font-bold text-black dark:text-white">
-                                    {t("recruitmentSummaryCard.depositAdminChargeRebate")}
+
+                                    {/* total deposit from direct referral */}
+                                    {t("recruitmentSummaryCard.totalDepositFromDirectReferral")}
                                 </p>
                             </div>
                         </div>

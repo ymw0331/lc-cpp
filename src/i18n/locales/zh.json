@@ -39,6 +39,7 @@
         "preference": "偏好设定",
         "profile policy": "个人资料政策",
         "terms and conditions": "条款和条件",
+        "circle of growth campaign": "共赢圈活动计划",
         "user agreement": "用户协议",
         "code of conduct": "行为准则",
         "compliance and anti-corruption": "合规与反腐败",
@@ -173,8 +174,8 @@
     },
     "recruitmentSummaryCard": {
         "recruitmentSummary": "招募详情",
-        "referralFeeBonus": "推荐佣金",
-        "depositAdminChargeRebate": "充值管理费返利"
+        "noOfDirectReferral": "直推人数",
+        "totalDepositFromDirectReferral": "直推总充值额"
     },
     "agentRecruitmentSummaryCard": {
         "agentRecruitmentSummary": "经销商代理招募详情",
@@ -426,10 +427,11 @@
             "disabledDesc": "您已关闭通知，将不会再接收更新"
         }
     },
-    "legal": {
+    "m": {
         "legalAndComplianceBreadcrumb": "法律与合规",
         "privacyPolicyTitle": "隐私政策",
         "termsAndConditionsTitle": "条款和条件",
+        "circleOfGrowthBreadcrumb": "共赢圈活动计划",
         "userAgreementTitle": "用户协议",
         "codeOfConductTitle": "行为准则",
         "complianceAndAntiCorruptionTitle": "合规与反贪腐",

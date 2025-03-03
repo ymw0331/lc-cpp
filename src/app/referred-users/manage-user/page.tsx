@@ -74,7 +74,7 @@ const ManageUserPage = () => {
 
         let levelText;
         if (tier === "tier 0") {
-            levelText = "Level 0 User";
+            levelText = "No of Referred Users";
         } else {
             levelText = `Level ${index} Agent`;
         }

@@ -59,26 +59,23 @@ const ReferredUsersPage = () => {
         <DefaultLayout>
             <Breadcrumb pageName={t("referredUsersPage.referredUsersBreadcrumb")} />
 
-            {/* Level 1 agents see Recruitment Summary and Agent Recruitment Summary */}
-            {isLevel1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <RecruitmentSummaryCard
-                        directReferralsCount={recruitData.recruitmentSummary?.directReferralsCount || 0}
-                        depositVolume={recruitData.recruitmentSummary?.depositVolume || 0}
-                        selectedPeriod={selectedPeriod1}
-                        onPeriodChange={setSelectedPeriod1}
-                        periodOptions={Object.keys(recruitData.chartData || {})}
-                    />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <RecruitmentSummaryCard
+                    directReferralsCount={recruitData.recruitmentSummary?.directReferralsCount || 0}
+                    depositVolume={recruitData.recruitmentSummary?.depositVolume || 0}
+                    selectedPeriod={selectedPeriod1}
+                    onPeriodChange={setSelectedPeriod1}
+                    periodOptions={Object.keys(recruitData.chartData || {})}
+                />
 
-                    <AgentRecruitmentSummaryCard
-                        directRecruitVolume={recruitData.agentRecruitmentSummary?.directRecruitVolume}
-                        depositVolume={recruitData.agentRecruitmentSummary?.depositVolume}
-                        selectedPeriod={selectedPeriod2}
-                        onPeriodChange={setSelectedPeriod2}
-                        periodOptions={Object.keys(recruitData.chartData || {})}
-                    />
-                </div>
-            )}
+                <AgentRecruitmentSummaryCard
+                    directRecruitVolume={recruitData.agentRecruitmentSummary?.directRecruitVolume}
+                    depositVolume={recruitData.agentRecruitmentSummary?.depositVolume}
+                    selectedPeriod={selectedPeriod2}
+                    onPeriodChange={setSelectedPeriod2}
+                    periodOptions={Object.keys(recruitData.chartData || {})}
+                />
+            </div>
 
             <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                 {/* Only Level 2+ agents see Total Direct Recruit */}

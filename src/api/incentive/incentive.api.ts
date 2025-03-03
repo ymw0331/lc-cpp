@@ -41,7 +41,7 @@ export const incentiveApi = {
 
         const totalDeposit = dashboardData.totalDeposits.amount;
 
-        // Calculate direct admin charge (1.5% of total deposit)
+        // Calculate direct admin charge (1.5% of total deposit) * 0.035 again for 
         const directAdminCharge = totalDeposit * 0.015;
 
         // Calculate direct recruit deposit (35% of admin charge)
