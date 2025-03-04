@@ -222,7 +222,8 @@
         "descriptionHeader": "详情",
         "transferredAmountHeader": "转账金额",
         "dateTimeHeader": "日期与时间",
-        "statusHeader": "状态"
+        "statusHeader": "状态",
+        "noTransactionsYet": "暂无交易记录"
     },
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "绩效激励管理",

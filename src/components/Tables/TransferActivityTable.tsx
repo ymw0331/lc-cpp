@@ -37,6 +37,22 @@ const TransferActivityTable = ({ data, comingSoon = false }: TransferActivityTab
         );
     }
 
+    // If no data, show empty state
+    if (data.length === 0) {
+        return (
+            <div className="rounded-sm border border-stroke bg-white px-4 sm:px-7.5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <h4 className="mb-4 sm:mb-6 text-lg sm:text-xl font-semibold text-black dark:text-white px-2">
+                    {t("transferActivityTable.transactionHistory")}
+                </h4>
+                <div className="flex items-center justify-center h-64">
+                    <p className="text-lg text-gray-500 dark:text-gray-400">
+                        {t('transferActivityTable.noTransactionsYet')}
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="rounded-sm border border-stroke bg-white px-4 sm:px-7.5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark">
             <h4 className="mb-4 sm:mb-6 text-lg sm:text-xl font-semibold text-black dark:text-white px-2">
@@ -69,7 +85,7 @@ const TransferActivityTable = ({ data, comingSoon = false }: TransferActivityTab
                             >
                                 <TableCell className="py-4 sm:py-5 px-2 sm:px-4">
                                     <p className="text-xs sm:text-sm text-black dark:text-white">
-                                        {transfer.id}
+                                        {transfer.description || transfer.id}
                                     </p>
                                 </TableCell>
                                 <TableCell className="py-4 sm:py-5 px-2 sm:px-4">
@@ -81,8 +97,9 @@ const TransferActivityTable = ({ data, comingSoon = false }: TransferActivityTab
                                                 <USDCIcon className="w-full h-full" />
                                             )}
                                         </div>
-                                        <span className="text-xs sm:text-sm text-black dark:text-white">
-                                            {transfer.amount.toLocaleString("en-US", {
+                                        <span className={`text-xs sm:text-sm ${transfer.type === 'transfer-out' ? 'text-danger' : 'text-success'} font-medium`}>
+                                            {transfer.type === 'transfer-out' ? '- ' : '+ '}
+                                            {Math.abs(transfer.amount).toLocaleString("en-US", {
                                                 minimumFractionDigits: 2,
                                                 maximumFractionDigits: 2,
                                             })}

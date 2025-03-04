@@ -223,7 +223,8 @@
         "descriptionHeader": "DESCRIPTION",
         "transferredAmountHeader": "TRANSFERRED AMOUNT",
         "dateTimeHeader": "DATE & TIME",
-        "statusHeader": "STATUS"
+        "statusHeader": "STATUS",
+        "noTransactionsYet": "No transactions yet"
     },
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "Incentive Management",

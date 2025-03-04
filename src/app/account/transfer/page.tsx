@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import BalanceWalletDistributionChart from "@/components/Charts/BalanceWalletDistributionChart";
 import WalletTransferForm from "@/components/Forms/WalletTransferForm";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TransferActivityTable from "@/components/Tables/TransferActivityTable";
@@ -12,10 +11,30 @@ import Loader from "@/components/common/Loader";
 import { fetchData } from '@/lib/api-utils';
 import { toast } from "@/hooks/useToast";
 import { TransferSuccessDialog } from "@/components/Dialogs/TransferSuccessDialog";
+import { TransferActivityProps, CurrencyType } from "@/api/transfer/transfer.types";
+
+// Define the expected structure of the transferData
+interface TransferData {
+    sourceWallet: {
+        amount: number;
+        currency: CurrencyType;
+    };
+    currencyOptions: Array<{
+        name: CurrencyType;
+        symbol: CurrencyType;
+    }>;
+    walletBalanceDistribution: {
+        data: Array<{
+            name: string;
+            value: number;
+        }>;
+    };
+    transferActivity: TransferActivityProps[];
+}
 
 const TransferPage = () => {
     const { t } = useTranslation();
-    const [transferData, setTransferData] = useState<any>(null);
+    const [transferData, setTransferData] = useState<TransferData | null>(null);
     const [loading, setLoading] = useState(true);
     const [isTransferring, setIsTransferring] = useState(false);
     const [error, setError] = useState<Error | null>(null);
@@ -34,7 +53,6 @@ const TransferPage = () => {
         }
     };
 
-
     const loadTransferData = () => {
         fetchData(
             transferApi.getTransferData,
@@ -43,7 +61,6 @@ const TransferPage = () => {
             setLoading
         );
     };
-
 
     useEffect(() => {
         loadTransferData();
@@ -104,63 +121,57 @@ const TransferPage = () => {
             setIsTransferring(false);
         }
     };
-    
 
     const handleCloseSuccessDialog = () => {
         setShowSuccessDialog(false);
         // You can reset form or do additional actions here if needed
     };
 
-
     if (loading) return <Loader />;
 
-    if (error) {
+    if (error || !transferData) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <p className="text-red-500">{t('transferPage.failedToLoadData')}</p>
             </div>
         );
     }
+
     // Enhance data with icons
     const currencyOptionsWithIcons = transferData.currencyOptions.map(
-        (currency: any) => ({
+        (currency) => ({
             ...currency,
             icon: getCurrencyIcon(currency.symbol),
         })
     );
+
+    // Format transaction dates to be more user-friendly
+    const formattedTransferActivity = transferData.transferActivity.map(activity => {
+        const date = new Date(activity.dateTime);
+        return {
+            ...activity,
+            // Format date to a more readable format
+            dateTime: date.toLocaleString(undefined, {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }),
+            // Add description if not provided
+            description: activity.description || (activity.type === 'transfer-in' ?
+                t('transferPage.transferIn') :
+                t('transferPage.transferOut'))
+        };
+    });
 
     return (
         <DefaultLayout>
             <Breadcrumb
                 pageName={t("transferPage.transferToCurrentAccountWalletBreadcrumb")}
             />
-            {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-4 sm:mb-6">
-                <WalletTransferForm
-                    sourceAmount={transferData.sourceWallet.amount}
-                    sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
-                    currencies={currencyOptionsWithIcons}
-                    onTransfer={handleTransfer}
-                />
-                <div className="h-full min-h-[400px] sm:min-h-[450px]">
-                    <BalanceWalletDistributionChart
-                        title={t("walletsPage.currentAccountWalletBalance")}
-                        data={transferData.walletBalanceDistribution.data} // Empty data to show "Coming Soon"
-                        comingSoon={true}
-                    />
-                </div>
-            </div> */}
 
-
-            {/* <div className="w-full overflow-hidden mb-4">
-                <WalletTransferForm
-                    sourceAmount={transferData.sourceWallet.amount}
-                    sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
-                    currencies={currencyOptionsWithIcons}
-                    onTransfer={handleTransfer}
-                />
-            </div> */}
-
-            <div className="w-full overflow-hidden mb-4">
+            <div className="w-full overflow-hidden mb-6">
                 <WalletTransferForm
                     sourceAmount={transferData.sourceWallet.amount}
                     sourceIcon={getCurrencyIcon(transferData.sourceWallet.currency)}
@@ -171,11 +182,10 @@ const TransferPage = () => {
             </div>
 
             <div className="w-full overflow-hidden">
-                {/* todo: move this to wallet page, reward wallet summary in wallet to be in incentive */}
-                {/* <TransferActivityTable
-                    data={[]} // Empty data to show "Coming Soon"
-                    comingSoon={true}
-                /> */}
+                <TransferActivityTable
+                    data={formattedTransferActivity}
+                    comingSoon={formattedTransferActivity.length === 0}
+                />
             </div>
 
             {/* Success Dialog */}
@@ -184,7 +194,6 @@ const TransferPage = () => {
                     onClose={handleCloseSuccessDialog}
                 />
             )}
-
         </DefaultLayout>
     );
 };

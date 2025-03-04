@@ -1,6 +1,6 @@
 import { accountApi } from "../account/account.api";
 import { API_ENDPOINTS } from "../config/endpoints";
-import { CurrencyType, TransferActivityProps } from "./transfer.types";
+import { CurrencyType, TransferActivityProps, WalletTransaction, TransferType } from "./transfer.types";
 import resellerAxios from "../config/reseller.config";
 
 // Use this flag to toggle between real API calls and mocks
@@ -8,6 +8,7 @@ const USE_MOCK = true; // Set to false to use real API
 
 // Use this flag to simulate success or failure in mock mode
 const MOCK_SUCCESS = false; // Set to false to test error handling
+import { dashboardApi } from "../dashboard/dashboard.api";
 
 interface TransferToCurrentWalletProps {
     amount: number;
@@ -18,7 +19,28 @@ interface TransferToCurrentWalletProps {
 export const transferApi = {
     getTransferData: async () => {
         try {
-            const accountData = await accountApi.getAccountData();
+            // Fetch both account data and dashboard data in parallel
+            const [accountData, dashboardData] = await Promise.all([
+                accountApi.getAccountData(),
+                dashboardApi.getDashboardData()
+            ]);
+
+            // Format wallet transactions for transfer activity
+            const transferActivity: TransferActivityProps[] =
+                dashboardData.rewardWallet?.transactions?.map((transaction: WalletTransaction) => {
+                    // Determine the transfer type based on amount
+                    const type: TransferType = transaction.amount < 0 ? 'transfer-out' : 'transfer-in';
+
+                    return {
+                        id: transaction.id,
+                        description: transaction.description,
+                        amount: transaction.amount,
+                        dateTime: transaction.createdAt,
+                        currency: transaction.currency as CurrencyType,
+                        status: 'SUCCEED',
+                        type: type
+                    };
+                }) || [];
 
             return {
                 sourceWallet: {
@@ -33,7 +55,7 @@ export const transferApi = {
                 walletBalanceDistribution: {
                     data: [] // Will be updated when backend provides data
                 },
-                transferActivity: [] // Will be updated when backend provides data
+                transferActivity: transferActivity
             };
         } catch (error) {
             console.error('Error fetching transfer data:', error);
