@@ -76,7 +76,7 @@ const RecruitmentSummaryCard = ({
                     </h2>
                 </div>
 
-                <Select value={selectedPeriod} onValueChange={onPeriodChange}>
+                {/* <Select value={selectedPeriod} onValueChange={onPeriodChange}>
                     <SelectTrigger className="w-[140px] border-stroke dark:border-strokedark bg-white dark:bg-boxdark">
                         <SelectValue placeholder={t("common.selectPeriod")} />
                     </SelectTrigger>
@@ -87,7 +87,7 @@ const RecruitmentSummaryCard = ({
                             </SelectItem>
                         ))}
                     </SelectContent>
-                </Select>
+                </Select> */}
             </CardHeader>
 
             <CardContent className="p-0">
@@ -102,7 +102,7 @@ const RecruitmentSummaryCard = ({
                                     <path d="M12 3L21 9H3L12 3Z" fill="currentColor" />
                                 </svg>
                             </div>
-                            <div className="text-center">
+                            <div className="text-start">
                                 <p className="text-base font-bold text-black dark:text-white">
                                     {/* no of direct referral */}
                                     {t("recruitmentSummaryCard.noOfDirectReferral")}
@@ -110,7 +110,7 @@ const RecruitmentSummaryCard = ({
                             </div>
                         </div>
                         <div className="p-6">
-                            <p className="text-3xl font-bold text-black dark:text-white text-center">
+                            <p className="text-3xl text-center font-bold text-black dark:text-white">
                                 {directReferralsCount}
                             </p>
                         </div>
@@ -125,8 +125,8 @@ const RecruitmentSummaryCard = ({
                             </div>
                             <div className="text-center">
                                 <p className="text-base font-bold text-black dark:text-white">
-
                                     {/* total deposit from direct referral */}
+                                    {/*  */}
                                     {t("recruitmentSummaryCard.totalDepositFromDirectReferral")}
                                 </p>
                             </div>

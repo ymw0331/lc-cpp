@@ -40,7 +40,7 @@ const PerformancePage = () => {
 
     const canAccessRecruitment = checkTierPermission(
         user?.tierPriority || 0,
-        TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+        TIER_PERMISSIONS.LEVEL_2_TIER
     );
 
     if (loading) return <Loader />;

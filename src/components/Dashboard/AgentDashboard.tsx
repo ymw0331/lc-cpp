@@ -5,6 +5,7 @@ import RecruitCard from "../Cards/RecruitCard";
 import ReferralCard from "../Cards/ReferralCard";
 import AgentStatCard from "../Cards/AgentStatCard";
 import StatisticChart from "../Charts/StatisticChart";
+import IncomeSummaryTable from "../Tables/IncomeSummaryTable";
 import { DepositActivityTable } from "../Tables/DepositActivityTable";
 import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
 import Loader from "../common/Loader";
@@ -24,6 +25,7 @@ const AgentDashboard: React.FC = () => {
   const { user } = useAuth();
   const [dashboardData, setDashboardData] = useState<DashboardStatistics | null>(null);
   const [incentiveData, setIncentiveData] = useState<any | null>(null);
+  const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -38,6 +40,22 @@ const AgentDashboard: React.FC = () => {
 
         setDashboardData(dashboardData);
         setIncentiveData(incentiveData);
+
+        // Extract available months for the income summary component
+        if (incentiveData && incentiveData.activities) {
+          const months = Object.keys(incentiveData.activities);
+
+          // Sort months by date (most recent first)
+          const sortedMonths = [...months].sort((a, b) => {
+            const dateA = new Date(a);
+            const dateB = new Date(b);
+            // return dateB - dateA;
+            return dateB.getTime() - dateA.getTime();
+          });
+
+          setAvailableMonths(sortedMonths);
+        }
+
         setLoading(false);
       } catch (err) {
         setError(err as Error);
@@ -62,16 +80,16 @@ const AgentDashboard: React.FC = () => {
 
   const canAccessRecruitment = checkTierPermission(
     user?.tierPriority ?? 0,
-    TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+    TIER_PERMISSIONS.LEVEL_2_TIER
   );
 
   const canAccessIncentives = checkTierPermission(
     user?.tierPriority ?? 0,
-    TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
+    TIER_PERMISSIONS.LEVEL_2_TIER
   );
 
   // For Level 1 agents
-  if (user?.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER) {
+  if (user?.tierPriority === TIER_PERMISSIONS.LEVEL_1_TIER) {
     return (
       <>
         <Breadcrumb pageName={t('agentDashboard.overview')} />
@@ -136,6 +154,16 @@ const AgentDashboard: React.FC = () => {
           />
         </div> */}
         {/* add  */}
+
+        {/* Income Summary Table */}
+        <div className="mb-6">
+          <IncomeSummaryTable
+            incentiveData={incentiveData}
+            referralFeeBonus={dashboardData.directRecruitment.earnings}
+            availableMonths={availableMonths}
+          />
+        </div>
+
       </>
     );
   }
@@ -167,11 +195,10 @@ const AgentDashboard: React.FC = () => {
 
       {/* Stats Cards with dynamic grid */}
       <div className={clsx(
-        "grid gap-4 md:gap-6 2xl:gap-7.5 mb-6",
-        {
-          'grid-cols-1 md:grid-cols-2': visibleStatCards.length === 2,
-          'grid-cols-1 md:grid-cols-2 xl:grid-cols-3': visibleStatCards.length === 3,
-        }
+        "grid gap-4 md:gap-6 2xl:gap-7.5 mb-6", {
+        'grid-cols-1 md:grid-cols-2': visibleStatCards.length === 2,
+        'grid-cols-1 md:grid-cols-2 xl:grid-cols-3': visibleStatCards.length === 3,
+      }
       )}>
         {visibleStatCards.map((card, index) => (
           card && (
@@ -211,6 +238,16 @@ const AgentDashboard: React.FC = () => {
           {/* Referral Card - Available to all tiers */}
           <ReferralCard code={dashboardData.referralCode} />
         </div>
+      </div>
+
+
+      {/* Income Summary Table */}
+      <div className="mb-6">
+        <IncomeSummaryTable
+          incentiveData={incentiveData}
+          referralFeeBonus={dashboardData.directRecruitment.earnings}
+          availableMonths={availableMonths}
+        />
       </div>
 
 

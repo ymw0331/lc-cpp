@@ -45,10 +45,10 @@ const ReferredUsersPage = () => {
     }
 
     // Check user tier permissions
-    const isLevel1 = user.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER;
+    const isLevel1 = user.tierPriority === TIER_PERMISSIONS.LEVEL_1_TIER;
     const canAccessRecruitment = checkTierPermission(
         user.tierPriority,
-        TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+        TIER_PERMISSIONS.LEVEL_2_TIER
     );
 
 
@@ -60,6 +60,7 @@ const ReferredUsersPage = () => {
             <Breadcrumb pageName={t("referredUsersPage.referredUsersBreadcrumb")} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
                 <RecruitmentSummaryCard
                     directReferralsCount={recruitData.recruitmentSummary?.directReferralsCount || 0}
                     depositVolume={recruitData.recruitmentSummary?.depositVolume || 0}
@@ -79,7 +80,7 @@ const ReferredUsersPage = () => {
 
             <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                 {/* Only Level 2+ agents see Total Direct Recruit */}
-                {!isLevel1 && canAccessRecruitment && (
+                {/* {!isLevel1 && canAccessRecruitment && (
                     <div className="w-full md:w-2/4">
                         <RecruitCard
                             count={recruitData.count || 0}
@@ -89,7 +90,7 @@ const ReferredUsersPage = () => {
                             }}
                         />
                     </div>
-                )}
+                )} */}
 
                 {/* Only Level 1 agents see Milestone Achievement Card */}
                 {isLevel1 && recruitData.milestoneAchievement && (

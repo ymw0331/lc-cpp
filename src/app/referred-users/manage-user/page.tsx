@@ -55,34 +55,36 @@ const ManageUserPage = () => {
     const currentTierPriority = resellerData?.tier?.priority || 0;
     const accessibleTiers = resellerApi.getAccessibleTierLevels(currentTierPriority);
 
-    // Filter and map agent level cards
-    // const agentLevelCards = accessibleTiers.map((tier, index) => {
-    //     const count = downstreamCounts[tier] || 0;
+    // Function to get the display name for a tier
+    const getTierDisplayName = (tier: string) => {
+        switch (tier) {
+            case 'tier 0':
+                return "Referred Users";
+            case 'tier 1':
+                return "Level 1 Agents";
+            case 'tier 2':
+                return "Level 2 Agents";
+            case 'tier 3':
+                return "Level 3 Partners";
+            case 'tier 4':
+                return "Level 4 Partners";
+            case 'tier 5':
+                return "Level 5 Partners";
+            default:
+                return `Unknown Tier (${tier})`;
+        }
+    };
 
-    //     return (
-    //         <AgentLevelCard
-    //             key={tier}
-    //             level={`Level ${index} Agent`}
-    //             count={count}
-    //             icon={<AgentLevelIcon />}
-    //         />
-    //     );
-    // });
 
+    // Create agent level cards based on accessible tiers
     const agentLevelCards = accessibleTiers.map((tier, index) => {
         const count = downstreamCounts[tier] || 0;
-
-        let levelText;
-        if (tier === "tier 0") {
-            levelText = "No of Referred Users";
-        } else {
-            levelText = `Level ${index} Agent`;
-        }
+        const displayName = getTierDisplayName(tier);
 
         return (
             <AgentLevelCard
                 key={tier}
-                level={levelText}
+                level={displayName}
                 count={count}
                 icon={<AgentLevelIcon />}
             />

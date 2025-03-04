@@ -351,6 +351,15 @@
         "profileBreadcrumb": "Profile",
         "profileDetail": "Profile Detail",
         "userId": "User ID",
+        "accountRanking": "Account Ranking",
+        "agentLevels": {
+            "level": "Level",
+            "level1": "Level 1 Agent",
+            "level2": "Level 2 Agent",
+            "level3": "Level 3 Partner",
+            "level4": "Level 4 Partner",
+            "level5": "Level 5 Partner"
+        },
         "fullName": "Full Name",
         "email": "Email",
         "contactNo": "Contact No.",
@@ -482,5 +491,30 @@
         "status": "Status",
         "completed": "Completed",
         "closeButton": "Make Another Transfer"
+    },
+    "incomeSummary": {
+        "title": "Income Summary",
+        "totalEarning": "Total Earning",
+        "noDataAvailable": "No data available",
+        "referralFeeBonus": "Referral Fee Bonus",
+        "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
+        "directRecruitReferralOverrideBonus": "Direct Recruit Referral Override Bonus",
+        "directRecruitsDepositAdminChargeRebate": "Direct Recruit's Deposit Admin Charge Rebate",
+        "performanceBonus": "Performance Bonus",
+        "milestoneAchievementBonus": "Milestone Achievement Bonus"
+    },
+    "months": {
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
     }
 }

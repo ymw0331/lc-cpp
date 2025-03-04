@@ -348,7 +348,16 @@
     "profilePage": {
         "profileBreadcrumb": "个人信息",
         "profileDetail": "个人信息详情",
-        "userId": "用户编码",
+        "userId": "用户ID",
+        "accountRanking": "账户等级",
+        "agentLevels": {
+            "level": "Level",
+            "level1": "Level 1 Agent",
+            "level2": "Level 2 Agent",
+            "level3": "Level 3 Partner",
+            "level4": "Level 4 Partner",
+            "level5": "Level 5 Partner"
+        },
         "fullName": "全名",
         "email": "电子邮件",
         "contactNo": "联系电话",
@@ -480,5 +489,30 @@
         "status": "状态",
         "completed": "已完成",
         "closeButton": "进行另一笔转账"
+    },
+    "incomeSummary": {
+        "title": "收入摘要",
+        "totalEarning": "总收入",
+        "noDataAvailable": "无可用数据",
+        "referralFeeBonus": "推荐佣金奖励",
+        "depositAdminChargeRebate": "充值手续费返利",
+        "directRecruitReferralOverrideBonus": "推荐佣金覆盖奖励",
+        "directRecruitsDepositAdminChargeRebate": "直推充值手续费返利覆盖奖励",
+        "performanceBonus": "绩效奖励",
+        "milestoneAchievementBonus": "目标达成奖金"
+    },
+    "months": {
+        "january": "一月",
+        "february": "二月",
+        "march": "三月",
+        "april": "四月",
+        "may": "五月",
+        "june": "六月",
+        "july": "七月",
+        "august": "八月",
+        "september": "九月",
+        "october": "十月",
+        "november": "十一月",
+        "december": "十二月"
     }
 }

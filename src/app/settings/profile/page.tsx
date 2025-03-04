@@ -22,7 +22,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import Loader from '@/components/common/Loader';
 
 const formSchema = z.object({
-    resellerId: z.string(),
+    agentLevel: z.string(),
+    // userId: z.string(),
     fullName: z.string(),
     email: z.string().email(),
     contactNo: z.string(),
@@ -132,7 +133,8 @@ const ProfilePage = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            resellerId: "",
+            agentLevel: "",
+            // userId: "",
             fullName: "",
             email: "",
             contactNo: "",
@@ -166,15 +168,37 @@ const ProfilePage = () => {
         return `${callingCode} ${cleanedPhone}`;
     }, [getCallingCode]);
 
+    // Determine agent level based on tierPriority
+    const determineAgentLevel = useCallback((tierPriority: number | undefined): string => {
+        if (tierPriority === undefined) return t("profilePage.notAvailable");
+
+        switch (tierPriority) {
+            case 1:
+                return t("profilePage.agentLevels.level1");
+            case 2:
+                return t("profilePage.agentLevels.level2");
+            case 3:
+                return t("profilePage.agentLevels.level3");
+            case 4:
+                return t("profilePage.agentLevels.level4");
+            case 5:
+                return t("profilePage.agentLevels.level5");
+            default:
+                return `${t("profilePage.agentLevels.level")} ${tierPriority}`;
+        }
+    }, [t]);
+
     // Initialize form data once when user data is available
     useEffect(() => {
         if (user && isLoading) {
             const countryCode = user.country_code;
             const countryName = getCountryName(countryCode);
             const formattedPhone = formatPhoneWithCountryCode(user.phoneNumber, countryCode);
+            const agentLevel = determineAgentLevel(user.tierPriority);
 
             form.reset({
-                resellerId: user.resellerId || "",
+                agentLevel,
+                // userId: user.userId || "",
                 fullName: user.fullName || "",
                 email: user.email || "",
                 contactNo: formattedPhone,
@@ -183,7 +207,7 @@ const ProfilePage = () => {
             });
             setIsLoading(false);
         }
-    }, [user, form, getCountryName, formatPhoneWithCountryCode, isLoading]);
+    }, [user, form, getCountryName, formatPhoneWithCountryCode, determineAgentLevel, isLoading]);
 
     const handleCopyReferralCode = useCallback(() => {
         const referralCode = form.getValues("referralCode");
@@ -213,10 +237,32 @@ const ProfilePage = () => {
                     <Form {...form}>
                         <form className="space-y-5.5">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                {/* Reseller ID Field */}
+                                {/* Account Ranking Field */}
                                 <FormField
                                     control={form.control}
-                                    name="resellerId"
+                                    name="agentLevel"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
+                                                {t("profilePage.accountRanking")}
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    className="w-full rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                                                    disabled
+                                                    readOnly
+                                                />
+                                            </FormControl>
+                                            <FormMessage className="mt-1 text-xs text-meta-1" />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* User ID Field */}
+                                {/* <FormField
+                                    control={form.control}
+                                    name="userId"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="mb-2.5 block font-medium text-black dark:text-white">
@@ -233,7 +279,7 @@ const ProfilePage = () => {
                                             <FormMessage className="mt-1 text-xs text-meta-1" />
                                         </FormItem>
                                     )}
-                                />
+                                /> */}
 
                                 {/* Full Name Field */}
                                 <FormField

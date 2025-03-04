@@ -68,12 +68,12 @@ const IncentiveManagementPage = () => {
     }
 
     // Check if user is a Level 1 agent - FIXED: Check for tierPriority === 1 instead of >= 1
-    const isLevelOneAgent = user?.tierPriority === TIER_PERMISSIONS.MILESTONE_BONUS_TIER;
+    const isLevelOneAgent = user?.tierPriority === TIER_PERMISSIONS.LEVEL_1_TIER;
 
     // Check if user can see incentives (Level 2 and above)
     const canSeeIncentives = checkTierPermission(
         user?.tierPriority || 0,
-        TIER_PERMISSIONS.MIN_TIER_FOR_INCENTIVES
+        TIER_PERMISSIONS.LEVEL_2_TIER
     );
 
     if (!incentiveData) return null;

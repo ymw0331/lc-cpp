@@ -33,7 +33,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   // Check if the user has the required permission for "Recruit Agent"
   const canAccessRecruitment = checkTierPermission(
     user?.tierPriority || 0,
-    TIER_PERMISSIONS.MIN_TIER_FOR_RECRUITMENT
+    TIER_PERMISSIONS.LEVEL_2_TIER
   );
 
   const menuGroups = [
