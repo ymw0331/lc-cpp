@@ -164,16 +164,7 @@
         "activeUsersLabel": "Active Users",
         "left": "Remaining to complete your goals"
     },
-    "recruitmentSummaryCard": {
-        "recruitmentSummary": "RECRUITMENT SUMMARY",
-        "noOfDirectReferral": "No of Direct Referral",
-        "totalDepositFromDirectReferral": "Total Deposit from Direct Referral"
-    },
-    "agentRecruitmentSummaryCard": {
-        "agentRecruitmentSummary": "AGENT RECRUITMENT SUMMARY",
-        "directRecruitVolumeLabel": "Direct Recruit Agent(s) Volume",
-        "depositVolumeLabel": "Direct Recruit Agents' Deposit Volume (USD)"
-    },
+
     "milestoneAchievementCard": {
         "milestoneAchievementBonus": "MILESTONE ACHIEVEMENT BONUS",
         "exclusivelyForLevel1": "Exclusively for Level 1 Agent Only",
@@ -261,7 +252,15 @@
     },
     "manageUserPage": {
         "manageUsersBreadcrumb": "Manage Users",
-        "failedToLoadData": "Failed to load data"
+        "failedToLoadData": "Failed to load data",
+        "failedToFetchData": "Failed to fetch reseller data",
+        "tier0": "Referred Users",
+        "tier1": "Level 1 Agents",
+        "tier2": "Level 2 Agents",
+        "tier3": "Level 3 Partners",
+        "tier4": "Level 4 Partners",
+        "tier5": "Level 5 Partners",
+        "unknownTier": "Unknown Tier ({{tier}})"
     },
     "usersTable": {
         "users": "Users",
@@ -517,5 +516,18 @@
         "october": "October",
         "november": "November",
         "december": "December"
+    },
+
+
+    
+    "recruitmentSummaryCard": {
+        "recruitmentSummary": "RECRUITMENT SUMMARY",
+        "noOfDirectReferral": "No of Direct Referral",
+        "totalDepositFromDirectReferral": "Total Deposit from Direct Referral"
+    },
+    "agentRecruitmentSummaryCard": {
+        "agentRecruitmentSummary": "AGENT RECRUITMENT SUMMARY",
+        "directRecruitVolumeLabel": "Direct Recruit Agent(s) Volume",
+        "depositVolumeLabel": "Direct Recruit Agents' Deposit Volume (USD)"
     }
 }

@@ -31,13 +31,13 @@ const ManageUserPage = () => {
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching reseller data:', err);
-                setError(err instanceof Error ? err : new Error('Failed to fetch data'));
+                setError(err instanceof Error ? err : new Error(t('manageUserPage.failedToFetchData')));
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, []);
+    }, [t]);
 
     if (loading) return <Loader />;
 
@@ -59,19 +59,19 @@ const ManageUserPage = () => {
     const getTierDisplayName = (tier: string) => {
         switch (tier) {
             case 'tier 0':
-                return "Referred Users";
+                return t('manageUserPage.tier0');
             case 'tier 1':
-                return "Level 1 Agents";
+                return t('manageUserPage.tier1');
             case 'tier 2':
-                return "Level 2 Agents";
+                return t('manageUserPage.tier2');
             case 'tier 3':
-                return "Level 3 Partners";
+                return t('manageUserPage.tier3');
             case 'tier 4':
-                return "Level 4 Partners";
+                return t('manageUserPage.tier4');
             case 'tier 5':
-                return "Level 5 Partners";
+                return t('manageUserPage.tier5');
             default:
-                return `Unknown Tier (${tier})`;
+                return t('manageUserPage.unknownTier', { tier });
         }
     };
 

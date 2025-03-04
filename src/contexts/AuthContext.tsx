@@ -3,7 +3,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { authApi } from '@/api/auth/auth.api';
-import { profileApi } from '@/api/profile/profile.api';
 import { resellerApi } from '@/api/reseller/reseller.api';
 import { storage } from '@/lib/storage';
 import type { AuthUser } from '@/api/auth/auth.types';
@@ -44,10 +43,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUserData = async (baseUser: AuthUser) => {
         try {
-            const [profileData, resellerData] = await Promise.all([
-                profileApi.getProfile(),
-                resellerApi.getResellerInfo()
-            ]);
+
+            const resellerData = await resellerApi.getResellerInfo();
 
             setIsReseller(!!resellerData); // Set reseller status
 

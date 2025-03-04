@@ -17,7 +17,9 @@
     "dropdownUser": {
         "myProfile": "我的个人资料",
         "preference": "偏好设定",
-        "logOut": "退出登入"
+        "logOut": "退出登入",
+        "success": "成功",
+        "successfullyLoggedOut": "成功退出登入"
     },
     "sidebar": {
         "menu": "功能选单",
@@ -172,16 +174,6 @@
         "totalDirectRecruitLabel": "直推总数额",
         "agentsToPartnerLabel": "经销商代理晋升合作伙伴"
     },
-    "recruitmentSummaryCard": {
-        "recruitmentSummary": "招募详情",
-        "noOfDirectReferral": "直推人数",
-        "totalDepositFromDirectReferral": "直推总充值额"
-    },
-    "agentRecruitmentSummaryCard": {
-        "agentRecruitmentSummary": "经销商代理招募详情",
-        "referralFeeBonus": "推荐佣金",
-        "depositAdminChargeRebate": "充值管理费返利"
-    },
     "milestoneAchievementCard": {
         "milestoneAchievementBonus": "目标达成奖金",
         "exclusivelyForLevel1": "仅限初级经销商代理",
@@ -259,7 +251,16 @@
         "failedToLoadData": "无法加载数据"
     },
     "manageUserPage": {
-        "manageUsersBreadcrumb": "用户管理"
+        "manageUsersBreadcrumb": "用户管理",
+        "failedToLoadData": "加载数据失败",
+        "failedToFetchData": "获取经销商数据失败",
+        "tier0": "推荐用户",
+        "tier1": "Level 1 Agents",
+        "tier2": "Level 2 Agents",
+        "tier3": "Level 3 Partners",
+        "tier4": "Level 4 Partners",
+        "tier5": "Level 5 Partners",
+        "unknownTier": "未知级别 ({{tier}})"
     },
     "usersTable": {
         "users": "用户",
@@ -515,5 +516,15 @@
         "october": "十月",
         "november": "十一月",
         "december": "十二月"
+    },
+    "recruitmentSummaryCard": {
+        "recruitmentSummary": "招募详情",
+        "noOfDirectReferral": "直推人数",
+        "totalDepositFromDirectReferral": "直推总充值额"
+    },
+    "agentRecruitmentSummaryCard": {
+        "agentRecruitmentSummary": "经销商代理招募详情",
+        "directRecruitVolumeLabel": "直接招募代理人數",
+        "depositVolumeLabel": "直接招募代理的存款金額 (美元)"
     }
 }

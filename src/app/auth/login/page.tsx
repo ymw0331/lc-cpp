@@ -163,8 +163,8 @@ export default function LoginPage() {
 
             if (!isReseller) {
                 console.log('[Login] User is not a reseller, showing registration dialog');
-                setShowRegistrationDialog(true);
-                // setShowAccessDeniedDialog(true);
+                // setShowRegistrationDialog(true);
+                setShowAccessDeniedDialog(true);
                 return;
             }
 
@@ -385,18 +385,18 @@ export default function LoginPage() {
                             onOpenChange={setForgotPasswordOpen}
                         /> */}
 
-                        <NotRegisteredDialog
+                        {/* <NotRegisteredDialog
                             open={showRegistrationDialog}
                             onOpenChange={setShowRegistrationDialog}
                             onBecomeAgent={handleBecomeAgent}
-                        />
+                        /> */}
 
-                        {/* <AccessDeniedDialog
+                        <AccessDeniedDialog
                             open={showAccessDeniedDialog}
                             onOpenChange={setShowAccessDeniedDialog}
                             onContactSupport={handleContactSupport}
                             onRegister={handleRegister}
-                        /> */}
+                        />
 
                         {/* Error Alert */}
                         {error && (

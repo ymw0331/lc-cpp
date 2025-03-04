@@ -34,22 +34,6 @@ export const resellerApi = {
     },
 
 
-    getResellerRefferalCode: async (resellerId: string) => {
-        // const response = await axios.get(`${API_URL}/reseller/${resellerId}/?type=resellerId`);
-
-        // https://api.reseller.lookcard.io/app/reseller/0a3db5fa-ab3f-4186-96a2-a5b26c156dd3?type=resellerId
-
-        // https://api.reseller.lookcard.io/app/reseller/{resellerId}?type=resellerId
-
-        const response = await resellerAxios.get<ResellerResponse>(
-            `API_ENDPOINTS.RESELLER.INFO/${resellerId}/?type=resellerId`
-        )
-
-        return response.data;
-    },
-
-
-
     registerReseller: async () => {
         // The auth token will be automatically included in the request headers
         // through your axios interceptor configuration
@@ -113,7 +97,5 @@ export const resellerApi = {
             default: return "Unknown";
         }
     }
-
-
 
 };

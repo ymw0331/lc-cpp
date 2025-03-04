@@ -126,7 +126,6 @@ const RecruitmentSummaryCard = ({
                             <div className="text-center">
                                 <p className="text-base font-bold text-black dark:text-white">
                                     {/* total deposit from direct referral */}
-                                    {/*  */}
                                     {t("recruitmentSummaryCard.totalDepositFromDirectReferral")}
                                 </p>
                             </div>

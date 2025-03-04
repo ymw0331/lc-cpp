@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import BalanceWalletDistributionChart from "@/components/Charts/BalanceWalletDistributionChart";
 import WalletTransferForm from "@/components/Forms/WalletTransferForm";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TransferActivityTable from "@/components/Tables/TransferActivityTable";
@@ -53,6 +54,7 @@ const TransferPage = () => {
         }
     };
 
+
     const loadTransferData = () => {
         fetchData(
             transferApi.getTransferData,
@@ -61,6 +63,7 @@ const TransferPage = () => {
             setLoading
         );
     };
+
 
     useEffect(() => {
         loadTransferData();
@@ -121,6 +124,7 @@ const TransferPage = () => {
             setIsTransferring(false);
         }
     };
+    
 
     const handleCloseSuccessDialog = () => {
         setShowSuccessDialog(false);
@@ -184,7 +188,6 @@ const TransferPage = () => {
             <div className="w-full overflow-hidden">
                 <TransferActivityTable
                     data={formattedTransferActivity}
-                    comingSoon={formattedTransferActivity.length === 0}
                 />
             </div>
 
