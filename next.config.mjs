@@ -12,6 +12,7 @@ const nextConfig = {
         dangerouslyAllowSVG: true,
         contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     },
+    output: 'standalone',
     env: {
         NEXT_PUBLIC_AUTH_API_URL: process.env.NEXT_PUBLIC_AUTH_API_URL,
         NEXT_PUBLIC_RESELLER_API_URL: process.env.NEXT_PUBLIC_RESELLER_API_URL,

@@ -182,13 +182,13 @@ const DataTable = ({
                 {/* Pagination - Only show if there's data */}
                 {data.length > 0 && (
                     <div className="flex flex-wrap items-center justify-between py-4.5 px-4 border-t border-stroke dark:border-strokedark">
-                        <p className="mb-4 sm:mb-0 text-body dark:text-bodydark">
+                        {/* <p className="mb-4 sm:mb-0 text-body dark:text-bodydark">
                             {t("dataTable.showingResults", {
                                 start: startIndex + 1,
                                 end: Math.min(endIndex, data.length),
                                 total: data.length,
                             })}
-                        </p>
+                        </p> */}
                         <div className="flex items-center space-x-2">
                             <Button
                                 variant="outline"
