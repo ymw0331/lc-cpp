@@ -27,8 +27,6 @@ const IncentiveManagementPage = () => {
     const [error, setError] = useState<Error | null>(null);
     const availableMonths = incentiveData ? Object.keys(incentiveData.activities.activities) : [];
 
-    
-
     useEffect(() => {
         fetchData(
             incentiveApi.getIncentiveData,
@@ -143,16 +141,6 @@ const IncentiveManagementPage = () => {
                 )}
 
                 {/* Activity Table */}
-                {/* <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
-                    <DataTable
-                        columns={tableColumns}
-                        data={activities.activities[currentMonth] || []}
-                        title={t("incentiveManagementPage.incentivePayoutRecords")}
-                        currentMonth={currentMonth}
-                        onMonthChange={(month: string) => setCurrentMonth(month)}
-                    />
-                </div> */}
-
                 <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                     <DataTable
                         columns={tableColumns}

@@ -5,6 +5,16 @@ import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
 import { useTranslation } from "react-i18next";
 
+// Define reward types enum for better type safety
+export enum REWARD_TYPE {
+    REFERRAL = 'REFERRAL',
+    TOPUP_REBATE = 'TOPUP_REBATE',
+    PERFORMANCE_BONUS = 'PERFORMANCE_BONUS',
+    DOWNSTREAM_REFERRAL = 'DOWNSTREAM_REFERRAL',
+    DOWNSTREAM_TOPUP_REBATE = 'DOWNSTREAM_TOPUP_REBATE',
+    DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS = 'DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS'
+}
+
 interface Column {
     key: string;
     header: string;
@@ -49,16 +59,16 @@ const DataTable = ({
     // Handle month navigation
     const handlePrevMonth = () => {
         const currentIndex = availableMonths.indexOf(currentMonth);
-        if (currentIndex < availableMonths.length - 1) {
-            onMonthChange(availableMonths[currentIndex + 1]);
+        if (currentIndex > 0) {
+            onMonthChange(availableMonths[currentIndex - 1]);
             setCurrentPage(1); // Reset to first page
         }
     };
 
     const handleNextMonth = () => {
         const currentIndex = availableMonths.indexOf(currentMonth);
-        if (currentIndex > 0) {
-            onMonthChange(availableMonths[currentIndex - 1]);
+        if (currentIndex < availableMonths.length - 1) {
+            onMonthChange(availableMonths[currentIndex + 1]);
             setCurrentPage(1); // Reset to first page
         }
     };
@@ -74,8 +84,28 @@ const DataTable = ({
 
     // Determine if navigation buttons should be disabled
     const currentIndex = availableMonths.indexOf(currentMonth);
-    const isNextDisabled = currentIndex <= 0;
-    const isPrevDisabled = currentIndex >= availableMonths.length - 1;
+    const isPrevDisabled = currentIndex <= 0;
+    const isNextDisabled = currentIndex >= availableMonths.length - 1;
+
+    // Translate reward types to user-friendly labels
+    const getRewardTypeLabel = (type: string): string => {
+        switch (type) {
+            case REWARD_TYPE.REFERRAL:
+                return t('incentiveManagementPage.referralFeeBonus');
+            case REWARD_TYPE.TOPUP_REBATE:
+                return t('incentiveManagementPage.depositAdminChargeRebate');
+            case REWARD_TYPE.DOWNSTREAM_REFERRAL:
+                return t('incentiveManagementPage.directRecruitReferralFeeOverrideBonus');
+            case REWARD_TYPE.DOWNSTREAM_TOPUP_REBATE:
+                return t('incentiveManagementPage.directRecruitDepositAdminChargeOverridingRebate');
+            case REWARD_TYPE.PERFORMANCE_BONUS:
+                return t('incentiveManagementPage.performanceBonus');
+            case REWARD_TYPE.DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS:
+                return t('incentiveManagementPage.directRecruitLevelAdvancementBonus');
+            default:
+                return type;
+        }
+    };
 
     return (
         <div className="w-full font-archivo">
@@ -116,7 +146,7 @@ const DataTable = ({
                         }`}
                 >
                     <Download className="w-5 h-5" />
-                    Export to Excel
+                    {t("dataTable.exportToExcel")}
                 </Button>
             </div>
 
@@ -170,14 +200,16 @@ const DataTable = ({
                                                     : "text-body dark:text-bodydark"
                                                     }`}
                                             >
-                                                {column.key === "amount"
-                                                    ? `$${row[column.key].toLocaleString("en-US", {
-                                                        minimumFractionDigits: 2,
-                                                        maximumFractionDigits: 2,
-                                                    })}`
-                                                    : column.key === "datetime"
-                                                        ? new Date(row[column.key]).toLocaleString()
-                                                        : row[column.key]}
+                                                {column.key === "type"
+                                                    ? getRewardTypeLabel(row[column.key])
+                                                    : column.key === "amount"
+                                                        ? `$${row[column.key].toLocaleString("en-US", {
+                                                            minimumFractionDigits: 2,
+                                                            maximumFractionDigits: 2,
+                                                        })}`
+                                                        : column.key === "datetime"
+                                                            ? new Date(row[column.key]).toLocaleString()
+                                                            : row[column.key]}
                                             </td>
                                         ))}
                                     </tr>
@@ -217,9 +249,7 @@ const DataTable = ({
                             <Button
                                 variant="outline"
                                 className="border-stroke dark:border-strokedark text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4"
-                                onClick={() =>
-                                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                                }
+                                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                                 disabled={currentPage === totalPages}
                             >
                                 <ChevronRight className="w-4 h-4" />
