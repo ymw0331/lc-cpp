@@ -123,7 +123,7 @@ const RecruitmentSummaryCard = ({
                                     <path d="M2 8V6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V8M2 8V18C2 19.1046 2.89543 20 4 20H20C21.1046 20 22 19.1046 22 18V8M2 8H22M16 14C16 12.8954 15.1046 12 14 12H10C8.89543 12 8 12.8954 8 14V14C8 15.1046 8.89543 16 10 16H14C15.1046 16 16 15.1046 16 14V14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                                 </svg>
                             </div>
-                            <div className="text-center">
+                            <div className="text-start">
                                 <p className="text-base font-bold text-black dark:text-white">
                                     {/* total deposit from direct referral */}
                                     {t("recruitmentSummaryCard.totalDepositFromDirectReferral")}
@@ -132,7 +132,8 @@ const RecruitmentSummaryCard = ({
                         </div>
                         <div className="p-6">
                             <p className="text-3xl font-bold text-black dark:text-white text-center">
-                                {formatCurrency(depositVolume)}
+                                {/* {formatCurrency(depositVolume)} */}
+                                {depositVolume !== null ? formatCurrency(depositVolume) : "N/A"}
                             </p>
                         </div>
                     </div>

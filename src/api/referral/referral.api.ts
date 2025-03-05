@@ -16,8 +16,8 @@ export interface RecruitData {
 
     // Recruitment summary data
     recruitmentSummary: {
-        noOfDirectReferrals: number;
-        totalDepositFromDirectReferrals: number;
+        noOfDirectReferrals: number | null;
+        totalDepositFromDirectReferrals: number | null;
     };
 
     // Agent recruitment summary data
@@ -57,14 +57,14 @@ export const recruitApi = {
                 },
                 // Placeholder data for recruitment summary
                 recruitmentSummary: {
-                    noOfDirectReferrals: 0,
-                    totalDepositFromDirectReferrals: 0,
+                    noOfDirectReferrals: dashboardData.totalReferral ?? 0,
+                    totalDepositFromDirectReferrals: null, //N/A
                 },
 
                 // Placeholder data for agent recruitment summary
                 agentRecruitmentSummary: {
-                    directRecruitVolume: null, // N/A as shown in screenshot
-                    depositVolume: null, // N/A as shown in screenshot
+                    directRecruitVolume: null, // N/A
+                    depositVolume: null, // N/A 
                 },
 
                 // Placeholder data for milestone achievement

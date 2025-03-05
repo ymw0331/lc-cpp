@@ -62,8 +62,8 @@ const ReferredUsersPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
                 <RecruitmentSummaryCard
-                    directReferralsCount={recruitData.recruitmentSummary?.directReferralsCount || 0}
-                    depositVolume={recruitData.recruitmentSummary?.depositVolume || 0}
+                    directReferralsCount={recruitData.recruitmentSummary?.noOfDirectReferrals || 0}
+                    depositVolume={recruitData.recruitmentSummary?.totalDepositFromDirectReferrals || 0}
                     selectedPeriod={selectedPeriod1}
                     onPeriodChange={setSelectedPeriod1}
                     periodOptions={Object.keys(recruitData.chartData || {})}
