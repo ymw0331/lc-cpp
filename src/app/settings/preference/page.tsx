@@ -14,7 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/useToast";
 import { useTranslation } from "react-i18next";
 import useColorMode from "@/hooks/useColorMode";
@@ -26,9 +26,9 @@ const preferenceSchema = z.object({
 });
 
 const languages = [
-    { value: "en", label: "English", flag: '🇺🇸' },
-    { value: "zh", label: "简体中文", flag: '🇨🇳' },
-    { value: "zh-hk", label: "繁體中文", flag: '🇭🇰' },
+    { value: "en", label: "English" },
+    { value: "zh", label: "简体中文" },
+    { value: "zh-hk", label: "繁體中文" },
 ];
 
 const PreferencePage = () => {
@@ -36,6 +36,7 @@ const PreferencePage = () => {
     const [colorMode, setColorMode] = useColorMode();
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const initialLoadRef = useRef(true);
 
     const form = useForm<z.infer<typeof preferenceSchema>>({
         resolver: zodResolver(preferenceSchema),
@@ -56,11 +57,16 @@ const PreferencePage = () => {
                 // Set form value
                 form.setValue("language", savedLanguage as "en" | "zh" | "zh-hk");
 
-                // Change language if needed
-                await i18n.changeLanguage(savedLanguage);
+                // Change language if needed without showing toast on initial load
+                if (i18n.language !== savedLanguage) {
+                    await i18n.changeLanguage(savedLanguage);
+                }
 
             } catch (error) {
                 console.error("Failed to load preferences:", error);
+            } finally {
+                // After initial load is complete
+                initialLoadRef.current = false;
             }
         };
 
@@ -95,6 +101,11 @@ const PreferencePage = () => {
 
     const handleLanguageChange = async (language: string) => {
         try {
+            // Skip toast if it's the same language
+            if (form.getValues("language") === language) {
+                return;
+            }
+
             // Update form value
             form.setValue("language", language as "en" | "zh" | "zh-hk");
 
@@ -104,11 +115,14 @@ const PreferencePage = () => {
             // Store in localStorage
             localStorage.setItem("preferredLanguage", language);
 
-            toast({
-                title: t("preferences.language.changed"),
-                description: t("preferences.language.restart"),
-                duration: 3000,
-            });
+            // Only show toast when language actually changes (not on initial load)
+            if (!initialLoadRef.current) {
+                toast({
+                    title: t("preferences.language.changed"),
+                    description: t("preferences.language.restart"),
+                    duration: 3000,
+                });
+            }
         } catch (error) {
             console.error('Language change failed:', error);
         }
@@ -162,17 +176,25 @@ const PreferencePage = () => {
                             className="space-y-8"
                         >
                             {/* Language Section */}
-                            <div className="space-y-2">
-                                <h3 className="text-title-sm2 font-semibold text-black dark:text-white">
-                                    {t("preferences.language.title")}
-                                </h3>
+                            <div className="flex items-center justify-between py-5 ">
+                                <div>
+                                    <h4 className="text-title-sm2 font-semibold text-black dark:text-white">
+                                        {t("preferences.language.title")}
+                                    </h4>
+                                    <p className="mt-1 text-sm text-body dark:text-bodydark">
+                                        {t("preferences.language.description")}
+                                    </p>
+                                </div>
                                 <Select
                                     value={form.getValues("language")}
                                     onValueChange={handleLanguageChange}
                                 >
-                                    <SelectTrigger className="w-[200px] rounded-lg border border-stroke bg-whiter py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-form-input dark:text-white">
+                                    <SelectTrigger className="w-[180px] rounded-lg border border-stroke bg-whiter py-2 px-3 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-form-input dark:text-white">
                                         <SelectValue placeholder={t("preferences.language.select")}>
-                                            {languages.find(lang => lang.value === form.getValues("language"))?.label}
+                                            <div className="flex items-center">
+
+                                                {languages.find(lang => lang.value === form.getValues("language"))?.label}
+                                            </div>
                                         </SelectValue>
                                     </SelectTrigger>
                                     <SelectContent className="border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
@@ -183,7 +205,6 @@ const PreferencePage = () => {
                                                     value={language.value}
                                                     className="cursor-pointer hover:bg-primary/5 dark:hover:bg-primary/10 flex items-center"
                                                 >
-                                                    <span className="mr-2">{language.flag}</span>
                                                     {language.label}
                                                 </SelectItem>
                                             ))}
@@ -209,7 +230,7 @@ const PreferencePage = () => {
                                 />
                             </div>
 
-                            {/* Notification Section */}
+                            {/* Notification Section - Commented out */}
                             {/* <div className="flex items-center justify-between border-t border-stroke py-5 dark:border-strokedark">
                                 <div>
                                     <h4 className="text-title-sm2 font-semibold text-black dark:text-white">

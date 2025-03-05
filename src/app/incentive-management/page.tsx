@@ -13,8 +13,6 @@ import Loader from "@/components/common/Loader";
 import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
 import { useAuth } from "@/contexts/AuthContext";
 
-
-
 const IncentiveManagementPage = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
@@ -25,7 +23,11 @@ const IncentiveManagementPage = () => {
     const [incentiveData, setIncentiveData] = useState<IncentiveResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-    const availableMonths = incentiveData ? Object.keys(incentiveData.activities.activities) : [];
+
+    // Use optional chaining to safely handle undefined incentiveData
+    const availableMonths = incentiveData?.activities?.activities
+        ? Object.keys(incentiveData.activities.activities)
+        : [];
 
     useEffect(() => {
         fetchData(
@@ -46,7 +48,7 @@ const IncentiveManagementPage = () => {
     if (loading)
         return <Loader />;
 
-    if (error || !incentiveData) {
+    if (error || !incentiveData || !incentiveData.activities || !incentiveData.summary) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <p className="text-red-500">{t('incentiveManagementPage.failedToLoadData')}</p>
@@ -75,7 +77,7 @@ const IncentiveManagementPage = () => {
                     <div className="col-span-3">
                         <IncentiveCard
                             title={t("incentiveManagementPage.totalIncentive")}
-                            amount={summary.total_incentive}
+                            amount={summary.total_incentive || 0}
                             icon={<StarBadgeIcon />}
                             className="bg-primary text-white h-full"
                         />
@@ -86,14 +88,14 @@ const IncentiveManagementPage = () => {
                             // Show Milestone Bonus for Level 1 agents only
                             <IncentiveCard
                                 title={t("incentiveManagementPage.milestoneAchievementBonus")}
-                                amount={summary.milestone_bonus.amount}
+                                amount={summary.milestone_bonus?.amount || 0}
                                 className="h-full"
                             />
                         ) : (
                             // Show Referral Bonus for other agents
                             <IncentiveCard
                                 title={t('incentiveManagementPage.referralFeeBonus')}
-                                amount={summary.directReferralFee}
+                                amount={summary.directReferralFee || 0}
                                 className="h-full"
                             />
                         )}
@@ -105,15 +107,15 @@ const IncentiveManagementPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 2xl:gap-7.5">
                         <IncentiveCard
                             title={t("incentiveManagementPage.directRecruitReferralFeeOverrideBonus")}
-                            amount={summary.downstreamReferralFee}
+                            amount={summary.downstreamReferralFee || 0}
                         />
                         <IncentiveCard
                             title={t("incentiveManagementPage.depositAdminChargeRebate")}
-                            amount={summary.directTopupRebate}
+                            amount={summary.directTopupRebate || 0}
                         />
                         <IncentiveCard
                             title={t("incentiveManagementPage.directRecruitDepositAdminChargeOverridingRebate")}
-                            amount={summary.downstreamTopupRebate}
+                            amount={summary.downstreamTopupRebate || 0}
                         />
                     </div>
                 )}
@@ -124,7 +126,7 @@ const IncentiveManagementPage = () => {
                         <div className="md:col-span-2">
                             <IncentiveCard
                                 title={t("incentiveManagementPage.directRecruitLevelAdvancementBonus")}
-                                amount={summary.directRecruitLevelAdvancementBonus}
+                                amount={summary.directRecruitLevelAdvancementBonus || 0}
                                 className="h-full"
                             />
                         </div>
@@ -132,9 +134,8 @@ const IncentiveManagementPage = () => {
                         <div className="md:col-span-4">
                             <IncentiveCard
                                 title={t("incentiveManagementPage.performanceBonus")}
-                                amount={summary.performance_bonus.amount}
+                                amount={summary.performance_bonus?.amount || 0}
                                 className="h-full"
-                            // activeUsers={summary.performance_bonus.activeUsers}
                             />
                         </div>
                     </div>
@@ -144,7 +145,7 @@ const IncentiveManagementPage = () => {
                 <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                     <DataTable
                         columns={tableColumns}
-                        data={activities.activities[currentMonth] || []}
+                        data={(activities?.activities && currentMonth && activities.activities[currentMonth]) || []}
                         title={t("incentiveManagementPage.incentivePayoutRecords")}
                         currentMonth={currentMonth}
                         onMonthChange={(month: string) => setCurrentMonth(month)}

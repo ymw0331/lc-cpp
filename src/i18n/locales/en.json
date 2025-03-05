@@ -416,6 +416,7 @@
         "language": {
             "title": "Language",
             "select": "Select language",
+            "description": "Choose your preferred display language for the interface",
             "changed": "Language Changed",
             "restart": "Some changes may require refreshing the page before they take effect",
             "options": {

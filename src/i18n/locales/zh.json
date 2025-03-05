@@ -417,6 +417,7 @@
         "language": {
             "title": "语言",
             "select": "选择语言",
+            "description": "选择您偏好的界面显示语言",
             "changed": "语言已更改",
             "restart": "某些更改生效前可能需要刷新页面",
             "options": {
@@ -441,7 +442,7 @@
             "disabledDesc": "您已关闭通知，将不会再接收更新"
         }
     },
-    "m": {
+    "legal": {
         "legalAndComplianceBreadcrumb": "法律与合规",
         "privacyPolicyTitle": "隐私政策",
         "termsAndConditionsTitle": "条款和条件",

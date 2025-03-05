@@ -1,377 +1,386 @@
 {
     "common": {
-        "comingSoon": "即將推出"
+        "processing": "處理中",
+        "comingSoon": "即將推出",
+        "unknown": "未知",
+        "notAvailable": "N/A"
     },
     "header": {
-        "searchPlaceholder": "輸入搜尋...",
+        "searchPlaceholder": "輸入搜索...",
         "darkMode": "黑暗模式",
         "notifications": "通知",
-        "messages": "訊息",
+        "messages": "信息",
         "user": "用戶"
+    },
+    "breadcrumb": {
+        "dashboard": "主頁"
     },
     "dropdownUser": {
         "myProfile": "我的個人資料",
         "preference": "偏好設定",
-        "logOut": "登出"
+        "logOut": "退出登入",
+        "success": "成功",
+        "successfullyLoggedOut": "成功退出登入"
     },
     "sidebar": {
-        "menu": "選單",
-        "dashboard": "儀表板",
+        "menu": "功能選單",
+        "dashboard": "主頁",
         "account": "帳戶",
-        "incentive management": "激勵管理",
+        "incentive management": "績效激勵管理",
         "referred users": "推薦用戶",
+        "referred-users": "推薦用戶",
         "manage user": "管理用戶",
         "recruit agent": "招募代理",
-        "performance": "效能表現",
-        "support": "支援",
-        "settings": "設定",
+        "performance": "業績",
+        "support": "客服",
+        "settings": "設置",
         "legal & compliance": "法律與合規",
-        "wallets": "錢包",
-        "transfer": "轉帳",
+        "wallets": "電子錢包",
+        "transfer": "轉賬",
         "profile": "個人資料",
         "password": "密碼",
         "preference": "偏好設定",
         "profile policy": "個人資料政策",
-        "terms and conditions": "條款及條件",
+        "terms and conditions": "條款和條件",
+        "circle of growth campaign": "共贏圈活動計劃",
         "user agreement": "用戶協議",
-        "code of conduct": "行為守則",
+        "code of conduct": "行為準則",
         "compliance and anti-corruption": "合規與反腐敗",
         "privacy guideline": "隱私指南"
     },
     "agentDashboard": {
-        "overview": "總覽",
+        "overview": "概覽",
         "rewardWalletBalance": "獎勵錢包餘額",
-        "totalDepositAmount": "總存款金額",
-        "directRecruitIncentiveEarnings": "直接招募激勵收益",
+        "referredDepositAmount": "直推充值數額",
+        "referralFeeBonus": "直推佣金",
         "activeUsers": "活躍用戶",
-        "left": "剩餘",
-        "totalDirectRecruit": "總直接招募",
-        "agentsToPartner": "代理商轉合作夥伴",
-        "depositSummary": "存款摘要",
-        "depositActivity": "存款活動",
-        "description": "描述",
-        "amount": "金額",
-        "dateTime": "日期時間",
-        "failedToLoadData": "載入儀表板資料失敗",
-        "loading": "載入中...",
+        "left": "（距離達成KPI差額）",
+        "totalDirectRecruit": "直推總數額",
+        "agentsToPartner": "代理晉升為合作夥伴",
+        "referralDepositVolume": "推薦充值總額",
+        "depositSummary": "充值總覽",
+        "depositActivity": "充值記錄",
+        "description": "詳情",
+        "amount": "數額",
+        "dateTime": "日期與時間",
+        "failedToLoadData": "數據加載失敗",
+        "loading": "加載中...",
         "referralCode": "推薦碼",
         "recruitment": "招募",
-        "incentives": "激勵"
+        "incentives": "佣金"
     },
     "loginPage": {
-        "welcomeToLookcard": "歡迎來到Lookcard經銷商入口網站",
-        "pleaseSignIn": "請登入以繼續存取您的儀表板。",
-        "signInToAgentDashboard": "登入代理儀表板",
+        "welcomeToLookcard": "歡迎來到Lookcard經銷商代理管理系統",
+        "pleaseSignIn": "請登錄",
+        "signInToAgentDashboard": "登錄到經銷商代理管理系統",
         "email": "電子郵件",
         "enterYourEmail": "輸入您的電子郵件",
         "password": "密碼",
         "enterYourPassword": "輸入您的密碼",
-        "signIn": "登入",
-        "signingIn": "正在登入",
-        "testCredentials": "測試憑證",
-        "error": "錯誤",
+        "signIn": "登錄",
+        "signingIn": "正在登錄",
+        "testCredentials": "測試賬號信息",
+        "error": "功能出錯",
         "success": "成功",
-        "successfullyLoggedIn": "登入成功！",
-        "loginFailed": "登入失敗",
+        "successfullyLoggedIn": "登錄成功！",
+        "loginFailed": "登錄失敗",
         "rememberMe": "記住我",
         "forgotPassword": "忘記密碼",
-        "warning": "警告",
-        "warningDescription1": "要存取此入口網站，",
-        "warningDescription2": "您必須先註冊為 Lookcard.io 應用程式用戶並使用您的憑證登入。",
-        "warningDescription3": "如果您不是註冊用戶，請離開此頁面。未經授權的存取可能會導致紀律處分或法律後果。",
-        "signInTo": "登入",
-        "communityPartnershipProgramPortal": "社區合作計劃入口網站",
-        "editYourInformation": "滑動即可編輯您的資訊",
-        "sintOccaecat": "Sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.",
-        "longEstablishedFact": "這是一個長期存在的事實",
-        "readable": "讀者會被可讀的內容分散注意力。",
-        "manyVariations": "有很多變體",
-        "available": "大多數可用的段落都受到了影響"
+        "warning": "注意",
+        "warningDescription1": "您的賬戶無權登入此系統，",
+        "warningDescription2": "該系統僅限已註冊的經銷商代理使用。",
+        "warningDescription3": "如果您認為這是錯誤信息，請聯繫客服團隊以便獲取協助。",
+        "signInTo": "登錄到",
+        "communityPartnershipProgramPortal": "經銷商代理管理系統",
+        "editYourInformation": "修改/更新您的信息"
     },
     "registerPage": {
-        "agentRecruitmentDetails": "代理招募詳情",
-        "joinOurCommunity": "加入我們的社區合作夥伴計劃",
-        "referralId": "推薦ID",
-        "enterReferralId": "輸入推薦ID（選填）",
+        "agentRecruitmentDetails": "經銷商代理招募詳情",
+        "joinOurCommunity": "加入社區合作夥伴計劃",
+        "referralId": "推薦碼",
+        "enterReferralId": "輸入推薦碼",
         "fullName": "全名",
         "enterFullName": "輸入您的全名",
-        "email": "註冊電郵",
-        "enterEmail": "輸入您的註冊電郵",
-        "coreMarket": "核心市場領域 [國家]",
-        "enterCoreMarket": "輸入您的核心市場領域",
-        "agentAcknowledgement": "確認聲明",
-        "termsAgreement": "我同意上述所有條款，包括遵守項目要求、道德行為和隱私政策。我確認我理解並接受這些條款，適用於我的申請和我提交的任何推薦。",
+        "email": "註冊郵箱",
+        "enterEmail": "輸入您的註冊郵箱",
+        "coreMarket": "主力市場[國家]",
+        "enterCoreMarket": "輸入您的主力市場",
+        "agentAcknowledgement": "同意並確認",
+        "termsAgreement": "本人同意上述所有條款，包括遵守項目要求、道德規範及隱私政策。本人確認已充分理解並接受這些條款，適用於本人申請及本人提交的任何推薦。",
         "success": "註冊成功",
-        "successfullyRegistered": "您已成功註冊為經銷商",
-        "error": "註冊錯誤",
+        "successfullyRegistered": "您已成功註冊為經銷商代理",
+        "error": "註冊出錯",
         "processing": "處理中",
         "signUp": "註冊",
         "acknowledgementPoints": {
-            "bySubmitting": "提交此表格，您確認並同意以下內容：",
-            "accuracy": "本表格中提供的所有資訊據我所知是準確和完整的。",
-            "verification": "加入計劃需要經過驗證和批准。",
-            "misrepresentation": "任何虛假陳述或違反計劃指南可能導致取消資格或終止參與。",
-            "privacy": "您的個人資訊將被安全處理，僅用於評估和促進合作夥伴關係。",
-            "terms": "此提交受附加條款及條件約束，這些條款將在成功加入後分享。"
+            "bySubmitting": "提交此表格即表示您確認並同意以下內容",
+            "accuracy": "本人承諾，所提供的所有信息均真實、準確且完整，盡本人所知無誤。",
+            "verification": "申請參與本項目需經過審核和批准。",
+            "misrepresentation": "任何虛假陳述或違反項目規定的行為，可能導致資格取消或終止合作。",
+            "privacy": "您的個人信息將被嚴格保密，僅用於評估和推進合作。",
+            "terms": "本次提交受額外條款與條件約束，完整條款將在成功入駐後提供。"
         },
         "thankYou": "感謝您的申請！",
-        "receivedSubmission": "我們已收到您的提交。",
-        "confirmationEmail": "確認電子郵件將傳送至您的收件匣（或垃圾郵件資料夾）",
+        "receivedSubmission": "我們已收到您的申請。",
+        "confirmationEmail": "您將收到一封確認郵件，若未收到，請檢查您的垃圾郵件文件夾",
         "withinDays": " 3個工作日內。",
         "done": "完成"
     },
     "forgotPasswordDialog": {
         "close": "關閉",
         "forgotPassword": "忘記密碼？",
-        "passwordResetUnavailable": "密碼重設在以下位置不可用",
-        "communityPartnershipProgramPortal": "社區合作計劃入口網站。",
-        "toResetYourCredentials": "要重設您的登入憑證，請使用",
-        "useLookCardApp": "LookCard.io應用程式。開啟該應用程式以安全地更新您的密碼。",
-        "backToLogin": "返回登入"
+        "passwordResetUnavailable": "經銷商代理管理系統",
+        "communityPartnershipProgramPortal": "暫不提供密碼重置功能。",
+        "toResetYourCredentials": "如需重置登入賬號信息，請通過lookcard.io應用程序進行，",
+        "useLookCardApp": "以安全更新您的密碼。",
+        "backToLogin": "返回"
     },
     "notRegisteredDialog": {
-        "imageAlt": "未註冊",
+        "imageAlt": "登入拒絕",
         "title": "未註冊",
-        "noAccess": "您的帳戶目前無法存取此入口網站。要繼續，請註冊成為LookCard經銷商並解鎖獨家機會。",
-        "benefits": "作為經銷商，您可以享受特別優惠並賺取高達",
-        "referralAmount": " 每次推薦80美元以上",
-        "callToAction": "。不要錯過—立即加入並開始最大化您的收益！",
-        "becomeAgent": "成為代理"
+        "noAccess": "您的郵箱尚未註冊為lookcard.io平台用戶。",
+        "benefits": "若需成為經銷商代理，您必須先完成平台賬戶註冊，",
+        "referralAmount": " 並註冊成為經銷商代理，通過推薦賺取高達每人80美元",
+        "callToAction": "抓緊機會，立即加入，最大化您的收入！",
+        "becomeAgent": "平台用戶註冊"
     },
     "accessDeniedDialog": {
-        "accessDeniedAlt": "拒絕存取",
-        "title": "存取被拒絕",
-        "mainMessage": "您的帳戶沒有存取此入口網站的必要權限，因此入口網站僅限註冊的經銷商使用。",
-        "supportMessage": "如果您認為這是一個錯誤，請聯絡我們的支援團隊尋求協助。",
-        "contactSupport": "聯絡支援",
+        "accessDeniedAlt": "登入拒絕",
+        "title": "登入被拒絕",
+        "mainMessage": "您的賬戶沒有訪問此門戶的必要權限，因為此門戶僅限註冊的經銷商使用。",
+        "supportMessage": "如果您認為這是一個錯誤，請聯繫我們的支持團隊尋求幫助。",
+        "contactSupport": "聯繫支持",
         "registerAsReseller": "註冊為經銷商"
     },
     "profileCard": {
+        "level": "等級",
         "activeUsersLabel": "活躍用戶",
-        "left": "剩餘完成目標"
+        "left": "（距離達成KPI差額）"
     },
     "profileWithReferralCard": {
-        "copiedToClipboard": "已複製到剪貼簿",
-        "copiedToClipboardDescription": "推薦碼已複製到您的剪貼簿",
-        "activatedUsersLabel": "已啟用用戶",
-        "remainingToComplete": "剩餘完成目標",
+        "level": "等級",
+        "copiedToClipboard": "已成功複製到剪貼板",
+        "copiedToClipboardDescription": "推薦碼已成功複製到剪貼板",
+        "activatedUsersLabel": "已激活用戶",
+        "remainingToComplete": "（距離達成KPI差額）",
         "activeUsersLabel": "活躍用戶",
-        "left": "剩餘完成目標"
+        "left": "（距離達成KPI差額）"
     },
     "referralCard": {
         "referralCodeLabel": "推薦碼",
-        "copiedToClipboard": "已複製到剪貼簿"
+        "copiedToClipboard": "已成功複製到剪貼板",
+        "copiedToClipboardDescription": "推薦碼已成功複製到剪貼板"
     },
     "recruitCard": {
-        "totalDirectRecruitLabel": "總直接招募",
-        "agentsToPartnerLabel": "代理商轉合作夥伴"
-    },
-    "recruitmentSummaryCard": {
-        "recruitmentSummary": "招募摘要",
-        "directReferralsVolumeLabel": "直接推薦量/\n個人銷售",
-        "depositVolumeLabel": "直接推薦存款\n量 (美元)"
-    },
-    "agentRecruitmentSummaryCard": {
-        "agentRecruitmentSummary": "代理招募摘要",
-        "referralFeeBonus": "推薦費獎金",
-        "depositAdminChargeRebate": "存款管理費回扣"
+        "totalDirectRecruitLabel": "直推總數額",
+        "agentsToPartnerLabel": "經銷商代理晉升合作夥伴"
     },
     "milestoneAchievementCard": {
-        "milestoneAchievementBonus": "里程碑成就獎金",
-        "exclusivelyForLevel1": "僅限1級代理",
-        "achieveActivationsMessage": "在指定時間內完成{targetUsers}次成功卡啟用。保持進度，達成里程碑，最大化您的收益。",
-        "activatedUsers": "已啟用用戶",
-        "month": "月",
-        "months": "月",
+        "milestoneAchievementBonus": "目標達成獎金",
+        "exclusivelyForLevel1": "僅限初級經銷商代理",
+        "achieveActivationsMessage": "在限定時間內成功激活{targetUsers}張卡，以便達成目標並提升收益。",
+        "activatedUsers": "已激活用戶",
+        "month": "個月",
+        "months": "個月",
         "congratulations": "恭喜"
     },
     "statisticChart": {
-        "noDataAvailable": "無資料可用"
+        "noDataAvailable": "暫無數據"
     },
     "depositActivityTable": {
-        "depositActivityLabel": "存款活動",
-        "descriptionHeader": "描述",
-        "amountHeader": "金額",
-        "dateTimeHeader": "日期時間",
-        "noDataAvailable": "無資料可用"
+        "incomeEarningSummaryLabel": "收入/收益總覽",
+        "descriptionHeader": "詳情",
+        "amountHeader": "數額",
+        "dateTimeHeader": "日期與時間",
+        "noDataAvailable": "暫無數據"
     },
     "walletsPage": {
-        "walletsBreadcrumb": "錢包",
+        "walletsBreadcrumb": "電子錢包",
         "rewardWalletBalance": "獎勵錢包餘額",
-        "currentAccountWalletBalance": "往來帳戶錢包餘額",
-        "rewardWalletSummary": "獎勵錢包摘要",
-        "failedToLoadData": "無法載入錢包資料",
-        "walletSummaryComingSoon": "錢包摘要即將推出"
+        "currentAccountWalletBalance": "往來賬戶錢包餘額",
+        "rewardWalletSummary": "獎勵錢包記錄",
+        "failedToLoadData": "無法加載數據",
+        "walletSummaryComingSoon": "獎勵錢包記錄即將推出"
     },
     "analyticChart": {
-        "noDataAvailable": "無數據可用",
+        "noDataAvailable": "暫無數據",
         "comingSoon": "即將推出"
     },
     "walletCard": {
-        "transferButton": "轉移",
+        "transferButton": "轉賬",
         "comingSoon": "即將推出"
     },
-    "transferPage": {
-        "transferToCurrentAccountWalletBreadcrumb": "轉移到往來賬戶錢包"
-    },
-    "walletTransferForm": {
-        "rewardWalletBalance": "獎勵錢包餘額",
-        "selectCurrencyWallet": "選擇貨幣錢包",
-        "enterTransferAmount": "輸入轉賬金額",
-        "fullAmountButton": "全額",
-        "transferFee": "轉賬手續費",
-        "totalAmountTransferred": "轉賬總額",
-        "transferButton": "轉移"
-    },
     "transferActivityTable": {
-        "transferActivity": "轉賬活動",
-        "transactionIdHeader": "交易ID",
+        "transactionHistory": "轉賬歷史",
+        "descriptionHeader": "詳情",
         "transferredAmountHeader": "轉賬金額",
-        "dateTimeHeader": "日期時間",
-        "statusHeader": "狀態"
+        "dateTimeHeader": "日期與時間",
+        "statusHeader": "狀態",
+        "noTransactionsYet": "暫無交易記錄"
     },
     "incentiveManagementPage": {
-        "incentiveManagementBreadcrumb": "激勵管理",
-        "totalIncentive": "總激勵",
-        "milestoneBonus": "里程碑獎金",
-        "directRecruitReferral": "直接招募推薦覆蓋激勵",
-        "directAdminCharge": "直接管理費回扣",
-        "directRecruitDeposit": "直接招募存款管理費覆蓋回扣",
-        "directRecruitLevelAdvancementBonus": "直接招募級別晉升獎金",
-        "performanceBonus": "業績獎金",
-        "failedToLoadData": "無法加載激勵數據"
+        "incentiveManagementBreadcrumb": "績效激勵管理",
+        "totalIncentive": "總激勵金額",
+        "referralFeeBonus": "直推佣金",
+        "incentivePayoutRecords": "激勵結算記錄",
+        "directRecruitReferralFeeOverrideBonus": "推薦佣金返利覆蓋獎勵",
+        "directRecruitReferral": "推薦佣金覆蓋獎勵",
+        "depositAdminChargeRebate": "充值手續費返利覆蓋獎勵",
+        "directRecruitDepositAdminChargeOverridingRebate": "直推充值手續費返利覆蓋獎勵",
+        "directRecruitLevelAdvancementBonus": "直推代理晉升獎勵",
+        "performanceBonus": "績效獎勵",
+        "failedToLoadData": "無法加載數據"
     },
     "incentiveCard": {
-        "activeUsersLeft": "剩餘活躍用戶"
+        "activeUsersLeft": "(距離達成目標所需活躍用戶）"
     },
     "dataTable": {
-        "incentiveActivity": "激勵活動",
-        "transactionId": "交易ID",
-        "transferredAmount": "轉賬金額",
-        "dateTime": "日期時間",
+        "incentivePayoutRecords": "激勵獎金記錄",
+        "transactionId": "交易編碼",
+        "transferredAmount": "結算金額",
+        "dateTime": "日期與時間",
         "status": "狀態",
-        "noDataAvailable": "沒有數據",
-        "noRecordsToDisplay": "此期間沒有記錄可顯示",
-        "showingResults": "顯示 {start} 到 {end}，共 {total} 條結果"
+        "noDataAvailable": "暫無數據",
+        "noRecordsToDisplay": "當前時間段無記錄顯示",
+        "showingResults": "展示 {start} 到 {end}，共 {total} 條數據結果",
+        "exportToExcel": "導出至Excel"
     },
     "referredUsersPage": {
         "referredUsersBreadcrumb": "推薦用戶",
-        "recruitmentSummary": "招募概覽",
-        "totalDirectRecruit": "總直接招募",
-        "noRecruitmentData": "沒有可用的招募數據",
-        "startRecruiting": "開始招募以查看您的統計信息",
-        "failedToLoadData": "無法加載儀表板數據"
+        "recruitmentSummary": "招募記錄",
+        "totalDirectRecruit": "直推總數額",
+        "noRecruitmentData": "暫無數據",
+        "startRecruiting": "開始招募代理，您的統計數據將在此顯示",
+        "failedToLoadData": "無法加載數據"
     },
     "manageUserPage": {
-        "manageUsersBreadcrumb": "管理用戶"
+        "manageUsersBreadcrumb": "用戶管理",
+        "failedToLoadData": "加載數據失敗",
+        "failedToFetchData": "獲取經銷商數據失敗",
+        "tier0": "推薦用戶",
+        "tier1": "Level 1 Agents",
+        "tier2": "Level 2 Agents",
+        "tier3": "Level 3 Partners",
+        "tier4": "Level 4 Partners",
+        "tier5": "Level 5 Partners",
+        "unknownTier": "未知級別 ({{tier}})"
     },
     "usersTable": {
         "users": "用戶",
-        "filters": "篩選器",
+        "filters": "篩選",
         "market": "市場",
         "allMarkets": "所有市場",
-        "ranking": "排名",
-        "allRankings": "所有排名",
+        "ranking": "等級",
+        "allRankings": "所有等級",
         "dateRange": "日期範圍",
         "from": "從",
         "to": "至",
         "searchUser": "搜索用戶",
         "recruit": "招募",
         "name": "姓名",
-        "userId": "用戶ID",
-        "keyMarket": "主要市場",
+        "userId": "用戶編碼",
+        "keyMarket": "主力市場",
         "joinedSince": "加入時間",
-        "lastActive": "上次活躍時間"
+        "lastActive": "最後上線時間"
     },
     "recruitAgentPage": {
-        "recruitAgentBreadcrumb": "招募代理",
-        "agentRecruitmentDetails": "代理招募詳情",
-        "referralId": "推薦人ID",
+        "recruitAgentBreadcrumb": "招募經銷商代理",
+        "agentRecruitmentDetails": "經銷商代理招募詳情",
+        "referralId": "推薦碼",
         "fullName": "全名",
         "registeredEmail": "註冊郵箱",
         "memberVerification": "會員驗證",
-        "emailVerified": "郵箱已驗證",
-        "matchedEmail": "郵箱已匹配",
-        "check": "檢查",
-        "proposedKeyMarket": "建議的主要市場",
+        "emailVerified": "郵箱驗證成功",
+        "matchedEmail": "郵箱匹配",
+        "check": "核對",
+        "proposedKeyMarket": "建議的主力市場",
         "selectMarket": "選擇市場",
-        "acknowledgement": "確認",
-        "acknowledgementItem1": "我確認在此表格中提供的所有信息都是準確和真實的。",
-        "acknowledgementItem2": "我確認我推薦的人已同意Lookcard Limited就此計劃與其聯繫。",
-        "acknowledgementItem3": "我理解提交推薦並不能保證被推薦人被該計劃接受。",
-        "acknowledgementItem4": "我確認，如果被推薦人符合計劃資格並滿足加入要求，則此推薦的任何利益或獎勵都將受到影響。",
-        "agreementLabel": "我同意上述所有條款，包括遵守計劃要求、道德行為和隱私政策。我確認我理解並接受這些條款，包括我的申請和任何我提交的推薦。",
-        "recruitButton": "招募"
+        "acknowledgement": "條款確認",
+        "acknowledgementItem1": "本人確認，表格內所提供的所有信息均為真實、準確，並符合本人所知情況。",
+        "acknowledgementItem2": "本人確認並知悉，我所推薦的人員已授權 Lookcard Limited 就此項目與其聯繫。",
+        "acknowledgementItem3": "本人理解，推薦申請的提交不意味著被推薦人將被本項目正式接受。",
+        "acknowledgementItem4": "本人確認，推薦所涉及的任何福利或獎勵，需被推薦人符合項目標準並完成加入流程後方可生效",
+        "agreementLabel": "本人確認已閱讀、理解並同意上述條款，包括項目要求、道德準則及隱私政策，並接受這些條款適用於本人申請及推薦。",
+        "recruitButton": "立即招募"
     },
     "performancePage": {
-        "performanceBreadcrumb": "業績",
-        "cardActivationVolume": "卡激活量",
-        "totalAgentRecruitment": "總代理招募",
-        "failedToLoadData": "無法加載業績數據"
+        "performanceBreadcrumb": "績效",
+        "cardActivationVolume": "卡片激活量",
+        "totalAgentRecruitment": "代理總數",
+        "failedToLoadData": "無法加載數據"
     },
     "nextLevelCard": {
-        "nextLevel": "下一級別",
-        "maxLevelMessage": "恭喜！您已經達到了最高級別。",
-        "progressMessage": "繼續努力！您正在取得巨大進展。",
+        "nextLevel": "下一等級",
+        "maxLevelMessage": "恭喜！您已晉升至最高級別。",
+        "progressMessage": "保持這個勢頭！您的進展非常順利。",
         "level": "級別",
-        "requestLevelUpButton": "請求升級",
-        "levelUpRequestSentTitle": "升級請求已發送",
-        "levelUpRequestSentDescription": "我們將審核您的請求，並儘快回覆您。"
+        "requestLevelUpButton": "提交升級請求",
+        "levelUpRequestSentTitle": "升級請求已提交",
+        "levelUpRequestSentDescription": "您的請求已收到，我們將進行審核，並盡快通知您結果。"
     },
     "salesSummaryCard": {
-        "salesSummary": "銷售概要",
+        "salesSummary": "銷售報告",
         "groupSales": "團隊銷售額",
         "personalSales": "個人銷售額"
     },
     "salesVolumeBarChart": {
         "salesVolume": "銷售量",
         "year": "年份",
-        "week": "週",
+        "week": "周",
         "month": "月",
         "selectMonth": "選擇月份",
-        "selectWeek": "選擇週"
+        "selectWeek": "選擇周"
     },
     "demographicSalesChart": {
-        "salesVolumeInDemographic": "人口統計銷售量",
+        "salesVolumeInDemographic": "按市場人群劃分的銷售總量",
         "year": "年份",
         "quarter": "季度"
     },
     "supportPage": {
-        "supportBreadcrumb": "支援",
+        "supportBreadcrumb": "客服",
         "category": "類別",
         "selectCategory": "選擇類別",
         "title": "標題",
-        "titlePlaceholder": "簡要描述您的問題",
+        "titlePlaceholder": "請提供問題概要",
         "description": "描述您的問題",
-        "descriptionPlaceholder": "請提供有關您的問題的詳細信息...",
-        "supportingDocuments": "支援文件",
+        "descriptionPlaceholder": "請提供關於您問題的詳細說明...",
+        "supportingDocuments": "相關文件",
         "uploadDocuments": "上傳文件",
         "saveChanges": "保存更改",
-        "fileSizeExceeded": "文件大小不應超過 5MB",
-        "invalidFileType": "僅允許 JPG 和 PDF 文件"
+        "fileSizeExceeded": "文件大小不能超過 5MB",
+        "invalidFileType": "僅支持 JPG 和 PDF 格式的文件"
     },
     "profilePage": {
-        "profileBreadcrumb": "個人資料",
-        "profileDetail": "個人資料詳情",
+        "profileBreadcrumb": "個人信息",
+        "profileDetail": "個人信息詳情",
         "userId": "用戶ID",
+        "accountRanking": "賬戶等級",
+        "agentLevels": {
+            "level": "Level",
+            "level1": "Level 1 Agent",
+            "level2": "Level 2 Agent",
+            "level3": "Level 3 Partner",
+            "level4": "Level 4 Partner",
+            "level5": "Level 5 Partner"
+        },
         "fullName": "全名",
         "email": "電子郵件",
         "contactNo": "聯繫電話",
         "referralCode": "推薦碼",
-        "keyMarket": "主要市場",
-        "socialMediaProfiles": "社交媒體資料",
+        "keyMarket": "主力市場",
+        "socialMediaProfiles": "社交平台個人資料",
         "saveChanges": "保存更改",
         "saving": "保存中...",
-        "error": "錯誤",
+        "error": "功能出錯",
         "success": "成功",
-        "failedToLoadProfileData": "無法加載個人資料數據",
-        "failedToUpdateProfile": "無法更新個人資料",
-        "emailVerified": "電子郵件已驗證",
-        "phoneVerified": "電話已驗證",
-        "youCanNowEditEmail": "您現在可以編輯您的電子郵件地址",
-        "youCanNowEditPhone": "您現在可以編輯您的電話號碼",
+        "failedToLoadProfileData": "無法加載數據",
+        "failedToUpdateProfile": "無法更新個人信息",
+        "emailVerified": "郵件驗證成功",
+        "phoneVerified": "電話驗證成功",
+        "youCanNowEditEmail": "您可以現在更新您的電子郵件地址",
+        "youCanNowEditPhone": "您可以現在更新您的電話號碼",
         "otpResent": "OTP已重新發送",
-        "newOtpSent": "新的OTP已發送到您的",
+        "newOtpSent": "新的驗證碼已發送至您的",
         "copied": "已複製！",
         "referralCodeCopied": "推薦碼已複製到剪貼板"
     },
@@ -402,44 +411,122 @@
             "description": "您的偏好設置已成功更新"
         },
         "error": {
-            "title": "錯誤",
+            "title": "功能出錯",
             "description": "更新偏好設置失敗。請重試。"
         },
         "language": {
             "title": "語言",
             "select": "選擇語言",
+            "description": "選擇您偏好的界面顯示語言",
             "changed": "語言已更改",
-            "restart": "某些更改可能需要刷新頁面",
+            "restart": "某些更改生效前可能需要刷新頁面",
             "options": {
                 "en": "English (Default)",
                 "zh": "中文"
             }
         },
         "darkMode": {
-            "title": "黑暗模式",
-            "description": "啟用黑暗模式，以便在弱光條件下獲得更好的觀看體驗。",
-            "enabled": "已啟用黑暗模式",
-            "disabled": "已禁用黑暗模式",
-            "enabledDesc": "已啟用黑暗模式",
-            "disabledDesc": "已禁用黑暗模式"
+            "title": "暗黑模式",
+            "description": "開啟暗黑模式，在低光環境下享受更舒適的視覺體驗",
+            "enabled": "暗黑模式已啟用",
+            "disabled": "暗黑模式已關閉",
+            "enabledDesc": "暗黑模式已啟用",
+            "disabledDesc": "暗黑模式已關閉"
         },
         "notifications": {
             "title": "通知",
             "description": "啟用以接收有關您的帳戶和優惠的更新。",
             "enabled": "已啟用通知",
             "disabled": "已禁用通知",
-            "enabledDesc": "您現在將收到有關您的帳戶和優惠的更新",
-            "disabledDesc": "您將不再收到通知"
+            "enabledDesc": "開啟通知，以接收您的賬戶更新和優惠信息",
+            "disabledDesc": "您已關閉通知，將不會再接收更新"
         }
     },
     "legal": {
         "legalAndComplianceBreadcrumb": "法律與合規",
         "privacyPolicyTitle": "隱私政策",
         "termsAndConditionsTitle": "條款和條件",
+        "circleOfGrowthBreadcrumb": "共贏圈活動計劃",
         "userAgreementTitle": "用戶協議",
         "codeOfConductTitle": "行為準則",
-        "complianceAndAntiCorruptionTitle": "合規與反腐敗",
+        "complianceAndAntiCorruptionTitle": "合規與反貪腐",
         "profilePolicyTitle": "個人資料政策",
         "programGuidelineTitle": "項目指南"
+    },
+    "walletTransferForm": {
+        "rewardWalletBalance": "獎勵錢包餘額",
+        "rewardWalletBalanceDescription": "專屬獎勵錢包，高效管理並存儲您所有獎勵。",
+        "selectCurrencyWallet": "選擇幣種",
+        "enterTransferAmount": "輸入轉賬金額",
+        "fullAmountButton": "全額",
+        "transferFee": "轉賬手續費",
+        "totalAmountTransferred": "轉賬總額",
+        "transferButton": "轉賬",
+        "errorExceedsBalance": "交易金額超出可用餘額",
+        "errorMustBePositive": "交易金額必須大於零"
+    },
+    "transferPage": {
+        "transferToCurrentAccountWalletBreadcrumb": "轉賬到往來賬戶錢包",
+        "failedToLoadData": "加載數據失敗。請稍後再試。",
+        "successTitle": "轉賬成功",
+        "successDescription": "已成功轉賬 {{amount}} {{currency}} 至您的往來賬號錢包。",
+        "errorTitle": "轉賬失敗",
+        "errorDescription": "處理您的轉賬時出錯。請再試一次。",
+        "errorGeneric": "發生系統錯誤，請稍後重試或聯繫客服。"
+    },
+    "transferConfirmationDialog": {
+        "title": "轉賬至往來賬號錢包",
+        "subtitle": "確認轉賬",
+        "transferMessage": "您即將轉賬 {{amount}} {{currency}} 至您的往來賬號錢包",
+        "disclaimers": "免責聲明",
+        "disclaimer1": "請在確認交易前仔細核對所有信息和金額，交易一旦提交，將無法撤銷。",
+        "disclaimer2": "受網絡狀況、處理時間或其他不可控因素影響，轉賬可能會出現延遲。",
+        "disclaimer3": "適用的交易費用、匯率及處理費用（如有）將在確認前顯示。",
+        "disclaimer4": "所有交易均採用加密技術以確保安全。為保障您的賬戶安全，請勿向任何人洩露您的登錄憑據。",
+        "disclaimer5": "若因用戶輸入錯誤信息導致交易失敗或資金損失，Lookcard Limited 概不承擔責任。",
+        "disclaimer6": "交易可能依據當地及國際反洗錢（AML）和反恐融資（CTF）法規進行審核，審核可能導致處理延遲或交易取消。",
+        "cancelButton": "取消",
+        "confirmButton": "確認"
+    },
+    "transferSuccessDialog": {
+        "title": "轉賬成功",
+        "description": "您的轉賬已成功完成。",
+        "amount": "金額",
+        "status": "狀態",
+        "completed": "已完成",
+        "closeButton": "進行另一筆轉賬"
+    },
+    "incomeSummary": {
+        "title": "收入匯總",
+        "totalEarning": "總激勵金額",
+        "monthlyDetails": "月度獎勵記錄",
+        "noActivitiesForMonth": "本月無活動記錄",
+        "noDataAvailable": "無可用數據",
+        "summaryTitle": "總結摘要",
+        "milestoneAchievementBonus": "目標達成獎金"
+    },
+    "months": {
+        "january": "一月",
+        "february": "二月",
+        "march": "三月",
+        "april": "四月",
+        "may": "五月",
+        "june": "六月",
+        "july": "七月",
+        "august": "八月",
+        "september": "九月",
+        "october": "十月",
+        "november": "十一月",
+        "december": "十二月"
+    },
+    "recruitmentSummaryCard": {
+        "recruitmentSummary": "代理招募詳情",
+        "noOfDirectReferral": "直推數額",
+        "totalDepositFromDirectReferral": "直推總充值數額"
+    },
+    "agentRecruitmentSummaryCard": {
+        "agentRecruitmentSummary": "經銷商代理招募詳情",
+        "directRecruitVolumeLabel": "直推招募代理數額",
+        "depositVolumeLabel": "直推招募代理充值金額 (美元)"
     }
 }
