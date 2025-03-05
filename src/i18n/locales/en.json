@@ -497,13 +497,15 @@
     "incomeSummary": {
         "title": "Income Summary",
         "totalEarning": "Total Earning",
-        "noDataAvailable": "No data available",
         "referralFeeBonus": "Referral Fee Bonus",
         "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
         "directRecruitReferralOverrideBonus": "Direct Recruit Referral Override Bonus",
         "directRecruitsDepositAdminChargeRebate": "Direct Recruit's Deposit Admin Charge Rebate",
         "performanceBonus": "Performance Bonus",
-        "milestoneAchievementBonus": "Milestone Achievement Bonus"
+        "milestoneAchievementBonus": "Milestone Achievement Bonus",
+        "monthlyDetails": "Monthly Rewards",
+        "noActivitiesForMonth": "No activities for this month",
+        "noDataAvailable": "No data available"
     },
     "months": {
         "january": "January",

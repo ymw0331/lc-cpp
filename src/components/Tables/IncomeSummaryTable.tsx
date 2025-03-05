@@ -1,10 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
 import { IncentiveResponse } from "@/api/incentive/incentive.api";
+
+// Define reward types enum for better type safety
+export enum REWARD_TYPE {
+    REFERRAL = 'REFERRAL',
+    TOPUP_REBATE = 'TOPUP_REBATE',
+    PERFORMANCE_BONUS = 'PERFORMANCE_BONUS',
+    DOWNSTREAM_REFERRAL = 'DOWNSTREAM_REFERRAL',
+    DOWNSTREAM_TOPUP_REBATE = 'DOWNSTREAM_TOPUP_REBATE',
+    DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS = 'DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS'
+}
+
+// Interface for an individual activity item
+interface ActivityItem {
+    type: string;
+    amount: number;
+    datetime: string;
+}
 
 // Updated props interface that accepts data from parent component
 interface IncomeSummaryTableProps {
@@ -19,11 +36,58 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
     const { t } = useTranslation();
     const { user } = useAuth();
     const [month, setMonth] = useState(availableMonths[0] || "");
+    const [monthlyActivities, setMonthlyActivities] = useState<ActivityItem[]>([]);
 
     // Check if user is a Level 1 agent
     const isLevelOneAgent = user?.tierPriority === TIER_PERMISSIONS.LEVEL_1_TIER;
 
-    const { summary } = incentiveData;
+    const { summary, activities } = incentiveData;
+
+    // Helper function to get the sum of amounts for a specific reward type in the current month
+    const getRewardAmountForMonth = (rewardType: REWARD_TYPE): number => {
+        if (!month || !activities.activities[month]) {
+            return 0;
+        }
+
+        return activities.activities[month]
+            .filter(activity => activity.type === rewardType)
+            .reduce((sum, activity) => sum + activity.amount, 0);
+    };
+
+    // Update monthly activities when month changes
+    useEffect(() => {
+        if (month && activities.activities[month]) {
+            setMonthlyActivities(activities.activities[month]);
+        } else {
+            setMonthlyActivities([]);
+        }
+    }, [month, activities]);
+
+    // Format date for display
+    const formatDateTime = (dateString: string): string => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    // Translate reward types to user-friendly labels
+    const getRewardTypeLabel = (type: string): string => {
+        switch (type) {
+            case REWARD_TYPE.REFERRAL:
+                return t('incomeSummary.referralFeeBonus');
+            case REWARD_TYPE.TOPUP_REBATE:
+                return t('incomeSummary.depositAdminChargeRebate');
+            case REWARD_TYPE.DOWNSTREAM_REFERRAL:
+                return t('incomeSummary.directRecruitReferralOverrideBonus');
+            case REWARD_TYPE.DOWNSTREAM_TOPUP_REBATE:
+                return t('incomeSummary.directRecruitsDepositAdminChargeRebate');
+            case REWARD_TYPE.PERFORMANCE_BONUS:
+                return t('incomeSummary.performanceBonus');
+            case REWARD_TYPE.DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS:
+                return t('incomeSummary.directRecruitLevelAdvancementBonus');
+            default:
+                return type;
+        }
+    };
 
     return (
         <div className="bg-white dark:bg-boxdark rounded-lg shadow-card dark:shadow-none w-full">
@@ -83,8 +147,33 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                 </select>
             </div>
 
-            {/* Table rows */}
-            <div>
+            {/* Monthly activity details section */}
+            {month && (
+                <div className="px-4 py-3 border-t border-stroke dark:border-strokedark">
+                    <h3 className="font-medium text-black dark:text-white mb-2">{t('incomeSummary.monthlyDetails')}</h3>
+
+                    {monthlyActivities.length > 0 ? (
+                        <div className="space-y-2">
+                            {monthlyActivities.map((activity, index) => (
+                                <div key={index} className="flex justify-between items-center px-4 py-2 bg-gray-2 dark:bg-meta-4 rounded">
+                                    <div>
+                                        <p className="font-medium text-black dark:text-white">{getRewardTypeLabel(activity.type)}</p>
+                                        <p className="text-xs text-bodydark">{formatDateTime(activity.datetime)}</p>
+                                    </div>
+                                    <p className="font-medium text-black dark:text-white">$ {activity.amount.toFixed(2)}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-bodydark italic">{t('incomeSummary.noActivitiesForMonth')}</p>
+                    )}
+                </div>
+            )}
+
+            {/* Table rows - Summary Section */}
+            <div className="mt-3 border-t border-stroke dark:border-strokedark pt-3">
+                <h3 className="px-4 font-medium text-black dark:text-white mb-2">{t('incomeSummary.totalEarning')}</h3>
+
                 {/* All users can see Referral Fee Bonus */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
                     <p className="font-medium text-black dark:text-white">{t('incomeSummary.referralFeeBonus')}</p>
@@ -123,11 +212,13 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                     <p className="font-medium text-black dark:text-white">$ {summary.performance_bonus.amount.toFixed(2)}</p>
                 </div>
 
-                {/* Milestone Achievement Bonus */}
-                <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
-                    <p className="font-medium text-black dark:text-white">{t('incomeSummary.milestoneAchievementBonus')}</p>
-                    <p className="font-medium text-black dark:text-white">$ {summary.milestone_bonus.amount.toFixed(2)}</p>
-                </div>
+                {/* Milestone Achievement Bonus - Only shown for Level 1 agents */}
+                {isLevelOneAgent && (
+                    <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
+                        <p className="font-medium text-black dark:text-white">{t('incomeSummary.milestoneAchievementBonus')}</p>
+                        <p className="font-medium text-black dark:text-white">$ {summary.milestone_bonus.amount.toFixed(2)}</p>
+                    </div>
+                )}
             </div>
         </div>
     );

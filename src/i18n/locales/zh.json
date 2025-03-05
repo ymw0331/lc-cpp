@@ -497,13 +497,15 @@
     "incomeSummary": {
         "title": "收入汇总",
         "totalEarning": "总收入",
-        "noDataAvailable": "无可用数据",
         "referralFeeBonus": "推荐佣金奖励",
         "depositAdminChargeRebate": "充值手续费返利",
         "directRecruitReferralOverrideBonus": "推荐佣金覆盖奖励",
         "directRecruitsDepositAdminChargeRebate": "直推充值手续费返利覆盖奖励",
         "performanceBonus": "绩效奖励",
-        "milestoneAchievementBonus": "目标达成奖金"
+        "milestoneAchievementBonus": "目标达成奖金",
+        "monthlyDetails": "月度奖励",
+        "noActivitiesForMonth": "本月无活动",
+        "noDataAvailable": "无可用数据"
     },
     "months": {
         "january": "一月",

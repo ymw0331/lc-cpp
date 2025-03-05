@@ -64,15 +64,15 @@ const Header = (props: {
           </div>
 
           {/* Search Bar Component - Hidden on smallest screens */}
-          <div className="hidden sm:block flex-1 mx-2 sm:mx-4 max-w-[680px]">
+          {/* <div className="hidden sm:block flex-1 mx-2 sm:mx-4 max-w-[680px]">
             <SearchBar />
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-2 sm:gap-3 2xsm:gap-7">
             <ul className="flex items-center gap-2 sm:gap-2 2xsm:gap-4">
               <LanguageSwitcher />
               <DarkModeSwitcher />
-              <DropdownNotification />
+              {/* <DropdownNotification /> */}
               <LevelBadge />
               <DropdownUser />
             </ul>
