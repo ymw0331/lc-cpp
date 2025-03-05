@@ -63,7 +63,7 @@ const ReferredUsersPage = () => {
 
                 <RecruitmentSummaryCard
                     directReferralsCount={recruitData.recruitmentSummary?.noOfDirectReferrals || 0}
-                    depositVolume={recruitData.recruitmentSummary?.totalDepositFromDirectReferrals || 0}
+                    totalDepositFromDirectReferrals={recruitData.recruitmentSummary?.totalDepositFromDirectReferrals ?? null}
                     selectedPeriod={selectedPeriod1}
                     onPeriodChange={setSelectedPeriod1}
                     periodOptions={Object.keys(recruitData.chartData || {})}

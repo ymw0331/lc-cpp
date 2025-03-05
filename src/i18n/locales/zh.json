@@ -2,7 +2,8 @@
     "common": {
         "processing": "处理中",
         "comingSoon": "即将推出",
-        "unknown": "未知"
+        "unknown": "未知",
+        "notAvailable": "N/A"
     },
     "header": {
         "searchPlaceholder": "输入搜索...",

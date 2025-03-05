@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 interface RecruitmentSummaryProps {
     directReferralsCount: number;
-    depositVolume: number;
+    totalDepositFromDirectReferrals: number | null;
     className?: string;
     periodOptions?: string[];
     selectedPeriod?: string;
@@ -25,7 +25,7 @@ interface RecruitmentSummaryProps {
 
 const RecruitmentSummaryCard = ({
     directReferralsCount,
-    depositVolume,
+    totalDepositFromDirectReferrals,
     className = "",
     periodOptions = ["Month", "Week", "Year"],
     selectedPeriod = "Month",
@@ -125,15 +125,15 @@ const RecruitmentSummaryCard = ({
                             </div>
                             <div className="text-start">
                                 <p className="text-base font-bold text-black dark:text-white">
-                                    {/* total deposit from direct referral */}
                                     {t("recruitmentSummaryCard.totalDepositFromDirectReferral")}
                                 </p>
                             </div>
                         </div>
                         <div className="p-6">
                             <p className="text-3xl font-bold text-black dark:text-white text-center">
-                                {/* {formatCurrency(depositVolume)} */}
-                                {depositVolume !== null ? formatCurrency(depositVolume) : "N/A"}
+                                {totalDepositFromDirectReferrals !== null && totalDepositFromDirectReferrals !== undefined
+                                    ? formatCurrency(totalDepositFromDirectReferrals)
+                                    : t("common.notAvailable")}
                             </p>
                         </div>
                     </div>

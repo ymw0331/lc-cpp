@@ -2,7 +2,8 @@
     "common": {
         "comingSoon": "Coming Soon",
         "processing": "Processing",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "notAvailable": "N/A"
     },
     "header": {
         "searchPlaceholder": "Type to search...",
