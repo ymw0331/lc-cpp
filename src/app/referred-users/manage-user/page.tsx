@@ -82,6 +82,7 @@ const ManageUserPage = () => {
         const displayName = getTierDisplayName(tier);
 
         return (
+
             <AgentLevelCard
                 key={tier}
                 level={displayName}
@@ -102,15 +103,12 @@ const ManageUserPage = () => {
                 </div>
 
                 {/* <div className="mt-4">
-                    <UsersTable users={usersListData} comingSoon={true} />
-                </div> */}
-
-                {/* <div className="mt-4">
-                    <UsersTable
-                        users={[]}
-                        comingSoon={true}
+                    <UsersTable 
+                    
+                    users={usersListData}
                     />
                 </div> */}
+
             </div>
         </DefaultLayout>
     );

@@ -73,17 +73,17 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
     const getRewardTypeLabel = (type: string): string => {
         switch (type) {
             case REWARD_TYPE.REFERRAL:
-                return t('incomeSummary.referralFeeBonus');
+                return t('incentiveManagementPage.referralFeeBonus');
             case REWARD_TYPE.TOPUP_REBATE:
-                return t('incomeSummary.depositAdminChargeRebate');
+                return t('incentiveManagementPage.depositAdminChargeRebate');
             case REWARD_TYPE.DOWNSTREAM_REFERRAL:
-                return t('incomeSummary.directRecruitReferralOverrideBonus');
+                return t('incentiveManagementPage.directRecruitReferralFeeOverrideBonus');
             case REWARD_TYPE.DOWNSTREAM_TOPUP_REBATE:
-                return t('incomeSummary.directRecruitsDepositAdminChargeRebate');
+                return t('incentiveManagementPage.directRecruitDepositAdminChargeOverridingRebate');
             case REWARD_TYPE.PERFORMANCE_BONUS:
-                return t('incomeSummary.performanceBonus');
+                return t('incentiveManagementPage.performanceBonus');
             case REWARD_TYPE.DIRECT_RECRUIT_LEVEL_ADVANCEMENT_BONUS:
-                return t('incomeSummary.directRecruitLevelAdvancementBonus');
+                return t('incentiveManagementPage.directRecruitLevelAdvancementBonus');
             default:
                 return type;
         }
@@ -172,24 +172,24 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
 
             {/* Table rows - Summary Section */}
             <div className="mt-3 border-t border-stroke dark:border-strokedark pt-3">
-                <h3 className="px-4 font-medium text-black dark:text-white mb-2">{t('incomeSummary.totalEarning')}</h3>
+                <h3 className="px-4 font-medium text-black dark:text-white mb-2">{t('incentiveManagementPage.totalIncentive')}</h3>
 
                 {/* All users can see Referral Fee Bonus */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
-                    <p className="font-medium text-black dark:text-white">{t('incomeSummary.referralFeeBonus')}</p>
+                    <p className="font-medium text-black dark:text-white">{t('incentiveManagementPage.referralFeeBonus')}</p>
                     <p className="font-medium text-black dark:text-white">$ {summary.directReferralFee.toFixed(2)}</p>
                 </div>
 
                 {/* All users can see Deposit Admin Charge Rebate */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
-                    <p className="font-medium text-black dark:text-white">{t('incomeSummary.depositAdminChargeRebate')}</p>
+                    <p className="font-medium text-black dark:text-white">{t('incentiveManagementPage.depositAdminChargeRebate')}</p>
                     <p className="font-medium text-black dark:text-white">$ {summary.directTopupRebate.toFixed(2)}</p>
                 </div>
 
                 {/* Direct Recruit Referral Override Bonus - grayed out for Level 1 */}
                 <div className={`flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark ${isLevelOneAgent ? 'bg-gray-2 dark:bg-graydark' : ''}`}>
                     <p className={`font-medium ${isLevelOneAgent ? 'text-bodydark2 dark:text-bodydark' : 'text-black dark:text-white'}`}>
-                        {t('incomeSummary.directRecruitReferralOverrideBonus')}
+                        {t('incentiveManagementPage.directRecruitReferralFeeOverrideBonus')}
                     </p>
                     <p className={`font-medium ${isLevelOneAgent ? 'text-bodydark2 dark:text-bodydark' : 'text-black dark:text-white'}`}>
                         $ {isLevelOneAgent ? '0.00' : summary.downstreamReferralFee.toFixed(2)}
@@ -199,7 +199,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                 {/* Direct Recruit's Deposit Admin Charge Rebate - grayed out for Level 1 */}
                 <div className={`flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark ${isLevelOneAgent ? 'bg-gray-2 dark:bg-graydark' : ''}`}>
                     <p className={`font-medium ${isLevelOneAgent ? 'text-bodydark2 dark:text-bodydark' : 'text-black dark:text-white'}`}>
-                        {t('incomeSummary.directRecruitsDepositAdminChargeRebate')}
+                        {t('incentiveManagementPage.directRecruitDepositAdminChargeOverridingRebate')}
                     </p>
                     <p className={`font-medium ${isLevelOneAgent ? 'text-bodydark2 dark:text-bodydark' : 'text-black dark:text-white'}`}>
                         $ {isLevelOneAgent ? '0.00' : summary.downstreamTopupRebate.toFixed(2)}
@@ -208,7 +208,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
 
                 {/* Performance Bonus */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
-                    <p className="font-medium text-black dark:text-white">{t('incomeSummary.performanceBonus')}</p>
+                    <p className="font-medium text-black dark:text-white">{t('incentiveManagementPage.performanceBonus')}</p>
                     <p className="font-medium text-black dark:text-white">$ {summary.performance_bonus.amount.toFixed(2)}</p>
                 </div>
 

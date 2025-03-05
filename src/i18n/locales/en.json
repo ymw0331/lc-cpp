@@ -165,7 +165,6 @@
         "activeUsersLabel": "Active Users",
         "left": "Remaining to complete your goals"
     },
-
     "milestoneAchievementCard": {
         "milestoneAchievementBonus": "MILESTONE ACHIEVEMENT BONUS",
         "exclusivelyForLevel1": "Exclusively for Level 1 Agent Only",
@@ -242,7 +241,8 @@
         "status": "STATUS",
         "noDataAvailable": "No data available",
         "noRecordsToDisplay": "There are no records to display for this period",
-        "showingResults": "Showing {start} to {end} of {total} results"
+        "showingResults": "Showing {start} to {end} of {total} results",
+        "exportToExcel": "Export to Excel"
     },
     "referredUsersPage": {
         "referredUsersBreadcrumb": "Referred Users",
@@ -496,16 +496,12 @@
     },
     "incomeSummary": {
         "title": "Income Summary",
-        "totalEarning": "Total Earning",
-        "referralFeeBonus": "Referral Fee Bonus",
-        "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
-        "directRecruitReferralOverrideBonus": "Direct Recruit Referral Override Bonus",
-        "directRecruitsDepositAdminChargeRebate": "Direct Recruit's Deposit Admin Charge Rebate",
-        "performanceBonus": "Performance Bonus",
-        "milestoneAchievementBonus": "Milestone Achievement Bonus",
+        "totalEarning": "Total Incentive",
         "monthlyDetails": "Monthly Rewards",
         "noActivitiesForMonth": "No activities for this month",
-        "noDataAvailable": "No data available"
+        "noDataAvailable": "No data available",
+        "summaryTitle": "Total Summary",
+        "milestoneAchievementBonus": "Milestone Achievement Bonus"
     },
     "months": {
         "january": "January",

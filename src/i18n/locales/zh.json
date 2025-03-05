@@ -223,7 +223,7 @@
         "totalIncentive": "总激励金额",
         "referralFeeBonus": "直推佣金",
         "incentivePayoutRecords": "激励结算记录",
-        "directRecruitReferralFeeOverrideBonus": "目标达成奖金",
+        "directRecruitReferralFeeOverrideBonus": "推荐佣金返利覆盖奖励",
         "directRecruitReferral": "推荐佣金覆盖奖励",
         "depositAdminChargeRebate": "充值手续费返利覆盖奖励",
         "directRecruitDepositAdminChargeOverridingRebate": "直推充值手续费返利覆盖奖励",
@@ -242,7 +242,8 @@
         "status": "状态",
         "noDataAvailable": "暂无数据",
         "noRecordsToDisplay": "当前时间段无记录显示",
-        "showingResults": "展示 {start} 到 {end}，共 {total} 条数据结果"
+        "showingResults": "展示 {start} 到 {end}，共 {total} 条数据结果",
+        "exportToExcel": "导出至Excel"
     },
     "referredUsersPage": {
         "referredUsersBreadcrumb": "推荐用户",
@@ -496,16 +497,12 @@
     },
     "incomeSummary": {
         "title": "收入汇总",
-        "totalEarning": "总收入",
-        "referralFeeBonus": "推荐佣金奖励",
-        "depositAdminChargeRebate": "充值手续费返利",
-        "directRecruitReferralOverrideBonus": "推荐佣金覆盖奖励",
-        "directRecruitsDepositAdminChargeRebate": "直推充值手续费返利覆盖奖励",
-        "performanceBonus": "绩效奖励",
-        "milestoneAchievementBonus": "目标达成奖金",
-        "monthlyDetails": "月度奖励",
-        "noActivitiesForMonth": "本月无活动",
-        "noDataAvailable": "无可用数据"
+        "totalEarning": "总激励金额",
+        "monthlyDetails": "月度奖励记录",
+        "noActivitiesForMonth": "本月无活动记录",
+        "noDataAvailable": "无可用数据",
+        "summaryTitle": "总结摘要",
+        "milestoneAchievementBonus": "目标达成奖金"
     },
     "months": {
         "january": "一月",

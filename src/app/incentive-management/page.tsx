@@ -25,6 +25,9 @@ const IncentiveManagementPage = () => {
     const [incentiveData, setIncentiveData] = useState<IncentiveResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
+    const availableMonths = incentiveData ? Object.keys(incentiveData.activities.activities) : [];
+
+    
 
     useEffect(() => {
         fetchData(
@@ -133,13 +136,23 @@ const IncentiveManagementPage = () => {
                                 title={t("incentiveManagementPage.performanceBonus")}
                                 amount={summary.performance_bonus.amount}
                                 className="h-full"
-                                // activeUsers={summary.performance_bonus.activeUsers}
+                            // activeUsers={summary.performance_bonus.activeUsers}
                             />
                         </div>
                     </div>
                 )}
 
                 {/* Activity Table */}
+                {/* <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
+                    <DataTable
+                        columns={tableColumns}
+                        data={activities.activities[currentMonth] || []}
+                        title={t("incentiveManagementPage.incentivePayoutRecords")}
+                        currentMonth={currentMonth}
+                        onMonthChange={(month: string) => setCurrentMonth(month)}
+                    />
+                </div> */}
+
                 <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                     <DataTable
                         columns={tableColumns}
@@ -147,6 +160,7 @@ const IncentiveManagementPage = () => {
                         title={t("incentiveManagementPage.incentivePayoutRecords")}
                         currentMonth={currentMonth}
                         onMonthChange={(month: string) => setCurrentMonth(month)}
+                        availableMonths={availableMonths}
                     />
                 </div>
             </div>

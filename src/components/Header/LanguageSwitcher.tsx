@@ -54,9 +54,9 @@ const LanguageSwitcher: React.FC = () => {
     };
 
     const languages = [
-        { code: 'en', label: 'English', flag: '🇺🇸' },
-        { code: 'zh', label: '简体中文', flag: '🇨🇳' },
-        { code: 'zh-hk', label: '繁體中文', flag: '🇭🇰' }
+        { code: 'en', label: 'English'},
+        { code: 'zh', label: '简体中文' },
+        { code: 'zh-hk', label: '繁體中文' }
     ];
 
     return (
@@ -87,7 +87,7 @@ const LanguageSwitcher: React.FC = () => {
                                             ? 'text-primary bg-primary/5 dark:bg-primary/10'
                                             : 'text-gray-700 dark:text-white'}`}
                                 >
-                                    <span className="mr-2">{lang.flag}</span>
+                                    {/* <span className="mr-2">{lang.flag}</span> */}
                                     {lang.label}
                                     {currentLang === lang.code && (
                                         <span className="ml-auto text-primary">✓</span>

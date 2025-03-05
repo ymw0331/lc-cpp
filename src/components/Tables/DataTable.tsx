@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
 import * as XLSX from "xlsx";
 import { useTranslation } from "react-i18next";
 
@@ -18,6 +17,7 @@ interface DataTableProps {
     title: string;
     currentMonth: string;
     onMonthChange: (month: string) => void;
+    availableMonths: string[];
     itemsPerPage?: number;
 }
 
@@ -27,12 +27,11 @@ const DataTable = ({
     title,
     currentMonth,
     onMonthChange,
+    availableMonths = [],
     itemsPerPage = 10,
 }: DataTableProps) => {
     const { t } = useTranslation();
     const [currentPage, setCurrentPage] = useState(1);
-    const [months, setMonths] = useState<string[]>([]);
-    const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
 
     // Calculate pagination
     const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -40,27 +39,27 @@ const DataTable = ({
     const endIndex = startIndex + itemsPerPage;
     const currentData = data.slice(startIndex, endIndex);
 
-    // Initialize months on component mount
+    // Set initial month if not already selected
     useEffect(() => {
-        const today = new Date();
-        const monthsList = Array.from({ length: 3 }, (_, i) => {
-            const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-            return format(date, "MMM yyyy");
-        });
-        setMonths(monthsList);
-        const index = monthsList.indexOf(currentMonth);
-        setCurrentMonthIndex(index !== -1 ? index : 0);
-    }, [currentMonth]);
+        if (availableMonths.length > 0 && (!currentMonth || !availableMonths.includes(currentMonth))) {
+            onMonthChange(availableMonths[0]);
+        }
+    }, [availableMonths, currentMonth, onMonthChange]);
 
     // Handle month navigation
-    const handleMonthChange = (direction: "prev" | "next") => {
-        const newIndex =
-            direction === "prev" ? currentMonthIndex + 1 : currentMonthIndex - 1;
+    const handlePrevMonth = () => {
+        const currentIndex = availableMonths.indexOf(currentMonth);
+        if (currentIndex < availableMonths.length - 1) {
+            onMonthChange(availableMonths[currentIndex + 1]);
+            setCurrentPage(1); // Reset to first page
+        }
+    };
 
-        if (newIndex >= 0 && newIndex < months.length) {
-            setCurrentMonthIndex(newIndex);
-            onMonthChange(months[newIndex]);
-            setCurrentPage(1); // Reset to first page when month changes
+    const handleNextMonth = () => {
+        const currentIndex = availableMonths.indexOf(currentMonth);
+        if (currentIndex > 0) {
+            onMonthChange(availableMonths[currentIndex - 1]);
+            setCurrentPage(1); // Reset to first page
         }
     };
 
@@ -72,6 +71,11 @@ const DataTable = ({
         XLSX.utils.book_append_sheet(wb, ws, "Incentive Activity");
         XLSX.writeFile(wb, `Incentive_Activity_${currentMonth}.xlsx`);
     };
+
+    // Determine if navigation buttons should be disabled
+    const currentIndex = availableMonths.indexOf(currentMonth);
+    const isNextDisabled = currentIndex <= 0;
+    const isPrevDisabled = currentIndex >= availableMonths.length - 1;
 
     return (
         <div className="w-full font-archivo">
@@ -86,18 +90,20 @@ const DataTable = ({
                             variant="ghost"
                             size="icon"
                             className="rounded-l-lg text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4 transition-colors"
-                            onClick={() => handleMonthChange("prev")}
+                            onClick={handlePrevMonth}
+                            disabled={isPrevDisabled || availableMonths.length === 0}
                         >
                             <ChevronLeft className="w-5 h-5" />
                         </Button>
                         <span className="px-6 py-2 font-medium text-black dark:text-white min-w-[120px] text-center">
-                            {currentMonth}
+                            {currentMonth || t("dataTable.noDataAvailable")}
                         </span>
                         <Button
                             variant="ghost"
                             size="icon"
                             className="rounded-r-lg text-body dark:text-bodydark hover:bg-gray-2 dark:hover:bg-meta-4 transition-colors"
-                            onClick={() => handleMonthChange("next")}
+                            onClick={handleNextMonth}
+                            disabled={isNextDisabled || availableMonths.length === 0}
                         >
                             <ChevronRight className="w-5 h-5" />
                         </Button>
@@ -169,7 +175,9 @@ const DataTable = ({
                                                         minimumFractionDigits: 2,
                                                         maximumFractionDigits: 2,
                                                     })}`
-                                                    : row[column.key]}
+                                                    : column.key === "datetime"
+                                                        ? new Date(row[column.key]).toLocaleString()
+                                                        : row[column.key]}
                                             </td>
                                         ))}
                                     </tr>
@@ -180,15 +188,8 @@ const DataTable = ({
                 </div>
 
                 {/* Pagination - Only show if there's data */}
-                {data.length > 0 && (
+                {data.length > 0 && totalPages > 1 && (
                     <div className="flex flex-wrap items-center justify-between py-4.5 px-4 border-t border-stroke dark:border-strokedark">
-                        {/* <p className="mb-4 sm:mb-0 text-body dark:text-bodydark">
-                            {t("dataTable.showingResults", {
-                                start: startIndex + 1,
-                                end: Math.min(endIndex, data.length),
-                                total: data.length,
-                            })}
-                        </p> */}
                         <div className="flex items-center space-x-2">
                             <Button
                                 variant="outline"
