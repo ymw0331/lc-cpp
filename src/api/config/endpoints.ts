@@ -14,6 +14,11 @@ export const API_ENDPOINTS = {
     },
 } as const;
 
+// NEXT_PUBLIC_RESELLER_API_URL=https://api.reseller.lookcard.io
+// NEXT_PUBLIC_RESELLER_PATH=/app/reseller
+
+
+// https://api.reseller.lookcard.io/app/reseller/account
 
 
 // Add validation to ensure env variables exist

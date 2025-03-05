@@ -4,14 +4,13 @@ import ProfileCard from "../Cards/ProfileCard";
 import RecruitCard from "../Cards/RecruitCard";
 import ReferralCard from "../Cards/ReferralCard";
 import AgentStatCard from "../Cards/AgentStatCard";
-import StatisticChart from "../Charts/StatisticChart";
 import IncomeSummaryTable from "../Tables/IncomeSummaryTable";
 import { DepositActivityTable } from "../Tables/DepositActivityTable";
 import { RewardWalletBalanceIcon, TotalDepositAmountIcon, DirectRecruitIncentiveIcon } from "../Icons/dashboard";
 import Loader from "../common/Loader";
 import { useEffect, useState } from "react";
 import { dashboardApi } from "@/api/dashboard/dashboard.api";
-import { incentiveApi } from "@/api/incentive/incentive.api";
+import { incentiveApi, IncentiveResponse } from "@/api/incentive/incentive.api";
 import { DashboardStatistics } from "@/types/dashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { checkTierPermission, TIER_PERMISSIONS } from '@/utils/permissions';
@@ -24,7 +23,7 @@ const AgentDashboard: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [dashboardData, setDashboardData] = useState<DashboardStatistics | null>(null);
-  const [incentiveData, setIncentiveData] = useState<any | null>(null);
+  const [incentiveData, setIncentiveData] = useState<IncentiveResponse | null>(null);
   const [availableMonths, setAvailableMonths] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -42,14 +41,13 @@ const AgentDashboard: React.FC = () => {
         setIncentiveData(incentiveData);
 
         // Extract available months for the income summary component
-        if (incentiveData && incentiveData.activities) {
-          const months = Object.keys(incentiveData.activities);
+        if (incentiveData && incentiveData.activities && incentiveData.activities.activities) {
+          const months = Object.keys(incentiveData.activities.activities);
 
           // Sort months by date (most recent first)
           const sortedMonths = [...months].sort((a, b) => {
             const dateA = new Date(a);
             const dateB = new Date(b);
-            // return dateB - dateA;
             return dateB.getTime() - dateA.getTime();
           });
 
@@ -119,21 +117,20 @@ const AgentDashboard: React.FC = () => {
               <AgentStatCard
                 icon={<DirectRecruitIncentiveIcon />}
                 title={t('agentDashboard.referralFeeBonus')}
-                amount={dashboardData.directRecruitment.earnings}
+                amount={incentiveData.summary.directReferralFee}
               />
 
               {/* Bottom Row */}
               <AgentStatCard
                 icon={<TotalDepositAmountIcon />}
                 title={t('agentDashboard.referralDepositVolume')}
-                // title={t('agentDashboard.referredDepositAmount')}
                 amount={dashboardData.totalDeposits.amount}
               />
 
               <AgentStatCard
                 icon={<AgentLevelIcon />}
                 title={t('agentDashboard.depositAdminChargeRebate')}
-                amount={incentiveData.summary.direct_admin_charge}
+                amount={incentiveData.summary.directTopupRebate}
               />
             </div>
           </div>
@@ -159,11 +156,9 @@ const AgentDashboard: React.FC = () => {
         <div className="mb-6">
           <IncomeSummaryTable
             incentiveData={incentiveData}
-            referralFeeBonus={dashboardData.directRecruitment.earnings}
             availableMonths={availableMonths}
           />
         </div>
-
       </>
     );
   }
@@ -177,14 +172,13 @@ const AgentDashboard: React.FC = () => {
     },
     {
       icon: <TotalDepositAmountIcon />,
-      // title: t('agentDashboard.referredDepositAmount'),
       title: t('agentDashboard.referralDepositVolume'),
       amount: dashboardData.totalDeposits.amount,
     },
     canAccessIncentives && {
       icon: <DirectRecruitIncentiveIcon />,
       title: t('agentDashboard.referralFeeBonus'),
-      amount: dashboardData.directRecruitment.earnings,
+      amount: incentiveData.summary.directReferralFee,
     },
   ].filter(Boolean);
 
@@ -232,7 +226,8 @@ const AgentDashboard: React.FC = () => {
               agentsToPartner={{
                 count: dashboardData.totalDirectRecruit.agentsToPartner
               }}
-            />
+              // totalReferral={dashboardData.totalReferral} 
+              />
           )}
 
           {/* Referral Card - Available to all tiers */}
@@ -240,12 +235,10 @@ const AgentDashboard: React.FC = () => {
         </div>
       </div>
 
-
       {/* Income Summary Table */}
       <div className="mb-6">
         <IncomeSummaryTable
           incentiveData={incentiveData}
-          referralFeeBonus={dashboardData.directRecruitment.earnings}
           availableMonths={availableMonths}
         />
       </div>

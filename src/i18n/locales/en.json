@@ -221,9 +221,10 @@
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "Incentive Management",
         "totalIncentive": "Total Incentive Earned",
+        "referralFeeBonus": "Referral Fee Bonus",
         "incentivePayoutRecords": "Incentive Payout Records",
         "milestoneAchievementBonus": "Milestone Achievement Bonus",
-        "directRecruitReferral": "Direct Recruit's Referral Fee Override Bonus",
+        "directRecruitReferralFeeOverrideBonus": "Direct Recruit's Referral Fee Override Bonus",
         "depositAdminChargeRebate": "Deposit Admin Charge Rebate",
         "directRecruitDepositAdminChargeOverridingRebate": "Direct Recruit's Deposit Admin Charge Override Rebate",
         "directRecruitLevelAdvancementBonus": "Direct Recruit Level Advancement Bonus",
@@ -452,15 +453,15 @@
     },
     "walletTransferForm": {
         "rewardWalletBalance": "Reward Wallet Balance",
-        "rewardWalletBalanceDescription": "Transfer funds from your reward wallet to your current account wallet.",
-        "selectCurrencyWallet": "Select Currency Wallet",
+        "rewardWalletBalanceDescription": "Dedicated wallet designed to store and manage all your earned rewards seamlessly.",
+        "selectCurrencyWallet": "Select Currency",
         "enterTransferAmount": "Enter Transfer Amount",
         "fullAmountButton": "Full Amount",
-        "transferFee": "Transfer Fee",
+        "transferFee": "Transaction Fee",
         "totalAmountTransferred": "Total Amount Transferred",
         "transferButton": "Transfer",
         "errorExceedsBalance": "Amount exceeds available balance",
-        "errorMustBePositive": "Amount must be greater than 0"
+        "errorMustBePositive": "The transaction amount must be greater than zero"
     },
     "transferPage": {
         "transferToCurrentAccountWalletBreadcrumb": "Transfer to Current Account Wallet",

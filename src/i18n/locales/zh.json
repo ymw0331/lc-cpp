@@ -221,8 +221,9 @@
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "绩效激励管理",
         "totalIncentive": "总激励金额",
+        "referralFeeBonus": "直推佣金",
         "incentivePayoutRecords": "激励结算记录",
-        "milestoneAchievementBonus": "目标达成奖金",
+        "directRecruitReferralFeeOverrideBonus": "目标达成奖金",
         "directRecruitReferral": "推荐佣金覆盖奖励",
         "depositAdminChargeRebate": "充值手续费返利覆盖奖励",
         "directRecruitDepositAdminChargeOverridingRebate": "直推充值手续费返利覆盖奖励",
@@ -452,36 +453,36 @@
     },
     "walletTransferForm": {
         "rewardWalletBalance": "奖励钱包余额",
-        "rewardWalletBalanceDescription": "将资金从您的奖励钱包转移到您的当前账户钱包。",
-        "selectCurrencyWallet": "选择货币钱包",
+        "rewardWalletBalanceDescription": "专属奖励钱包，高效管理并存储您所有奖励。",
+        "selectCurrencyWallet": "选择币种",
         "enterTransferAmount": "输入转账金额",
-        "fullAmountButton": "最大金额",
-        "transferFee": "转账费用",
+        "fullAmountButton": "全额",
+        "transferFee": "转账手续费",
         "totalAmountTransferred": "转账总额",
         "transferButton": "转账",
-        "errorExceedsBalance": "金额超过可用余额",
-        "errorMustBePositive": "金额必须大于0"
+        "errorExceedsBalance": "交易金额超出可用余额",
+        "errorMustBePositive": "交易金额必须大于零"
     },
     "transferPage": {
-        "transferToCurrentAccountWalletBreadcrumb": "转账到当前账户钱包",
-        "failedToLoadData": "加载转账数据失败。请稍后再试。",
+        "transferToCurrentAccountWalletBreadcrumb": "转账到往来账户钱包",
+        "failedToLoadData": "加载数据失败。请稍后再试。",
         "successTitle": "转账成功",
-        "successDescription": "成功将 {{amount}} {{currency}} 转账到您的当前账户钱包。",
+        "successDescription": "已成功转账 {{amount}} {{currency}} 至您的往来账号钱包。",
         "errorTitle": "转账失败",
         "errorDescription": "处理您的转账时出错。请再试一次。",
-        "errorGeneric": "发生意外错误。请稍后再试。"
+        "errorGeneric": "发生系统错误，请稍后重试或联系客服。"
     },
     "transferConfirmationDialog": {
-        "title": "转账至当前账户钱包",
+        "title": "转账至往来账号钱包",
         "subtitle": "确认转账",
-        "transferMessage": "您即将转账 {{amount}} {{currency}} 到您的当前账户钱包",
+        "transferMessage": "您即将转账 {{amount}} {{currency}} 至您的往来账号钱包",
         "disclaimers": "免责声明",
-        "disclaimer1": "请在确认交易前确保所有详细信息和金额正确无误。一旦提交，交易将无法撤销。",
-        "disclaimer2": "因网络可用性、处理时间或我们无法控制的外部因素，转账可能会有延迟。",
-        "disclaimer3": "适用的交易费用、汇率和处理费用将在确认前显示（如有）。",
-        "disclaimer4": "所有交易均已加密以确保安全。为了额外保护，请勿与他人共享您的登录凭证。",
-        "disclaimer5": "Lookcard Limited 对用户输入的错误详细信息不承担责任。",
-        "disclaimer6": "交易可能会根据当地和国际反洗钱(AML)和反恐融资(CTF)法规进行审核。这可能导致处理延迟或取消。",
+        "disclaimer1": "请在确认交易前仔细核对所有信息和金额，交易一旦提交，将无法撤销。",
+        "disclaimer2": "受网络状况、处理时间或其他不可控因素影响，转账可能会出现延迟。",
+        "disclaimer3": "适用的交易费用、汇率及处理费用（如有）将在确认前显示。",
+        "disclaimer4": "所有交易均采用加密技术以确保安全。为保障您的账户安全，请勿向任何人泄露您的登录凭据。",
+        "disclaimer5": "若因用户输入错误信息导致交易失败或资金损失，Lookcard Limited 概不承担责任。",
+        "disclaimer6": "交易可能依据当地及国际反洗钱（AML）和反恐融资（CTF）法规进行审核，审核可能导致处理延迟或交易取消。",
         "cancelButton": "取消",
         "confirmButton": "确认"
     },
@@ -494,7 +495,7 @@
         "closeButton": "进行另一笔转账"
     },
     "incomeSummary": {
-        "title": "收入摘要",
+        "title": "收入汇总",
         "totalEarning": "总收入",
         "noDataAvailable": "无可用数据",
         "referralFeeBonus": "推荐佣金奖励",
@@ -519,13 +520,13 @@
         "december": "十二月"
     },
     "recruitmentSummaryCard": {
-        "recruitmentSummary": "招募详情",
-        "noOfDirectReferral": "直推人数",
-        "totalDepositFromDirectReferral": "直推总充值额"
+        "recruitmentSummary": "代理招募详情",
+        "noOfDirectReferral": "直推数额",
+        "totalDepositFromDirectReferral": "直推总充值数额"
     },
     "agentRecruitmentSummaryCard": {
         "agentRecruitmentSummary": "经销商代理招募详情",
-        "directRecruitVolumeLabel": "直接招募代理人數",
-        "depositVolumeLabel": "直接招募代理的存款金額 (美元)"
+        "directRecruitVolumeLabel": "直推招募代理数额",
+        "depositVolumeLabel": "直推招募代理充值金額 (美元)"
     }
 }

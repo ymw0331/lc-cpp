@@ -53,5 +53,6 @@ export interface DashboardStatistics {
         agentsToPartner: number;
     };
     referralCode: string;
+    totalReferral: number,
     depositActivities: DepositActivity[];
 }

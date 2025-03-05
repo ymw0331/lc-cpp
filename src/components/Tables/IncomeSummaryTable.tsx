@@ -4,39 +4,16 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
+import { IncentiveResponse } from "@/api/incentive/incentive.api";
 
 // Updated props interface that accepts data from parent component
 interface IncomeSummaryTableProps {
-    incentiveData: {
-        summary: {
-            total_incentive: number;
-            milestone_bonus: {
-                amount: number;
-            };
-            direct_recruit_referral: number;
-            direct_admin_charge: number;
-            direct_recruit_deposit: number;
-            direct_recruit_level_advancement_bonus: number;
-            performance_bonus: {
-                amount: number;
-                activeUsers: number;
-            };
-        };
-        activities: {
-            [key: string]: Array<{
-                type: string;
-                amount: number;
-                datetime: string;
-            }>;
-        };
-    };
-    referralFeeBonus: number;
+    incentiveData: IncentiveResponse;
     availableMonths: string[];
 }
 
 const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
     incentiveData,
-    referralFeeBonus,
     availableMonths
 }) => {
     const { t } = useTranslation();
@@ -111,13 +88,13 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                 {/* All users can see Referral Fee Bonus */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
                     <p className="font-medium text-black dark:text-white">{t('incomeSummary.referralFeeBonus')}</p>
-                    <p className="font-medium text-black dark:text-white">$ {referralFeeBonus.toFixed(2)}</p>
+                    <p className="font-medium text-black dark:text-white">$ {summary.directReferralFee.toFixed(2)}</p>
                 </div>
 
                 {/* All users can see Deposit Admin Charge Rebate */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
                     <p className="font-medium text-black dark:text-white">{t('incomeSummary.depositAdminChargeRebate')}</p>
-                    <p className="font-medium text-black dark:text-white">$ {summary.direct_admin_charge.toFixed(2)}</p>
+                    <p className="font-medium text-black dark:text-white">$ {summary.directTopupRebate.toFixed(2)}</p>
                 </div>
 
                 {/* Direct Recruit Referral Override Bonus - grayed out for Level 1 */}
@@ -126,7 +103,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                         {t('incomeSummary.directRecruitReferralOverrideBonus')}
                     </p>
                     <p className={`font-medium ${isLevelOneAgent ? 'text-bodydark2 dark:text-bodydark' : 'text-black dark:text-white'}`}>
-                        $ {isLevelOneAgent ? '0.00' : summary.direct_recruit_referral.toFixed(2)}
+                        $ {isLevelOneAgent ? '0.00' : summary.downstreamReferralFee.toFixed(2)}
                     </p>
                 </div>
 
@@ -136,7 +113,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                         {t('incomeSummary.directRecruitsDepositAdminChargeRebate')}
                     </p>
                     <p className={`font-medium ${isLevelOneAgent ? 'text-bodydark2 dark:text-bodydark' : 'text-black dark:text-white'}`}>
-                        $ {isLevelOneAgent ? '0.00' : summary.direct_recruit_deposit.toFixed(2)}
+                        $ {isLevelOneAgent ? '0.00' : summary.downstreamTopupRebate.toFixed(2)}
                     </p>
                 </div>
 

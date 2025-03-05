@@ -13,6 +13,7 @@ interface RecruitCardProps {
         count: number;
         trend?: "up" | "down"; // Optional trend for flexibility
     };
+    // totalReferral: number;
 }
 
 const RecruitCard = ({ count, agentsToPartner }: RecruitCardProps) => {
@@ -27,7 +28,8 @@ const RecruitCard = ({ count, agentsToPartner }: RecruitCardProps) => {
                             {t("recruitCard.totalDirectRecruitLabel")}
                         </h3>
                         <p className="text-[2.5rem] font-bold text-black dark:text-white leading-tight">
-                            {count.toLocaleString()}
+                            {count.toLocaleString()} 
+                            {/* / {totalReferral.toLocaleString()} */}
                         </p>
                     </div>
                     <div className="text-right flex flex-col items-end">
@@ -50,13 +52,13 @@ const RecruitCard = ({ count, agentsToPartner }: RecruitCardProps) => {
                                 </svg>
                             )}
 
-                            <span className="text-xl font-bold text-black dark:text-white">
+                            {/* <span className="text-xl font-bold text-black dark:text-white">
                                 {agentsToPartner.count}
                             </span>
 
                             <p className="text-[#8A8AA3] text-sm">
                                 {t("recruitCard.agentsToPartnerLabel")}
-                            </p>
+                            </p> */}
                         </div>
                     </div>
                 </div>
