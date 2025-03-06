@@ -1,17 +1,14 @@
-// ProfileHeaderCard.tsx
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { Avatar } from "@/components/ui/avatar";
-import { Facebook, Linkedin } from "lucide-react";
-import Image from "next/image";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface ProfileData {
     name: string;
     level: string;
-    avatar: string;
+    avatar?: string;
     details: {
-        userId: string;
+        resellerId: string;
         joinedSince: string;
         lastActive: string;
         keyMarket: string;
@@ -37,7 +34,7 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
     );
 
     const detailLabels = {
-        userId: "User ID",
+        resellerId: "Reseller ID",
         joinedSince: "Joined Since",
         lastActive: "Last Active",
         keyMarket: "Key Market"
@@ -48,6 +45,11 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
         eKYC: "eKYC",
         accountActivation: "Account Activation",
         physicalCard: "Physical Card"
+    };
+
+    // Get the first letter of the name for the avatar
+    const getFirstLetter = (name: string) => {
+        return name ? name.charAt(0).toUpperCase() : 'A';
     };
 
     // Add null checks
@@ -62,12 +64,9 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
                     {/* Profile Header */}
                     <div className="flex items-start gap-4 mb-6">
                         <Avatar className="h-16 w-16 rounded-full border-4 border-white dark:border-boxdark-2">
-                            <Image 
-                            src={data.avatar} 
-                            alt={data.name} 
-                            width={40}
-                            height={40}
-                            className="h-full w-full object-cover" />
+                            <AvatarFallback className="bg-primary/10 text-primary text-xl font-semibold">
+                                {getFirstLetter(data.name)}
+                            </AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
                             <div className="flex justify-between items-start">
@@ -79,20 +78,6 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
                                         {data.level}
                                     </span>
                                 </div>
-                                {data.socialLinks && (
-                                    <div className="flex gap-2">
-                                        {data.socialLinks.facebook && (
-                                            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 transition-colors">
-                                                <Facebook className="h-4 w-4 text-white" />
-                                            </button>
-                                        )}
-                                        {data.socialLinks.linkedin && (
-                                            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-[#0A66C2] hover:bg-[#0A66C2]/90 transition-colors">
-                                                <Linkedin className="h-4 w-4 text-white" />
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
@@ -110,8 +95,8 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
                 </div>
             </Card>
 
-            {/* Status Card */}
-            <Card className="bg-white dark:bg-boxdark border-none shadow-card">
+            {/* Status Card - Commented out as requested */}
+            {/* <Card className="bg-white dark:bg-boxdark border-none shadow-card">
                 <div className="p-6">
                     <div className="space-y-0">
                         {Object.entries(data.status).map(([key, value]) => (
@@ -123,7 +108,7 @@ const ProfileHeaderCard = ({ data }: { data: ProfileData }) => {
                         ))}
                     </div>
                 </div>
-            </Card>
+            </Card> */}
         </div>
     );
 };

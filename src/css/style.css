@@ -93,6 +93,28 @@
 }
 
 @layer components {
+  /* Custom tab styles for split centered tabs */
+  .split-tabs-container {
+    @apply flex w-full justify-between border-b border-stroke;
+  }
+
+  .split-tab-section {
+    @apply flex flex-1 justify-center;
+  }
+
+  .split-tab-item {
+    @apply relative cursor-pointer px-6 py-2;
+  }
+
+  .split-tab-item.active {
+    @apply font-medium text-primary;
+  }
+
+  .split-tab-item.active::after {
+    content: "";
+    @apply absolute bottom-0 left-0 h-0.5 w-full bg-primary;
+    transform: translateY(1px);
+  }
 }
 
 @layer utilities {
@@ -105,11 +127,11 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
-  
+
   .sidebar-animation {
     animation: sidebarSlide 200ms ease-out;
   }
-  
+
   @keyframes sidebarSlide {
     from {
       opacity: 0.8;

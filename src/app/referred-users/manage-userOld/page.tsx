@@ -18,12 +18,6 @@ const ManageUserPage = () => {
     const [dashboardData, setDashboardData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
-    const [activeTab, setActiveTab] = useState('users');
-
-    const tabs = [
-        { id: 'users', label: t('manageUserPage.usersTab', 'Users') },
-        { id: 'agents', label: t('manageUserPage.agentsTab', 'Agents') }
-    ];
 
     useEffect(() => {
         const fetchData = async () => {
@@ -105,8 +99,8 @@ const ManageUserPage = () => {
         );
     });
 
-    // Use the actual direct referrals from the API response
-    const directReferrals = resellerData.directReferral || [];
+    // Placeholder for direct referrals, will be replaced with actual API data
+    const directReferrals: any[] = [];
 
     return (
         <DefaultLayout>
@@ -119,8 +113,8 @@ const ManageUserPage = () => {
                 </div>
 
                 <div className="mt-3">
-                    <UsersTable
-                        downstreams={resellerData.downstreams || []}
+                    <UsersTable 
+                        downstreams={resellerData.downstreams} 
                         directReferrals={directReferrals}
                         dashboardTotalReferrals={dashboardData?.totalReferral || 0}
                     />

@@ -280,7 +280,13 @@
         "email": "User Email",
         "keyMarket": "Key Market",
         "joinedSince": "Joined Since",
-        "lastActive": "Last Active"
+        "lastActive": "Last Active",
+        "accActivation": "Account Activation",
+        "totalDeposit": "Total Deposit",
+        "physicalCard": "Physical Card",
+        "actions": "Actions",
+        "previous": "Previous",
+        "next": "Next"
     },
     "recruitAgentPage": {
         "recruitAgentBreadcrumb": "Recruit Agent",

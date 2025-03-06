@@ -1,99 +1,70 @@
+"use client"
+
 import Link from "next/link";
 import USDTIcon from "../Icons/dashboard/USDTIcon";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+} from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 
 interface WalletCardProps {
     title: string;
     amount: number | null | undefined;
     icon: React.ReactNode;
-    secondaryAmount?: number | null;
-    secondaryIcon?: React.ReactNode;
     showTransfer?: boolean;
-    comingSoon?: boolean;
+    className?: string;
 }
 
 const WalletCard = ({
     title,
     amount,
     icon,
-    secondaryAmount,
-    secondaryIcon,
     showTransfer,
-    comingSoon = false, // Default to false
+    className = "",
 }: WalletCardProps) => {
     const { t } = useTranslation();
 
-    // Format amount with fallback
-    const formatAmount = (value: number | null | undefined) => {
-        if (value === null || value === undefined) return "0.00";
-        return value.toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-    };
-
-    // Coming Soon state
-    if (comingSoon) {
-        return (
-            <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark flex flex-col items-center justify-center">
-                <div className="flex w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10 mb-3 sm:mb-4">
-                    {icon}
-                </div>
-                <h3 className="text-base sm:text-lg text-black/60 dark:text-white/60 mb-4">
-                    {title}
-                </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {t("walletCard.comingSoon")}
-                </p>
-            </div>
-        );
-    }
-
     return (
-        <div className="p-4 sm:p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
-            {/* Icon and Title */}
-            <div className="flex flex-col gap-3 sm:gap-6 mb-3 sm:mb-4">
-                <div className="flex w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-primary/10">
-                    {icon}
-                </div>
-                <h3 className="flex text-base sm:text-lg text-black/60 dark:text-white/60">
-                    {title}
-                </h3>
-            </div>
-
-            {/* Amounts Section */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-14">
-                    {/* Primary Amount */}
-                    <div className="flex items-center gap-2">
-                        <span className="text-2xl sm:text-[32px] font-bold text-black dark:text-white">
-                            {formatAmount(amount)}
-                        </span>
-                        <USDTIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+        <Card className={`border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-full flex flex-col ${className}`}>
+            <CardHeader className="p-6 pb-2 flex-initial">
+                <div className="flex items-center gap-4 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-gray dark:bg-meta-4 flex items-center justify-center">
+                        {icon}
                     </div>
-
-                    {/* Secondary Amount if exists */}
-                    {secondaryAmount !== undefined && (
-                        <div className="flex items-center gap-2">
-                            <span className="text-2xl sm:text-[32px] font-bold text-black dark:text-white">
-                                {formatAmount(secondaryAmount)}
-                            </span>
-                            <div className="w-5 h-5 sm:w-6 sm:h-6">{secondaryIcon}</div>
-                        </div>
-                    )}
                 </div>
 
-                {/* Transfer Button */}
+                <div>
+                    <h4 className="text-base text-body dark:text-bodydark font-medium">
+                        {title}
+                    </h4>
+                </div>
+            </CardHeader>
+
+            <CardContent className="p-6 pt-2 flex-1 flex items-end justify-between">
+                <div className="mt-2 flex items-center gap-4">
+                    <h4 className="text-2xl font-bold text-black dark:text-white">
+                        {(amount ?? 0).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        })}
+                    </h4>
+                    <span>
+                        <USDTIcon />
+                    </span>
+                </div>
+
                 {showTransfer && (
-                    <Link href="/account/transfer" className="w-full sm:w-auto">
-                        <button className="w-full sm:w-auto px-4 sm:px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm sm:text-base">
+                    <Link href="/account/transfer">
+                        <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm">
                             {t("walletCard.transferButton")}
                         </button>
                     </Link>
                 )}
-            </div>
-        </div>
-    );
-};
+            </CardContent>
+        </Card>
+    )
+}
 
 export default WalletCard;

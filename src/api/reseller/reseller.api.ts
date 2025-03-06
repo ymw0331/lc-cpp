@@ -23,6 +23,46 @@ interface ResellerResponse {
     };
     downstreams: any[];
     code: string;
+    directReferral: Array<{
+        user: {
+            id: number;
+            uuid: string;
+            first_name: string;
+            last_name: string;
+            profileId: string;
+            email: string;
+            username: string;
+            status: string;
+            verified_at: string;
+            created_at: string;
+            updated_at: string;
+            phone_no: string | null;
+            country_code: number | null;
+            cardId: number | null;
+            ekycStatus: string | null;
+            cardStatus: string | null;
+            firstDeposit: boolean | null;
+            [key: string]: any;
+        }
+    }>;
+}
+
+interface ResellerProfileResponse {
+    id: string;
+    fullName: string;
+    userId: string;
+    resellerId: string;
+    ranking: string;
+    contactNo: string;
+    emailAddress: string;
+    digitalId: string;
+    country: string;
+    accountActivation: string;
+    totalDeposit: number;
+    physicalCard: boolean;
+    ekycStatus: string;
+    cardStatus: string;
+    firstDeposit: boolean;
 }
 
 export const resellerApi = {
@@ -33,6 +73,13 @@ export const resellerApi = {
         return response.data;
     },
 
+    // Get specific agent data by profileId
+    getAgentData: async (profileId: string) => {
+        const response = await resellerAxios.get(
+            `${API_ENDPOINTS.RESELLER.INFO}/${profileId}`
+        );
+        return response.data;
+    },
 
     registerReseller: async () => {
         // The auth token will be automatically included in the request headers
@@ -42,7 +89,6 @@ export const resellerApi = {
         );
         return response.data;
     },
-
 
     countDownstreamByTier: (downstreams: any[]) => {
         const tierCounts = {
@@ -85,7 +131,6 @@ export const resellerApi = {
         }
     },
 
-
     // Get the tier name based on the priority number
     getTierNameByPriority: (priority: number) => {
         switch (priority) {
@@ -96,6 +141,35 @@ export const resellerApi = {
             case 5: return "Level 5 Partner";
             default: return "Unknown";
         }
-    }
+    },
 
+    // Get single agent profile by profileId
+    getAgentProfile: async (profileId: string): Promise<ResellerProfileResponse> => {
+        const response = await resellerAxios.get(
+            `${API_ENDPOINTS.RESELLER.PROFILE}/${profileId}`
+        );
+        return response.data;
+    },
+
+    // Format agent data for display
+    formatAgentData: (agentData: any): ResellerProfileResponse => {
+        // Ensuring all fields are properly formatted
+        return {
+            id: agentData.id || '',
+            fullName: agentData.fullName || agentData.emailAddress || '',
+            userId: agentData.userId || agentData.id || '',
+            resellerId: agentData.resellerId || agentData.id || '',
+            ranking: agentData.ranking || '',
+            contactNo: agentData.contactNo || '',
+            emailAddress: agentData.emailAddress || '',
+            digitalId: agentData.digitalId || agentData.ownerProfileId || '',
+            country: agentData.country || 'N/A',
+            accountActivation: agentData.accountActivation || agentData.createdAt || '',
+            totalDeposit: agentData.totalDeposit || 0,
+            physicalCard: agentData.physicalCard !== undefined ? agentData.physicalCard : false,
+            ekycStatus: agentData.ekycStatus || 'pending',
+            cardStatus: agentData.cardStatus || 'inactive',
+            firstDeposit: agentData.firstDeposit !== undefined ? agentData.firstDeposit : false
+        };
+    }
 };

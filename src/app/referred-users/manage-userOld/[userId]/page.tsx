@@ -12,71 +12,6 @@ import Link from 'next/link';
 import { singleUserData } from '@/lib/data';
 const SingleUserPage = () => {
 
-    // const chartData = {
-    //     cardActivation: {
-    //         "2023": {
-    //             Year: [
-    //                 { label: 'Jan', value: 150 },
-    //                 { label: 'Feb', value: 450 },
-    //                 { label: 'Mar', value: 380 },
-    //                 { label: 'Apr', value: 560 },
-    //                 { label: 'May', value: 270 },
-    //                 { label: 'Jun', value: 490 },
-    //                 { label: 'Jul', value: 120 },
-    //                 { label: 'Aug', value: 590 },
-    //                 { label: 'Sep', value: 310 },
-    //                 { label: 'Oct', value: 430 },
-    //                 { label: 'Nov', value: 580 },
-    //                 { label: 'Dec', value: 530 }
-    //             ],
-    //             Month: [
-    //                 { label: 'Week 1', value: 320 },
-    //                 { label: 'Week 2', value: 480 },
-    //                 { label: 'Week 3', value: 290 },
-    //                 { label: 'Week 4', value: 510 }
-    //             ],
-    //             Week: [
-    //                 { label: 'Mon', value: 85 },
-    //                 { label: 'Tue', value: 120 },
-    //                 { label: 'Wed', value: 95 },
-    //                 { label: 'Thu', value: 140 },
-    //                 { label: 'Fri', value: 110 },
-    //                 { label: 'Sun', value: 65 }
-    //             ]
-    //         },
-    //         "2022": {
-    //             Year: [
-    //                 { label: 'Jan', value: 120 },
-    //                 { label: 'Feb', value: 380 },
-    //                 { label: 'Mar', value: 320 },
-    //                 { label: 'Apr', value: 480 },
-    //                 { label: 'May', value: 230 },
-    //                 { label: 'Jun', value: 420 },
-    //                 { label: 'Jul', value: 90 },
-    //                 { label: 'Aug', value: 510 },
-    //                 { label: 'Sep', value: 280 },
-    //                 { label: 'Oct', value: 390 },
-    //                 { label: 'Nov', value: 520 },
-    //                 { label: 'Dec', value: 480 }
-    //             ],
-    //             Month: [
-    //                 { label: 'Week 1', value: 280 },
-    //                 { label: 'Week 2', value: 420 },
-    //                 { label: 'Week 3', value: 250 },
-    //                 { label: 'Week 4', value: 460 }
-    //             ],
-    //             Week: [
-    //                 { label: 'Mon', value: 75 },
-    //                 { label: 'Tue', value: 110 },
-    //                 { label: 'Wed', value: 85 },
-    //                 { label: 'Thu', value: 130 },
-    //                 { label: 'Fri', value: 100 },
-    //                 { label: 'Sat', value: 65 },
-    //                 { label: 'Sun', value: 55 }
-    //             ]
-    //         }
-    //     },
-    // };
 
     return (
         <DefaultLayout>
@@ -93,10 +28,7 @@ const SingleUserPage = () => {
 
 
                 <div className="grid lg:grid-cols-12 gap-6">
-                    {/* Left Column - Profile Cards */}
-                    <div className="lg:col-span-7">
-                        {/* <ProfileHeaderCard data={singleUserData} /> */}
-                    </div>
+            
 
                     {/* Right Column - Stats */}
                     <div className="lg:col-span-5 space-y-6">
@@ -139,7 +71,7 @@ const SingleUserPage = () => {
                             valueFormatter={(value) => value.toLocaleString()}
                         /> */}
 
-                        <ActivationVolumeChart/>
+                        <ActivationVolumeChart />
                     </div>
                 </div>
             </div>
