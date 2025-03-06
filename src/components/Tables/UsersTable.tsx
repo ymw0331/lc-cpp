@@ -595,14 +595,14 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
                         </Button>
 
                         {/* Only show Recruit button for non-Level 1 users */}
-                        {!isLevelOne && (
+                        {/* {!isLevelOne && (
                             <Button
                                 onClick={() => router.push("/referred-users/recruit-agent")}
                                 className="bg-primary hover:bg-primary/90">
                                 <Plus className="mr-2 h-5 w-5" />
                                 {t("usersTable.recruit")}
                             </Button>
-                        )}
+                        )} */}
                     </div>
                 </div>
 
