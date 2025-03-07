@@ -533,5 +533,11 @@
         "agentRecruitmentSummary": "经销商代理招募详情",
         "directRecruitVolumeLabel": "直推招募代理数额",
         "depositVolumeLabel": "直推招募代理充值金額 (美元)"
+    },
+    "recruitAgentCard": {
+        "recruitAgentLabel": "招募代理",
+        "description": "分享此链接招募 lookcard 代理",
+        "copiedToClipboard": "已复制到剪贴板",
+        "copiedToClipboardDescription": "招募代理链接已复制到剪贴板"
     }
 }

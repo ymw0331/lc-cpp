@@ -13,6 +13,7 @@ import RecruitmentSummaryCard from '@/components/Cards/RecruitmentSummaryCard';
 import AgentRecruitmentSummaryCard from '@/components/Cards/AgentRecruitmentSummaryCard';
 import { useAuth } from '@/contexts/AuthContext';
 import { checkTierPermission, TIER_PERMISSIONS } from '@/utils/permissions';
+import RecruitAgentCard from '@/components/Cards/RecruitAgentCard';
 
 const ReferredUsersPage = () => {
     const { t } = useTranslation();
@@ -46,6 +47,7 @@ const ReferredUsersPage = () => {
 
     // Check user tier permissions
     const isLevel1 = user.tierPriority === TIER_PERMISSIONS.LEVEL_1_TIER;
+
     const canAccessRecruitment = checkTierPermission(
         user.tierPriority,
         TIER_PERMISSIONS.LEVEL_2_TIER
@@ -77,6 +79,13 @@ const ReferredUsersPage = () => {
                     periodOptions={Object.keys(recruitData.chartData || {})}
                 />
             </div>
+
+            {/* Only show RecruitAgentCard for Level 2 and above */}
+            {canAccessRecruitment && (
+                <div className="mb-6">
+                    <RecruitAgentCard />
+                </div>
+            )}
 
             <div className="grid gap-4 md:gap-6 2xl:gap-7.5">
                 {/* Only Level 2+ agents see Total Direct Recruit */}

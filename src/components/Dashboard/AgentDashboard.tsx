@@ -18,6 +18,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import ProfileWithReferralCard from "../Cards/ProfileWithReferralCard";
 import AgentLevelIcon from "../Icons/dashboard/AgentLevelIcon";
+import RecruitAgentCard from "../Cards/RecruitAgentCard";
 
 const AgentDashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -152,6 +153,7 @@ const AgentDashboard: React.FC = () => {
         </div> */}
         {/* add  */}
 
+
         {/* Income Summary Table */}
         <div className="mb-6">
           <IncomeSummaryTable
@@ -159,6 +161,7 @@ const AgentDashboard: React.FC = () => {
             availableMonths={availableMonths}
           />
         </div>
+
       </>
     );
   }
@@ -226,14 +229,20 @@ const AgentDashboard: React.FC = () => {
               agentsToPartner={{
                 count: dashboardData.totalDirectRecruit.agentsToPartner
               }}
-              // totalReferral={dashboardData.totalReferral} 
-              />
+            // totalReferral={dashboardData.totalReferral} 
+            />
           )}
 
           {/* Referral Card - Available to all tiers */}
           <ReferralCard code={dashboardData.referralCode} />
         </div>
       </div>
+
+
+      <div className="mb-6">
+        <RecruitAgentCard />
+      </div>
+
 
       {/* Income Summary Table */}
       <div className="mb-6">

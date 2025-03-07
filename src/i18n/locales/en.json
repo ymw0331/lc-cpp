@@ -524,10 +524,7 @@
         "november": "November",
         "december": "December"
     },
-
-
-    
-    "recruitmentSummaryCard": {
+"recruitmentSummaryCard": {
         "recruitmentSummary": "RECRUITMENT SUMMARY",
         "noOfDirectReferral": "No of Direct Referral",
         "totalDepositFromDirectReferral": "Total Deposit from Direct Referral"
@@ -536,5 +533,11 @@
         "agentRecruitmentSummary": "AGENT RECRUITMENT SUMMARY",
         "directRecruitVolumeLabel": "Direct Recruit Agent(s) Volume",
         "depositVolumeLabel": "Direct Recruit Agents' Deposit Volume (USD)"
+    },
+    "recruitAgentCard": {
+        "recruitAgentLabel": "Recruit Agent",
+        "description": "Share this link to recruit as lookcard agent",
+        "copiedToClipboard": "Copied to clipboard",
+        "copiedToClipboardDescription": "Recruit agent link has been copied to clipboard"
     }
 }

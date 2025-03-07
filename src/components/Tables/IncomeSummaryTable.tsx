@@ -23,6 +23,13 @@ interface ActivityItem {
     datetime: string;
 }
 
+// Interface for grouped activity by type
+interface GroupedActivity {
+    type: string;
+    totalAmount: number;
+    latestDatetime: string;
+}
+
 // Updated props interface that accepts data from parent component
 interface IncomeSummaryTableProps {
     incentiveData: IncentiveResponse;
@@ -36,7 +43,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
     const { t } = useTranslation();
     const { user } = useAuth();
     const [month, setMonth] = useState(availableMonths[0] || "");
-    const [monthlyActivities, setMonthlyActivities] = useState<ActivityItem[]>([]);
+    const [groupedActivities, setGroupedActivities] = useState<GroupedActivity[]>([]);
 
     // Check if user is a Level 1 agent
     const isLevelOneAgent = user?.tierPriority === TIER_PERMISSIONS.LEVEL_1_TIER;
@@ -54,12 +61,41 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
             .reduce((sum, activity) => sum + activity.amount, 0);
     };
 
-    // Update monthly activities when month changes
+    // Group activities by type and calculate total amount for each type
     useEffect(() => {
         if (month && activities.activities[month]) {
-            setMonthlyActivities(activities.activities[month]);
+            const monthActivities = activities.activities[month];
+
+            // Group activities by type
+            const typeGroups: Record<string, ActivityItem[]> = {};
+
+            monthActivities.forEach(activity => {
+                if (!typeGroups[activity.type]) {
+                    typeGroups[activity.type] = [];
+                }
+                typeGroups[activity.type].push(activity);
+            });
+
+            // Create an array of grouped activities
+            const grouped = Object.entries(typeGroups).map(([type, items]) => {
+                // Calculate total amount for this type
+                const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
+
+                // Get the latest datetime for this type
+                const sortedItems = [...items].sort((a, b) =>
+                    new Date(b.datetime).getTime() - new Date(a.datetime).getTime()
+                );
+
+                return {
+                    type,
+                    totalAmount,
+                    latestDatetime: sortedItems[0].datetime
+                };
+            });
+
+            setGroupedActivities(grouped);
         } else {
-            setMonthlyActivities([]);
+            setGroupedActivities([]);
         }
     }, [month, activities]);
 
@@ -67,6 +103,12 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
     const formatDateTime = (dateString: string): string => {
         const date = new Date(dateString);
         return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    // Format date for the monthly rewards section
+    const formatDateOnly = (dateString: string): string => {
+        const date = new Date(dateString);
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     };
 
     // Translate reward types to user-friendly labels
@@ -147,20 +189,20 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                 </select>
             </div>
 
-            {/* Monthly activity details section */}
+            {/* Monthly Rewards section */}
             {month && (
                 <div className="px-4 py-3 border-t border-stroke dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white mb-2">{t('incomeSummary.monthlyDetails')}</h3>
 
-                    {monthlyActivities.length > 0 ? (
+                    {groupedActivities.length > 0 ? (
                         <div className="space-y-2">
-                            {monthlyActivities.map((activity, index) => (
+                            {groupedActivities.map((activity, index) => (
                                 <div key={index} className="flex justify-between items-center px-4 py-2 bg-gray-2 dark:bg-meta-4 rounded">
                                     <div>
                                         <p className="font-medium text-black dark:text-white">{getRewardTypeLabel(activity.type)}</p>
-                                        <p className="text-xs text-bodydark">{formatDateTime(activity.datetime)}</p>
+                                        <p className="text-xs text-bodydark">{formatDateOnly(activity.latestDatetime)}</p>
                                     </div>
-                                    <p className="font-medium text-black dark:text-white">$ {activity.amount.toFixed(2)}</p>
+                                    <p className="font-medium text-black dark:text-white">$ {activity.totalAmount.toFixed(2)}</p>
                                 </div>
                             ))}
                         </div>
