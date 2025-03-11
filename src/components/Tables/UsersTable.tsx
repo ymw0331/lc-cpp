@@ -2,12 +2,28 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Filter, Plus } from "lucide-react";
+import { Filter, Plus, MoreHorizontal, Eye, UserPlus, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import SplitTabs from "@/components/ui/split-tabs";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { resellerApi } from "@/api/reseller/reseller.api";
 
 interface FilterOptions {
     ranking: string;
@@ -15,6 +31,8 @@ interface FilterOptions {
         from: string;
         to: string;
     };
+    status: string;
+    hasCard: string;
 }
 
 interface FilterPopupProps {
@@ -77,8 +95,35 @@ interface UsersTableProps {
     downstreams: Downstream[];
     directReferrals: DirectReferral[];
     dashboardTotalReferrals?: number;
-    userTierPriority?: number; // Added to check user level
+    userTierPriority?: number;
 }
+
+// Format date to readable format
+const formatDate = (dateString: string): { date: string; time: string } => {
+    if (!dateString) return { date: "-", time: "-" };
+
+    const date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) return { date: "-", time: "-" };
+
+    const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit'
+    };
+
+    // Format date like "NOVEMBER 04, 2024"
+    const formattedDate = date.toLocaleDateString('en-US', options).toUpperCase();
+
+    // Format time like "14:21:21"
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    return { date: formattedDate, time: formattedTime };
+};
 
 // Filter Component
 const FilterPopup = ({
@@ -121,10 +166,18 @@ const FilterPopup = ({
         }));
     };
 
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFilterOptions((prev) => ({ ...prev, status: e.target.value }));
+    };
+
+    const handleCardStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFilterOptions((prev) => ({ ...prev, hasCard: e.target.value }));
+    };
+
     return (
         <div
             ref={filterRef}
-            className={`absolute right-0 top-12 w-[400px] rounded-sm border border-stroke bg-white dark:bg-boxdark p-5 shadow-default ${isOpen ? "block" : "hidden"
+            className={`absolute right-0 top-12 w-[400px] rounded-sm border border-stroke bg-white dark:bg-boxdark p-5 shadow-default z-50 ${isOpen ? "block" : "hidden"
                 }`}
         >
             <h4 className="mb-6 text-xl font-semibold text-black dark:text-white">
@@ -149,6 +202,72 @@ const FilterPopup = ({
                                     {ranking}
                                 </option>
                             ))}
+                        </select>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2">
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M12 16.8C11.8 16.8 11.6 16.75 11.4 16.65L5.4 12.65C5.15 12.45 5 12.15 5 11.8C5 11.45 5.15 11.15 5.4 10.95L11.4 6.95C11.75 6.7 12.25 6.7 12.6 6.95L18.6 10.95C18.85 11.15 19 11.45 19 11.8C19 12.15 18.85 12.45 18.6 12.65L12.6 16.65C12.4 16.75 12.2 16.8 12 16.8Z"
+                                    fill="currentColor"
+                                    className="text-body dark:text-bodydark"
+                                />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                {/* Status Filter */}
+                <div className="space-y-2">
+                    <label className="text-base text-body dark:text-bodydark">
+                        {t("usersTable.status")}
+                    </label>
+                    <div className="relative">
+                        <select
+                            value={filterOptions.status}
+                            onChange={handleStatusChange}
+                            className="w-full rounded-sm border border-stroke bg-white dark:bg-boxdark py-3 px-4 text-black dark:text-white outline-none focus:border-primary"
+                        >
+                            <option value="all">{t("usersTable.allStatus")}</option>
+                            <option value="active">{t("usersTable.active")}</option>
+                            <option value="pending_verification">{t("usersTable.pendingVerification")}</option>
+                        </select>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2">
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M12 16.8C11.8 16.8 11.6 16.75 11.4 16.65L5.4 12.65C5.15 12.45 5 12.15 5 11.8C5 11.45 5.15 11.15 5.4 10.95L11.4 6.95C11.75 6.7 12.25 6.7 12.6 6.95L18.6 10.95C18.85 11.15 19 11.45 19 11.8C19 12.15 18.85 12.45 18.6 12.65L12.6 16.65C12.4 16.75 12.2 16.8 12 16.8Z"
+                                    fill="currentColor"
+                                    className="text-body dark:text-bodydark"
+                                />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                {/* Card Status Filter */}
+                <div className="space-y-2">
+                    <label className="text-base text-body dark:text-bodydark">
+                        {t("usersTable.physicalCard")}
+                    </label>
+                    <div className="relative">
+                        <select
+                            value={filterOptions.hasCard}
+                            onChange={handleCardStatusChange}
+                            className="w-full rounded-sm border border-stroke bg-white dark:bg-boxdark py-3 px-4 text-black dark:text-white outline-none focus:border-primary"
+                        >
+                            <option value="all">{t("usersTable.allCards")}</option>
+                            <option value="yes">{t("usersTable.hasCard")}</option>
+                            <option value="no">{t("usersTable.noCard")}</option>
                         </select>
                         <span className="absolute right-4 top-1/2 -translate-y-1/2">
                             <svg
@@ -198,42 +317,38 @@ const FilterPopup = ({
                         </div>
                     </div>
                 </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-end gap-4 mt-6">
+                    <Button
+                        variant="outline"
+                        onClick={() => {
+                            setFilterOptions({
+                                ranking: "all",
+                                dateRange: { from: "", to: "" },
+                                status: "all",
+                                hasCard: "all"
+                            });
+                        }}
+                    >
+                        {t("usersTable.clearAll")}
+                    </Button>
+                    <Button onClick={onClose}>
+                        {t("usersTable.applyFilters")}
+                    </Button>
+                </div>
             </div>
         </div>
     );
 };
 
-// Format date to readable format
-const formatDate = (dateString: string): { date: string; time: string } => {
-    if (!dateString) return { date: "-", time: "-" };
-
-    const date = new Date(dateString);
-    
-    // Check if the date is valid
-    if (isNaN(date.getTime())) return { date: "-", time: "-" };
-    
-    const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: '2-digit'
-    };
-
-    // Format date like "NOVEMBER 04, 2024"
-    const formattedDate = date.toLocaleDateString('en-US', options).toUpperCase();
-
-    // Format time like "14:21:21"
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
-
-    return { date: formattedDate, time: formattedTime };
-};
-
-
-
 // Main Component
-const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals = 0, userTierPriority = 0 }: UsersTableProps) => {
+const UsersTable = ({
+    downstreams,
+    directReferrals = [],
+    dashboardTotalReferrals = 0,
+    userTierPriority = 0
+}: UsersTableProps) => {
     const { t } = useTranslation();
     const router = useRouter();
 
@@ -251,11 +366,81 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
             from: "",
             to: "",
         },
+        status: "all",
+        hasCard: "all"
     });
+
+    // State for processed user profiles
+    const [userProfiles, setUserProfiles] = useState<any[]>([]);
+    const [agentProfiles, setAgentProfiles] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+
+    // Fetch user profiles from the API
+    useEffect(() => {
+        const fetchUserProfiles = async () => {
+            try {
+                setLoading(true);
+
+                // Process users (direct referrals)
+                // Only use profileId from directReferrals to fetch detailed profiles
+                const userProfilePromises = directReferrals.map(async (referral) => {
+                    try {
+                        if (referral.user && referral.user.profileId) {
+                            // Make API call to get detailed profile data
+                            const profileData = await resellerApi.getAgentProfile(referral.user.profileId);
+                            return {
+                                ...profileData,
+                                id: referral.user.id.toString(), // Keep original id for React key
+                                profileId: referral.user.profileId // Keep profileId for navigation
+                            };
+                        }
+                        return null;
+                    } catch (error) {
+                        console.error(`Error fetching profile for ${referral.user.profileId}:`, error);
+                        return null;
+                    }
+                });
+
+                // Process agents (downstreams)
+                const agentProfilePromises = downstreams.map(async (downstream) => {
+                    try {
+                        if (downstream.ownerProfileId) {
+                            // Make API call to get detailed profile data
+                            const profileData = await resellerApi.getAgentProfile(downstream.ownerProfileId);
+                            return {
+                                ...profileData,
+                                id: downstream.id, // Keep original id for React key
+                                ownerProfileId: downstream.ownerProfileId // Keep ownerProfileId for navigation
+                            };
+                        }
+                        return null;
+                    } catch (error) {
+                        console.error(`Error fetching profile for ${downstream.ownerProfileId}:`, error);
+                        return null;
+                    }
+                });
+
+                // Resolve all promises
+                const userResults = await Promise.all(userProfilePromises);
+                const agentResults = await Promise.all(agentProfilePromises);
+
+                // Filter out null results
+                setUserProfiles(userResults.filter(profile => profile !== null));
+                setAgentProfiles(agentResults.filter(profile => profile !== null));
+
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching profiles:", error);
+                setLoading(false);
+            }
+        };
+
+        fetchUserProfiles();
+    }, [directReferrals, downstreams]);
 
     // Reset pagination when changing tabs
     useEffect(() => {
@@ -263,72 +448,16 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
         setSearchTerm("");
     }, [activeTab]);
 
-    // Process API data for agents (downstreams)
-    const processedAgents = downstreams.map(downstream => {
-        const user = downstream.user;
-        const formattedDate = formatDate(user.verified_at || downstream.createdAt);
 
-        return {
-            id: downstream.id,
-            ownerProfileId: downstream.ownerProfileId,
-            name: user.first_name && user.last_name
-                ? `${user.first_name} ${user.last_name}`.toUpperCase()
-                : user.username.toUpperCase(),
-            userId: user.email,
-            uuid: user.uuid,
-            profileId: user.profileId,
-            ranking: downstream.tierId.toUpperCase().replace("TIER", "LEVEL").trim(),
-            tierId: downstream.tierId,
-            accActivation: formattedDate,
-            physicalCard: user.cardStatus === "active" ? "YES" : "-",
-            contactNo: user.phone_no ? `+${user.country_code} ${user.phone_no}` : "-",
-            country: user.country_code ? getCountryName(user.country_code) : "-",
-            created: downstream.createdAt,
-            updated: downstream.updatedAt
-        };
-    });
-
-    // Process API data for direct referrals
-    const processedReferrals = directReferrals.map((referral) => {
-        const user = referral.user;
-        const formattedDate = formatDate(user.verified_at || user.created_at);
-    
-        return {
-            id: user.id.toString(),
-            uuid: user.uuid,
-            profileId: user.profileId,
-            name: user.first_name && user.last_name
-                ? `${user.first_name} ${user.last_name}`.toUpperCase()
-                : user.username.toUpperCase(),
-            userId: user.email,
-            emailAddress: user.email,
-            ranking: "LEVEL 0", // Add this property for referred users
-            accActivation: formattedDate,
-            physicalCard: user.cardStatus === "active" ? "YES" : "-",
-            contactNo: user.phone_no ? `+${user.country_code} ${user.phone_no}` : "-",
-            country: user.country_code ? getCountryName(user.country_code) : "-",
-            created: user.created_at,
-            updated: user.updated_at
-        };
-    });
-
-    // Helper function to get country name from country code
-    function getCountryName(countryCode: number) {
-        const countryCodes: Record<number, string> = {
-            156: "CHINA",
-            702: "SINGAPORE",
-            458: "MALAYSIA",
-            764: "THAILAND",
-            840: "UNITED STATES",
-            // Add more as needed
-        };
-        return countryCodes[countryCode] || "UNKNOWN";
-    }
+    // Format currency
+    const formatCurrency = (amount: number) => {
+        return `$ ${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
 
     // Choose the active dataset based on tab
     const activeData = activeTab === "referred-users"
-        ? processedReferrals
-        : processedAgents;
+        ? userProfiles
+        : agentProfiles;
 
     // Get unique values for filters from the active dataset
     const uniqueRankings = Array.from(new Set(activeData
@@ -338,21 +467,24 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
     // Filter logic
     const filteredUsers = activeData.filter((user: any) => {
         const matchSearch =
-            (user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                user.userId?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            (user.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 user.emailAddress?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 false);
 
         const matchRanking =
             filterOptions.ranking === "all" ? true : user.ranking === filterOptions.ranking;
 
+        const matchStatus =
+            filterOptions.status === "all" ? true : user.status === filterOptions.status;
+
+        const matchCardStatus =
+            filterOptions.hasCard === "all" ? true :
+                (filterOptions.hasCard === "yes" ? user.physicalCard === true :
+                    user.physicalCard !== true);
+
         let matchDate = true;
         if (filterOptions.dateRange.from || filterOptions.dateRange.to) {
-            const userDate = user.accountActivation
-                ? new Date(user.accountActivation)
-                : user.accActivation?.date
-                    ? new Date(user.accActivation.date)
-                    : new Date(user.created);
+            const userDate = new Date(user.accountActivation);
 
             if (filterOptions.dateRange.from) {
                 matchDate = matchDate && userDate >= new Date(filterOptions.dateRange.from);
@@ -362,7 +494,7 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
             }
         }
 
-        return matchSearch && matchRanking && matchDate;
+        return matchSearch && matchRanking && matchStatus && matchCardStatus && matchDate;
     });
 
     // Paginate users
@@ -376,6 +508,8 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
 
     const hasActiveFilters =
         filterOptions.ranking !== "all" ||
+        filterOptions.status !== "all" ||
+        filterOptions.hasCard !== "all" ||
         filterOptions.dateRange.from ||
         filterOptions.dateRange.to;
 
@@ -415,147 +549,49 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
     const handleRowClick = (user: any) => {
         if (activeTab === "agents" && user.ownerProfileId) {
             router.push(`/referred-users/manage-user/agent/${user.ownerProfileId}`);
-        } else if (activeTab === "referred-users" && (user.profileId || user.uuid)) {
-            router.push(`/referred-users/manage-user/user/${user.profileId || user.uuid}`);
+        } else if (activeTab === "referred-users") {
+            router.push(`/referred-users/manage-user/user/${user.profileId}`);
         }
     };
 
-    // Render the appropriate table based on active tab
-    const renderActiveTable = () => {
-        if (activeTab === "referred-users") {
-            return (
-                <div className="max-w-full overflow-x-auto mt-3">
-                    <table className="w-full table-auto">
-                        <thead>
-                            <tr className="bg-black text-white">
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.name")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.email")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.accActivation")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.physicalCard")}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedUsers.map((user: any, index) => (
-                                <tr
-                                    key={user.id}
-                                    className="cursor-pointer hover:bg-gray-1 dark:hover:bg-meta-4 transition-colors
-                                    border-b border-stroke dark:border-strokedark"
-                                    onClick={() => handleRowClick(user)}
-                                >
-                                    <td className="py-3 px-3">
-                                        <div className="flex items-center gap-3">
-                                            <Avatar className="h-8 w-8">
-                                                <AvatarFallback className="bg-primary/10 text-primary">
-                                                    {getFirstLetter(user.name)}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <span className="text-black dark:text-white">{user.name}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-3">{user.userId || user.emailAddress}</td>
-                                    <td className="py-3 px-3">
-                                        {user.accActivation ? (
-                                            <div>
-                                                <div>{user.accActivation.date}</div>
-                                                <div>{user.accActivation.time}</div>
-                                            </div>
-                                        ) : user.accountActivation ? (
-                                            <div>
-                                                <div>{formatDate(user.accountActivation.toString()).date}</div>
-                                                <div>{formatDate(user.accountActivation.toString()).time}</div>
-                                            </div>
-                                        ) : (
-                                            "-"
-                                        )}
-                                    </td>
-                                    <td className="py-3 px-3">
-                                        {typeof user.physicalCard === 'boolean'
-                                            ? user.physicalCard ? "YES" : "-"
-                                            : user.physicalCard}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            );
-        } else {
-            return (
-                <div className="max-w-full overflow-x-auto mt-3">
-                    <table className="w-full table-auto">
-                        <thead>
-                            <tr className="bg-black text-white">
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.name", "Name")}
-                                </th>
-                                <th className="py-3 px-3 text-center font-medium">
-                                    {t("usersTable.userEmail", "User Email")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.ranking", "Ranking")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.keyMarket", "Key Market")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.joinedSince", "Joined Since")}
-                                </th>
-                                <th className="py-3 px-3 text-left font-medium">
-                                    {t("usersTable.lastActive", "Last Active")}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedUsers.map((user: any) => (
-                                <tr
-                                    key={user.id}
-                                    className="cursor-pointer hover:bg-gray-1 dark:hover:bg-meta-4 transition-colors
-                                    border-b border-stroke dark:border-strokedark"
-                                    onClick={() => handleRowClick(user)}
-                                >
-                                    <td className="py-3 px-3">
-                                        <div className="flex items-center gap-3">
-                                            <Avatar className="h-8 w-8">
-                                                <AvatarFallback className="bg-primary/10 text-primary">
-                                                    {getFirstLetter(user.name)}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                            <span className="text-black dark:text-white">{user.name}</span>
-                                        </div>
-                                    </td>
-                                    <td className="py-3 px-3 text-center">
-                                        <div>{user.userId || user.emailAddress || user.email}</div>
-                                        <div className="text-gray-500">{user.id.substring(0, 8)}</div>
-                                    </td>
-                                    <td className="py-3 px-3">{user.ranking}</td>
-                                    <td className="py-3 px-3">{user.country}</td>
-                                    <td className="py-3 px-3">
-                                        {user.accActivation?.date || formatDate(user.created).date}
-                                    </td>
-                                    <td className="py-3 px-3">
-                                        {user.accActivation ?
-                                            `${user.accActivation.date} ${user.accActivation.time}` :
-                                            `${formatDate(user.updated).date} ${formatDate(user.updated).time}`}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            );
-        }
-    };
+
+    // Export to CSV function
+    // const exportToCSV = () => {
+    //     const headers = activeTab === "referred-users" ?
+    //         ["Name", "Email", "Status", "Account Activation", "Physical Card", "Country"] :
+    //         ["Name", "Email", "Ranking", "Status", "Account Activation", "Physical Card", "Country"];
+
+    //     const data = filteredUsers.map((user: any) => {
+    //         const baseData = [
+    //             user.name,
+    //             user.userId || user.emailAddress,
+    //             user.status,
+    //             `${user.accActivation.date} ${user.accActivation.time}`,
+    //             user.physicalCard,
+    //             user.country
+    //         ];
+
+    //         return activeTab === "referred-users" ? baseData : [baseData[0], baseData[1], user.ranking, ...baseData.slice(2)];
+    //     });
+
+    //     let csvContent = headers.join(",") + "\n";
+    //     csvContent += data.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
+
+    //     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    //     const link = document.createElement("a");
+    //     const url = URL.createObjectURL(blob);
+
+    //     link.setAttribute("href", url);
+    //     link.setAttribute("download", `${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`);
+    //     link.style.visibility = "hidden";
+
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    // };
 
     return (
-        <div className="rounded-sm border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+        <div className="rounded-sm border border-stroke bg-white dark:border-strokedark dark:bg-boxdark shadow-sm">
             {/* Only show tabs if user is not Level 1 */}
             {!isLevelOne && (
                 <SplitTabs
@@ -566,7 +602,7 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
             )}
 
             <div className="p-3 md:p-4">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
                     {/* Search Input */}
                     <div className="flex w-full max-w-md items-center gap-3">
                         <Input
@@ -578,7 +614,7 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
                         />
                     </div>
 
-                    {/* Filter and Recruit Buttons - Hide recruit button for Level 1 users */}
+                    {/* Action Buttons */}
                     <div className="flex items-center gap-3">
                         <Button
                             variant="outline"
@@ -593,13 +629,22 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
                                 </span>
                             )}
                         </Button>
+                        {/* 
+                        <Button
+                            variant="outline"
+                            onClick={exportToCSV}
+                            className="border-stroke bg-white dark:bg-boxdark hover:bg-gray-2 dark:hover:bg-meta-4"
+                        >
+                            <Download className="h-4 w-4 mr-2" />
+                            {t("usersTable.export")}
+                        </Button> */}
 
                         {/* Only show Recruit button for non-Level 1 users */}
                         {/* {!isLevelOne && (
                             <Button
                                 onClick={() => router.push("/referred-users/recruit-agent")}
                                 className="bg-primary hover:bg-primary/90">
-                                <Plus className="mr-2 h-5 w-5" />
+                                <UserPlus className="mr-2 h-5 w-5" />
                                 {t("usersTable.recruit")}
                             </Button>
                         )} */}
@@ -615,33 +660,145 @@ const UsersTable = ({ downstreams, directReferrals = [], dashboardTotalReferrals
                     uniqueRankings={uniqueRankings}
                 />
 
-                {/* Render the active table based on selected tab */}
-                {renderActiveTable()}
+                {/* Table */}
+                {loading ? (
+                    <div className="flex justify-center items-center p-8">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    </div>
+                ) : (
+                    <div className="max-w-full overflow-x-auto rounded-sm border border-stroke dark:border-strokedark">
+                        <Table className="w-full">
+                            <TableHeader className="bg-black text-white">
+                                <TableRow>
+                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                        {t("usersTable.name", "NAME")}
+                                    </TableHead>
+                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                        {t("usersTable.ranking", "RANKING")}
+                                    </TableHead>
+                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                        {t("usersTable.accActivation", "ACC ACTIVATION")}
+                                    </TableHead>
+                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                        {t("usersTable.totalDeposit", "TOTAL DEPOSIT")}
+                                    </TableHead>
+                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                        {t("usersTable.physicalCard", "PHYSICAL CARD")}
+                                    </TableHead>
+                                    <TableHead className="py-4 px-4 text-center font-medium">
+                                        {t("usersTable.actions", "ACTIONS")}
+                                    </TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {paginatedUsers.length > 0 ? (
+                                    paginatedUsers.map((user: any) => {
+                                        const formattedDate = formatDate(user.accountActivation);
+                                        return (
+                                            <TableRow
+                                                key={user.id}
+                                                className="hover:bg-gray-1 dark:hover:bg-meta-4 transition-colors border-b border-stroke dark:border-strokedark"
+                                            >
+                                                <TableCell className="py-3 px-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <Avatar className="h-8 w-8">
+                                                            <AvatarFallback className="bg-primary/10 text-primary">
+                                                                {getFirstLetter(user.fullName)}
+                                                            </AvatarFallback>
+                                                        </Avatar>
+                                                        <span className="text-black dark:text-white font-medium">
+                                                            {user.fullName.toUpperCase()}
+                                                        </span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="py-3 px-4">
+                                                    {user.ranking === "N/A" ? "USER" : user.ranking.replace("Tier", "Level")}
+                                                </TableCell>
+                                                <TableCell className="py-3 px-4">
+                                                    <div>
+                                                        <div>{formattedDate.date}</div>
+                                                        <div className="text-xs text-gray-500">{formattedDate.time}</div>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="py-3 px-4">
+                                                    {formatCurrency(user.totalDeposit || 0)}
+                                                </TableCell>
+                                                <TableCell className="py-3 px-4">
+                                                    {user.physicalCard === true ? (
+                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                                            YES
+                                                        </span>
+                                                    ) : user.cardStatus === "approved" ? (
+                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                                            APPROVED
+                                                        </span>
+                                                    ) : (
+                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                                            -
+                                                        </span>
+                                                    )}
+                                                </TableCell>
+                                                <TableCell className="py-3 px-4 text-center">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        onClick={() => handleRowClick(user)}
+                                                        className="h-8 w-8"
+                                                    >
+                                                        <MoreHorizontal className="h-4 w-4" />
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={6}
+                                            className="py-4 px-4 text-center text-gray-500"
+                                        >
+                                            {loading ? t("usersTable.loading", "Loading...") : t("usersTable.noResults", "No results found")}
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </div>
+                )}
 
                 {/* Pagination */}
-                <div className="flex justify-between items-center mt-3">
-                    <Button
-                        variant="outline"
-                        onClick={prevPage}
-                        disabled={currentPage === 1}
-                        className="border-stroke"
-                    >
-                        {t("usersTable.previous", "Previous")}
-                    </Button>
+                {paginatedUsers.length > 0 && (
+                    <div className="flex justify-between items-center mt-4">
+                        <div className="text-sm text-gray-500">
+                            {t("usersTable.showing", "Showing")} {Math.min((currentPage - 1) * itemsPerPage + 1, filteredUsers.length)}-
+                            {Math.min(currentPage * itemsPerPage, filteredUsers.length)} {t("usersTable.of", "of")} {filteredUsers.length} {t("usersTable.entries", "entries")}
+                        </div>
 
-                    <div className="text-body dark:text-bodydark">
-                        {currentPage}/{totalPages}
+                        <div className="flex items-center gap-2">
+                            <Button
+                                variant="outline"
+                                onClick={prevPage}
+                                disabled={currentPage === 1}
+                                className="border-stroke"
+                            >
+                                {t("usersTable.previous", "Previous")}
+                            </Button>
+
+                            <div className="text-body dark:text-bodydark px-2">
+                                {currentPage}/{totalPages}
+                            </div>
+
+                            <Button
+                                variant="outline"
+                                onClick={nextPage}
+                                disabled={currentPage === totalPages}
+                                className="border-stroke"
+                            >
+                                {t("usersTable.next", "Next")}
+                            </Button>
+                        </div>
                     </div>
-
-                    <Button
-                        variant="outline"
-                        onClick={nextPage}
-                        disabled={currentPage === totalPages}
-                        className="border-stroke"
-                    >
-                        {t("usersTable.next", "Next")}
-                    </Button>
-                </div>
+                )}
             </div>
         </div>
     );

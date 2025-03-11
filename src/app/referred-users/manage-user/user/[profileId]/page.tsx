@@ -6,7 +6,7 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '@/components/Layouts/DefaultLayout';
 import Loader from '@/components/common/Loader';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Calendar, CreditCard, User, Globe, Users, UserPlus } from 'lucide-react';
+import { ArrowLeft, AlertCircle, Check, X, Mail, Phone, Globe, User, Calendar, CreditCard } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,10 +14,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { resellerApi } from '@/api/reseller/reseller.api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import AgentLevelCard from '@/components/Cards/AgentLevelCard';
-import CircularProgressCard from '@/components/Cards/CircularProgressCard';
 
-interface AgentProfileData {
+interface UserProfileData {
     id: string;
     fullName: string;
     userId: string;
@@ -36,19 +34,19 @@ interface AgentProfileData {
     [key: string]: any;
 }
 
-const AgentProfilePage = () => {
+const UserProfilePage = () => {
     const { t } = useTranslation();
     const router = useRouter();
     const params = useParams();
-    const profileId = params.profileOwnerId as string;
+    const profileId = params.profileId as string;
 
-    const [agentData, setAgentData] = useState<AgentProfileData | null>(null);
+    const [userData, setUserData] = useState<UserProfileData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
     const [activeTab, setActiveTab] = useState('profile');
 
     useEffect(() => {
-        const fetchAgentData = async () => {
+        const fetchUserData = async () => {
             try {
                 if (!profileId) {
                     throw new Error("Profile ID is required");
@@ -56,29 +54,29 @@ const AgentProfilePage = () => {
 
                 setLoading(true);
 
-                // Fetch the agent profile data directly using the profileId
+                // Only fetch data from the profile API endpoint
                 try {
                     const profileData = await resellerApi.getAgentProfile(profileId);
-                    setAgentData(profileData);
+                    setUserData(profileData);
                     setLoading(false);
                 } catch (error) {
-                    console.error("Error fetching agent profile:", error);
-                    setError(error instanceof Error ? error : new Error("Failed to fetch agent profile"));
+                    console.error("Error fetching user profile:", error);
+                    setError(error instanceof Error ? error : new Error("Failed to fetch user profile"));
                     setLoading(false);
                 }
             } catch (err) {
-                console.error("Error in fetchAgentData:", err);
-                setError(err instanceof Error ? err : new Error("Failed to fetch agent data"));
+                console.error("Error in fetchUserData:", err);
+                setError(err instanceof Error ? err : new Error("Failed to fetch user data"));
                 setLoading(false);
             }
         };
 
-        fetchAgentData();
+        fetchUserData();
     }, [profileId]);
 
     // Get the first letter of name for avatar
     const getFirstLetter = (name: string) => {
-        return name ? name.charAt(0).toUpperCase() : 'A';
+        return name ? name.charAt(0).toUpperCase() : 'U';
     };
 
     // Format date
@@ -86,10 +84,6 @@ const AgentProfilePage = () => {
         if (!dateString) return "N/A";
 
         const date = new Date(dateString);
-
-        // Check if the date is valid
-        if (isNaN(date.getTime())) return "N/A";
-
         const options: Intl.DateTimeFormatOptions = {
             year: 'numeric',
             month: 'long',
@@ -105,23 +99,24 @@ const AgentProfilePage = () => {
 
     if (loading) return (
         <DefaultLayout>
-            <Breadcrumb pageName={t('agentProfile.title', 'Agent Profile')} />
+            <Breadcrumb pageName={t('userProfile.title', 'User Profile')} />
             <Loader />
         </DefaultLayout>
     );
 
-    if (error || !agentData) {
+    if (error || !userData) {
         return (
             <DefaultLayout>
-                <Breadcrumb pageName={t('agentProfile.title', 'Agent Profile')} />
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <div className="text-red-500 mb-4">Failed to load agent profile</div>
-                    <p className="text-bodydark mb-6">{error?.message}</p>
+                <Breadcrumb pageName={t('userProfile.title', 'User Profile')} />
+                <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
+                    <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
+                    <h3 className="text-xl font-bold text-black dark:text-white mb-2">{t('userProfile.failedToLoad', 'Failed to load user profile')}</h3>
+                    <p className="text-body dark:text-bodydark mb-6">{error?.message}</p>
                     <Link href="/referred-users/manage-user">
-                        <button className="group flex items-center gap-2 mb-6 text-body dark:text-bodydark2 hover:text-black dark:hover:text-white transition-colors">
+                        <Button variant="outline" className="group flex items-center gap-2">
                             <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
                             {t('userProfile.backToUsers', 'Back to Users')}
-                        </button>
+                        </Button>
                     </Link>
                 </div>
             </DefaultLayout>
@@ -130,56 +125,30 @@ const AgentProfilePage = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName={t('agentProfile.title', 'Agent Profile')} />
+            <Breadcrumb pageName={t('userProfile.title', 'User Profile')} />
 
             <Link href="/referred-users/manage-user">
                 <Button variant="ghost" className="group flex items-center gap-2 mb-6 text-body dark:text-bodydark2 hover:text-black dark:hover:text-white transition-colors">
                     <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                    {t('agentProfile.backToUsers', 'Back to Users')}
+                    {t('userProfile.backToUsers', 'Back to Users')}
                 </Button>
             </Link>
 
-            {/* Agent Stats Section - Grey container for future content */}
-            {/* <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <AgentLevelCard
-                    level="Direct Recruit Active Agent(s)"
-                    count={0}
-                    icon={<Users className="h-6 w-6 text-primary" />}
-                />
-                <AgentLevelCard
-                    level="Total Direct Referrals"
-                    count={0}
-                    icon={<UserPlus className="h-6 w-6 text-primary" />}
-                />
-                <CircularProgressCard
-                    title="Card Activation Volume"
-                    current={0}
-                    total={3}
-                    label="Active Users"
-                />
-                <CircularProgressCard
-                    title="Total Agent Recruitment"
-                    current={0}
-                    total={5}
-                    label="Agents"
-                />
-            </div> */}
-
-            {/* Top Card - Agent Summary */}
+            {/* Top Card - User Summary */}
             <Card className="mb-6 p-6 bg-white dark:bg-boxdark">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex items-center gap-4">
                         <Avatar className="h-20 w-20">
                             <AvatarFallback className="bg-primary/10 text-primary text-2xl">
-                                {getFirstLetter(agentData.fullName)}
+                                {getFirstLetter(userData.fullName)}
                             </AvatarFallback>
                         </Avatar>
                         <div>
                             <h2 className="text-2xl font-semibold text-black dark:text-white">
-                                {agentData.fullName.toUpperCase()}
+                                {userData.fullName.toUpperCase()}
                             </h2>
                             <p className="text-red-500 font-medium">
-                                {agentData.ranking ? agentData.ranking.replace("Tier", "Level") : "Agent"}
+                                {userData.ranking === "N/A" ? "USER" : userData.ranking}
                             </p>
                         </div>
                     </div>
@@ -188,10 +157,10 @@ const AgentProfilePage = () => {
                         {/* todo: clarify whether to use this metric to show Active or Inactive 
                         or using 
                         */}
-                        <Badge className={agentData.totalDeposit > 0 ?
+                        <Badge className={userData.totalDeposit > 0 ?
                             "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" :
                             "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"}>
-                            {agentData.totalDeposit > 0 ? "Active" : "Inactive"}
+                            {userData.totalDeposit > 0 ? "Active" : "Inactive"}
                         </Badge>
                     </div>
                 </div>
@@ -200,40 +169,40 @@ const AgentProfilePage = () => {
                     <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
                         <div className="flex items-center gap-2 mb-2">
                             <Calendar className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('agentProfile.accountActivation', 'Account Activation')}</span>
+                            <span className="text-gray-500 text-sm">{t('userProfile.accountActivation', 'Account Activation')}</span>
                         </div>
                         <span className="text-black dark:text-white font-medium">
-                            {formatDate(agentData.accountActivation)}
+                            {formatDate(userData.accountActivation)}
                         </span>
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
                         <div className="flex items-center gap-2 mb-2">
                             <CreditCard className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('agentProfile.physicalCard', 'Physical Card')}</span>
+                            <span className="text-gray-500 text-sm">{t('userProfile.physicalCard', 'Physical Card')}</span>
                         </div>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.physicalCard === true ? "YES" : "-"}
+                            {userData.physicalCard === true ? "YES" : "-"}
                         </span>
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
                         <div className="flex items-center gap-2 mb-2">
                             <User className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('agentProfile.totalDeposit', 'Total Deposit')}</span>
+                            <span className="text-gray-500 text-sm">{t('userProfile.totalDeposit', 'Total Deposit')}</span>
                         </div>
                         <span className="text-black dark:text-white font-medium">
-                            $ {(agentData.totalDeposit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            $ {(userData.totalDeposit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                     </div>
 
                     <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
                         <div className="flex items-center gap-2 mb-2">
                             <Globe className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('agentProfile.country', 'Country')}</span>
+                            <span className="text-gray-500 text-sm">{t('userProfile.country', 'Country')}</span>
                         </div>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.country || "N/A"}
+                            {userData.country || "N/A"}
                         </span>
                     </div>
                 </div>
@@ -241,52 +210,47 @@ const AgentProfilePage = () => {
 
             {/* Personal Details Card */}
             <Card className="p-6 bg-white dark:bg-boxdark">
-                <h3 className="text-xl font-semibold text-black dark:text-white mb-6">{t('agentProfile.personalDetails', 'Personal Details')}</h3>
+                <h3 className="text-xl font-semibold text-black dark:text-white mb-6">{t('userProfile.personalDetails', 'Personal Details')}</h3>
 
                 <div className="grid gap-6">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('agentProfile.fullName', 'FULL NAME')}:</span>
+                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.fullName', 'FULL NAME')}:</span>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.fullName}
+                            {userData.fullName}
                         </span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('agentProfile.contactNo', 'CONTACT NO')}:</span>
+                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.contactNo', 'CONTACT NO')}:</span>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.contactNo || 'N/A'}
+                            {userData.contactNo || 'N/A'}
                         </span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('agentProfile.emailAddress', 'EMAIL ADDRESS')}:</span>
+                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.emailAddress', 'EMAIL ADDRESS')}:</span>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.emailAddress}
+                            {userData.emailAddress}
                         </span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('agentProfile.digitalId', 'DIGITAL ID')}:</span>
+                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.digitalId', 'DIGITAL ID')}:</span>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.digitalId || 'N/A'}
+                            {userData.digitalId || 'N/A'}
                         </span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('agentProfile.country', 'COUNTRY')}:</span>
+                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.country', 'COUNTRY')}:</span>
                         <span className="text-black dark:text-white font-medium">
-                            {agentData.country || 'N/A'}
+                            {userData.country || 'N/A'}
                         </span>
                     </div>
                 </div>
             </Card>
-
-            {/* Future sections placeholder - greyed out */}
-            <div className="mt-6 p-6 bg-gray-100 dark:bg-boxdark-2 rounded-sm border border-stroke dark:border-strokedark text-center">
-                <p className="text-gray-500">{t('agentProfile.additionalSections', 'Additional agent metrics and management features will be available soon')}</p>
-            </div>
         </DefaultLayout>
     );
 };
 
-export default AgentProfilePage;
+export default UserProfilePage;

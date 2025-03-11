@@ -39,6 +39,13 @@ const carouselImages = [
     },
 ];
 
+
+// as of now we have only cater for user
+// but not for non-user, we need to get them to pre-register page, based on referral/upstreamId (based on new flow)
+// so we need to check if the user is already registered or not, if not then we need to redirect them to pre-register page
+
+
+
 export default function RegisterPage() {
     const { t } = useTranslation();
     const router = useRouter();

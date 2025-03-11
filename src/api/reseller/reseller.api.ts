@@ -143,7 +143,7 @@ export const resellerApi = {
         }
     },
 
-    // Get single agent profile by profileId
+    // Get single direct referral user/ agent profile by profileId
     getAgentProfile: async (profileId: string): Promise<ResellerProfileResponse> => {
         const response = await resellerAxios.get(
             `${API_ENDPOINTS.RESELLER.PROFILE}/${profileId}`
@@ -151,25 +151,4 @@ export const resellerApi = {
         return response.data;
     },
 
-    // Format agent data for display
-    formatAgentData: (agentData: any): ResellerProfileResponse => {
-        // Ensuring all fields are properly formatted
-        return {
-            id: agentData.id || '',
-            fullName: agentData.fullName || agentData.emailAddress || '',
-            userId: agentData.userId || agentData.id || '',
-            resellerId: agentData.resellerId || agentData.id || '',
-            ranking: agentData.ranking || '',
-            contactNo: agentData.contactNo || '',
-            emailAddress: agentData.emailAddress || '',
-            digitalId: agentData.digitalId || agentData.ownerProfileId || '',
-            country: agentData.country || 'N/A',
-            accountActivation: agentData.accountActivation || agentData.createdAt || '',
-            totalDeposit: agentData.totalDeposit || 0,
-            physicalCard: agentData.physicalCard !== undefined ? agentData.physicalCard : false,
-            ekycStatus: agentData.ekycStatus || 'pending',
-            cardStatus: agentData.cardStatus || 'inactive',
-            firstDeposit: agentData.firstDeposit !== undefined ? agentData.firstDeposit : false
-        };
-    }
 };

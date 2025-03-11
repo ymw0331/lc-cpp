@@ -19,8 +19,17 @@ const RecruitAgentCard = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
 
+
+    // new url with the current register page
+
     // Generate the recruit agent URL with the resellerId
-    const recruitAgentUrl = `https://lookcard.io/cpprogram/#cppform?upstreamId=${user?.resellerId || ''}`;
+    let recruitAgentUrl = `https://lookcard.io/cpprogram/#cppform?upstreamId=${user?.resellerId || ''}`;
+
+    // append referral code to the url
+    const referralCode = user?.referralCode;
+    if (referralCode) {
+        recruitAgentUrl += `&referralCode=${referralCode}`;
+    }
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(recruitAgentUrl);
