@@ -7,7 +7,7 @@ import { resellerApi } from '@/api/reseller/reseller.api';
 import { storage } from '@/lib/storage';
 import type { AuthUser } from '@/api/auth/auth.types';
 
-interface EnhancedAuthUser extends AuthUser {
+export interface EnhancedAuthUser extends AuthUser {
     resellerId: string;
     tierPriority: number;
     referralCode: string;
@@ -16,8 +16,8 @@ interface EnhancedAuthUser extends AuthUser {
 interface AuthContextType {
     user: EnhancedAuthUser | null;
     isAuthenticated: boolean;
-    isReseller: boolean; // Added this
-    login: (email: string, password: string) => Promise<boolean>; // Modified to return boolean
+    isReseller: boolean;
+    login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
     refreshUserData: () => Promise<void>;
 }
@@ -43,9 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUserData = async (baseUser: AuthUser) => {
         try {
-
             const resellerData = await resellerApi.getResellerInfo();
-
             setIsReseller(!!resellerData); // Set reseller status
 
             const enhancedUser: EnhancedAuthUser = {
@@ -83,34 +81,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             });
 
             if (response.status) {
-                // Always store tokens on successful login
+                // Store tokens on successful login
                 console.log('[Auth] Storing auth tokens');
                 storage.setToken(response.data.token);
                 storage.setRefreshToken(response.data.refreshToken);
 
-                // Check reseller status first
-                const isUserReseller = await checkResellerStatus();
-                setIsReseller(isUserReseller);
-
-                // if (!isUserReseller) {
-                //     // Clear auth if not a reseller
-                //     storage.clearAuth();
-                //     return false;
-                // }
-
-                if (!isUserReseller) {
-                    console.log('[Auth] User is not a reseller, but keeping auth tokens for registration');
-                    return false; // Return false but DON'T clear auth
-                }
-
+                // Create base user data from response
                 const baseUserData: AuthUser = {
                     userId: response.data.userId,
                     uid: response.data.uid,
                     username: response.data.username,
                     email: response.data.email,
-                    phoneNumber: response.data.phoneNumber,
+                    phoneNumber: response.data.phoneNumber || 'N/A',
                     country_code: response.data.country_code,
-                    fullName: response.data.fullName,
+                    fullName: response.data.fullName || 'N/A',
                     token: response.data.token,
                     refreshToken: response.data.refreshToken,
                     cardId: response.data.cardId,
@@ -121,6 +105,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     firstLogin: response.data.firstLogin,
                 };
 
+                // Check reseller status
+                const isUserReseller = await checkResellerStatus();
+                setIsReseller(isUserReseller);
+
+                if (!isUserReseller) {
+                    console.log('[Auth] User is not a reseller, but keeping auth tokens for registration');
+                    // Store the user data even if they aren't a reseller
+                    // This allows the register page to access the data
+                    storage.setUser(baseUserData);
+                    return false;
+                }
+
+                // If they are a reseller, fetch additional data
                 await fetchUserData(baseUserData);
                 router.push('/');
                 return true;
@@ -152,41 +149,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         router.push('/auth/login');
     };
 
-    // useEffect(() => {
-    //     const storedUser = storage.getUser();
-    //     console.log('[Auth] Initial auth check:', { hasStoredUser: !!storedUser, pathname });
-
-    //     if (storedUser) {
-    //         if (!('avatarUrl' in storedUser) || !('level' in storedUser)) {
-    //             fetchUserData(storedUser);
-    //         } else {
-    //             setUser(storedUser as EnhancedAuthUser);
-    //             // Check reseller status on initial load
-    //             checkResellerStatus().then(setIsReseller);
-    //         }
-    //     } else if (pathname !== '/auth/login') {
-    //         console.log('[Auth] No stored user, redirecting to login');
-    //         router.push('/auth/login');
-    //     }
-    // }, [pathname, router]);
-
-
+    // Initial auth check when component mounts
     useEffect(() => {
         const storedUser = storage.getUser();
         console.log('[Auth] Initial auth check:', { hasStoredUser: !!storedUser, pathname });
 
         if (storedUser) {
-            // Simply set user and check reseller status
+            // Set user from stored data
             setUser(storedUser as EnhancedAuthUser);
-            // Check reseller status on initial load
-            checkResellerStatus().then(setIsReseller);
-        } else if (pathname !== '/auth/login' && pathname !== '/auth/register') {
+
+            // Check reseller status
+            checkResellerStatus().then(isUserReseller => {
+                setIsReseller(isUserReseller);
+
+                // If user is not a reseller and trying to access protected pages, redirect to login
+                if (!isUserReseller &&
+                    pathname !== '/auth/login' &&
+                    pathname !== '/auth/register' &&
+                    pathname !== '/invite') {
+                    console.log('[Auth] User is not a reseller, redirecting to login');
+                    router.push('/auth/login');
+                }
+            });
+        } else if (pathname !== '/auth/login' && pathname !== '/auth/register' && pathname !== '/invite') {
             console.log('[Auth] No stored user, redirecting to login');
             router.push('/auth/login');
         }
     }, [pathname, router]);
 
-    
     return (
         <AuthContext.Provider value={{
             user,

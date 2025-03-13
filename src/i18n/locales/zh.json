@@ -93,26 +93,37 @@
         "warningDescription3": "如果您认为这是错误信息，请联系客服团队以便获取协助。",
         "signInTo": "登录到",
         "communityPartnershipProgramPortal": "经销商代理管理系统",
-        "editYourInformation": "修改/更新您的信息"
+        "editYourInformation": "修改/更新您的信息",
+        "notLookcardUser": "尚未注册为lookcard.io平台用户？立即注册"
     },
     "registerPage": {
+        "signUpNow": "立即注册",
         "agentRecruitmentDetails": "经销商代理招募详情",
         "joinOurCommunity": "加入社区合作伙伴计划",
-        "referralId": "推荐码",
-        "enterReferralId": "输入推荐码",
-        "fullName": "全名",
-        "enterFullName": "输入您的全名",
-        "email": "注册邮箱",
-        "enterEmail": "输入您的注册邮箱",
+        "emailAddress": "电子邮箱地址:",
+        "enterEmail": "请输入您在lookcard.io平台账户中注册的电子邮箱",
+        "memberVerification": "会员验证:",
+        "emailVerified": "邮箱已验证",
+        "emailMismatch": "邮箱不匹配",
+        "fullName": "全名:",
+        "enterFullName": "验证后自动填充且不可编辑",
+        "contactNo": "联系电话:",
+        "enterPhoneNumber": "请输入您的电话号码",
+        "proposedKeyMarket": "主力市场[国家]:",
         "coreMarket": "主力市场[国家]",
         "enterCoreMarket": "输入您的主力市场",
+        "selectMarket": "选择您的首选市场",
+        "selectCoreMarket": "选择您的主力市场[国家]",
+        "referralId": "推荐码:",
+        "enterReferralId": "输入推荐码",
         "agentAcknowledgement": "同意并确认",
         "termsAgreement": "本人同意上述所有条款，包括遵守项目要求、道德规范及隐私政策。本人确认已充分理解并接受这些条款，适用于本人申请及本人提交的任何推荐。",
         "success": "注册成功",
         "successfullyRegistered": "您已成功注册为经销商代理",
         "error": "注册出错",
-        "processing": "处理中",
+        "processing": "处理中...",
         "signUp": "注册",
+        "submit": "提交",
         "acknowledgementPoints": {
             "bySubmitting": "提交此表格即表示您确认并同意以下内容",
             "accuracy": "本人承诺，所提供的所有信息均真实、准确且完整，尽本人所知无误。",
@@ -125,7 +136,11 @@
         "receivedSubmission": "我们已收到您的申请。",
         "confirmationEmail": "您将收到一封确认邮件，若未收到，请检查您的垃圾邮件文件夹",
         "withinDays": " 3个工作日内。",
-        "done": "完成"
+        "done": "完成",
+        "termsLinkText": "条款和条件",
+        "termsAgreementFull": "我同意所有条款和条件，包括计划条款、隐私政策，并同意接收有关此计划的通信。",
+        "alreadyReseller": "已经是推销商?",
+        "signInHere": "在此登录"
     },
     "forgotPasswordDialog": {
         "close": "关闭",
@@ -141,9 +156,9 @@
         "title": "未注册",
         "noAccess": "您的邮箱尚未注册为lookcard.io平台用户。",
         "benefits": "若需成为经销商代理，您必须先完成平台账户注册，",
-        "referralAmount": " 并注册成为经销商代理，通过推荐赚取高达每人80美元",
+        "referralAmount": " 并注册成为经销商代理，通过推荐赚取高达每人65美元",
         "callToAction": "抓紧机会，立即加入，最大化您的收入！",
-        "becomeAgent": "平台用户注册"
+        "becomeUser": "平台用户注册"
     },
     "accessDeniedDialog": {
         "accessDeniedAlt": "登入拒绝",
@@ -577,5 +592,14 @@
         "entries": "筆記錄",
         "previous": "上一頁",
         "next": "下一頁"
+    },
+    "termsDialog": {
+        "title": "确认声明",
+        "subtitle": "请阅读并同意以下条款和条件。",
+        "cancel": "取消",
+        "submit": "提交",
+        "terms": "通过提交此注册表格，我确认所提供的信息真实、准确且完整。我同意遵守LookCard社区合作伙伴计划的条款和条件，并了解我的参与需获得批准。",
+        "termsAdditional1": "我承认佣金和奖励基于我的分销商级别和业绩表现。我同意LookCard收集、处理和存储我的信息，用于验证、计划管理和佣金支付，符合其隐私政策。",
+        "termsAdditional2": "我也理解LookCard保留更新计划条款的权利，我有责任及时了解任何变更。"
     }
 }

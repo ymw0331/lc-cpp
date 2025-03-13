@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "@/hooks/useToast";
@@ -18,18 +18,25 @@ const RecruitAgentCard = () => {
     const [copied, setCopied] = useState(false);
     const { t } = useTranslation();
     const { user } = useAuth();
+    const [baseUrl, setBaseUrl] = useState('');
 
+    // Get the base URL dynamically when component mounts
+    useEffect(() => {
+        const currentDomain = typeof window !== 'undefined'
+            ? `${window.location.protocol}//${window.location.host}`
+            : '';
+        setBaseUrl(currentDomain);
+    }, []);
 
-    // new url with the current register page
+    // Create the recruitment URL with tracking parameters
+    const referralCode = user?.referralCode || '';
+    const upstreamId = user?.resellerId || '';
 
-    // Generate the recruit agent URL with the resellerId
-    let recruitAgentUrl = `https://lookcard.io/cpprogram/#cppform?upstreamId=${user?.resellerId || ''}`;
-
-    // append referral code to the url
-    const referralCode = user?.referralCode;
-    if (referralCode) {
-        recruitAgentUrl += `&referralCode=${referralCode}`;
-    }
+    // Construct the URL dynamically - use standard parameters (no "Invite" suffix in URL)
+    // Changed to properly use the invite path
+    const recruitAgentUrl = baseUrl
+        ? `${baseUrl}/invite?referralCode=${referralCode}&upstreamId=${upstreamId}`
+        : '';
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(recruitAgentUrl);

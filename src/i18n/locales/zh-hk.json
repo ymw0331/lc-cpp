@@ -93,26 +93,37 @@
         "warningDescription3": "如果您認為這是錯誤信息，請聯繫客服團隊以便獲取協助。",
         "signInTo": "登錄到",
         "communityPartnershipProgramPortal": "經銷商代理管理系統",
-        "editYourInformation": "修改/更新您的信息"
+        "editYourInformation": "修改/更新您的信息",
+        "notLookcardUser": "尚未註冊為lookcard.io平台用戶？立即註冊"
     },
     "registerPage": {
+        "signUpNow": "立即註冊",
         "agentRecruitmentDetails": "經銷商代理招募詳情",
         "joinOurCommunity": "加入社區合作夥伴計劃",
-        "referralId": "推薦碼",
-        "enterReferralId": "輸入推薦碼",
-        "fullName": "全名",
-        "enterFullName": "輸入您的全名",
-        "email": "註冊郵箱",
-        "enterEmail": "輸入您的註冊郵箱",
+        "emailAddress": "電子郵箱地址:",
+        "enterEmail": "請輸入您在lookcard.io平台賬戶中註冊的電子郵箱",
+        "memberVerification": "會員驗證:",
+        "emailVerified": "郵箱已驗證",
+        "emailMismatch": "郵箱不匹配",
+        "fullName": "全名:",
+        "enterFullName": "驗證後自動填充且不可編輯",
+        "contactNo": "聯繫電話:",
+        "enterPhoneNumber": "請輸入您的電話號碼",
+        "proposedKeyMarket": "主力市場[國家]:",
         "coreMarket": "主力市場[國家]",
         "enterCoreMarket": "輸入您的主力市場",
+        "selectMarket": "選擇您的首選市場",
+        "selectCoreMarket": "選擇您的主力市場[國家]",
+        "referralId": "推薦碼:",
+        "enterReferralId": "輸入推薦碼",
         "agentAcknowledgement": "同意並確認",
         "termsAgreement": "本人同意上述所有條款，包括遵守項目要求、道德規範及隱私政策。本人確認已充分理解並接受這些條款，適用於本人申請及本人提交的任何推薦。",
         "success": "註冊成功",
         "successfullyRegistered": "您已成功註冊為經銷商代理",
         "error": "註冊出錯",
-        "processing": "處理中",
+        "processing": "處理中...",
         "signUp": "註冊",
+        "submit": "提交",
         "acknowledgementPoints": {
             "bySubmitting": "提交此表格即表示您確認並同意以下內容",
             "accuracy": "本人承諾，所提供的所有信息均真實、準確且完整，盡本人所知無誤。",
@@ -125,7 +136,11 @@
         "receivedSubmission": "我們已收到您的申請。",
         "confirmationEmail": "您將收到一封確認郵件，若未收到，請檢查您的垃圾郵件文件夾",
         "withinDays": " 3個工作日內。",
-        "done": "完成"
+        "done": "完成",
+        "termsLinkText": "條款和條件",
+        "termsAgreementFull": "我同意所有條款和條件，包括計劃條款、隱私政策，並同意接收有關此計劃的通訊。",
+        "alreadyReseller": "已經是推銷商?",
+        "signInHere": "在此登錄"
     },
     "forgotPasswordDialog": {
         "close": "關閉",
@@ -141,9 +156,9 @@
         "title": "未註冊",
         "noAccess": "您的郵箱尚未註冊為lookcard.io平台用戶。",
         "benefits": "若需成為經銷商代理，您必須先完成平台賬戶註冊，",
-        "referralAmount": " 並註冊成為經銷商代理，通過推薦賺取高達每人80美元",
+        "referralAmount": " 並註冊成為經銷商代理，通過推薦賺取高達每人65美元",
         "callToAction": "抓緊機會，立即加入，最大化您的收入！",
-        "becomeAgent": "平台用戶註冊"
+        "becomeUser": "平台用戶註冊"
     },
     "accessDeniedDialog": {
         "accessDeniedAlt": "登入拒絕",
@@ -577,5 +592,14 @@
         "physicalCard": "实体卡",
         "totalDeposit": "总存款",
         "additionalSections": "代理商指标和管理功能即将推出"
+    },
+    "termsDialog": {
+        "title": "確認聲明",
+        "subtitle": "請閱讀並同意以下條款和條件。",
+        "cancel": "取消",
+        "submit": "提交",
+        "terms": "通過提交此註冊表格，我確認所提供的信息真實、準確且完整。我同意遵守LookCard社區合作夥伴計劃的條款和條件，並了解我的參與需獲得批准。",
+        "termsAdditional1": "我承認佣金和獎勵基於我的分銷商級別和業績表現。我同意LookCard收集、處理和存儲我的信息，用於驗證、計劃管理和佣金支付，符合其隱私政策。",
+        "termsAdditional2": "我也理解LookCard保留更新計劃條款的權利，我有責任及時了解任何變更。"
     }
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -18,6 +18,7 @@ import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
 import NotRegisteredDialog from "@/components/Dialogs/NotRegisteredDialog";
 import AccessDeniedDialog from "@/components/Dialogs/AccessDeniedDialog";
 import LanguageSwitcher from "@/components/Header/LanguageSwitcher";
+import { storage } from "@/lib/storage";
 
 
 const getCarouselImages = (language: string) => {
@@ -99,6 +100,7 @@ export default function LoginPage() {
     const { i18n } = useTranslation();
     const { t } = useTranslation();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const { toast } = useToast();
     const { login } = useAuth();
     const { saveCredentials, clearCredentials, getCredentials } = useRememberCredentials();
@@ -115,6 +117,10 @@ export default function LoginPage() {
     const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
     const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
     const [showAccessDeniedDialog, setShowAccessDeniedDialog] = useState(false);
+
+    // DEFAULT REFERRAL VALUES - Used when no parameters are provided
+    const DEFAULT_REFERRAL_CODE = "44ZQW3QS";
+    const DEFAULT_UPSTREAM_ID = "f73fbbc5-b17d-43ec-b67e-141f05394a7f";
 
 
     // Update carousel images when language changes
@@ -150,6 +156,17 @@ export default function LoginPage() {
         }
     }, [getCredentials]);
 
+
+    // When component mounts, check for URL parameters
+    useEffect(() => {
+        const referralCode = searchParams.get('referralCode');
+        const upstreamId = searchParams.get('upstreamId');
+
+        // Log parameters but don't store them
+        console.log('[Login] URL parameters:', { referralCode, upstreamId });
+    }, [searchParams]);
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
@@ -161,32 +178,33 @@ export default function LoginPage() {
             const isReseller = await login(email, password);
             console.log('[Login] Login response:', { isReseller });
 
-            if (!isReseller) {
-                console.log('[Login] User is not a reseller, showing registration dialog');
-                // setShowRegistrationDialog(true);
-                setShowAccessDeniedDialog(true);
-                return;
-            }
+            // Handle different user types
+            if (isReseller) {
+                console.log('[Login] User is a reseller, redirecting to dashboard');
 
-            // Handle remember me
-            if (rememberMe) {
-                console.log('[Login] Saving credentials');
-                saveCredentials(email, password);
+                // Handle remember me
+                if (rememberMe) {
+                    console.log('[Login] Saving credentials');
+                    saveCredentials(email, password);
+                } else {
+                    console.log('[Login] Clearing saved credentials');
+                    clearCredentials();
+                }
+
+                toast({
+                    title: t("loginPage.success"),
+                    description: t("loginPage.successfullyLoggedIn"),
+                    duration: 3000,
+                });
+
+                // Redirect to dashboard
+                router.push('/');
             } else {
-                console.log('[Login] Clearing saved credentials');
-                clearCredentials();
+                console.log('[Login] User is not a reseller, showing access denied dialog');
+                // User is a Lookcard user but not a reseller
+                // Keep referral details in this case as they might register as reseller
+                setShowAccessDeniedDialog(true);
             }
-
-            console.log('[Login] Login successful, showing success toast');
-            toast({
-                title: t("loginPage.success"),
-                description: t("loginPage.successfullyLoggedIn"),
-                duration: 3000,
-            });
-
-            // Login successful and user is a reseller, redirect to dashboard
-            console.log('[Login] Redirecting to dashboard');
-            router.push('/');
 
         } catch (err: any) {
             console.error('[Login] Login failed:', {
@@ -194,15 +212,32 @@ export default function LoginPage() {
                 response: err.response?.data,
             });
 
+            // Check specific error conditions to determine next steps
+            const errorStatus = err.response?.status;
             const errorMessage = err.response?.data?.message || err.message || t("loginPage.loginFailed");
-            setError(errorMessage);
+            const errorData = err.response?.data || {};
 
-            toast({
-                variant: "destructive",
-                title: t("loginPage.error"),
-                description: errorMessage,
-                duration: 5000,
-            });
+            // Check for the specific error message "Your email id not exist in our account"
+            if (
+                errorData.status === false &&
+                errorMessage === "Your email id not exist in our account"
+            ) {
+                console.log('[Login] User is not registered with Lookcard, showing registration dialog');
+                setShowRegistrationDialog(true);
+            } else if (errorStatus === 401 || errorStatus === 404) {
+                // Invalid credentials or user not found - likely not a Lookcard user
+                console.log('[Login] User is not registered with Lookcard, showing registration dialog');
+                setShowRegistrationDialog(true);
+            } else {
+                // General error
+                setError(errorMessage);
+                toast({
+                    variant: "destructive",
+                    title: t("loginPage.error"),
+                    description: errorMessage,
+                    duration: 5000,
+                });
+            }
         } finally {
             setIsLoading(false);
         }
@@ -215,15 +250,36 @@ export default function LoginPage() {
         window.location.href = 'https://wa.me/85230011108';
     };
 
+
+    // When redirecting to register page
     const handleRegister = () => {
-        console.log('[Login] Navigating to registration page');
-        window.location.href = 'https://lookcard.io/cpprogram/#cppform';
+        // Pass URL parameters to registration page
+        const referralCode = searchParams.get('referralCode') || DEFAULT_REFERRAL_CODE;
+        const upstreamId = searchParams.get('upstreamId') || DEFAULT_UPSTREAM_ID;
+
+        const queryParams = new URLSearchParams();
+        queryParams.set('referralCode', referralCode);
+        queryParams.set('upstreamId', upstreamId);
+
+        router.push(`/auth/register?${queryParams.toString()}`);
     };
 
-    const handleBecomeAgent = () => {
-        console.log('[Login] Navigating to registration page');
-        window.location.href = 'https://lookcard.io/cpprogram/#cppform';
+
+    // Handler for "Become a Lookcard user" in NotRegisteredDialog
+    const handleBecomeUser = () => {
+        console.log('[Login] Navigating to become Lookcard user first');
+
+        // Get parameter directly from URL
+        const searchParams = new URLSearchParams(window.location.search);
+        const referralCode = searchParams.get('referralCode') || DEFAULT_REFERRAL_CODE;
+
+        // Direct to invite URL with the referral code
+        const lookCardUrl = `https://invite.lookcard.io/${referralCode}`;
+        console.log('[Login] Redirecting to:', lookCardUrl);
+
+        window.location.href = lookCardUrl;
     };
+    
 
     const handleRememberMeChange = (checked: boolean) => {
         console.log('[Login] Remember me changed:', { checked });
@@ -367,7 +423,7 @@ export default function LoginPage() {
                                     {t("loginPage.rememberMe")}
                                 </label>
                             </div>
-                            {/* <Link
+                            <Link
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -376,20 +432,20 @@ export default function LoginPage() {
                                 className="text-sm text-body hover:text-black dark:text-bodydark dark:hover:text-white underline"
                             >
                                 {t("loginPage.forgotPassword")}
-                            </Link> */}
+                            </Link>
                         </div>
 
                         {/* Dialogs */}
-                        {/* <ForgotPasswordDialog
+                        <ForgotPasswordDialog
                             open={forgotPasswordOpen}
                             onOpenChange={setForgotPasswordOpen}
-                        /> */}
+                        />
 
-                        {/* <NotRegisteredDialog
+                        <NotRegisteredDialog
                             open={showRegistrationDialog}
                             onOpenChange={setShowRegistrationDialog}
-                            onBecomeAgent={handleBecomeAgent}
-                        /> */}
+                            onBecomeAgent={handleBecomeUser}
+                        />
 
                         <AccessDeniedDialog
                             open={showAccessDeniedDialog}
@@ -424,6 +480,23 @@ export default function LoginPage() {
                                 t("loginPage.signIn")
                             )}
                         </Button>
+
+                        {/* Register as lookcard user link */}
+                        <div className="mt-4 text-center">
+                            <Link
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    const referralCode = searchParams.get('referralCode') || DEFAULT_REFERRAL_CODE;
+                                    const lookCardUrl = `https://invite.lookcard.io/${referralCode}`;
+                                    console.log('[Login] Redirecting to Lookcard registration:', lookCardUrl);
+                                    window.location.href = lookCardUrl;
+                                }}
+                                className="text-sm text-body hover:text-primary dark:text-bodydark dark:hover:text-primary underline"
+                            >
+                                {t("loginPage.notLookcardUser", "Not a lookcard user yet? Register here")}
+                            </Link>
+                        </div>
 
                         {/* Warning Message */}
                         {/* <div className="mt-6 text-sm text-red-500">

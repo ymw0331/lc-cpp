@@ -41,7 +41,7 @@ const ForgotPasswordDialog = ({
                         animate={{ scale: 1 }}
                         className="mx-auto mb-4"
                     >
-                        <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
+                        <div className="w-20 h-20 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
                             <Image
                                 src="/images/login/forgot-password.svg"
                                 alt="Forgot Password"
@@ -62,13 +62,13 @@ const ForgotPasswordDialog = ({
                     transition={{ delay: 0.1 }}
                     className="flex flex-col items-center space-y-4 px-1"
                 >
-                    <p className="text-center text-gray-600">
+                    <p className="text-center text-gray-600 dark:text-white">
                         {t("forgotPasswordDialog.passwordResetUnavailable")}
                         <br />
                         {t("forgotPasswordDialog.communityPartnershipProgramPortal")}
                     </p>
 
-                    <p className="text-center text-gray-600">
+                    <p className="text-center text-gray-600 dark:text-white">
                         {t("forgotPasswordDialog.toResetYourCredentials")}
                         <br />
                         {t("forgotPasswordDialog.useLookCardApp")}

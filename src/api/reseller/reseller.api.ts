@@ -65,6 +65,16 @@ interface ResellerProfileResponse {
     firstDeposit: boolean;
 }
 
+
+interface RegisterResellerRequest {
+    upstreamId: string;
+    keyMarket: string;
+}
+
+interface RegisterResellerResponse {
+    status: boolean;
+}
+
 export const resellerApi = {
     getResellerInfo: async () => {
         const response = await resellerAxios.get<ResellerResponse>(
@@ -73,19 +83,18 @@ export const resellerApi = {
         return response.data;
     },
 
-    // Get specific agent data by profileId
-    getAgentData: async (profileId: string) => {
+    // Get specific agent data by profileId, also used to get user profile
+    getAgentData: async (profileId: string): Promise<RegisterResellerRequest> => {
         const response = await resellerAxios.get(
             `${API_ENDPOINTS.RESELLER.INFO}/${profileId}`
         );
         return response.data;
     },
 
-    registerReseller: async () => {
-        // The auth token will be automatically included in the request headers
-        // through your axios interceptor configuration
-        const response = await resellerAxios.post<ResellerResponse>(
-            API_ENDPOINTS.RESELLER.INFO
+    registerReseller: async (data: RegisterResellerRequest) => {
+        const response = await resellerAxios.post(
+            `${API_ENDPOINTS.RESELLER.INFO}`,
+            data
         );
         return response.data;
     },

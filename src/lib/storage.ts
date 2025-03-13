@@ -7,12 +7,12 @@ const STORAGE_KEYS = {
 } as const;
 
 export const storage = {
+    // Auth token methods
     getToken: () => {
         const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
         console.log('[Storage] Getting auth token:', { hasToken: !!token });
         return token;
     },
-
     setToken: (token: string) => {
         console.log('[Storage] Setting auth token');
         localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
@@ -23,6 +23,7 @@ export const storage = {
         localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
     },
 
+    // Refresh token methods
     getRefreshToken: () => {
         const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
         console.log('[Storage] Getting refresh token:', { hasRefreshToken: !!refreshToken });
@@ -39,6 +40,7 @@ export const storage = {
         localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
     },
 
+    // User data methods
     getUser: () => {
         const userStr = localStorage.getItem(STORAGE_KEYS.AUTH_USER);
         let user = null;
@@ -75,6 +77,7 @@ export const storage = {
         localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
     },
 
+    // Auth clearing
     clearAuth: () => {
         console.log('[Storage] Clearing all auth data');
         try {
@@ -98,6 +101,8 @@ export const storage = {
         }
     },
 
+
+    // Language preference methods
     getLanguagePreference: () => {
         const language = localStorage.getItem('preferredLanguage');
         console.log('[Storage] Getting language preference:', { language });

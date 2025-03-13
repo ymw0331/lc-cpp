@@ -71,26 +71,37 @@
         "warningDescription3": "If you believe this is an error, please contact our support team for assistance.",
         "signInTo": "Sign in to",
         "communityPartnershipProgramPortal": "Community Partnership Program Reseller Portal",
-        "editYourInformation": "Edit your information in a swipe"
+        "editYourInformation": "Edit your information in a swipe",
+        "notLookcardUser": "Not a lookcard user yet? Register here"
     },
     "registerPage": {
+        "signUpNow": "SIGN UP NOW",
         "agentRecruitmentDetails": "Agent Recruitment Details",
         "joinOurCommunity": "Join Our Community Partnership Program",
-        "referralId": "Referral ID",
-        "enterReferralId": "Enter referral ID (optional)",
-        "fullName": "Full Name",
-        "enterFullName": "Enter your full name",
-        "email": "Registered Email",
-        "enterEmail": "Enter your registered email",
+        "emailAddress": "EMAIL ADDRESS:",
+        "enterEmail": "Please enter your registered email address in lookcard.io platform account",
+        "memberVerification": "MEMBER VERIFICATION:",
+        "emailVerified": "Email Verified",
+        "emailMismatch": "Email Mismatch",
+        "fullName": "FULL NAME:",
+        "enterFullName": "Upon verification, auto filled and not editable",
+        "contactNo": "CONTACT NO:",
+        "enterPhoneNumber": "Please enter your phone number",
+        "proposedKeyMarket": "PROPOSED KEY MARKET:",
         "coreMarket": "Key Market [Country]",
         "enterCoreMarket": "Enter your key market",
+        "selectMarket": "Select Your Preferred Market",
+        "selectCoreMarket": "Select your core market",
+        "referralId": "REFERRAL ID:",
+        "enterReferralId": "Enter referral ID (optional)",
         "agentAcknowledgement": "Acknowledgment",
-        "termsAgreement": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I have read, understood and accept these terms, both for my application and any referrals I submit.",
+        "termsAgreement": "I agree to all the terms, including program terms, privacy policy, and consent to receive communication regarding this program.",
         "success": "Registration Successful",
         "successfullyRegistered": "You have successfully registered as a reseller",
         "error": "Registration Error",
-        "processing": "Processing",
+        "processing": "Processing...",
         "signUp": "Sign Up",
+        "submit": "SUBMIT",
         "acknowledgementPoints": {
             "bySubmitting": "By submitting this form, you acknowledge and agree to the following:",
             "accuracy": "All information provided in this form is true, accurate and complete to the best of your knowledge.",
@@ -101,9 +112,13 @@
         },
         "thankYou": "Thank You for Your Application!",
         "receivedSubmission": "We've received your submission.",
-        "confirmationEmail": "A confirmation email will be sent to your inbox (please check your  spam folder if necessary)",
+        "confirmationEmail": "A confirmation email will be sent to your inbox (please check your spam folder if necessary)",
         "withinDays": " within three (3) working days.",
-        "done": "DONE"
+        "done": "DONE",
+        "termsLinkText": "terms and conditions",
+        "termsAgreementFull": "I agree to all the terms and conditions, including program terms, privacy policy, and consent to receive communication regarding this program.",
+        "alreadyReseller": "Already a reseller?",
+        "signInHere": "Sign in here"
     },
     "forgotPasswordDialog": {
         "close": "Close",
@@ -119,9 +134,9 @@
         "title": "Not Registered",
         "noAccess": "Your email is yet to registered as  lookcard.io platform user.",
         "benefits": "To become a reseller, you must first register for a platform account and sign up as a reseller agent,",
-        "referralAmount": " earning up to $80 per referral",
+        "referralAmount": " earning up to $65 per referral",
         "callToAction": ". Don't miss out—join now and maximize your earnings!",
-        "becomeAgent": "Sign Up"
+        "becomeUser": "Sign Up"
     },
     "accessDeniedDialog": {
         "accessDeniedAlt": "Access Denied",
@@ -575,5 +590,14 @@
         "acknowledgementItem4": "I acknowledge that any benefits or rewards for this referral are subject to the referred individual meeting the program eligibility and joining requirement.",
         "agreementLabel": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I understand and accept these terms for both my application and any referrals I submit.",
         "recruitButton": "Recruit"
+    },
+    "termsDialog": {
+        "title": "ACKNOWLEDGMENT",
+        "subtitle": "Please read and agree to the following terms and conditions.",
+        "cancel": "CANCEL",
+        "submit": "SUBMIT",
+        "terms": "By submitting this registration form, I confirm that the information provided is true, accurate, and complete. I agree to comply with the LookCard Community Partnership Program terms and conditions and understand that my participation is subject to approval. I acknowledge that commissions and incentives are based on my reseller tier and performance. I consent to LookCard collecting, processing, and storing my information for verification, program administration, and commission payouts in accordance with its Privacy Policy. I also understand that LookCard reserves the right to update program terms, and it is my responsibility to stay informed about any changes.",
+        "termsAdditional1": "I acknowledge that commissions and incentives are based on my reseller tier and performance. I consent to LookCard collecting, processing, and storing my information for verification, program administration, and commission payouts in accordance with its Privacy Policy.",
+        "termsAdditional2": "I also understand that LookCard reserves the right to update program terms, and it is my responsibility to stay informed about any changes."
     }
 }

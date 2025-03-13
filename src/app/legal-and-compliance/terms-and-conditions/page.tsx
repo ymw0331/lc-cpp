@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ContentSection from "@/components/Sections/ContentSection";
@@ -27,17 +27,9 @@ const TermsAndConditionsPage = () => {
         sections: []
     });
 
-    useEffect(() => {
-        // Get language preference from storage
-        const userLang = storage.getLanguagePreference();
-        setLanguage(userLang);
-
-        // Set the content based on language
-        setTermsContent(getTermsContentByLanguage(userLang));
-    }, []);
-
-    const getTermsContentByLanguage = (lang: string): TermsContent => {
-
+    // Using useCallback to memoize the function so it can be safely included in dependency arrays
+    // Moved this function above the useEffect that depends on it
+    const getTermsContentByLanguage = useCallback((lang: string): TermsContent => {
         switch (lang) {
             case 'zh':
                 return {
@@ -168,7 +160,7 @@ const TermsAndConditionsPage = () => {
                         }
                     ]
                 };
-            case 'zh-hk':     // Simplified Chinese content
+            case 'zh-hk':     // Traditional Chinese content
                 return {
                     title: "條款與條件",
                     lastUpdated: "2024年11月15日",
@@ -427,8 +419,17 @@ const TermsAndConditionsPage = () => {
                     ]
                 };
         }
+    }, []);
 
-    };
+    // Initialize content based on user's language preference
+    useEffect(() => {
+        // Get language preference from storage
+        const userLang = storage.getLanguagePreference();
+        setLanguage(userLang);
+
+        // Set the content based on language
+        setTermsContent(getTermsContentByLanguage(userLang));
+    }, [getTermsContentByLanguage]);
 
     // Listen for language changes
     useEffect(() => {
@@ -444,7 +445,7 @@ const TermsAndConditionsPage = () => {
         const intervalId = setInterval(handleLanguageChange, 2000);
 
         return () => clearInterval(intervalId);
-    }, [language]);
+    }, [language, getTermsContentByLanguage]);
 
     return (
         <DefaultLayout>

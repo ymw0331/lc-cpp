@@ -81,7 +81,7 @@ export default function NotRegisteredDialog({
                         onClick={onBecomeAgent}
                         className="w-full bg-[#E31C5F] hover:bg-[#c4164f] text-white"
                     >
-                        {t("notRegisteredDialog.becomeAgent")}
+                        {t("notRegisteredDialog.becomeUser")}
                     </Button>
                 </motion.div>
             </DialogContent>

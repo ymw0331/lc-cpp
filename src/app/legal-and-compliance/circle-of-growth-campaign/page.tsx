@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ContentSection from "@/components/Sections/ContentSection";
@@ -28,7 +28,8 @@ const CircleOfGrowthPage = () => {
         sections: []
     });
 
-    const getCampaignContentByLanguage = (lang: string): CampaignContent => {
+    // Using useCallback to memoize the function so it can be safely included in dependency arrays
+    const getCampaignContentByLanguage = useCallback((lang: string): CampaignContent => {
         switch (lang) {
             case 'zh':
                 return {
@@ -323,10 +324,8 @@ const CircleOfGrowthPage = () => {
                         }
                     ]
                 };
-
         }
-
-    };
+    }, []);
 
     // Initialize content based on user's language preference
     useEffect(() => {
@@ -336,7 +335,7 @@ const CircleOfGrowthPage = () => {
 
         // Set the content based on language
         setCampaignContent(getCampaignContentByLanguage(userLang));
-    }, []);
+    }, [getCampaignContentByLanguage]);
 
     // Listen for language changes
     useEffect(() => {
@@ -352,7 +351,7 @@ const CircleOfGrowthPage = () => {
         const intervalId = setInterval(handleLanguageChange, 2000);
 
         return () => clearInterval(intervalId);
-    }, [language]);
+    }, [language, getCampaignContentByLanguage]);
 
     return (
         <DefaultLayout>
