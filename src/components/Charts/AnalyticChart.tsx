@@ -17,10 +17,10 @@ import {
     CardHeader,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ChartDataPoint } from "@/types/dashboard";
+import { ChartDataPoint } from "@/api/dashboard/dashboard.types";
 import { useTranslation } from "react-i18next";
 
-type Period = "Week" | "Month" | "Year";
+type Period = "Month" | "Year";
 
 interface AnalyticChartProps {
     title: string;
@@ -34,7 +34,6 @@ interface AnalyticChartProps {
     legendPosition?: "top-right" | "bottom-right";
     lineColor?: string;
     className?: string;
-    comingSoon?: boolean;
 }
 
 const AnalyticChart = ({
@@ -43,44 +42,44 @@ const AnalyticChart = ({
     legendLabel,
     showLegend = false,
     legendPosition = "top-right",
-    lineColor = "#F69732",
+    lineColor = "var(--chart-primary)",
     className,
-    comingSoon = false
 }: AnalyticChartProps) => {
     const { t } = useTranslation();
     const [activePeriod, setActivePeriod] = useState<Period>("Year");
 
-    // If comingSoon is true, render coming soon state
-    if (comingSoon) {
-        return (
-            <Card
-                className={cn(
-                    "p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark flex items-center justify-center",
-                    className
-                )}
-            >
-                <div className="text-center">
-                    <h4 className="text-2xl font-bold text-black dark:text-white mb-4">
-                        {title}
-                    </h4>
-                    <p className="text-lg text-gray-500 dark:text-gray-400">
-                        {t('analyticChart.comingSoon')}
-                    </p>
-                </div>
-            </Card>
-        );
-    }
-
     const activeData = chartData[activePeriod];
     const hasData = activeData && activeData.length > 0;
 
-    const allValues = hasData ? activeData.map((d) => d.value) : [0];
+    // Initialize default values to prevent empty charts
+    let allValues = [0];
+    if (hasData) {
+        allValues = activeData.map((d) => d.value);
+        if (allValues.length === 0 || Math.max(...allValues) === 0) {
+            allValues = [0];
+        }
+    }
+
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
 
-    const stepSize = 500;
-    const yAxisMax = Math.ceil(maxValue / stepSize) * stepSize;
-    const yAxisMin = Math.floor(minValue / stepSize) * stepSize;
+    // Calculate a dynamic step size based on the max value
+    const calculateStepSize = (max: number) => {
+        if (max <= 10) return 2;
+        if (max <= 50) return 10;
+        if (max <= 100) return 20;
+        if (max <= 500) return 100;
+        if (max <= 1000) return 200;
+        return Math.ceil(max / 5 / 100) * 100;
+    };
+
+    const stepSize = calculateStepSize(maxValue);
+    // Add 20% buffer to the max value for better visualization
+    const yAxisMax = Math.min(
+        Math.ceil((maxValue * 1.2) / stepSize) * stepSize,
+        Math.ceil(maxValue / stepSize) * stepSize + stepSize
+    );
+    const yAxisMin = Math.max(0, Math.floor(minValue / stepSize) * stepSize);
 
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
@@ -137,25 +136,25 @@ const AnalyticChart = ({
     return (
         <Card
             className={cn(
-                "bg-white dark:bg-boxdark border border-stroke dark:border-strokedark",
+                "bg-white dark:bg-boxdark border border-stroke dark:border-strokedark w-full",
                 className
             )}
         >
-            <CardHeader className="p-6 pb-0">
-                <div className="flex justify-between items-start">
+            <CardHeader className="p-4 sm:p-6 pb-0">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div>
-                        <h4 className="text-2xl font-bold text-black dark:text-white mb-4">
+                        <h4 className="text-xl sm:text-2xl font-bold text-black dark:text-white mb-4">
                             {title}
                         </h4>
                     </div>
 
-                    <div className="flex gap-2">
-                        {(["Week", "Month", "Year"] as Period[]).map((period) => (
+                    <div className="flex gap-2 w-full sm:w-auto justify-end">
+                        {(["Month", "Year"] as Period[]).map((period) => (
                             <Button
                                 key={period}
                                 variant={activePeriod === period ? "default" : "outline"}
                                 className={cn(
-                                    "px-4 py-2 rounded-full text-sm",
+                                    "px-3 sm:px-4 py-2 rounded-full text-sm",
                                     activePeriod === period
                                         ? "bg-primary hover:bg-primary/90 text-white"
                                         : "bg-gray-2 dark:bg-meta-4 hover:bg-gray-3"
@@ -171,16 +170,16 @@ const AnalyticChart = ({
                 {showLegend && legendPosition === "top-right" && <CustomLegend />}
             </CardHeader>
 
-            <CardContent className="p-6 pt-0">
-                <div className="h-[250px] sm:h-[300px] w-full mt-4 -mx-4 sm:mx-0">
+            <CardContent className="p-4 sm:p-6 pt-0">
+                <div className="h-[250px] sm:h-[300px] w-full mt-4">
                     {hasData ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart
                                 data={chartData[activePeriod]}
                                 margin={{
                                     top: 30,
-                                    right: 10,
-                                    left: 10,
+                                    right: 5,
+                                    left: 0,
                                     bottom: 5,
                                 }}
                             >
@@ -198,6 +197,7 @@ const AnalyticChart = ({
                                         fontSize: window.innerWidth < 640 ? 10 : 12,
                                     }}
                                     dy={10}
+                                    interval="preserveStartEnd"
                                 />
                                 <YAxis
                                     axisLine={false}
@@ -207,6 +207,7 @@ const AnalyticChart = ({
                                         fontSize: window.innerWidth < 640 ? 10 : 12,
                                     }}
                                     domain={[yAxisMin, yAxisMax]}
+                                    width={35}
                                 />
                                 <Tooltip content={<CustomTooltip />} />
                                 <Line
@@ -215,18 +216,18 @@ const AnalyticChart = ({
                                     stroke={lineColor}
                                     strokeWidth={2}
                                     dot={{
-                                        r: 4,
+                                        r: 3,
                                         fill: lineColor,
                                         stroke: "#fff",
                                         strokeWidth: 2,
                                     }}
                                     activeDot={{
-                                        r: 6,
+                                        r: 5,
                                         fill: lineColor,
                                         stroke: "#fff",
                                         strokeWidth: 2,
                                     }}
-                                    label={<CustomLabel />}
+                                    label={window.innerWidth >= 640 ? <CustomLabel /> : undefined}
                                 />
                             </LineChart>
                         </ResponsiveContainer>

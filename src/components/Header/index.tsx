@@ -1,14 +1,15 @@
 import Link from "next/link";
-import DropdownNotification from "./DropdownNotification";
-import DropdownUser from "./DropdownUser";
 import Image from "next/image";
-import { useTranslation } from "react-i18next";
-import SearchBar from "./SearchBar";
-import LevelBadge from "./LevelBadge";
+import DropdownNotification from "@/components/Header/DropdownNotification";
+import DropdownUser from "@/components/Header/DropdownUser";
+import SearchBar from "@/components/Header/SearchBar";
+import LevelBadge from "@/components/Header/LevelBadge";
+import LanguageSwitcher from "@/components/Header/LanguageSwitcher";
+import DarkModeSwitcher from "@/components/Header/DarkModeSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { Menu, X } from "lucide-react";
-import LanguageSwitcher from "./LanguageSwitcher";
-import DarkModeSwitcher from "./DarkModeSwitcher";
+import { useTranslation } from "react-i18next";
+
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -70,8 +71,13 @@ const Header = (props: {
 
           <div className="flex items-center gap-2 sm:gap-3 2xsm:gap-7">
             <ul className="flex items-center gap-2 sm:gap-2 2xsm:gap-4">
-              <LanguageSwitcher />
-              <DarkModeSwitcher />
+              {/* Hide on mobile, show on sm breakpoint and above */}
+              <div className="hidden sm:block">
+                <LanguageSwitcher />
+              </div>
+              <div className="hidden sm:block">
+                <DarkModeSwitcher />
+              </div>
               {/* <DropdownNotification /> */}
               <LevelBadge />
               <DropdownUser />

@@ -1,6 +1,6 @@
 "use client";
 
-import UserProfileIcon from "../Icons/dashboard/UserProfileIcon";
+import UserProfileIcon from "@/components/Icons/dashboard/UserProfileIcon";
 import { useTranslation } from "react-i18next";
 import {
     Card,
@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/card";
 
 interface RecruitCardProps {
-    count: number;
+    activeDirectReferred: number;
+    totalNumberOfAccountsRegistered: number;
     agentsToPartner: {
         count: number;
         trend?: "up" | "down"; // Optional trend for flexibility
@@ -16,7 +17,7 @@ interface RecruitCardProps {
     // totalReferral: number;
 }
 
-const RecruitCard = ({ count, agentsToPartner }: RecruitCardProps) => {
+const RecruitCard = ({ activeDirectReferred, totalNumberOfAccountsRegistered, agentsToPartner }: RecruitCardProps) => {
     const { t } = useTranslation();
 
     return (
@@ -25,10 +26,11 @@ const RecruitCard = ({ count, agentsToPartner }: RecruitCardProps) => {
                 <div className="flex justify-between items-start">
                     <div>
                         <h3 className="text-[#8A8AA3] text-lg font-medium mb-4">
-                            {t("recruitCard.totalDirectRecruitLabel")}
+                            {t("recruitCard.directReferredVolume")}
                         </h3>
                         <p className="text-[2.5rem] font-bold text-black dark:text-white leading-tight">
-                            {count.toLocaleString()} 
+                            {(activeDirectReferred || 0).toLocaleString()}
+                            / {(totalNumberOfAccountsRegistered || 0).toLocaleString()}
                             {/* / {totalReferral.toLocaleString()} */}
                         </p>
                     </div>

@@ -1,4 +1,4 @@
-name: Build & Publish & Deploy
+name: Build & Publish & Deploy (Production)
 
 on:
   push:

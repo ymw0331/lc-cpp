@@ -53,10 +53,10 @@ const ProfileCard = ({
                 <div className="mt-8">
                     <div className="flex items-center gap-2">
                         <span className="text-4xl font-bold text-black dark:text-white">
-                            {activeUsers.current.toLocaleString()}
+                            {(activeUsers.current || 0).toLocaleString()}
                         </span>
                         <span className="text-2xl text-body dark:text-bodydark">
-                            / {activeUsers.target.toLocaleString()} {t("profileCard.activeUsersLabel")}
+                            / {(activeUsers.target || 0).toLocaleString()} {t("profileCard.activeUsersLabel")}
                         </span>
                     </div>
                 </div>
@@ -66,18 +66,18 @@ const ProfileCard = ({
                     <div className="flex-1 h-2.5 bg-chart-secondary dark:bg-meta-4 rounded-full overflow-hidden">
                         <div
                             className="h-full bg-chart-primary rounded-full transition-all duration-300 ease-in-out"
-                            style={{ width: `${activeUsers.percentage}%` }}
+                            style={{ width: `${activeUsers.percentage || 0}%` }}
                         />
                     </div>
                     <span className="text-2xl font-bold text-chart-primary">
-                        {activeUsers.percentage}%
+                        {activeUsers.percentage || 0}%
                     </span>
                 </div>
 
                 {/* Remaining Count */}
                 <div className="mt-4 flex items-center">
                     <span className="text-3xl font-bold text-black dark:text-white">
-                        {activeUsers.remaining.toLocaleString()}
+                        {(activeUsers.remaining || 0).toLocaleString()}
                     </span>
                     <span className="text-2xl text-body dark:text-bodydark ml-2">
                         {t("agentDashboard.left")}

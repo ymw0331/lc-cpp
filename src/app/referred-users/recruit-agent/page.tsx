@@ -2,11 +2,11 @@
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Check } from "lucide-react";
+import { Check, Mail, User, Phone, Loader2, CheckCircle, XCircle } from "lucide-react";
 import {
     Form,
     FormControl,
@@ -27,301 +27,296 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import { resellerApi } from "@/api/reseller/reseller.api";
+import { useToast } from "@/hooks/useToast";
+import { countries } from "@/lib/countries";
+import Link from "next/link";
+
+// Type definition for Country translations
+type TranslationLanguage = 'zh' | 'zh-hk';
+
+interface CountryTranslation {
+    zh: string;
+    "zh-hk": string;
+}
+
+interface CountriesData {
+    [country: string]: CountryTranslation;
+}
+
+interface VerifyUserResponse {
+    status: boolean;
+    data?: {
+        emailVerified: boolean;
+        fullname: string;
+        phoneNo: string;
+        cardActive: boolean;
+    };
+}
 
 const formSchema = z.object({
-    referralId: z.string(), // TODO: change to reseller id of the profile
-    fullName: z.string().min(2, "Name must be at least 2 characters"),
+    upstreamId: z.string(),
+    fullName: z.string().optional(),
     email: z.string().email("Invalid email address"),
+    contactNo: z.string().optional(),
     market: z.string(),
     agreed: z
         .boolean()
         .refine((val) => val === true, "You must agree to the terms"),
 });
 
-interface Market {
-    id: string;
-    value: string;
-    label: string;
-    code?: string; // optional country code
-    currency?: string; // optional currency code
-    timezone?: string; // optional timezone
-    active?: boolean; // to control availability
-}
-
-// Afghanistan  
-// Albania  
-// Algeria  
-// Andorra  
-// Angola  
-// Antigua and Barbuda  
-// Argentina  
-// Armenia  
-// Australia  
-// Austria  
-// Azerbaijan  
-// Bahamas  
-// Bahrain  
-// Bangladesh  
-// Barbados  
-// Belarus  
-// Belgium  
-// Belize  
-// Benin  
-// Bhutan  
-// Bolivia  
-// Bosnia and Herzegovina  
-// Botswana  
-// Brazil  
-// Brunei  
-// Bulgaria  
-// Burkina Faso  
-// Burundi  
-// Cabo Verde  
-// Cambodia  
-// Cameroon  
-// Canada  
-// Central African Republic  
-// Chad  
-// Chile  
-// China  
-// Colombia  
-// Comoros  
-// Congo (Congo-Brazzaville)  
-// Congo (Democratic Republic of the)  
-// Costa Rica  
-// Croatia  
-// Cuba  
-// Cyprus  
-// Czechia (Czech Republic)  
-// Denmark  
-// Djibouti  
-// Dominica  
-// Dominican Republic  
-// Ecuador  
-// Egypt  
-// El Salvador  
-// Equatorial Guinea  
-// Eritrea  
-// Estonia  
-// Eswatini (Swaziland)  
-// Ethiopia  
-// Fiji  
-// Finland  
-// France  
-// Gabon  
-// Gambia  
-// Georgia  
-// Germany  
-// Ghana  
-// Greece  
-// Grenada  
-// Guatemala  
-// Guinea  
-// Guinea-Bissau  
-// Guyana  
-// Haiti  
-// Honduras  
-// Hong Kong
-// Hungary  
-// Iceland  
-// India  
-// Indonesia  
-// Iran  
-// Iraq  
-// Ireland  
-// Israel  
-// Italy  
-// Jamaica  
-// Japan  
-// Jordan  
-// Kazakhstan  
-// Kenya  
-// Kiribati  
-// Korea (North)  
-// Korea (South)  
-// Kuwait  
-// Kyrgyzstan  
-// Laos  
-// Latvia  
-// Lebanon  
-// Lesotho  
-// Liberia  
-// Libya  
-// Liechtenstein  
-// Lithuania  
-// Luxembourg  
-// Madagascar  
-// Malawi  
-// Malaysia  
-// Maldives  
-// Mali  
-// Malta  
-// Marshall Islands  
-// Mauritania  
-// Mauritius  
-// Mexico  
-// Micronesia  
-// Moldova  
-// Monaco  
-// Mongolia  
-// Montenegro  
-// Morocco  
-// Mozambique  
-// Myanmar (Burma)  
-// Namibia  
-// Nauru  
-// Nepal  
-// Netherlands  
-// New Zealand  
-// Nicaragua  
-// Niger  
-// Nigeria  
-// North Macedonia (Macedonia)  
-// Norway  
-// Oman  
-// Pakistan  
-// Palau  
-// Palestine State  
-// Panama  
-// Papua New Guinea  
-// Paraguay  
-// Peru  
-// Philippines  
-// Poland  
-// Portugal  
-// Qatar  
-// Romania  
-// Russia  
-// Rwanda  
-// Saint Kitts and Nevis  
-// Saint Lucia  
-// Saint Vincent and the Grenadines  
-// Samoa  
-// San Marino  
-// Sao Tome and Principe  
-// Saudi Arabia  
-// Senegal  
-// Serbia  
-// Seychelles  
-// Sierra Leone  
-// Singapore  
-// Slovakia  
-// Slovenia  
-// Solomon Islands  
-// Somalia  
-// South Africa  
-// South Sudan  
-// Spain  
-// Sri Lanka  
-// Sudan  
-// Suriname  
-// Sweden  
-// Switzerland  
-// Syria  
-// Tajikistan  
-// Taiwan
-// Tanzania  
-// Thailand  
-// Timor-Leste  
-// Togo  
-// Tonga  
-// Trinidad and Tobago  
-// Tunisia  
-// Turkey  
-// Turkmenistan  
-// Tuvalu  
-// Uganda  
-// Ukraine  
-// United Arab Emirates  
-// United Kingdom  
-// United States of America  
-// Uruguay  
-// Uzbekistan  
-// Vanuatu  
-// Vatican City (Holy See)  
-// Venezuela  
-// Vietnam  
-// Yemen  
-// Zambia  
-// Zimbabwe
-
-const MARKETS: Market[] = [
-    {
-        id: "1",
-        value: "hong-kong",
-        label: "Hong Kong",
-        code: "HK",
-        currency: "HKD",
-        timezone: "Asia/Hong_Kong",
-        active: true,
-    },
-    {
-        id: "2",
-        value: "singapore",
-        label: "Singapore",
-        code: "SG",
-        currency: "SGD",
-        timezone: "Asia/Singapore",
-        active: true,
-    },
-    {
-        id: "3",
-        value: "malaysia",
-        label: "Malaysia",
-        code: "MY",
-        currency: "MYR",
-        timezone: "Asia/Kuala_Lumpur",
-        active: true,
-    },
-    {
-        id: "4",
-        value: "thailand",
-        label: "Thailand",
-        code: "TH",
-        currency: "THB",
-        timezone: "Asia/Bangkok",
-        active: true,
-    },
-];
-
 const RecruitAgentPage = () => {
     const { t } = useTranslation();
     const { user } = useAuth();
-
-    // Initial state values
-    // const [initialValues] = useState({
-    //     referralId: "AS7JDS38",
-    //     fullName: "Joby Tan",
-    //     email: "joby.tan@lookcard.io",
-    //     market: MARKETS[0].value,
-    //     agreed: false,
-    // });
+    const { toast } = useToast();
+    const { i18n } = useTranslation();
 
     // Verification states
-    const [isVerified, setIsVerified] = useState(false);
-    const [isMatched, setIsMatched] = useState(false);
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [isVerifyingEmail, setIsVerifyingEmail] = useState(false);
+    const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Function to clear auto-filled fields
+    const clearAutoFilledFields = () => {
+        form.setValue("fullName", '');
+        form.setValue("contactNo", '');
+        setIsEmailVerified(false);
+    };
 
     // Form definition
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        // defaultValues: initialValues,
         defaultValues: {
-            referralId: user?.referralCode || '', // Populate referralId from auth context
+            upstreamId: user?.resellerId || '',
             fullName: '',
             email: '',
+            contactNo: '',
             market: '',
             agreed: false,
         },
     });
 
-    const handleVerify = () => {
-        // todo: verification
-        setIsVerified(true);
-        setIsMatched(true);
+    // Function to get translated country name
+    const getLocalizedCountryName = (countryKey: string): string => {
+        if (!countryKey) return "";
+
+        const currentLang = i18n.language;
+        if (currentLang === 'zh' || currentLang === 'zh-hk') {
+            // Use the more specific type for translation lookup
+            const lang = currentLang as TranslationLanguage;
+            return countries[countryKey]?.[lang] || countryKey;
+        }
+        return countryKey;
     };
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    // Function to verify user email
+    const verifyUserEmail = async () => {
+        const email = form.getValues("email");
+        if (!email) return;
+
+        // Clear previous messages
+        setError("");
+        setSuccessMessage("");
+
+        try {
+            setIsVerifyingEmail(true);
+            console.log('[RecruitAgent] Verifying email:', email);
+
+            const response: VerifyUserResponse = await resellerApi.verifyUser(email);
+            console.log('[RecruitAgent] Verification response:', response);
+
+            if (response.status && response.data) {
+                // Clear previous data if email is not verified
+                if (!response.data.emailVerified) {
+                    clearAutoFilledFields();
+                    const errorMsg = t("recruitAgentPage.emailRegistrationRequired");
+                    setError(errorMsg);
+                    toast({
+                        variant: "destructive",
+                        title: t("recruitAgentPage.error"),
+                        description: errorMsg,
+                        duration: 5000,
+                    });
+                    return;
+                }
+
+                // Only set verification status and populate fields if email is verified
+                setIsEmailVerified(response.data.emailVerified);
+                
+                // Auto-populate fields without validation since they're optional
+                form.setValue("fullName", response.data.fullname || '');
+                form.setValue("contactNo", response.data.phoneNo || '');
+
+                // Clear any previous error messages
+                setError("");
+                const successMsg = t("recruitAgentPage.emailVerifiedSuccess");
+                setSuccessMessage(successMsg);
+                toast({
+                    title: t("recruitAgentPage.emailVerified"),
+                    description: successMsg,
+                    duration: 3000,
+                });
+            }
+        } catch (err: any) {
+            console.error('[RecruitAgent] Email verification error:', err);
+            clearAutoFilledFields();
+            const errorMsg = t("recruitAgentPage.verificationFailed");
+            setError(errorMsg);
+            setSuccessMessage("");
+            toast({
+                variant: "destructive",
+                title: t("recruitAgentPage.error"),
+                description: errorMsg,
+                duration: 5000,
+            });
+        } finally {
+            setIsVerifyingEmail(false);
+        }
+    };
+
+    // Reset messages when email changes
+    useEffect(() => {
+        const subscription = form.watch((value, info) => {
+            if (info.name === "email") {
+                clearAutoFilledFields();
+                setError("");
+                setSuccessMessage("");
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [form]);
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        // Clear previous messages
+        setError("");
+        setSuccessMessage("");
+        setIsLoading(true);
+
+        console.log('[RecruitAgent] Starting recruitment process:', values);
+
+        try {
+            // Validate email verification
+            if (!isEmailVerified) {
+                const errorMsg = t("recruitAgentPage.emailVerificationRequired");
+                setError(errorMsg);
+                throw new Error(errorMsg);
+            }
+
+            // Validate required fields
+            if (!values.market) {
+                const errorMsg = t("recruitAgentPage.selectMarket");
+                setError(errorMsg);
+                throw new Error(errorMsg);
+            }
+
+            if (!values.agreed) {
+                const errorMsg = t("recruitAgentPage.termsAgreement");
+                setError(errorMsg);
+                throw new Error(errorMsg);
+            }
+
+            // Prepare the request payload
+            const requestData = {
+                upstreamId: values.upstreamId,
+                keyMarket: values.market,
+                email: values.email,
+                fullName: form.getValues("fullName"),
+                contactNo: form.getValues("contactNo")
+            };
+
+            console.log('[RecruitAgent] Sending recruitment request with data:', requestData);
+
+            // Call the API to register the agent
+            const response = await resellerApi.registerReseller(requestData);
+            console.log('[RecruitAgent] Recruitment response:', response);
+
+            // Handle successful recruitment
+            if (response && response.status === true) {
+                console.log('[RecruitAgent] Recruitment successful');
+
+                // const successMsg = t("recruitAgentPage.successfullyRecruited");
+                
+                const successMsg = `${values.email} ${t("recruitAgentPage.successfullyRecruited")}`;
+                // Set success message
+                setSuccessMessage(successMsg);
+                setError(""); // Clear any previous error
+
+                // Show success toast
+                toast({
+                    title: t("recruitAgentPage.success"),
+                    description: successMsg,
+                    duration: 3000,
+                });
+
+                // Reset form
+                form.reset({
+                    upstreamId: user?.resellerId || '',
+                    fullName: '',
+                    email: '',
+                    contactNo: '',
+                    market: '',
+                    agreed: false,
+                });
+                setIsEmailVerified(false);
+            } else {
+                // Status not true means recruitment failed
+                console.error('[RecruitAgent] Recruitment failed: Response status not true', response);
+                const errorMsg = t("recruitAgentPage.error");
+                setError(errorMsg);
+                setSuccessMessage(""); // Clear any previous success
+                throw new Error(errorMsg);
+            }
+        } catch (err: any) {
+            console.error('[RecruitAgent] Recruitment failed:', err);
+            setSuccessMessage(""); // Clear any previous success
+
+            // Safely extract error message with fallbacks
+            let errorMessage = t("recruitAgentPage.error");
+
+            if (err) {
+                if (err.response && err.response.data && err.response.data.message) {
+                    errorMessage = err.response.data.message;
+                } else if (err.message) {
+                    errorMessage = err.message;
+                }
+            }
+
+            // List of system information messages that should be shown as notices rather than errors
+            const systemMessages = [
+                'Email not found',
+                'Card not activated',
+                'Reseller already exists',
+                'Reseller Application request already exists',
+                'Upstream not found',
+                'Level 1 reseller cannot have downstream',
+                'Upstream team is full',
+                'Key market is required'
+            ];
+
+            // Check if the message is a system message
+            const isSystemMessage = systemMessages.includes(errorMessage);
+
+            // Special handling for "Reseller already exists" message
+            if (errorMessage === 'Reseller already exists') {
+                errorMessage = t("recruitAgentPage.resellerAlreadyExists");
+            }
+
+            // Set the error message state
+            setError(errorMessage);
+
+            // Show toast with appropriate styling based on message type
+            toast({
+                variant: isSystemMessage ? "default" : "destructive",
+                title: isSystemMessage ? t("recruitAgentPage.notice") : t("recruitAgentPage.error"),
+                description: errorMessage,
+                duration: 5000,
+            });
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -336,13 +331,17 @@ const RecruitAgentPage = () => {
                         <h2 className="text-title-sm text-black dark:text-white font-bold">
                             {t("recruitAgentPage.agentRecruitmentDetails")}
                         </h2>
+                        <p className="text-body dark:text-bodydark">
+                            {t("recruitAgentPage.enterEmail")}
+                        </p>
 
                         <div className="grid gap-6">
+                            {/* Referral ID and Email in same row */}
                             <div className="grid gap-4 md:grid-cols-2">
-                                {/* Referral ID */}
+                                {/* Upstream ID */}
                                 <FormField
                                     control={form.control}
-                                    name="referralId"
+                                    name="upstreamId"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-black dark:text-bodydark">
@@ -351,7 +350,7 @@ const RecruitAgentPage = () => {
                                             <FormControl>
                                                 <Input
                                                     {...field}
-                                                    // readOnly
+                                                    readOnly
                                                     className="bg-gray dark:bg-form-input border-stroke dark:border-strokedark text-black dark:text-white focus-visible:ring-primary"
                                                 />
                                             </FormControl>
@@ -360,6 +359,44 @@ const RecruitAgentPage = () => {
                                     )}
                                 />
 
+                                {/* Email */}
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-black dark:text-bodydark">
+                                                {t("recruitAgentPage.registeredEmail")}*
+                                            </FormLabel>
+                                            <div className="relative flex space-x-2">
+                                                <FormControl>
+                                                    <Input
+                                                        {...field}
+                                                        type="email"
+                                                        className="bg-gray dark:bg-form-input border-stroke dark:border-strokedark text-black dark:text-white focus-visible:ring-primary"
+                                                    />
+                                                </FormControl>
+                                                <Button
+                                                    type="button"
+                                                    onClick={verifyUserEmail}
+                                                    className="bg-primary hover:bg-primary/90 text-white"
+                                                    disabled={isVerifyingEmail || !field.value}
+                                                >
+                                                    {isVerifyingEmail ? (
+                                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                                    ) : (
+                                                        t("recruitAgentPage.verify")
+                                                    )}
+                                                </Button>
+                                            </div>
+                                            <FormMessage className="text-meta-1" />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            {/* Full Name and Member Verification in same row */}
+                            <div className="grid gap-4 md:grid-cols-2">
                                 {/* Full Name */}
                                 <FormField
                                     control={form.control}
@@ -372,30 +409,9 @@ const RecruitAgentPage = () => {
                                             <FormControl>
                                                 <Input
                                                     {...field}
-                                                    className="bg-gray dark:bg-form-input border-stroke dark:border-strokedark text-black dark:text-white focus-visible:ring-primary"
-                                                />
-                                            </FormControl>
-                                            <FormMessage className="text-meta-1" />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-
-                            <div className="grid gap-4 md:grid-cols-2">
-                                {/* Email */}
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="text-black dark:text-bodydark">
-                                                {t("recruitAgentPage.registeredEmail")}*
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    {...field}
-                                                    type="email"
-                                                    className="bg-gray dark:bg-form-input border-stroke dark:border-strokedark text-black dark:text-white focus-visible:ring-primary"
+                                                    className={`bg-gray dark:bg-form-input border-stroke dark:border-strokedark text-black dark:text-white focus-visible:ring-primary ${isEmailVerified ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                                                    readOnly
+                                                    disabled={!isEmailVerified}
                                                 />
                                             </FormControl>
                                             <FormMessage className="text-meta-1" />
@@ -403,46 +419,27 @@ const RecruitAgentPage = () => {
                                     )}
                                 />
 
-                                {/* Verification */}
+                                {/* Member Verification */}
                                 <FormItem>
                                     <FormLabel className="text-black dark:text-bodydark">
                                         {t("recruitAgentPage.memberVerification")}*
                                     </FormLabel>
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex gap-2">
-                                            <span
-                                                className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${isVerified
-                                                        ? "bg-primary/10 text-primary"
-                                                        : "bg-gray dark:bg-meta-4 text-body dark:text-bodydark"
-                                                    }`}
-                                            >
-                                                <Check className="w-4 h-4 mr-1" />
-                                                {t("recruitAgentPage.emailVerified")}
-                                            </span>
-                                            <span
-                                                className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${isMatched
-                                                        ? "bg-primary/10 text-primary"
-                                                        : "bg-gray dark:bg-meta-4 text-body dark:text-bodydark"
-                                                    }`}
-                                            >
-                                                <Check className="w-4 h-4 mr-1" />
-                                                {t("recruitAgentPage.matchedEmail")}
-                                            </span>
+                                    <div className="flex mt-1">
+                                        <div className={`flex-1 border rounded-md px-4 py-2 flex items-center justify-center space-x-2 ${isEmailVerified ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-300'}`}>
+                                            <span className="text-sm">{t("registerPage.emailVerified")}</span>
+                                            {isEmailVerified ? (
+                                                <CheckCircle className="h-5 w-5 text-green-500" />
+                                            ) : (
+                                                <XCircle className="h-5 w-5 text-gray-300" />
+                                            )}
                                         </div>
-                                        <Button
-                                            type="button"
-                                            onClick={handleVerify}
-                                            variant="outline"
-                                            className="border-stroke dark:border-strokedark hover:bg-gray dark:hover:bg-meta-4"
-                                        >
-                                            {t("recruitAgentPage.check")}
-                                        </Button>
                                     </div>
                                 </FormItem>
                             </div>
 
-                            {/* Market Selection */}
+                            {/* Market Selection and Contact Number in same row */}
                             <div className="grid gap-4 md:grid-cols-2">
+                                {/* Market Selection */}
                                 <FormField
                                     control={form.control}
                                     name="market"
@@ -461,19 +458,40 @@ const RecruitAgentPage = () => {
                                                     </SelectTrigger>
                                                 </FormControl>
                                                 <SelectContent className="bg-white dark:bg-boxdark border-stroke dark:border-strokedark">
-                                                    {MARKETS.filter((market) => market.active).map(
-                                                        (market) => (
-                                                            <SelectItem
-                                                                key={market.id}
-                                                                value={market.value}
-                                                                className="focus:bg-gray dark:focus:bg-meta-4"
-                                                            >
-                                                                {market.label}
-                                                            </SelectItem>
-                                                        )
-                                                    )}
+                                                    {Object.keys(countries).map((country) => (
+                                                        <SelectItem
+                                                            key={country}
+                                                            value={country}
+                                                            className="focus:bg-gray dark:focus:bg-meta-4"
+                                                        >
+                                                            {getLocalizedCountryName(country)}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectContent>
                                             </Select>
+                                            <FormMessage className="text-meta-1" />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                {/* Contact Number */}
+                                <FormField
+                                    control={form.control}
+                                    name="contactNo"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-black dark:text-bodydark">
+                                                {t("recruitAgentPage.contactNo")}*
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="tel"
+                                                    className={`bg-gray dark:bg-form-input border-stroke dark:border-strokedark text-black dark:text-white focus-visible:ring-primary ${isEmailVerified ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+                                                    readOnly
+                                                    disabled={!isEmailVerified}
+                                                />
+                                            </FormControl>
                                             <FormMessage className="text-meta-1" />
                                         </FormItem>
                                     )}
@@ -508,6 +526,18 @@ const RecruitAgentPage = () => {
                         </div>
                     </div>
 
+                    {/* Error and Success Message Display */}
+                    {error && (
+                        <div className="p-4 bg-red-50 border border-red-200 text-red-800 rounded-md">
+                            {error}
+                        </div>
+                    )}
+                    {successMessage && !error && (
+                        <div className="p-4 bg-green-50 border border-green-200 text-green-800 rounded-md">
+                            {successMessage}
+                        </div>
+                    )}
+
                     <FormField
                         control={form.control}
                         name="agreed"
@@ -517,7 +547,7 @@ const RecruitAgentPage = () => {
                                     <Checkbox
                                         checked={field.value}
                                         onCheckedChange={field.onChange}
-                                        className="border-stroke dark:border-strokedark data-[state=checked]:bg-primary data-[state=checked]:border-primary"
+                                        className="border-stroke dark:border-strokedark dark:bg-white dark:text-black data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                                     />
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
@@ -533,11 +563,18 @@ const RecruitAgentPage = () => {
                         <Button
                             type="submit"
                             disabled={
-                                !form.getValues("agreed") || !isVerified || !isMatched
+                                !form.getValues("agreed") || !isEmailVerified || isLoading
                             }
                             className="bg-primary hover:bg-primary/90 text-white disabled:bg-primary/50"
                         >
-                            {t("recruitAgentPage.recruitButton")}
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    {t("recruitAgentPage.processing")}
+                                </>
+                            ) : (
+                                t("recruitAgentPage.recruitButton")
+                            )}
                         </Button>
                     </div>
                 </form>

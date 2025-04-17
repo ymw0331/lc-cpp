@@ -14,7 +14,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { DepositActivity } from "@/types/dashboard";
+import { DepositActivity } from "@/api/dashboard/dashboard.types";
 import { useTranslation } from "react-i18next";
 
 interface DepositActivityTableProps {

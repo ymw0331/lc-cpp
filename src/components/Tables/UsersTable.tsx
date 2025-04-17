@@ -1,8 +1,9 @@
 "use client";
 
+import React from 'react';
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { Filter, Plus, MoreHorizontal, Eye, UserPlus, Download } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Filter, Plus, MoreHorizontal, Eye, UserPlus, Download, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
@@ -24,6 +25,36 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { resellerApi } from "@/api/reseller/reseller.api";
+import { useAuth } from '@/contexts/AuthContext';
+import { checkTierPermission, TIER_PERMISSIONS } from '@/utils/permissions';
+import { formatDateWithHKTime } from '@/lib/dateUtils';
+import {
+    Downstream,
+    DirectReferral,
+    ResellerResponse,
+    User,
+    Tier
+} from "@/api/reseller/reseller.types";
+import { exportToCSV } from '@/utils/exportToCSV';
+
+const getColorFromString = (str: string | undefined, ranking?: string): string => {
+    if (!str) return 'bg-gray-500'; // Fallback color if string is undefined/null
+
+    // Determine color based on ranking/tier level
+    if (ranking) {
+        if (ranking === "USER") {
+            return 'bg-blue-500'; // Tier 0 - Users
+        } else if (ranking.includes("Level 1")) {
+            return 'bg-green-500'; // Tier 1
+        } else if (ranking.includes("Level 2")) {
+            return 'bg-purple-500'; // Tier 2
+        } else if (ranking.includes("Level 3")) {
+            return 'bg-orange-500'; // Tier 3
+        }
+    }
+
+    return 'bg-gray-500'; // Fallback color
+};
 
 interface FilterOptions {
     ranking: string;
@@ -43,86 +74,44 @@ interface FilterPopupProps {
     uniqueRankings: string[];
 }
 
-interface Downstream {
-    id: string;
-    ownerProfileId: string;
-    tierId: string;
-    verificationId: null;
-    createdAt: string;
-    updatedAt: string;
-    user: {
-        id: number;
-        uuid: string;
-        first_name: string;
-        last_name: string;
-        profileId: string;
-        email: string;
-        username: string;
-        status: string;
-        verified_at: string;
-        cardId: number | null;
-        ekycStatus: string | null;
-        cardStatus: string | null;
-        firstDeposit: boolean | null;
-        phone_no: string | null;
-        country_code: number | null;
-        [key: string]: any;
-    };
-}
-
-interface DirectReferral {
-    user: {
-        id: number;
-        uuid: string;
-        first_name: string;
-        last_name: string;
-        profileId: string;
-        email: string;
-        username: string;
-        status: string;
-        verified_at: string;
-        cardId: number | null;
-        ekycStatus: string | null;
-        cardStatus: string | null;
-        firstDeposit: boolean | null;
-        phone_no: string | null;
-        country_code: number | null;
-        [key: string]: any;
-    };
-}
+type TabType = "agents" | "referred-users";
 
 interface UsersTableProps {
     downstreams: Downstream[];
     directReferrals: DirectReferral[];
     dashboardTotalReferrals?: number;
     userTierPriority?: number;
+    initialActiveTab?: TabType;
+}
+
+
+interface UserTableData {
+    id: string;
+    fullName: string;
+    ranking: string;
+    accountActivation: string | null;
+    totalDeposit: number;
+    physicalCard: boolean;
+    ekycStatus: string;
+    cardStatus: string;
+    firstDeposit: boolean;
+    profileId?: string;
+    ownerProfileId?: string;
+    emailAddress: string;
+    fromEvent?: string | null;
 }
 
 // Format date to readable format
-const formatDate = (dateString: string): { date: string; time: string } => {
-    if (!dateString) return { date: "-", time: "-" };
+const formatDate = (dateString: string | null | undefined): { date: string; time: string } => {
+    if (!dateString) {
+        return { date: "-", time: "-" };
+    }
 
-    const date = new Date(dateString);
-
-    // Check if the date is valid
-    if (isNaN(date.getTime())) return { date: "-", time: "-" };
-
-    const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: '2-digit'
-    };
-
-    // Format date like "NOVEMBER 04, 2024"
-    const formattedDate = date.toLocaleDateString('en-US', options).toUpperCase();
-
-    // Format time like "14:21:21"
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    const seconds = date.getSeconds().toString().padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
-
-    return { date: formattedDate, time: formattedTime };
+    try {
+        return formatDateWithHKTime(dateString);
+    } catch (error) {
+        return { date: "-", time: "-" };
+    }
 };
 
 // Filter Component
@@ -342,21 +331,45 @@ const FilterPopup = ({
     );
 };
 
+// Add new interfaces for expanded data
+interface ExpandedRowData {
+    id: string;
+    fullName: string;
+    ranking: string;
+    accountActivation: string | null;
+    totalDeposit: number;
+    physicalCard: boolean;
+    ekycStatus: string;
+    cardStatus: string;
+    firstDeposit: boolean;
+    emailAddress: string;
+    profileId?: string;
+    fromEvent?: string | null;
+}
+
 // Main Component
 const UsersTable = ({
     downstreams,
     directReferrals = [],
     dashboardTotalReferrals = 0,
-    userTierPriority = 0
+    userTierPriority = 0,
+    initialActiveTab = "referred-users" // Default value
 }: UsersTableProps) => {
     const { t } = useTranslation();
     const router = useRouter();
+    const { user } = useAuth();
+    const actualTierPriority = user?.tierPriority || userTierPriority;
+    const searchParams = useSearchParams();
 
-    // Check if user is Level 1
-    const isLevelOne = userTierPriority === 1;
-
-    // For Level 1 users, always force tab to "referred-users"
-    const [activeTab, setActiveTab] = useState("referred-users");
+    // Check if user is Level 1 - if so, always force tab to "referred-users"
+    const isLevelOne = actualTierPriority === 1;
+    const [activeTab, setActiveTab] = useState<TabType>(() => {
+        const tabFromUrl = searchParams.get('tab');
+        if (tabFromUrl === 'agents' && !isLevelOne) {
+            return 'agents';
+        }
+        return initialActiveTab || "referred-users";
+    });
 
     const [searchTerm, setSearchTerm] = useState("");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -371,75 +384,86 @@ const UsersTable = ({
     });
 
     // State for processed user profiles
-    const [userProfiles, setUserProfiles] = useState<any[]>([]);
-    const [agentProfiles, setAgentProfiles] = useState<any[]>([]);
+    const [userProfiles, setUserProfiles] = useState<UserTableData[]>([]);
+    const [agentProfiles, setAgentProfiles] = useState<UserTableData[]>([]);
     const [loading, setLoading] = useState(true);
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
+    // Add state for expanded rows
+    const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>({});
+    const [expandedData, setExpandedData] = useState<{ [key: string]: ExpandedRowData[] }>({});
+    const [loadingExpandedData, setLoadingExpandedData] = useState<{ [key: string]: boolean }>({});
+
+    // Add new state to track which users have expandable data
+    const [expandableUsers, setExpandableUsers] = useState<{ [key: string]: boolean }>({});
+
+    const isAgentsTab = (tab: TabType): tab is "agents" => tab === "agents";
+
+    useEffect(() => {
+        if (initialActiveTab) {
+            setActiveTab(initialActiveTab);
+        }
+    }, [initialActiveTab]);
+
+
     // Fetch user profiles from the API
     useEffect(() => {
-        const fetchUserProfiles = async () => {
-            try {
-                setLoading(true);
+        try {
+            setLoading(true);
 
-                // Process users (direct referrals)
-                // Only use profileId from directReferrals to fetch detailed profiles
-                const userProfilePromises = directReferrals.map(async (referral) => {
-                    try {
-                        if (referral.user && referral.user.profileId) {
-                            // Make API call to get detailed profile data
-                            const profileData = await resellerApi.getAgentProfile(referral.user.profileId);
-                            return {
-                                ...profileData,
-                                id: referral.user.id.toString(), // Keep original id for React key
-                                profileId: referral.user.profileId // Keep profileId for navigation
-                            };
-                        }
-                        return null;
-                    } catch (error) {
-                        console.error(`Error fetching profile for ${referral.user.profileId}:`, error);
-                        return null;
-                    }
-                });
+            // Process users (direct referrals) and sort by createdAt
+            const processedUsers: UserTableData[] = directReferrals
+                .sort((a, b) => {
+                    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                    return dateB - dateA; // Sort in descending order (newest first)
+                })
+                .map(referral => ({
+                    id: referral?.id?.toString() || 'unknown',
+                    fullName: `${referral.user?.first_name || ''} ${referral.user?.last_name || ''}`.trim() || referral.user?.username || 'Unknown',
+                    ranking: 'USER',
+                    accountActivation: referral.accountActivation || null,
+                    totalDeposit: referral.totalDeposit || 0,
+                    physicalCard: referral.physicalCard || false,
+                    ekycStatus: referral.ekycStatus || 'N/A',
+                    cardStatus: referral.cardStatus || 'N/A',
+                    firstDeposit: referral.firstDeposit || false,
+                    profileId: referral.user?.profileId,
+                    emailAddress: referral.user?.email || 'Unknown',
+                }));
 
-                // Process agents (downstreams)
-                const agentProfilePromises = downstreams.map(async (downstream) => {
-                    try {
-                        if (downstream.ownerProfileId) {
-                            // Make API call to get detailed profile data
-                            const profileData = await resellerApi.getAgentProfile(downstream.ownerProfileId);
-                            return {
-                                ...profileData,
-                                id: downstream.id, // Keep original id for React key
-                                ownerProfileId: downstream.ownerProfileId // Keep ownerProfileId for navigation
-                            };
-                        }
-                        return null;
-                    } catch (error) {
-                        console.error(`Error fetching profile for ${downstream.ownerProfileId}:`, error);
-                        return null;
-                    }
-                });
+            // Process agents (downstreams) and sort by createdAt
+            const processedAgents: UserTableData[] = downstreams
+                .sort((a, b) => {
+                    const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+                    const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+                    return dateB - dateA; // Sort in descending order (newest first)
+                })
+                .map(downstream => ({
+                    id: downstream.id,
+                    fullName: `${downstream.user?.first_name || ''} ${downstream.user?.last_name || ''}`.trim() || downstream.user?.username || 'Unknown',
+                    ranking: downstream.tier?.priority ? `Level ${downstream.tier.priority}` : 'Unknown',
+                    accountActivation: downstream.accountActivation || null,
+                    totalDeposit: downstream.totalDeposit || 0,
+                    physicalCard: downstream.physicalCard || false,
+                    ekycStatus: downstream.ekycStatus || 'N/A',
+                    cardStatus: downstream.cardStatus || 'N/A',
+                    firstDeposit: downstream.firstDeposit || false,
+                    ownerProfileId: downstream.ownerProfileId,
+                    emailAddress: downstream.user?.email || 'Unknown',
+                    fromEvent: downstream.fromEvent || 'Unknown'
+                }));
 
-                // Resolve all promises
-                const userResults = await Promise.all(userProfilePromises);
-                const agentResults = await Promise.all(agentProfilePromises);
-
-                // Filter out null results
-                setUserProfiles(userResults.filter(profile => profile !== null));
-                setAgentProfiles(agentResults.filter(profile => profile !== null));
-
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching profiles:", error);
-                setLoading(false);
-            }
-        };
-
-        fetchUserProfiles();
+            setUserProfiles(processedUsers.filter(user => user !== null));
+            setAgentProfiles(processedAgents.filter(agent => agent !== null));
+            setLoading(false);
+        } catch (error) {
+            console.error("Error processing profiles:", error);
+            setLoading(false);
+        }
     }, [directReferrals, downstreams]);
 
     // Reset pagination when changing tabs
@@ -448,10 +472,30 @@ const UsersTable = ({
         setSearchTerm("");
     }, [activeTab]);
 
-
     // Format currency
     const formatCurrency = (amount: number) => {
         return `$ ${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+
+    // Handle CSV export
+    const handleExportToCSV = () => {
+        const dataToExport = activeTab === "referred-users" ? userProfiles : agentProfiles;
+        
+        // Transform data for export
+        const exportData = dataToExport.map(user => ({
+            'Full Name': user.fullName,
+            'Email': user.emailAddress,
+            'Ranking': user.ranking === "N/A" ? "USER" : user.ranking.replace("Tier", "Level"),
+            'Account Activation': formatDate(user.accountActivation).date + " " + formatDate(user.accountActivation).time,
+            'Total Deposit': formatCurrency(user.totalDeposit),
+            'Physical Card': user.physicalCard ? "YES" : "-",
+            'eKYC Status': user.ekycStatus,
+            'Card Status': user.cardStatus
+        }));
+
+        exportToCSV(exportData, {
+            filename: `${activeTab}-${new Date().toISOString().split('T')[0]}.csv`
+        });
     };
 
     // Choose the active dataset based on tab
@@ -526,10 +570,10 @@ const UsersTable = ({
         }
     };
 
-    // Define tabs for SplitTabs component
+    // Define tabs for SplitTabs component - only show both tabs for Level 2+
     const tabs = [
         { id: "referred-users", label: t("usersTable.users", "Referred Users") },
-        { id: "agents", label: t("usersTable.agents", "Agents") }
+        ...(isLevelOne ? [] : [{ id: "agents", label: t("usersTable.agents", "Agents") }])
     ];
 
     // Handle tab change - prevent changing to agents tab for Level 1 users
@@ -537,63 +581,246 @@ const UsersTable = ({
         if (isLevelOne && tabId === "agents") {
             return; // Prevent tab change for Level 1 users
         }
-        setActiveTab(tabId);
+        setActiveTab(tabId as TabType);
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('tab', tabId);
+        router.push(`/referred-users/manage-user?${params.toString()}`);
     };
 
     // Get the first letter of a name for the Avatar
-    const getFirstLetter = (name: string) => {
+    const getFirstLetter = (name: string | undefined): string => {
         return name ? name.charAt(0).toUpperCase() : 'U';
     };
 
     // Handle row click to navigate to profile page
-    const handleRowClick = (user: any) => {
+    const handleRowClick = (user: UserTableData) => {
         if (activeTab === "agents" && user.ownerProfileId) {
             router.push(`/referred-users/manage-user/agent/${user.ownerProfileId}`);
-        } else if (activeTab === "referred-users") {
+        } else if (activeTab === "referred-users" && user.profileId) {
             router.push(`/referred-users/manage-user/user/${user.profileId}`);
         }
     };
 
+    // Function to toggle row expansion with permission checks
+    const toggleRowExpansion = async (user: UserTableData) => {
+        const rowId = user.id;
+        console.log(`Toggling expansion for row ${rowId}, user: ${user.fullName}, current user tier: ${actualTierPriority}`);
 
-    // Export to CSV function
-    // const exportToCSV = () => {
-    //     const headers = activeTab === "referred-users" ?
-    //         ["Name", "Email", "Status", "Account Activation", "Physical Card", "Country"] :
-    //         ["Name", "Email", "Ranking", "Status", "Account Activation", "Physical Card", "Country"];
+        // If already expanded, just collapse
+        if (expandedRows[rowId]) {
+            console.log(`Collapsing row ${rowId}`);
+            setExpandedRows(prev => ({ ...prev, [rowId]: false }));
+            return;
+        }
 
-    //     const data = filteredUsers.map((user: any) => {
-    //         const baseData = [
-    //             user.name,
-    //             user.userId || user.emailAddress,
-    //             user.status,
-    //             `${user.accActivation.date} ${user.accActivation.time}`,
-    //             user.physicalCard,
-    //             user.country
-    //         ];
+        // Start loading
+        setLoadingExpandedData(prev => ({ ...prev, [rowId]: true }));
 
-    //         return activeTab === "referred-users" ? baseData : [baseData[0], baseData[1], user.ranking, ...baseData.slice(2)];
-    //     });
+        try {
+            // Get the profile ID
+            const profileId = user.ownerProfileId || user.profileId;
 
-    //     let csvContent = headers.join(",") + "\n";
-    //     csvContent += data.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
+            if (!profileId) {
+                console.error('No profile ID available for user:', user);
+                setLoadingExpandedData(prev => ({ ...prev, [rowId]: false }));
+                return;
+            }
 
-    //     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    //     const link = document.createElement("a");
-    //     const url = URL.createObjectURL(blob);
+            console.log(`Fetching expanded data for profileId: ${profileId}`);
 
-    //     link.setAttribute("href", url);
-    //     link.setAttribute("download", `${activeTab}-${new Date().toISOString().slice(0, 10)}.csv`);
-    //     link.style.visibility = "hidden";
+            try {
+                // Fetch the reseller info
+                const resellerInfo = await resellerApi.getAgentData(profileId) as ResellerResponse;
+                console.log("Expanded data received:", resellerInfo);
 
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-    // };
+                if (!resellerInfo) {
+                    console.error(`No data received for profileId: ${profileId}`);
+                    setLoadingExpandedData(prev => ({ ...prev, [rowId]: false }));
+                    return;
+                }
+
+                const expandedUsers: ExpandedRowData[] = [];
+
+                // Handle downstreams based on permission rules
+                if (resellerInfo.downstreams && resellerInfo.downstreams.length > 0) {
+                    console.log(`Found ${resellerInfo.downstreams.length} downstreams`);
+
+                    resellerInfo.downstreams.forEach(downstream => {
+                        // Apply permission rules based on downstream tier level
+                        const downstreamTierPriority = downstream.tier?.priority || 0;
+
+                        // Check if current user can see this downstream based on override rules
+                        const canSeeDownstream =
+                            // OVERRIDE RULE 1: Level 2+ agents receive override bonus from Level 1 agents
+                            // So they need visibility of these agents
+                            (actualTierPriority >= 2 && downstreamTierPriority === 1) ||
+                            // OVERRIDE RULE 2: Level 3+ agents receive override bonus from Level 2 agents
+                            // So they need visibility of these agents
+                            (actualTierPriority >= 3 && downstreamTierPriority === 2) ||
+                            // OVERRIDE RULE 3: No override is earned from Level 3+ agents
+                            // But higher level agents (L4+) still need to see L3 for management purposes
+                            // Note: This is visibility only, not override-related
+                            (actualTierPriority >= 4 && downstreamTierPriority === 3);
+
+                        if (canSeeDownstream) {
+                            console.log(`User tier ${actualTierPriority} can see downstream tier ${downstreamTierPriority}`);
+                            expandedUsers.push({
+                                id: downstream.id,
+                                fullName: `${downstream.user?.first_name || ''} ${downstream.user?.last_name || ''}`.trim() || downstream.user?.username || 'Unknown',
+                                ranking: downstream.tier?.priority ? `Level ${downstream.tier.priority}` : 'Unknown',
+                                accountActivation: downstream.accountActivation || null,
+                                totalDeposit: downstream.totalDeposit || 0,
+                                physicalCard: downstream.physicalCard || false,
+                                ekycStatus: downstream.ekycStatus || 'N/A',
+                                cardStatus: downstream.cardStatus || 'N/A',
+                                firstDeposit: downstream.firstDeposit || false,
+                                emailAddress: downstream.user?.email || 'Unknown'
+                            });
+                        } else {
+                            console.log(`User tier ${actualTierPriority} cannot see downstream tier ${downstreamTierPriority} (no override)`);
+                        }
+                    });
+                }
+
+                // All levels can see their direct referrals (users)
+                if (resellerInfo.directReferral && resellerInfo.directReferral.length > 0) {
+                    console.log(`Found ${resellerInfo.directReferral.length} direct referrals (users)`);
+
+                    resellerInfo.directReferral.forEach((referral, index) => {
+                        if (!referral?.user) {
+                            console.warn(`Direct referral at index ${index} has no user data`);
+                            return;
+                        }
+
+                        expandedUsers.push({
+                            id: referral.user.profileId,
+                            fullName: `${referral.user.first_name || ''} ${referral.user.last_name || ''}`.trim() || referral.user.username || 'Unknown',
+                            ranking: 'USER',
+                            accountActivation: referral.accountActivation || null,
+                            totalDeposit: referral.totalDeposit || 0,
+                            physicalCard: Boolean(referral.physicalCard),
+                            ekycStatus: referral.user.ekycStatus || 'N/A',
+                            cardStatus: referral.user.cardStatus || 'N/A',
+                            firstDeposit: Boolean(referral.user.firstDeposit),
+                            emailAddress: referral.user.email || 'Unknown',
+                            profileId: referral.user.profileId
+                        });
+                    });
+                }
+
+                console.log(`Total filtered expanded users to display after pwermission checks: ${expandedUsers.length}`);
+
+                // Update state
+                setExpandedData(prev => ({ ...prev, [rowId]: expandedUsers }));
+                setExpandedRows(prev => ({ ...prev, [rowId]: true }));
+            } catch (error) {
+                console.error(`Error fetching data for ${profileId}:`, error);
+            }
+        } catch (error) {
+            console.error('Error in toggleRowExpansion:', error);
+        } finally {
+            setLoadingExpandedData(prev => ({ ...prev, [rowId]: false }));
+        }
+    };
+
+    // Check if a row is expandable with permission consideration
+    const checkIfExpandable = async (user: UserTableData) => {
+        if (activeTab !== "agents") return false;
+
+        console.log("Checking expandable for agent:", user.emailAddress, "with tier priority:", actualTierPriority);
+
+        try {
+            const profileId = user.ownerProfileId || user.profileId;
+
+            if (!profileId) {
+                console.error('No profile ID available for agent:', user.emailAddress);
+                return false;
+            }
+
+            try {
+                const resellerInfo = await resellerApi.getAgentData(profileId) as ResellerResponse;
+
+                // Check if this agent has VISIBLE downstreams or direct referrals
+                // based on the override bonus rules
+                const hasVisibleDownstreams = resellerInfo?.downstreams?.some(downstream => {
+                    const downstreamTierPriority = downstream.tier?.priority || 0;
+
+                    // Override Bonus Rules:
+                    // 1. L3-L5 can see L2 (they get override from L2's direct referrals)
+                    // 2. L4-L5 can see L3 for management purposes (no override)
+                    // 3. L5 can see L4 for management purposes (no override)
+                    return (actualTierPriority >= 3 && downstreamTierPriority === 2) ||
+                        (actualTierPriority >= 4 && downstreamTierPriority === 3) ||
+                        (actualTierPriority === 5 && downstreamTierPriority === 4);
+                });
+
+                // For L2 and above, they can see their direct referrals
+                const hasDirectReferrals = actualTierPriority >= 2 &&
+                    (resellerInfo?.directReferral?.length ?? 0) > 0;
+
+                if (hasVisibleDownstreams || hasDirectReferrals) {
+                    console.log(`Agent ${user.emailAddress} is expandable - has downstreams: ${hasVisibleDownstreams}, has direct referrals: ${hasDirectReferrals}`);
+                }
+
+                return hasVisibleDownstreams || hasDirectReferrals;
+            } catch (error) {
+                console.error(`Error fetching reseller info for agent ${user.emailAddress}:`, error);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error checking if agent is expandable:', error);
+            return false;
+        }
+    };
+
+    // In useEffect, improve the check for expandable users with better error handling
+    useEffect(() => {
+        const checkExpandableUsers = async () => {
+            if (activeTab !== "agents") return;
+
+            try {
+                console.log("Checking expandable agents for:",
+                    agentProfiles.length, "agents");
+
+                const userChecks = agentProfiles.map(async (user) => {
+                    try {
+                        const isExpandable = await checkIfExpandable(user);
+                        if (isExpandable) {
+                            console.log(`Agent ${user.emailAddress} is expandable`);
+                        }
+                        return { id: user.id, isExpandable };
+                    } catch (error) {
+                        console.error(`Error checking expandability for agent ${user.emailAddress}:`, error);
+                        return { id: user.id, isExpandable: false };
+                    }
+                });
+
+                const results = await Promise.all(userChecks);
+                const expandableMap = results.reduce((acc, { id, isExpandable }) => {
+                    acc[id] = isExpandable;
+                    return acc;
+                }, {} as { [key: string]: boolean });
+
+                setExpandableUsers(expandableMap);
+            } catch (error) {
+                console.error("Error in checkExpandableUsers:", error);
+            }
+        };
+
+        if (agentProfiles.length > 0) {
+            checkExpandableUsers();
+        }
+    }, [agentProfiles, activeTab]);
+
+    // Only show expandable UI in the Agents tab
+    const shouldShowExpandable = (user: UserTableData) => {
+        return activeTab === "agents" && expandableUsers[user.id];
+    };
 
     return (
         <div className="rounded-sm border border-stroke bg-white dark:border-strokedark dark:bg-boxdark shadow-sm">
-            {/* Only show tabs if user is not Level 1 */}
-            {!isLevelOne && (
+            {/* Only render tabs if we have more than one tab */}
+            {tabs.length > 1 && (
                 <SplitTabs
                     tabs={tabs}
                     activeTab={activeTab}
@@ -601,53 +828,53 @@ const UsersTable = ({
                 />
             )}
 
-            <div className="p-3 md:p-4">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
+            <div className="p-2 sm:p-3 md:p-4">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4">
                     {/* Search Input */}
-                    <div className="flex w-full max-w-md items-center gap-3">
+                    <div className="flex w-full max-w-md items-center gap-2 sm:gap-3">
                         <Input
                             type="text"
                             placeholder={t("usersTable.searchUser")}
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full bg-gray dark:bg-boxdark-2 border-stroke dark:border-strokedark pl-4 pr-6 outline-none"
+                            className="w-full bg-gray dark:bg-boxdark-2 border-stroke dark:border-strokedark pl-3 sm:pl-4 pr-4 sm:pr-6 outline-none text-sm sm:text-base"
                         />
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         <Button
                             variant="outline"
                             size="icon"
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            className="relative border-stroke bg-white dark:bg-boxdark hover:bg-gray-2 dark:hover:bg-meta-4"
+                            className="relative border-stroke bg-white dark:bg-boxdark hover:bg-gray-2 dark:hover:bg-meta-4 h-8 w-8 sm:h-10 sm:w-10"
                         >
-                            <Filter className="h-5 w-5 text-body dark:text-bodydark" />
+                            <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-body dark:text-bodydark" />
                             {hasActiveFilters && (
-                                <span className="absolute -top-2 -right-2 h-4 w-4 rounded-full bg-primary text-xs text-white flex items-center justify-center">
+                                <span className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 rounded-full bg-primary text-[10px] sm:text-xs text-white flex items-center justify-center">
                                     •
                                 </span>
                             )}
                         </Button>
-                        {/* 
+                        
                         <Button
                             variant="outline"
-                            onClick={exportToCSV}
-                            className="border-stroke bg-white dark:bg-boxdark hover:bg-gray-2 dark:hover:bg-meta-4"
+                            onClick={handleExportToCSV}
+                            className="border-stroke bg-white dark:bg-boxdark hover:bg-gray-2 dark:hover:bg-meta-4 h-8 sm:h-10 text-xs sm:text-sm"
                         >
-                            <Download className="h-4 w-4 mr-2" />
+                            <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                             {t("usersTable.export")}
-                        </Button> */}
+                        </Button>
 
                         {/* Only show Recruit button for non-Level 1 users */}
-                        {/* {!isLevelOne && (
+                        {!isLevelOne && (
                             <Button
                                 onClick={() => router.push("/referred-users/recruit-agent")}
-                                className="bg-primary hover:bg-primary/90">
-                                <UserPlus className="mr-2 h-5 w-5" />
+                                className="bg-primary hover:bg-primary/90 h-8 sm:h-10 text-xs sm:text-sm">
+                                <UserPlus className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                                 {t("usersTable.recruit")}
                             </Button>
-                        )} */}
+                        )}
                     </div>
                 </div>
 
@@ -662,93 +889,213 @@ const UsersTable = ({
 
                 {/* Table */}
                 {loading ? (
-                    <div className="flex justify-center items-center p-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <div className="flex justify-center items-center p-4 sm:p-8">
+                        <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-primary"></div>
                     </div>
                 ) : (
                     <div className="max-w-full overflow-x-auto rounded-sm border border-stroke dark:border-strokedark">
                         <Table className="w-full">
-                            <TableHeader className="bg-black text-white">
+                            <TableHeader className="bg-black text-white dark:bg-meta-4">
                                 <TableRow>
-                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                    <TableHead className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-left font-medium text-xs xs:text-sm">
                                         {t("usersTable.name", "NAME")}
                                     </TableHead>
-                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                    {/* <TableHead className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-left font-medium text-xs xs:text-sm">
+                                        {t("usersTable.ranking", "RANKING")}
+                                    </TableHead> */}
+                                    <TableHead
+                                        className={`py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-left font-medium text-xs xs:text-sm ${activeTab === "referred-users" ? "hidden" : ""
+                                            }`}
+                                    >
                                         {t("usersTable.ranking", "RANKING")}
                                     </TableHead>
-                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                    <TableHead className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-left font-medium text-xs xs:text-sm">
                                         {t("usersTable.accActivation", "ACC ACTIVATION")}
                                     </TableHead>
-                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                    <TableHead className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-left font-medium text-xs xs:text-sm">
                                         {t("usersTable.totalDeposit", "TOTAL DEPOSIT")}
                                     </TableHead>
-                                    <TableHead className="py-4 px-4 text-left font-medium">
+                                    <TableHead className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-left font-medium text-xs xs:text-sm">
                                         {t("usersTable.physicalCard", "PHYSICAL CARD")}
                                     </TableHead>
-                                    <TableHead className="py-4 px-4 text-center font-medium">
+                                    <TableHead className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-center font-medium text-xs xs:text-sm">
                                         {t("usersTable.actions", "ACTIONS")}
                                     </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {paginatedUsers.length > 0 ? (
-                                    paginatedUsers.map((user: any) => {
+                                    paginatedUsers.map((user, index) => {
                                         const formattedDate = formatDate(user.accountActivation);
                                         return (
-                                            <TableRow
-                                                key={user.id}
-                                                className="hover:bg-gray-1 dark:hover:bg-meta-4 transition-colors border-b border-stroke dark:border-strokedark"
-                                            >
-                                                <TableCell className="py-3 px-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <Avatar className="h-8 w-8">
-                                                            <AvatarFallback className="bg-primary/10 text-primary">
-                                                                {getFirstLetter(user.fullName)}
-                                                            </AvatarFallback>
-                                                        </Avatar>
-                                                        <span className="text-black dark:text-white font-medium">
-                                                            {user.fullName.toUpperCase()}
-                                                        </span>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell className="py-3 px-4">
-                                                    {user.ranking === "N/A" ? "USER" : user.ranking.replace("Tier", "Level")}
-                                                </TableCell>
-                                                <TableCell className="py-3 px-4">
-                                                    <div>
-                                                        <div>{formattedDate.date}</div>
-                                                        <div className="text-xs text-gray-500">{formattedDate.time}</div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell className="py-3 px-4">
-                                                    {formatCurrency(user.totalDeposit || 0)}
-                                                </TableCell>
-                                                <TableCell className="py-3 px-4">
-                                                    {user.physicalCard === true ? (
-                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                                            YES
-                                                        </span>
-                                                    ) : user.cardStatus === "approved" ? (
-                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                                                            APPROVED
-                                                        </span>
-                                                    ) : (
-                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                                                            -
-                                                        </span>
-                                                    )}
-                                                </TableCell>
-                                                <TableCell className="py-3 px-4 text-center">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={() => handleRowClick(user)}
-                                                        className="h-8 w-8"
+                                            <React.Fragment key={index}>
+                                                <TableRow
+                                                    className={`border-b border-stroke dark:border-strokedark ${
+                                                        activeTab === "referred-users" 
+                                                            ? "hover:bg-blue-50 dark:hover:bg-blue-900/20" 
+                                                            : user.ranking === "Level 1" 
+                                                                ? "hover:bg-green-50 dark:hover:bg-green-900/20"
+                                                                : user.ranking === "Level 2"
+                                                                    ? "hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                                                                    : "hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                                                    }`}
+                                                >
+                                                    <TableCell className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4">
+                                                        <div className="flex items-center gap-2 xs:gap-3">
+                                                            <div className="w-6 flex justify-center">
+                                                                {isAgentsTab(activeTab) && shouldShowExpandable(user) ? (
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        size="icon"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            toggleRowExpansion(user);
+                                                                        }}
+                                                                        className="h-6 w-6 p-0"
+                                                                        disabled={loadingExpandedData[user.id]}
+                                                                    >
+                                                                        {loadingExpandedData[user.id] ? (
+                                                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary" />
+                                                                        ) : (
+                                                                            expandedRows[user.id] ? (
+                                                                                <Minus className="h-4 w-4" />
+                                                                            ) : (
+                                                                                <Plus className="h-4 w-4" />
+                                                                            )
+                                                                        )}
+                                                                    </Button>
+                                                                ) : (
+                                                                    <span className="w-6"></span>
+                                                                )}
+                                                            </div>
+                                                            <Avatar className="h-7 w-7 xs:h-8 xs:w-8">
+                                                                <AvatarFallback className={`${getColorFromString(user.fullName || user.id, user.ranking)} text-white`}>
+                                                                    {getFirstLetter(user.fullName)}
+                                                                </AvatarFallback>
+                                                            </Avatar>
+                                                            <div className="flex flex-col min-w-0">
+                                                                <span className="text-sm xs:text-base font-medium text-black dark:text-white truncate">
+                                                                    {user.fullName}
+                                                                </span>
+                                                                <span className="text-xs text-gray-500 truncate max-w-[120px] xs:max-w-[150px] sm:max-w-full">
+                                                                    {user.emailAddress}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </TableCell>
+                                                    {/* <TableCell className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-xs xs:text-sm">
+                                                        {user.ranking === "N/A" ? "USER" : user.ranking.replace("Tier", "Level")}
+                                                    </TableCell> */}
+                                                    <TableCell
+                                                        className={`py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-xs xs:text-sm ${activeTab === "referred-users" ? "hidden" : ""
+                                                            }`}
                                                     >
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </TableCell>
-                                            </TableRow>
+                                                        {user.ranking === "N/A" ? "USER" : (
+                                                            <>
+                                                                {user.ranking.replace("Tier", "Level")}
+                                                                {user.fromEvent && user.fromEvent !== "Unknown" && <span className="text-primary font-bold">*</span>}
+                                                            </>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-xs xs:text-sm">
+                                                        <div>
+                                                            <div>{formattedDate.date}</div>
+                                                            <div className="text-xs text-gray-500">{formattedDate.time}</div>
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-xs xs:text-sm">
+                                                        {formatCurrency(user.totalDeposit)}
+                                                    </TableCell>
+                                                    <TableCell className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-xs xs:text-sm">
+                                                        {user.physicalCard === true ? (
+                                                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                                                YES
+                                                            </span>
+                                                        ) : (
+                                                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                                                -
+                                                            </span>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="py-2 xs:py-3 sm:py-4 px-2 xs:px-4 text-center">
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleRowClick(user)}
+                                                            className="h-7 w-7 xs:h-8 xs:w-8 p-0"
+                                                        >
+                                                            <span className="sr-only">View</span>
+                                                            <Eye className="h-4 w-4" />
+                                                        </Button>
+                                                    </TableCell>
+                                                </TableRow>
+                                                {isAgentsTab(activeTab) && expandedRows[user.id] && expandedData[user.id]?.map((expandedUser, expandedIndex) => (
+                                                    <TableRow
+                                                        key={`${user.id}-${expandedUser.id}`}
+                                                        className={`bg-gray-50 dark:bg-gray-800 border-b border-stroke dark:border-strokedark ${
+                                                            isAgentsTab(activeTab) 
+                                                                ? expandedUser.ranking === "Level 1" 
+                                                                    ? "hover:bg-green-50 dark:hover:bg-green-900/20"
+                                                                    : expandedUser.ranking === "Level 2"
+                                                                        ? "hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                                                                        : "hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                                                            : "hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                                        }`}
+                                                    >
+                                                        <TableCell className="py-2 px-4">
+                                                            <div className="flex items-center gap-3 ml-12">
+                                                                <Avatar className="h-6 w-6">
+                                                                    <AvatarFallback className={`${getColorFromString(expandedUser.fullName || expandedUser.id, expandedUser.ranking)} text-white`}>
+                                                                        {getFirstLetter(expandedUser.fullName || '')}
+                                                                    </AvatarFallback>
+                                                                </Avatar>
+                                                                <div className="flex flex-col">
+                                                                    <span className="text-sm text-black dark:text-white">
+                                                                        {expandedUser.fullName}
+                                                                    </span>
+                                                                    <span className="text-xs text-gray-500">
+                                                                        {expandedUser.emailAddress}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </TableCell>
+                                                        {/* <TableCell className="py-2 px-4">
+                                                            {expandedUser.ranking}
+                                                        </TableCell> */}
+                                                        <TableCell className={`py-2 px-4 ${!isAgentsTab(activeTab) ? "hidden" : ""}`}>
+                                                            {expandedUser.ranking === "USER" ? "USER" : (
+                                                                <>
+                                                                    {expandedUser.ranking.replace("Tier", "Level")}
+                                                                    {expandedUser.fromEvent && expandedUser.fromEvent !== "Unknown" && <span className="text-primary font-bold">*</span>}
+                                                                </>
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="py-2 px-4">
+                                                            <div>
+                                                                <div>{formatDate(expandedUser.accountActivation)?.date}</div>
+                                                                <div className="text-xs text-gray-500">{formatDate(expandedUser.accountActivation)?.time}</div>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell className="py-2 px-4">
+                                                            {formatCurrency(expandedUser.totalDeposit)}
+                                                        </TableCell>
+                                                        <TableCell className="py-2 px-4">
+                                                            {expandedUser.physicalCard === true ? (
+                                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                                                    YES
+                                                                </span>
+                                                            ) : (
+                                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                                                    -
+                                                                </span>
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell className="py-2 px-4 text-center">
+                                                            {/* Removed eye icon button */}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </React.Fragment>
                                         );
                                     })
                                 ) : (
@@ -766,10 +1113,18 @@ const UsersTable = ({
                     </div>
                 )}
 
+                {/* Legend for asterisk - only show in agents tab */}
+                {activeTab === "agents" && (
+                    <div className="flex items-center gap-1 mt-2 sm:mt-3 mb-2 text-xs text-gray-500">
+                        <span className="text-primary font-bold text-sm">*</span>
+                        <span>{t("usersTable.fromEventLegend", "Indicates agent recruited through special campaign")}</span>
+                    </div>
+                )}
+
                 {/* Pagination */}
                 {paginatedUsers.length > 0 && (
-                    <div className="flex justify-between items-center mt-4">
-                        <div className="text-sm text-gray-500">
+                    <div className="flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0 mt-3 sm:mt-4">
+                        <div className="text-xs sm:text-sm text-gray-500">
                             {t("usersTable.showing", "Showing")} {Math.min((currentPage - 1) * itemsPerPage + 1, filteredUsers.length)}-
                             {Math.min(currentPage * itemsPerPage, filteredUsers.length)} {t("usersTable.of", "of")} {filteredUsers.length} {t("usersTable.entries", "entries")}
                         </div>
@@ -779,12 +1134,12 @@ const UsersTable = ({
                                 variant="outline"
                                 onClick={prevPage}
                                 disabled={currentPage === 1}
-                                className="border-stroke"
+                                className="border-stroke h-8 sm:h-10 text-xs sm:text-sm"
                             >
                                 {t("usersTable.previous", "Previous")}
                             </Button>
 
-                            <div className="text-body dark:text-bodydark px-2">
+                            <div className="text-xs sm:text-sm text-body dark:text-bodydark px-2">
                                 {currentPage}/{totalPages}
                             </div>
 
@@ -792,7 +1147,7 @@ const UsersTable = ({
                                 variant="outline"
                                 onClick={nextPage}
                                 disabled={currentPage === totalPages}
-                                className="border-stroke"
+                                className="border-stroke h-8 sm:h-10 text-xs sm:text-sm"
                             >
                                 {t("usersTable.next", "Next")}
                             </Button>

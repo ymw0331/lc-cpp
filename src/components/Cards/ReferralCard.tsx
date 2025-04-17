@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import {
     Card,
     CardContent,
+    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -38,6 +39,8 @@ const ReferralCard = ({ code }: ReferralCardProps) => {
                 <CardTitle className="text-xl font-bold text-black dark:text-white">
                     {t("referralCard.referralCodeLabel")}
                 </CardTitle>
+                <CardDescription className="text-body dark:text-bodydark mt-1">
+                    {t("referralCard.description")}</CardDescription>
             </CardHeader>
             <CardContent className="p-6 pt-4">
                 <motion.div

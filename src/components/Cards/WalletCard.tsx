@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import USDTIcon from "../Icons/dashboard/USDTIcon";
+import USDTIcon from "@/components/Icons/dashboard/USDTIcon";
 import {
     Card,
     CardContent,
@@ -45,7 +45,7 @@ const WalletCard = ({
             <CardContent className="p-6 pt-2 flex-1 flex items-end justify-between">
                 <div className="mt-2 flex items-center gap-4">
                     <h4 className="text-2xl font-bold text-black dark:text-white">
-                        {(amount ?? 0).toLocaleString('en-US', {
+                        $ {(amount ?? 0).toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
                         })}

@@ -24,66 +24,20 @@ import {
 } from "recharts";
 import { useTranslation } from "react-i18next";
 
-interface DemographicSalesChartProps {
-    comingSoon?: boolean;
+interface DemographicData {
+    [location: string]: {
+        [period: string]: number;
+    };
 }
 
-// Sample data by location and year
-const demographicData = {
-    'Hong Kong': {
-        Q1_2024: 92118,
-        Q2_2024: 88234,
-        Q3_2024: 90123,
-        Q4_2024: 91456,
-        Q1_2023: 85234,
-        Q2_2023: 86123,
-        Q3_2023: 87456,
-        Q4_2023: 88789,
-    },
-    'Malaysia': {
-        Q1_2024: 35942,
-        Q2_2024: 34156,
-        Q3_2024: 33943,
-        Q4_2024: 35876,
-        Q1_2023: 32156,
-        Q2_2023: 31943,
-        Q3_2023: 33876,
-        Q4_2023: 34123,
-    },
-    'Bangkok': {
-        Q1_2024: 20621,
-        Q2_2024: 19943,
-        Q3_2024: 20876,
-        Q4_2024: 21123,
-        Q1_2023: 18943,
-        Q2_2023: 19876,
-        Q3_2023: 20123,
-        Q4_2023: 20456,
-    },
-    'Taiwan': {
-        Q1_2024: 11424,
-        Q2_2024: 10876,
-        Q3_2024: 11123,
-        Q4_2024: 11456,
-        Q1_2023: 10876,
-        Q2_2023: 11123,
-        Q3_2023: 11456,
-        Q4_2023: 11789,
-    },
-    'Philippines': {
-        Q1_2024: 10127,
-        Q2_2024: 9654,
-        Q3_2024: 9876,
-        Q4_2024: 10234,
-        Q1_2023: 9654,
-        Q2_2023: 9876,
-        Q3_2023: 10234,
-        Q4_2023: 10456,
-    },
-};
+interface DemographicSalesChartProps {
+    comingSoon?: boolean;
+    demographicData: DemographicData;
+}
 
 const DemographicSalesChart = ({
-    comingSoon = false
+    comingSoon = false,
+    demographicData
 }: DemographicSalesChartProps) => {
     const { t } = useTranslation();
     const [selectedYear, setSelectedYear] = useState("2024");
@@ -101,7 +55,7 @@ const DemographicSalesChart = ({
     // If comingSoon is true, render coming soon state
     if (comingSoon) {
         return (
-            <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+            <Card className="border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
                     <div className="space-y-4">
                         <CardTitle className="text-2xl font-semibold text-black dark:text-white">
@@ -161,7 +115,7 @@ const DemographicSalesChart = ({
     };
 
     return (
-        <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <Card className="border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
                 <div className="space-y-4">
                     <CardTitle className="text-2xl font-semibold text-black dark:text-white">

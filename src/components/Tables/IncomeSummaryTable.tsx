@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import { checkTierPermission, TIER_PERMISSIONS } from "@/utils/permissions";
-import { IncentiveResponse } from "@/api/incentive/incentive.api";
+import { IncentiveData } from "@/api/incentive/incentive.types";
+import { formatInTimeZone } from 'date-fns-tz';
+import { HONG_KONG_TIMEZONE, formatDateTimeWithHK } from '@/lib/dateUtils';
 
 // Define reward types enum for better type safety
 export enum REWARD_TYPE {
@@ -32,7 +34,7 @@ interface GroupedActivity {
 
 // Updated props interface that accepts data from parent component
 interface IncomeSummaryTableProps {
-    incentiveData: IncentiveResponse;
+    incentiveData: IncentiveData;
     availableMonths: string[];
 }
 
@@ -101,14 +103,12 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
 
     // Format date for display
     const formatDateTime = (dateString: string): string => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return formatDateTimeWithHK(dateString);
     };
 
     // Format date for the monthly rewards section
     const formatDateOnly = (dateString: string): string => {
-        const date = new Date(dateString);
-        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        return formatDateTimeWithHK(dateString);
     };
 
     // Translate reward types to user-friendly labels
@@ -129,6 +129,12 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
             default:
                 return type;
         }
+    };
+
+    const formatMonthDisplay = (monthKey: string) => {
+        const [monthAbbr, year] = monthKey.split(' ');
+        const date = new Date(`${monthAbbr} 1, ${year}`);
+        return formatInTimeZone(date, HONG_KONG_TIMEZONE, 'MMMM yyyy');
     };
 
     return (
@@ -160,31 +166,11 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                     {availableMonths.length === 0 ? (
                         <option value="">{t('incomeSummary.noDataAvailable')}</option>
                     ) : (
-                        availableMonths.map((monthKey) => {
-                            // Format the month display (e.g., "Jan 2025" to "January 2025")
-                            const [monthAbbr, year] = monthKey.split(' ');
-                            const monthNames: Record<string, string> = {
-                                'Jan': t('months.january'),
-                                'Feb': t('months.february'),
-                                'Mar': t('months.march'),
-                                'Apr': t('months.april'),
-                                'May': t('months.may'),
-                                'Jun': t('months.june'),
-                                'Jul': t('months.july'),
-                                'Aug': t('months.august'),
-                                'Sep': t('months.september'),
-                                'Oct': t('months.october'),
-                                'Nov': t('months.november'),
-                                'Dec': t('months.december')
-                            };
-                            const fullMonthName = monthNames[monthAbbr as keyof typeof monthNames] || monthAbbr;
-
-                            return (
-                                <option key={monthKey} value={monthKey}>
-                                    {fullMonthName} {year}
-                                </option>
-                            );
-                        })
+                        availableMonths.map((monthKey) => (
+                            <option key={monthKey} value={monthKey}>
+                                {formatMonthDisplay(monthKey)}
+                            </option>
+                        ))
                     )}
                 </select>
             </div>
@@ -214,7 +200,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
 
             {/* Table rows - Summary Section */}
             <div className="mt-3 border-t border-stroke dark:border-strokedark pt-3">
-                <h3 className="px-4 font-medium text-black dark:text-white mb-2">{t('incentiveManagementPage.totalIncentive')}</h3>
+                <h3 className="px-4 font-medium text-black dark:text-white mb-2">{t('incentiveManagementPage.totalIncentiveEarnedToDate')}</h3>
 
                 {/* All users can see Referral Fee Bonus */}
                 <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
@@ -258,7 +244,7 @@ const IncomeSummaryTable: React.FC<IncomeSummaryTableProps> = ({
                 {isLevelOneAgent && (
                     <div className="flex justify-between items-center px-4 py-3 border-t border-stroke dark:border-strokedark">
                         <p className="font-medium text-black dark:text-white">{t('incomeSummary.milestoneAchievementBonus')}</p>
-                        <p className="font-medium text-black dark:text-white">$ {summary.milestone_bonus.amount.toFixed(2)}</p>
+                        <p className="font-medium text-black dark:text-white">$ {summary.milestoneAchievement.milestone_bonus.toFixed(2)}</p>
                     </div>
                 )}
             </div>

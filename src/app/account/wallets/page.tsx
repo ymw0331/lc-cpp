@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import WalletCard from "@/components/Cards/WalletCard";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import AnalyticChart from "@/components/Charts/AnalyticChart";
+import RewardSummaryChart from "@/components/Charts/RewardSummaryChart";
 import {
     RewardWalletBalanceIcon,
     USDCIcon,
@@ -11,10 +11,10 @@ import {
 } from "@/components/Icons/dashboard";
 import { useTranslation } from "react-i18next";
 import { walletApi } from "@/api/wallet/wallet.api";
-import Loader from "@/components/common/Loader";
+import { WalletsSkeleton } from "@/components/common/Skeletons";
 import { fetchData } from '@/lib/api-utils';
 import { WalletData } from "@/api/wallet/wallet.types";
-import { accountApi } from "@/api/account/account.api";
+import ErrorDisplay from '@/components/common/ErrorDisplay';
 
 const WalletsPage = () => {
     const { t } = useTranslation();
@@ -24,15 +24,6 @@ const WalletsPage = () => {
     const [accountData, setAccountData] = useState(null);
 
     useEffect(() => {
-
-        // console.log("accountData:", accountApi.getAccountData())
-
-        // accountApi.getAccountData().then(data => {
-        //     console.log("Account Data:", data);
-        // }).catch(error => {
-        //     console.error("Error fetching account data:", error);
-        // });
-
         fetchData(
             walletApi.getWalletData,
             setWalletData,
@@ -41,15 +32,10 @@ const WalletsPage = () => {
         );
     }, []);
 
-    if (loading) return <Loader />;
-
+    if (loading) return <DefaultLayout><WalletsSkeleton /></DefaultLayout>;
 
     if (error || !walletData) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <p className="text-red-500">{t('walletsPage.failedToLoadData')}</p>
-            </div>
-        );
+        return <ErrorDisplay errorMessage={error?.message} />;
     }
 
     if (!walletData) return null;
@@ -74,14 +60,10 @@ const WalletsPage = () => {
             </div>
 
             <div className="w-full">
-                {/* TODO: move this to incentive page or discard this */}
-                {/* <AnalyticChart
+                <RewardSummaryChart
                     title={t("walletsPage.rewardWalletSummary")}
-                    chartData={walletData.walletSummary}
                     lineColor="#7C74FF"
-                    className="overflow-x-auto"
-                    comingSoon={true}
-                /> */}
+                />
             </div>
         </DefaultLayout>
     );

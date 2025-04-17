@@ -28,7 +28,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const pathname = usePathname();
-  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const [pageName, setPageName] = useLocalStorage("selected_menu", "dashboard");
 
   // Check if the user has the required permission for "Recruit Agent"
   const canAccessRecruitment = checkTierPermission(
@@ -67,9 +67,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             { label: "Referred-Users", route: "/referred-users" },
             { label: "Manage User", route: "/referred-users/manage-user" },
             // Conditionally render Recruit Agent based on permission
-            // ...(canAccessRecruitment
-            //   ? [{ label: "Recruit Agent", route: "/referred-users/recruit-agent" }]
-            //   : []),
+            ...(canAccessRecruitment
+              ? [{ label: "Recruit Agent", route: "/referred-users/recruit-agent" }]
+              : []),
           ],
         },
         // TODO: add performance and support (implement its functionality)
@@ -98,11 +98,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           label: "Legal & Compliance",
           route: "#",
           children: [
-            // { label: "Profile Policy", route: "/legal-and-compliance/profile-policy" },
-            // { label: "User Agreement", route: "/legal-and-compliance/user-agreement" },
-            // { label: "Code of Conduct", route: "/legal-and-compliance/code-of-conduct" },
-            // { label: "Compliance and Anti-Corruption", route: "/legal-and-compliance/compliance-and-anti-corruption" },
-            // { label: "Privacy Guideline", route: "/legal-and-compliance/program-guideline" },
             { label: "Terms and Conditions", route: "/legal-and-compliance/terms-and-conditions" },
             { label: "Circle of Growth Campaign", route: "/legal-and-compliance/circle-of-growth-campaign" },
           ],

@@ -1,0 +1,254 @@
+name: Build & Publish & Deploy (Develop)
+
+on:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["develop"]
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_DEFAULT_REGION: ap-southeast-1
+  SERVICE_NAME: lookcard-reseller-portal-develop
+  ECR_REPOSITORY: lookcard-reseller-portal-develop
+  APP_RUNNER_SERVICE: lookcard-cpp-portal
+
+jobs:
+  build-and-publish:
+    environment: develop
+    runs-on: ubuntu-latest
+    outputs:
+      slug-output-sha7: ${{ steps.slug.outputs.sha7 }}
+      ecr-registry: ${{ steps.login-ecr.outputs.registry }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ vars.LOOKCARD_DEVELOP_AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+          role-session-name: GitHubActions
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Get Git Short SHA
+        id: slug
+        run: echo "sha7=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Create ECR repository if it doesn't exist
+        run: |
+          aws ecr describe-repositories --repository-names ${{ env.ECR_REPOSITORY }} || aws ecr create-repository --repository-name ${{ env.ECR_REPOSITORY }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.slug.outputs.sha7 }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest
+          platforms: linux/x86_64
+          build-args: |
+            AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
+            AWS_REGION=${{ env.AWS_DEFAULT_REGION }}
+            NODE_ENV=development
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  update-image-tag:
+    environment: develop
+    runs-on: ubuntu-latest
+    needs: [build-and-publish]
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout to Terraform Repo
+        with:
+          repository: ${{ github.repository_owner }}/lookcard-terraform
+          ref: develop
+          token: ${{ secrets.LOOKCARD_GITHUB_API_TOKEN }}
+      - name: Update Terraform Image Tag And Push to Git repo
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+          echo ${{ needs.build-and-publish.outputs.slug-output-sha7 }}
+          yq '.image_tag.${{ env.SERVICE_NAME}} = "${{ needs.build-and-publish.outputs.slug-output-sha7 }}"' terraform.develop.tfvars.json -i
+          git add terraform.develop.tfvars.json
+          git commit -m '🚀 Update Image Version to ${{ needs.build-and-publish.outputs.slug-output-sha7 }}'
+          git push
+
+
+  deploy-app-runner:
+    environment: develop
+    runs-on: ubuntu-latest
+    needs: [build-and-publish]
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: ${{ vars.LOOKCARD_DEVELOP_AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+          role-session-name: GitHubActions_AppRunner
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+          
+      - name: Get App Runner Service ARN
+        id: get-arn
+        run: |
+          SERVICE_ARN=$(aws apprunner list-services --query "ServiceSummaryList[?ServiceName=='${{ env.APP_RUNNER_SERVICE }}'].ServiceArn" --output text)
+          if [ -z "$SERVICE_ARN" ]; then
+            echo "Error: Could not find App Runner service with name ${{ env.APP_RUNNER_SERVICE }}"
+            exit 1
+          fi
+          echo "Found App Runner service ARN: $SERVICE_ARN"
+          echo "service_arn=$SERVICE_ARN" >> $GITHUB_OUTPUT
+
+      - name: Update App Runner Service Image
+        run: |
+          aws apprunner update-service \
+            --service-arn ${{ steps.get-arn.outputs.service_arn }} \
+            --source-configuration '{
+              "ImageRepository": {
+                "ImageIdentifier": "559050227374.dkr.ecr.ap-southeast-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ needs.build-and-publish.outputs.slug-output-sha7 }}",
+                "ImageRepositoryType": "ECR"
+              },
+              "AutoDeploymentsEnabled": true
+            }'
+          
+      # - name: Update App Runner Service Image
+      #   run: |
+      #     if [ -z "${{ steps.get-arn.outputs.service_arn }}" ]; then
+      #       echo "Error: Service ARN is empty"
+      #       exit 1
+      #     fi
+      #     echo "Updating App Runner service: ${{ steps.get-arn.outputs.service_arn }}"
+      #     aws apprunner update-service \
+      #       --service-arn "${{ steps.get-arn.outputs.service_arn }}" \
+      #       --source-configuration '{
+      #         "AuthenticationConfiguration": {
+      #           "AccessRoleArn": "${{ vars.LOOKCARD_DEVELOP_AWS_APP_RUNNER_ECR_ACCESS_ROLE_ARN }}"
+
+      #         },
+      #         "ImageRepository": {
+      #           "ImageIdentifier": "271609687710.dkr.ecr.ap-southeast-1.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ needs.build-and-publish.outputs.slug-output-sha7 }}",
+      #           "ImageRepositoryType": "ECR",
+      #           "ImageConfiguration": {
+      #             "Port": "3000",
+      #             "RuntimeEnvironmentVariables": {
+      #               "NODE_ENV": "development"
+      #             }
+      #           }
+      #         },
+      #         "AutoDeploymentsEnabled": true
+      #       }'
+  # deploy-terraform:
+  #   environment: develop
+  #   runs-on: ubuntu-latest
+  #   needs: [update-image-tag-terraform]
+  #   steps:
+  #     - uses: hashicorp/setup-terraform@v3
+  #     - uses: actions/checkout@v4
+  #       name: Checkout to Terraform Repo
+  #       with:
+  #         repository: ${{ github.repository_owner }}/lookcard-terraform
+  #         ref: develop
+  #         token: ${{ secrets.LOOKCARD_GITHUB_API_TOKEN }}
+  #     - name: Configure Terraform AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@master
+  #       with:
+  #         role-to-assume: ${{ vars.LOOKCARD_TERRAFORM_AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+  #         role-session-name: GitHubActions_Terraform
+  #         aws-region: ${{ env.AWS_DEFAULT_REGION }}
+  #     - name: Terraform Init
+  #       id: init
+  #       run: |
+  #         terraform init \
+  #         -backend-config="key=develop/terraform.tfstate" \
+  #         -backend-config="access_key=$AWS_ACCESS_KEY_ID" \
+  #         -backend-config="secret_key=$AWS_SECRET_ACCESS_KEY" \
+  #         -backend-config="token=$AWS_SESSION_TOKEN"
+  #     - name: Configure Application AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@master
+  #       with:
+  #         role-to-assume: ${{ vars.LOOKCARD_DEVELOP_AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+  #         role-session-name: GitHubActions_Application
+  #         aws-region: ${{ env.AWS_DEFAULT_REGION }}
+  #     - name: Export Application AWS Credentials
+  #       run: |
+  #         echo "TF_VAR_APPLICATION__AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+  #         echo "TF_VAR_APPLICATION__AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+  #         echo "TF_VAR_APPLICATION__AWS_SESSION_TOKEN=${{ env.AWS_SESSION_TOKEN }}" >> $GITHUB_ENV
+  #     - name: Configure DNS AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@master
+  #       with:
+  #         role-to-assume: ${{ vars.LOOKCARD_DNS_AWS_GITHUB_ACTIONS_IAM_ROLE_ARN }}
+  #         role-session-name: GitHubActions_DNS
+  #         aws-region: us-east-1
+  #     - name: Export DNS AWS Credentials
+  #       run: |
+  #         echo "TF_VAR_DNS__AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+  #         echo "TF_VAR_DNS__AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+  #         echo "TF_VAR_DNS__AWS_SESSION_TOKEN=${{ env.AWS_SESSION_TOKEN }}" >> $GITHUB_ENV
+  #     - name: Terraform Apply
+  #       id: apply
+  #       env:
+  #         TF_VAR_github_actions: "true"
+  #       run: |
+  #         terraform apply \
+  #         -auto-approve \
+  #         -var-file="terraform.develop.tfvars.json" \
+  #         -target=module.application.module.${{ env.SERVICE_NAME }}
+
+  slack-check-status:
+    environment: develop
+    runs-on: ubuntu-latest
+    needs: [build-and-publish]
+    if: always()
+    steps:
+      - name: Send success message to Slack
+        if: ${{ !contains(needs.*.result, 'failure') }}
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "Repository: ${{ github.repository }} \nBranch: ${{ github.ref }}\nGitHub Action build result: Success :white_check_mark:\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ""
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Send failure message to Slack
+        if: ${{ contains(needs.*.result, 'failure') }}
+        uses: slackapi/slack-github-action@v1.27.0
+        with:
+          payload: |
+            {
+              "text": "Repository: ${{ github.repository }} \nBranch: ${{ github.ref }}\nGitHub Action build result: Fail :x:\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ""
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -19,7 +19,7 @@ import { CopyIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "@/hooks/useToast";
 import { useAuth } from '@/contexts/AuthContext';
-import Loader from '@/components/common/Loader';
+import { ProfileSkeleton } from '@/components/common/Skeletons';
 
 const formSchema = z.object({
     agentLevel: z.string(),
@@ -221,7 +221,7 @@ const ProfilePage = () => {
 
 
     if (isLoading) {
-        return <Loader />;
+        return <DefaultLayout><ProfileSkeleton /></DefaultLayout>;
     }
 
     return (
@@ -229,7 +229,7 @@ const ProfilePage = () => {
             <Breadcrumb pageName={t("profilePage.profileBreadcrumb")} />
 
             <div className="w-full">
-                <div className="rounded-sm border border-stroke bg-white px-7.5 py-6.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="rounded-xl border border-stroke bg-white px-7.5 py-6.5 shadow-default dark:border-strokedark dark:bg-boxdark">
                     <h3 className="mb-5.5 text-title-sm text-black dark:text-white">
                         {t("profilePage.profileDetail")}
                     </h3>

@@ -18,6 +18,7 @@ import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/useToast";
 import { useTranslation } from "react-i18next";
 import useColorMode from "@/hooks/useColorMode";
+import { PreferenceSkeleton } from '@/components/common/Skeletons';
 
 const preferenceSchema = z.object({
     language: z.enum(["en", "zh", "zh-hk"]),
@@ -37,6 +38,7 @@ const PreferencePage = () => {
     const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const initialLoadRef = useRef(true);
+    const [loading, setLoading] = useState(true);
 
     const form = useForm<z.infer<typeof preferenceSchema>>({
         resolver: zodResolver(preferenceSchema),
@@ -52,7 +54,7 @@ const PreferencePage = () => {
         const loadPreferences = async () => {
             try {
                 // Load language preference from localStorage
-                const savedLanguage = localStorage.getItem("preferredLanguage") || "en";
+                const savedLanguage = localStorage.getItem("preferred_language") || "en";
 
                 // Set form value
                 form.setValue("language", savedLanguage as "en" | "zh" | "zh-hk");
@@ -67,6 +69,7 @@ const PreferencePage = () => {
             } finally {
                 // After initial load is complete
                 initialLoadRef.current = false;
+                setLoading(false);
             }
         };
 
@@ -80,7 +83,7 @@ const PreferencePage = () => {
             await i18n.changeLanguage(values.language);
 
             // Store in localStorage
-            localStorage.setItem("preferredLanguage", values.language);
+            localStorage.setItem("preferred_language", values.language);
 
             toast({
                 title: t("preferences.success.title"),
@@ -113,7 +116,7 @@ const PreferencePage = () => {
             await i18n.changeLanguage(language);
 
             // Store in localStorage
-            localStorage.setItem("preferredLanguage", language);
+            localStorage.setItem("preferred_language", language);
 
             // Only show toast when language actually changes (not on initial load)
             if (!initialLoadRef.current) {
@@ -164,12 +167,20 @@ const PreferencePage = () => {
         }
     };
 
+    if (loading) {
+        return (
+            <DefaultLayout>
+                <PreferenceSkeleton />
+            </DefaultLayout>
+        );
+    }
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName={t("preferences.title")} />
 
             <div className="w-full">
-                <div className="rounded-sm border border-stroke bg-white px-7.5 py-6.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <div className="rounded-xl border border-stroke bg-white px-7.5 py-6.5 shadow-default dark:border-strokedark dark:bg-boxdark">
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}

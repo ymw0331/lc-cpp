@@ -4,9 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '@/components/Layouts/DefaultLayout';
-import Loader from '@/components/common/Loader';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, AlertCircle, Check, X, Mail, Phone, Globe, User, Calendar, CreditCard } from 'lucide-react';
+import {
+    ArrowLeft, Calendar, CreditCard, User, Globe,
+    DollarSign,
+    Phone,
+    Mail,
+    FileText
+} from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,25 +19,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { resellerApi } from '@/api/reseller/reseller.api';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-interface UserProfileData {
-    id: string;
-    fullName: string;
-    userId: string;
-    resellerId: string;
-    ranking: string;
-    contactNo: string;
-    emailAddress: string;
-    digitalId: string;
-    country: string;
-    accountActivation: string;
-    totalDeposit: number;
-    physicalCard: boolean;
-    ekycStatus: string;
-    cardStatus: string;
-    firstDeposit: boolean;
-    [key: string]: any;
-}
+import { formatDateTimeWithHK } from '@/lib/dateUtils';
+import { ManageUserProfileSkeleton } from '@/components/common/Skeletons';
+import { UserOrResellerProfileResponse } from '@/api/reseller/reseller.types';
 
 const UserProfilePage = () => {
     const { t } = useTranslation();
@@ -40,10 +29,10 @@ const UserProfilePage = () => {
     const params = useParams();
     const profileId = params.profileId as string;
 
-    const [userData, setUserData] = useState<UserProfileData | null>(null);
+    const [userData, setUserData] = useState<UserOrResellerProfileResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
-    const [activeTab, setActiveTab] = useState('profile');
+    const [activeTab, setActiveTab] = useState('details');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -54,9 +43,8 @@ const UserProfilePage = () => {
 
                 setLoading(true);
 
-                // Only fetch data from the profile API endpoint
                 try {
-                    const profileData = await resellerApi.getAgentProfile(profileId);
+                    const profileData = await resellerApi.getUserOrResellerProfile(profileId);
                     setUserData(profileData);
                     setLoading(false);
                 } catch (error) {
@@ -74,46 +62,59 @@ const UserProfilePage = () => {
         fetchUserData();
     }, [profileId]);
 
+    // Get color based on agent tier/level
+    const getUserColor = (ranking: string): string => {
+        if (ranking === "N/A" || !ranking) {
+            return 'bg-blue-500'; // Tier 0 - Blue (for users)
+        } else if (ranking.includes("Tier 1")) {
+            return 'bg-green-500'; // Tier 1 - Green
+        } else if (ranking.includes("Tier 2")) {
+            return 'bg-purple-500'; // Tier 2 - Purple
+        } else if (ranking.includes("Tier 3")) {
+            return 'bg-orange-500'; // Tier 3 - Orange
+        } else if (ranking.includes("Tier 4")) {
+            return 'bg-pink-500'; // Tier 4 - Pink
+        } else if (ranking.includes("Tier 5")) {
+            return 'bg-red-500'; // Tier 5 - Red
+        }
+        return 'bg-blue-500'; // Fallback - Blue
+    };
+
+
     // Get the first letter of name for avatar
     const getFirstLetter = (name: string) => {
         return name ? name.charAt(0).toUpperCase() : 'U';
     };
 
     // Format date
-    const formatDate = (dateString: string | undefined) => {
+    const formatDate = (dateString: string | null | undefined) => {
         if (!dateString) return "N/A";
-
-        const date = new Date(dateString);
-        const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
-
-        return date.toLocaleDateString('en-US', options);
+        return formatDateTimeWithHK(dateString);
     };
 
-    if (loading) return (
-        <DefaultLayout>
-            <Breadcrumb pageName={t('userProfile.title', 'User Profile')} />
-            <Loader />
-        </DefaultLayout>
-    );
+    // Format currency
+    const formatCurrency = (amount: number | undefined) => {
+        if (amount === undefined) return "$0.00";
+        return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+
+    if (loading) {
+        return (
+            <DefaultLayout>
+                <ManageUserProfileSkeleton />
+            </DefaultLayout>
+        );
+    }
 
     if (error || !userData) {
         return (
             <DefaultLayout>
                 <Breadcrumb pageName={t('userProfile.title', 'User Profile')} />
-                <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-boxdark rounded-sm border border-stroke dark:border-strokedark">
-                    <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
-                    <h3 className="text-xl font-bold text-black dark:text-white mb-2">{t('userProfile.failedToLoad', 'Failed to load user profile')}</h3>
-                    <p className="text-body dark:text-bodydark mb-6">{error?.message}</p>
+                <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-boxdark rounded-xl">
+                    <div className="text-red-500 mb-4">{t('userProfile.failedToLoad', 'Failed to load user profile')}</div>
+                    <p className="text-bodydark mb-6">{error?.message}</p>
                     <Link href="/referred-users/manage-user">
-                        <Button variant="outline" className="group flex items-center gap-2">
+                        <Button variant="ghost" className="group flex items-center gap-2">
                             <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
                             {t('userProfile.backToUsers', 'Back to Users')}
                         </Button>
@@ -122,6 +123,9 @@ const UserProfilePage = () => {
             </DefaultLayout>
         );
     }
+
+    // Define the avatar color based on agent's ranking/level
+    const avatarColor = getUserColor(userData.ranking);
 
     return (
         <DefaultLayout>
@@ -135,121 +139,148 @@ const UserProfilePage = () => {
             </Link>
 
             {/* Top Card - User Summary */}
-            <Card className="mb-6 p-6 bg-white dark:bg-boxdark">
+            <Card className="mb-6 p-6 bg-white dark:bg-boxdark border-none shadow-sm">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div className="flex items-center gap-4">
                         <Avatar className="h-20 w-20">
-                            <AvatarFallback className="bg-primary/10 text-primary text-2xl">
+                            <AvatarFallback className={`${avatarColor} text-white text-2xl`}>
                                 {getFirstLetter(userData.fullName)}
                             </AvatarFallback>
                         </Avatar>
                         <div>
                             <h2 className="text-2xl font-semibold text-black dark:text-white">
-                                {userData.fullName.toUpperCase()}
+                                {userData.fullName}
                             </h2>
-                            <p className="text-red-500 font-medium">
-                                {userData.ranking === "N/A" ? "USER" : userData.ranking}
-                            </p>
+                            <div className="flex items-center gap-2">
+                                <Badge className={`${avatarColor} text-white`}>
+                                    {userData.ranking && userData.ranking !== "N/A" ? userData.ranking.replace("Tier", "Level") : "USER"}
+                                </Badge>
+
+                                {/* {userData.digitalId !== "NA.look" && (
+                                <p className="text-gray-500 text-sm">{userData.digitalId}</p>
+                            )} */}
+                            </div>
                         </div>
                     </div>
 
                     <div className="flex items-center gap-3">
-                        {/* todo: clarify whether to use this metric to show Active or Inactive 
-                        or using 
-                        */}
                         <Badge className={userData.totalDeposit > 0 ?
                             "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300" :
                             "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300"}>
-                            {userData.totalDeposit > 0 ? "Active" : "Inactive"}
+                            {userData.totalDeposit > 0 && userData.accountActivation
+                                ? "Active" : "Inactive"}
                         </Badge>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2 text-gray-500">
                             <Calendar className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('userProfile.accountActivation', 'Account Activation')}</span>
+                            <span className="text-sm">{t('userProfile.accountActivation', 'Account Activation')}</span>
                         </div>
                         <span className="text-black dark:text-white font-medium">
-                            {formatDate(userData.accountActivation)}
+                            {
+                                userData.accountActivation != null ?
+                                    formatDate(userData.accountActivation) :
+                                    "-"
+                            }
                         </span>
                     </div>
 
-                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2 text-gray-500">
+                            <DollarSign className="h-5 w-5 text-primary" />
+                            <span className="text-sm">{t('userProfile.totalDeposit', 'Total Deposit')}</span>
+                        </div>
+                        <span className="text-black dark:text-white font-medium">
+                            {formatCurrency(userData.totalDeposit)}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2 text-gray-500">
                             <CreditCard className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('userProfile.physicalCard', 'Physical Card')}</span>
+                            <span className="text-sm">{t('userProfile.physicalCard', 'Physical Card')}</span>
                         </div>
                         <span className="text-black dark:text-white font-medium">
-                            {userData.physicalCard === true ? "YES" : "-"}
+                            {userData.physicalCard ?
+                                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">YES</Badge> :
+                                <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">No</Badge>
+                            }
                         </span>
                     </div>
 
-                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
-                        <div className="flex items-center gap-2 mb-2">
-                            <User className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('userProfile.totalDeposit', 'Total Deposit')}</span>
-                        </div>
-                        <span className="text-black dark:text-white font-medium">
-                            $ {(userData.totalDeposit || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </span>
-                    </div>
-
-                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md">
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className="flex flex-col p-4 bg-gray-50 dark:bg-boxdark-2 rounded-md shadow-sm hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-2 mb-2 text-gray-500">
                             <Globe className="h-5 w-5 text-primary" />
-                            <span className="text-gray-500 text-sm">{t('userProfile.country', 'Country')}</span>
+                            <span className="text-sm">{t('userProfile.country', 'Country')}</span>
                         </div>
-                        <span className="text-black dark:text-white font-medium">
-                            {userData.country || "N/A"}
-                        </span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-black dark:text-white font-medium">
+                                {
+                                    userData.country != "N/A" ?
+                                        userData.country : "-"
+                                }
+                            </span>
+                        </div>
                     </div>
                 </div>
             </Card>
 
-            {/* Personal Details Card */}
-            <Card className="p-6 bg-white dark:bg-boxdark">
-                <h3 className="text-xl font-semibold text-black dark:text-white mb-6">{t('userProfile.personalDetails', 'Personal Details')}</h3>
+            {/* Tabs for different sections */}
+            <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="mb-6">
+                <TabsList className="w-full bg-white dark:bg-boxdark border border-stroke dark:border-strokedark p-1 rounded-md">
+                    <TabsTrigger value="details" className="w-full">{t('userProfile.personalDetails', 'PERSONAL DETAILS')}</TabsTrigger>
+                </TabsList>
 
-                <div className="grid gap-6">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.fullName', 'FULL NAME')}:</span>
-                        <span className="text-black dark:text-white font-medium">
-                            {userData.fullName}
-                        </span>
-                    </div>
+                {/* Personal Details Tab */}
+                <TabsContent value="details" className="mt-6">
+                    <Card className="p-6 bg-white dark:bg-boxdark border-none shadow-sm">
+                        <h3 className="text-xl font-semibold text-black dark:text-white mb-6 flex items-center">
+                            <User className="h-5 w-5 mr-2 text-primary" />
+                            {t('userProfile.personalDetails', 'Personal Details')}
+                        </h3>
 
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.contactNo', 'CONTACT NO')}:</span>
-                        <span className="text-black dark:text-white font-medium">
-                            {userData.contactNo || 'N/A'}
-                        </span>
-                    </div>
+                        <div className="grid gap-6">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
+                                <span className="text-gray-500 mb-2 sm:mb-0 flex items-center">
+                                    <User className="h-4 w-4 mr-2 text-primary" />{t('userProfile.fullName', 'Full Name')}:</span>
+                                <span className="text-black dark:text-white font-medium">
+                                    {userData.fullName}
+                                </span>
+                            </div>
 
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.emailAddress', 'EMAIL ADDRESS')}:</span>
-                        <span className="text-black dark:text-white font-medium">
-                            {userData.emailAddress}
-                        </span>
-                    </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
+                                <span className="text-gray-500 mb-2 sm:mb-0 flex items-center">
+                                    <Phone className="h-4 w-4 mr-2 text-primary" />{t('userProfile.contactNo', 'Contact No')}:</span>
+                                <span className="text-black dark:text-white font-medium">
+                                    {userData.contactNo.includes("null") ? "-" : userData.contactNo}
+                                </span>
+                            </div>
 
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.digitalId', 'DIGITAL ID')}:</span>
-                        <span className="text-black dark:text-white font-medium">
-                            {userData.digitalId || 'N/A'}
-                        </span>
-                    </div>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3 border-b border-stroke dark:border-strokedark">
+                                <span className="text-gray-500 mb-2 sm:mb-0 flex items-center">
+                                    <Mail className="h-4 w-4 mr-2 text-primary" />
+                                    {t('userProfile.emailAddress', 'Email Address')}:</span>
+                                <span className="text-black dark:text-white font-medium">
+                                    {userData.emailAddress}
+                                </span>
+                            </div>
 
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3">
-                        <span className="text-gray-500 mb-2 sm:mb-0">{t('userProfile.country', 'COUNTRY')}:</span>
-                        <span className="text-black dark:text-white font-medium">
-                            {userData.country || 'N/A'}
-                        </span>
-                    </div>
-                </div>
-            </Card>
-        </DefaultLayout>
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-3">
+                                <span className="text-gray-500 mb-2 sm:mb-0 flex items-center">
+                                    <FileText className="h-4 w-4 mr-2 text-primary" />
+                                    {t('userProfile.digitalId', 'Digital ID')}:</span>
+                                <span className="text-black dark:text-white font-medium">
+                                    {userData.digitalId.includes("NA.look") ? "-" : userData.digitalId}
+                                </span>
+                            </div>
+                        </div>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+        </DefaultLayout >
     );
 };
 

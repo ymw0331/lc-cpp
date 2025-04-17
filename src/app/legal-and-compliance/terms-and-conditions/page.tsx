@@ -6,10 +6,12 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ContentSection from "@/components/Sections/ContentSection";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/storage";
+import { TermsAndConditionsSkeleton } from '@/components/common/Skeletons';
 
 const TermsAndConditionsPage = () => {
     const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState('en');
+    const [loading, setLoading] = useState(true);
     interface Section {
         heading: string;
         content: string[];
@@ -429,6 +431,7 @@ const TermsAndConditionsPage = () => {
 
         // Set the content based on language
         setTermsContent(getTermsContentByLanguage(userLang));
+        setLoading(false);
     }, [getTermsContentByLanguage]);
 
     // Listen for language changes
@@ -446,6 +449,14 @@ const TermsAndConditionsPage = () => {
 
         return () => clearInterval(intervalId);
     }, [language, getTermsContentByLanguage]);
+
+    if (loading) {
+        return (
+            <DefaultLayout>
+                <TermsAndConditionsSkeleton />
+            </DefaultLayout>
+        );
+    }
 
     return (
         <DefaultLayout>

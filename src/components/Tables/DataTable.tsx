@@ -1,9 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
 import { useTranslation } from "react-i18next";
+import { formatInTimeZone } from 'date-fns-tz';
+import { HONG_KONG_TIMEZONE, formatDateTimeWithHK } from '@/lib/dateUtils';
 
 // Define reward types enum for better type safety
 export enum REWARD_TYPE {
@@ -19,6 +21,7 @@ interface Column {
     key: string;
     header: string;
     align: "left" | "right" | "center";
+    translateKey?: string; // Optional key for translations
 }
 
 interface DataTableProps {
@@ -43,11 +46,24 @@ const DataTable = ({
     const { t } = useTranslation();
     const [currentPage, setCurrentPage] = useState(1);
 
+    // Sort data by datetime in descending order (newest first)
+    const sortedData = [...data].sort((a, b) => {
+        // Check if the datetime field exists
+        if (a.datetime && b.datetime) {
+            const dateA = new Date(a.datetime);
+            const dateB = new Date(b.datetime);
+            const timeA = formatInTimeZone(dateA, HONG_KONG_TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+            const timeB = formatInTimeZone(dateB, HONG_KONG_TIMEZONE, 'yyyy-MM-dd HH:mm:ss');
+            return new Date(timeB).getTime() - new Date(timeA).getTime();
+        }
+        return 0; // Keep original order if datetime field is not available
+    });
+
     // Calculate pagination
-    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const totalPages = Math.ceil(sortedData.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const currentData = data.slice(startIndex, endIndex);
+    const currentData = sortedData.slice(startIndex, endIndex);
 
     // Set initial month if not already selected
     useEffect(() => {
@@ -75,8 +91,8 @@ const DataTable = ({
 
     // Handle Excel export
     const exportToExcel = () => {
-        if (!data.length) return;
-        const ws = XLSX.utils.json_to_sheet(data);
+        if (!sortedData.length) return;
+        const ws = XLSX.utils.json_to_sheet(sortedData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Incentive Activity");
         XLSX.writeFile(wb, `Incentive_Activity_${currentMonth}.xlsx`);
@@ -105,6 +121,26 @@ const DataTable = ({
             default:
                 return type;
         }
+    };
+
+    // Get translated column header text
+    const getColumnHeaderText = (column: Column): string => {
+        // If a translation key is provided, use it
+        if (column.translateKey) {
+            return t(column.translateKey);
+        }
+
+        // Otherwise, try to translate using the column key
+        const translationKey = `dataTable.columns.${column.key}`;
+        const translation = t(translationKey);
+
+        // If the translation exists and isn't the same as the key, use it
+        if (translation !== translationKey) {
+            return translation;
+        }
+
+        // Fall back to the provided header text
+        return column.header;
     };
 
     return (
@@ -141,8 +177,8 @@ const DataTable = ({
                 </div>
                 <Button
                     onClick={exportToExcel}
-                    disabled={!data.length}
-                    className={`bg-primary text-white font-medium gap-2 rounded-lg ${!data.length ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/90"
+                    disabled={!sortedData.length}
+                    className={`bg-primary text-white font-medium gap-2 rounded-lg ${!sortedData.length ? "opacity-50 cursor-not-allowed" : "hover:bg-primary/90"
                         }`}
                 >
                     <Download className="w-5 h-5" />
@@ -161,13 +197,13 @@ const DataTable = ({
                                         key={column.key}
                                         className={`py-4.5 px-4 font-medium text-${column.align}`}
                                     >
-                                        {column.header}
+                                        {getColumnHeaderText(column)}
                                     </th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
-                            {data.length === 0 ? (
+                            {sortedData.length === 0 ? (
                                 <tr>
                                     <td
                                         colSpan={columns.length}
@@ -208,7 +244,7 @@ const DataTable = ({
                                                             maximumFractionDigits: 2,
                                                         })}`
                                                         : column.key === "datetime"
-                                                            ? new Date(row[column.key]).toLocaleString()
+                                                            ? formatDateTimeWithHK(row[column.key])
                                                             : row[column.key]}
                                             </td>
                                         ))}
@@ -220,7 +256,7 @@ const DataTable = ({
                 </div>
 
                 {/* Pagination - Only show if there's data */}
-                {data.length > 0 && totalPages > 1 && (
+                {sortedData.length > 0 && totalPages > 1 && (
                     <div className="flex flex-wrap items-center justify-between py-4.5 px-4 border-t border-stroke dark:border-strokedark">
                         <div className="flex items-center space-x-2">
                             <Button

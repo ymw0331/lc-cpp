@@ -1,4 +1,3 @@
-// LevelBadge.tsx
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
@@ -18,7 +17,7 @@ const LevelBadge = ({ className }: LevelBadgeProps) => {
         const configs = {
             0: {
                 style: "bg-[#6E7A8A] border-2 border-[#8a98aa]",
-                title: "Master",
+                title: "User",
                 containerStyle: "bg-[#5d697a] rounded-xl p-[2px]"
             },
             1: {

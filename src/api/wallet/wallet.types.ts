@@ -1,4 +1,3 @@
-import { ChartDataPoint } from "@/types/dashboard";
 
 export interface WalletData {
     rewardWallet: {
@@ -9,9 +8,32 @@ export interface WalletData {
         amount: number;
         secondaryAmount: number;
     };
-    walletSummary: {
-        Week: ChartDataPoint[];
-        Month: ChartDataPoint[];
-        Year: ChartDataPoint[];
-    };
+}
+
+export interface RewardChartResponse {
+    totalDrReward: number;
+    chartDataYear: {
+        date: string;
+        value: number;
+    }[];
+    chartDataMonth: {
+        date: string;
+        value: number;
+    }[];
+}
+
+export interface RewardChartParams {
+    year: number;
+    month?: number;
+}
+
+export interface ChartDataPoint {
+    date: string;
+    value: number;
+}
+
+export interface DownstreamChartResponse {
+    totalDownstream: number;
+    chartDataYear: ChartDataPoint[];
+    chartDataMonth: ChartDataPoint[];
 }

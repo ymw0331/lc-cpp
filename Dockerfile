@@ -6,11 +6,13 @@ WORKDIR /app
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g corepack@latest && corepack enable pnpm && pnpm install --frozen-lockfile
+# COPY package.json pnpm-lock.yaml ./
+# RUN npm install -g corepack@latest && corepack enable pnpm && pnpm install --frozen-lockfile
+COPY package.json ./
+RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN pnpm run build
+RUN npm run build
 
 
 FROM base AS runner

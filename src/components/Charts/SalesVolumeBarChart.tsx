@@ -81,6 +81,9 @@ const SalesVolumeBarChart = ({
         ? data.reduce((sum, item) => sum + item.value, 0)
         : 0;
 
+    // Check if there's no data
+    const hasNoData = data.length === 0;
+
     interface CustomBarLabelProps {
         x: number;
         y: number;
@@ -103,7 +106,7 @@ const SalesVolumeBarChart = ({
 
     if (comingSoon) {
         return (
-            <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+            <Card className="border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
                     <div className="space-y-4">
                         <CardTitle className="text-2xl font-semibold text-black dark:text-white">
@@ -122,14 +125,17 @@ const SalesVolumeBarChart = ({
     }
 
     return (
-        <Card className="rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
+        <Card className="border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-7 px-0">
                 <div className="space-y-4">
                     <CardTitle className="text-2xl font-semibold text-black dark:text-white">
                         {t("salesVolumeBarChart.salesVolume")}
-                    </CardTitle>                    <div className="text-4xl font-bold text-black dark:text-white">
-                        ${(total / 1000).toFixed(3)}K
-                    </div>
+                    </CardTitle>
+                    {!hasNoData && (
+                        <div className="text-4xl font-bold text-black dark:text-white">
+                            ${(total / 1000).toFixed(3)}K
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -148,28 +154,31 @@ const SalesVolumeBarChart = ({
                     <div className="flex items-center gap-2 rounded-md bg-whiter p-1 dark:bg-meta-4">
                         <button
                             onClick={() => setViewMode("week")}
-                            className={`rounded-md px-3 py-1 text-sm ${viewMode === "week"
-                                ? "bg-primary text-white"
-                                : "bg-white text-black dark:bg-boxdark dark:text-white"
-                                }`}
+                            className={`px-3 py-1 text-sm rounded-md ${
+                                viewMode === "week"
+                                    ? "bg-white text-black shadow-sm dark:bg-boxdark dark:text-white"
+                                    : "text-gray-500 dark:text-gray-400"
+                            }`}
                         >
                             {t("salesVolumeBarChart.week")}
                         </button>
                         <button
                             onClick={() => setViewMode("month")}
-                            className={`rounded-md px-3 py-1 text-sm ${viewMode === "month"
-                                ? "bg-primary text-white"
-                                : "bg-white text-black dark:bg-boxdark dark:text-white"
-                                }`}
+                            className={`px-3 py-1 text-sm rounded-md ${
+                                viewMode === "month"
+                                    ? "bg-white text-black shadow-sm dark:bg-boxdark dark:text-white"
+                                    : "text-gray-500 dark:text-gray-400"
+                            }`}
                         >
                             {t("salesVolumeBarChart.month")}
                         </button>
                         <button
                             onClick={() => setViewMode("year")}
-                            className={`rounded-md px-3 py-1 text-sm ${viewMode === "year"
-                                ? "bg-primary text-white"
-                                : "bg-white text-black dark:bg-boxdark dark:text-white"
-                                }`}
+                            className={`px-3 py-1 text-sm rounded-md ${
+                                viewMode === "year"
+                                    ? "bg-white text-black shadow-sm dark:bg-boxdark dark:text-white"
+                                    : "text-gray-500 dark:text-gray-400"
+                            }`}
                         >
                             {t("salesVolumeBarChart.year")}
                         </button>
@@ -177,93 +186,39 @@ const SalesVolumeBarChart = ({
                 </div>
             </CardHeader>
 
-            <CardContent className="px-0">
-                {/* Week Selector (only shown in week view) */}
-                {viewMode === "week" && (
-                    <div className="mb-6 flex items-center gap-4">
-                        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                            <SelectTrigger className="w-[180px] bg-transparent border-stroke">
-                                <SelectValue placeholder={t("salesVolumeBarChart.selectMonth")} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Jan2024">January 2024</SelectItem>
-                                <SelectItem value="Feb2024">February 2024</SelectItem>
-                            </SelectContent>
-                        </Select>
-                        <Select value={selectedWeek} onValueChange={setSelectedWeek}>
-                            <SelectTrigger className="w-[140px] bg-transparent border-stroke">
-                                <SelectValue placeholder={t("salesVolumeBarChart.selectWeek")} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Week 1">Week 1</SelectItem>
-                                <SelectItem value="Week 2">Week 2</SelectItem>
-                                <SelectItem value="Week 3">Week 3</SelectItem>
-                                <SelectItem value="Week 4">Week 4</SelectItem>
-                            </SelectContent>
-                        </Select>
+            <CardContent>
+                {hasNoData ? (
+                    <div className="flex items-center justify-center h-[300px]">
+                        <p className="text-lg text-gray-500 dark:text-gray-400">
+                            {t('common.noData')}
+                        </p>
                     </div>
-                )}
-
-                {/* Month Selector (only shown in month view) */}
-                {viewMode === "month" && (
-                    <div className="mb-6">
-                        <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                            <SelectTrigger className="w-[200px] bg-transparent border-stroke">
-                                <SelectValue placeholder={t("salesVolumeBarChart.selectMonth")} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Jan">January 2024</SelectItem>
-                                <SelectItem value="Feb">February 2024</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                )}
-
-                <div className="h-[400px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart
-                            data={data}
-                            margin={{ top: 40, right: 0, left: 0, bottom: 0 }}
-                            barSize={40}
-                        >
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                            <XAxis
-                                dataKey="name"
-                                axisLine={false}
-                                tickLine={false}
-                                fontSize={12}
-                                tickMargin={12}
-                                stroke="#64748B"
-                            />
-                            <YAxis
-                                axisLine={false}
-                                tickLine={false}
-                                fontSize={12}
-                                tickCount={7}
-                                tickFormatter={(value) => `$${value}`}
-                                tickMargin={12}
-                                stroke="#64748B"
-                                domain={[0, 6000]}
-                            />
-                            <Tooltip
-                                cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
-                                contentStyle={{
-                                    backgroundColor: "#fff",
-                                    border: "none",
-                                    borderRadius: "4px",
-                                    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                ) : (
+                    <div className="h-[300px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                                data={data}
+                                margin={{
+                                    top: 20,
+                                    right: 30,
+                                    left: 20,
+                                    bottom: 5,
                                 }}
-                                formatter={(value: number) => [`$${value}`, "Sales"]}
-                            />
-                            <Bar
-                                dataKey="value"
-                                fill="#94A3B8"
-                                radius={[0, 0, 0, 0]}
-                                label={CustomBarLabel}
-                            />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Bar
+                                    dataKey="value"
+                                    fill="#D61768"
+                                    radius={[4, 4, 0, 0]}
+                                    label={CustomBarLabel}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                )}
             </CardContent>
         </Card>
     );

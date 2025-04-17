@@ -3,7 +3,12 @@
         "processing": "處理中",
         "comingSoon": "即將推出",
         "unknown": "未知",
-        "notAvailable": "N/A"
+        "notAvailable": "N/A",
+        "noData": "暫無數據",
+        "errorTitle": "發生錯誤",
+        "errorDescription": "抱歉，載入數據時出現問題。請稍後再試。",
+        "retry": "重試",
+        "loading": "載入中..."
     },
     "header": {
         "searchPlaceholder": "輸入搜索...",
@@ -52,12 +57,13 @@
         "overview": "概覽",
         "rewardWalletBalance": "獎勵錢包餘額",
         "referredDepositAmount": "直推充值數額",
-        "referralFeeBonus": "直推佣金",
+        "referralFeeBonus": "直推佣金 (累计)",
         "activeUsers": "活躍用戶",
         "left": "（距離達成KPI差額）",
         "totalDirectRecruit": "直推總數額",
         "agentsToPartner": "代理晉升為合作夥伴",
         "referralDepositVolume": "推薦充值總額",
+        "referredDepositVolume": "推薦充值概覽",
         "depositAdminChargeRebate": "充值手續費返利覆蓋獎勵",
         "depositSummary": "充值總覽",
         "depositActivity": "充值記錄",
@@ -120,6 +126,9 @@
         "termsAgreement": "本人同意上述所有條款，包括遵守項目要求、道德規範及隱私政策。本人確認已充分理解並接受這些條款，適用於本人申請及本人提交的任何推薦。",
         "success": "註冊成功",
         "successfullyRegistered": "您已成功註冊為經銷商代理",
+        "emailVerificationFailed": "驗證郵箱失敗",
+        "emailRegistrationRequired": "請先註冊為lookcard.io平台用戶",
+        "emailVerifiedSuccess": "您已成功驗證您的郵箱地址",
         "error": "註冊出錯",
         "processing": "處理中...",
         "signUp": "註冊",
@@ -140,7 +149,12 @@
         "termsLinkText": "條款和條件",
         "termsAgreementFull": "我同意所有條款和條件，包括計劃條款、隱私政策，並同意接收有關此計劃的通訊。",
         "alreadyReseller": "已經是推銷商?",
-        "signInHere": "在此登錄"
+        "signInHere": "在此登錄",
+        "notLookcardUser": "尚未註冊為lookcard.io平台用戶?",
+        "registerHere": "立即註冊",
+        "verify": "驗證",
+        "notice": "注意",
+        "resellerAlreadyExists": "您的帳戶已經是推銷商，您可以現在登入系統。"
     },
     "forgotPasswordDialog": {
         "close": "關閉",
@@ -184,11 +198,12 @@
     },
     "referralCard": {
         "referralCodeLabel": "推薦碼",
+        "description": "分享此連結以賺取佣金",
         "copiedToClipboard": "已成功複製到剪貼板",
         "copiedToClipboardDescription": "推薦碼已成功複製到剪貼板"
     },
     "recruitCard": {
-        "totalDirectRecruitLabel": "直推總數額",
+        "directReferredVolume": "直推總數額",
         "agentsToPartnerLabel": "經銷商代理晉升合作夥伴"
     },
     "milestoneAchievementCard": {
@@ -198,7 +213,18 @@
         "activatedUsers": "已激活用戶",
         "month": "個月",
         "months": "個月",
-        "congratulations": "恭喜"
+        "congratulations": "恭喜",
+        "completed": "已完成",
+        "milestoneTimeline": "里程碑時間線",
+        "earnedBonus": "您已獲得獎金",
+        "earnedBonusLong": "您已獲得獎金",
+        "youveActivated": "您已激活",
+        "cardsWithin": "張卡，在",
+        "monthsAndReceived": "個月內，並獲得獎金",
+        "targetReached": "已達成目標",
+        "cardsToGo": "還需激活數量",
+        "youveReachedYourTarget": "您已在以下時間內達成目標",
+        "atMonth": "在第"
     },
     "statisticChart": {
         "noDataAvailable": "暫無數據"
@@ -219,7 +245,7 @@
         "walletSummaryComingSoon": "獎勵錢包記錄即將推出"
     },
     "analyticChart": {
-        "noDataAvailable": "暫無數據",
+        "noDataAvailable": "無可用數據",
         "comingSoon": "即將推出"
     },
     "walletCard": {
@@ -232,11 +258,27 @@
         "transferredAmountHeader": "轉賬金額",
         "dateTimeHeader": "日期與時間",
         "statusHeader": "狀態",
-        "noTransactionsYet": "暫無交易記錄"
+        "noTransactionsYet": "暫無交易記錄",
+        "noDataAvailable": "暫無數據",
+        "noRecordsToDisplay": "當前時間段無記錄顯示",
+        "showingResults": "顯示第 {{start}} 至 {{end}} 筆，共 {{total}} 筆記錄",
+        "exportToExcel": "導出至Excel",
+        "filters": "篩選條件",
+        "allStatus": "所有狀態",
+        "succeed": "成功",
+        "failed": "失敗",
+        "dateRange": "日期範圍",
+        "from": "從",
+        "to": "至",
+        "clearAll": "清除全部",
+        "applyFilters": "應用篩選",
+        "previous": "上一頁",
+        "next": "下一頁"
     },
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "績效激勵管理",
         "totalIncentive": "總激勵金額",
+        "totalIncentiveEarnedToDate": "累计激励总额",
         "referralFeeBonus": "直推佣金",
         "incentivePayoutRecords": "激勵結算記錄",
         "directRecruitReferralFeeOverrideBonus": "推薦佣金返利覆蓋獎勵",
@@ -250,16 +292,20 @@
     "incentiveCard": {
         "activeUsersLeft": "(距離達成目標所需活躍用戶）"
     },
-    "dataTable": {
+    "incentivePayoutTable": {
         "incentivePayoutRecords": "激勵獎金記錄",
-        "transactionId": "交易編碼",
+        "incentiveRecords": "激勵記錄",
         "transferredAmount": "結算金額",
         "dateTime": "日期與時間",
         "status": "狀態",
         "noDataAvailable": "暫無數據",
         "noRecordsToDisplay": "當前時間段無記錄顯示",
-        "showingResults": "展示 {start} 到 {end}，共 {total} 條數據結果",
-        "exportToExcel": "導出至Excel"
+        "showingResults": "展示 {{start}} 到 {{end}}，共 {{total}} 條數據結果",
+        "exportToExcel": "導出至Excel",
+        "incentiveDetails": "激勵詳情",
+        "fromName": "來自姓名",
+        "fromEmail": "來自郵箱",
+        "amount": "金額"
     },
     "referredUsersPage": {
         "referredUsersBreadcrumb": "推薦用戶",
@@ -284,22 +330,33 @@
     "recruitAgentPage": {
         "recruitAgentBreadcrumb": "招募經銷商代理",
         "agentRecruitmentDetails": "經銷商代理招募詳情",
+        "enterEmail": "請輸入您在lookcard.io平台賬戶中註冊的電子郵箱",
         "referralId": "推薦碼",
         "fullName": "全名",
         "registeredEmail": "註冊郵箱",
         "memberVerification": "會員驗證",
         "emailVerified": "郵箱驗證成功",
-        "matchedEmail": "郵箱匹配",
-        "check": "核對",
         "proposedKeyMarket": "建議的主力市場",
         "selectMarket": "選擇市場",
         "acknowledgement": "條款確認",
-        "acknowledgementItem1": "本人確認，表格內所提供的所有信息均為真實、準確，並符合本人所知情況。",
+        "acknowledgementItem1": "本人確認，表格內所提供的所有資訊均為真實、準確，並符合本人所知情況。",
         "acknowledgementItem2": "本人確認並知悉，我所推薦的人員已授權 Lookcard Limited 就此項目與其聯繫。",
         "acknowledgementItem3": "本人理解，推薦申請的提交不意味著被推薦人將被本項目正式接受。",
         "acknowledgementItem4": "本人確認，推薦所涉及的任何福利或獎勵，需被推薦人符合項目標準並完成加入流程後方可生效",
         "agreementLabel": "本人確認已閱讀、理解並同意上述條款，包括項目要求、道德準則及隱私政策，並接受這些條款適用於本人申請及推薦。",
-        "recruitButton": "立即招募"
+        "recruitButton": "立即招募",
+        "verify": "驗證",
+        "contactNo": "聯繫電話",
+        "processing": "處理中...",
+        "success": "成功",
+        "error": "功能出錯",
+        "notice": "注意",
+        "emailVerifiedSuccess": "您已成功驗證您的郵箱地址",
+        "emailRegistrationRequired": "請先註冊為lookcard.io平台用戶",
+        "emailVerificationRequired": "需要驗證郵箱",
+        "successfullyRecruited": "已成功被招募成新代理, 請檢查您的收件箱以進行下一步。",
+        "resellerAlreadyExists": "您的帳戶已經是推銷商，您可以現在登入。",
+        "verificationFailed": "郵箱驗證失敗"
     },
     "performancePage": {
         "performanceBreadcrumb": "績效",
@@ -324,7 +381,6 @@
     "salesVolumeBarChart": {
         "salesVolume": "銷售量",
         "year": "年份",
-        "week": "周",
         "month": "月",
         "selectMonth": "選擇月份",
         "selectWeek": "選擇周"
@@ -517,8 +573,8 @@
         "november": "十一月",
         "december": "十二月"
     },
-    "recruitmentSummaryCard": {
-        "recruitmentSummary": "代理招募詳情",
+    "referralSummaryCard": {
+        "referralSummary": "推薦用戶詳情",
         "noOfDirectReferral": "直推數額",
         "totalDepositFromDirectReferral": "直推總充值數額"
     },
@@ -529,7 +585,7 @@
     },
     "recruitAgentCard": {
         "recruitAgentLabel": "招募代理",
-        "description": "分享此連結招募 lookcard 代理",
+        "description": "擴大您的網絡！分享此 Reseller ID 連結以招募新代理",
         "copiedToClipboard": "已複製到剪貼簿",
         "copiedToClipboardDescription": "招募代理連結已複製到剪貼簿"
     },
@@ -541,6 +597,7 @@
         "accActivation": "账户激活时间",
         "totalDeposit": "总存款",
         "physicalCard": "实体卡",
+        "status": "状态",
         "actions": "操作",
         "searchUser": "搜索用户...",
         "filters": "筛选条件",
@@ -562,7 +619,10 @@
         "of": "共",
         "entries": "条记录",
         "previous": "上一页",
-        "next": "下一页"
+        "next": "下一页",
+        "export": "导出至Excel",
+        "recruit": "招募",
+        "fromEventLegend": "表示通过特殊活动招募的代理"
     },
     "userProfile": {
         "title": "用户资料",
@@ -579,19 +639,66 @@
         "totalDeposit": "总存款"
     },
     "agentProfile": {
-        "title": "代理商资料",
-        "backToUsers": "返回用户列表",
-        "failedToLoad": "加载代理商资料失败",
-        "personalDetails": "个人资料",
+        "title": "代理資料",
+        "backToUsers": "返回用戶列表",
+        "backToAgents": "返回代理列表",
+        "failedToLoad": "無法加載代理資料",
+        "personalDetails": "個人資料",
         "fullName": "全名",
-        "contactNo": "联系电话",
-        "emailAddress": "电子邮件",
-        "digitalId": "数字身份",
-        "country": "国家",
-        "accountActivation": "账户激活时间",
-        "physicalCard": "实体卡",
-        "totalDeposit": "总存款",
-        "additionalSections": "代理商指标和管理功能即将推出"
+        "contactNo": "聯絡電話",
+        "emailAddress": "電郵地址",
+        "digitalId": "數碼身份",
+        "country": "國家",
+        "accountActivation": "帳戶啟用",
+        "accountActivationDate": "帳戶啟用日期",
+        "physicalCard": "實體卡",
+        "totalDeposit": "總存款",
+        "campaign": "活動",
+        "keyMarket": "主要市場",
+        "overview": "概覽",
+        "details": "個人資料",
+        "status": "狀態",
+        "performance": "業績",
+        "cardActivationVolume": "卡啟用量",
+        "totalAgentRecruitment": "總代理招募",
+        "activeCards": "已啟用卡",
+        "recruitedAgents": "已招募代理",
+        "depositVolume": "存款量",
+        "totalDeposits": "總存款",
+        "ekycStatus": "電子認證狀態",
+        "cardStatus": "卡狀態",
+        "firstDeposit": "首次存款",
+        "campaignParticipant": "活動參與者",
+        "accountStatus": "帳戶狀態",
+        "active": "已啟用",
+        "issued": "已發出",
+        "notIssued": "未發出",
+        "completed": "已完成",
+        "pending": "處理中",
+        "no": "否",
+        "currentLevel": "目前等級",
+        "progress": "進度",
+        "groupSales": "團隊銷售",
+        "personalSales": "個人銷售",
+        "totalSales": "總銷售",
+        "accountStatusSection": {
+            "title": "帳戶狀態",
+            "active": "已啟用",
+            "inactive": "未啟用",
+            "suspended": "已暫停",
+            "pending": "處理中"
+        },
+        "currentLevelSection": {
+            "title": "目前等級",
+            "level1": "一級代理",
+            "level2": "二級代理"
+        },
+        "salesSummarySection": {
+            "title": "銷售摘要",
+            "totalSales": "總銷售",
+            "personalSales": "個人銷售",
+            "groupSales": "團隊銷售"
+        }
     },
     "termsDialog": {
         "title": "確認聲明",
@@ -601,5 +708,41 @@
         "terms": "通過提交此註冊表格，我確認所提供的信息真實、準確且完整。我同意遵守LookCard社區合作夥伴計劃的條款和條件，並了解我的參與需獲得批准。",
         "termsAdditional1": "我承認佣金和獎勵基於我的分銷商級別和業績表現。我同意LookCard收集、處理和存儲我的信息，用於驗證、計劃管理和佣金支付，符合其隱私政策。",
         "termsAdditional2": "我也理解LookCard保留更新計劃條款的權利，我有責任及時了解任何變更。"
+    },
+    "membershipDialog": {
+        "title": "確認您的 lookcard.io 平台會員資格",
+        "question": "您是 lookcard.io 平台的註冊用戶嗎？",
+        "ifNo": "如果不是",
+        "noDescription": "請註冊用戶賬號以成為分銷商。",
+        "ifYes": "如果是",
+        "yesDescription": "請繼續社區合作夥伴入職流程；",
+        "registerButton": "否，註冊用戶賬號",
+        "proceedButton": "是，繼續代理入職"
+    },
+    "invitePage": {
+        "welcomeTitle": "歡迎加入 LookCard 社區合作夥伴計劃",
+        "redirectMessage": "您將被重定向至 LookCard 代理註冊頁面",
+        "processingInvitation": "正在處理您的邀請"
+    },
+    "rewardSummaryChart": {
+        "year": "年份",
+        "month": "月份",
+        "noDataAvailable": "無可用數據",
+        "totalReward": "總獎勵"
+    },
+    "recruitmentSummaryChart": {
+        "year": "年份",
+        "month": "月份",
+        "noDataAvailable": "無可用數據",
+        "totalDownstream": "直推用户总数"
+    },
+    "depositOverviewChart": {
+        "title": "存款概览",
+        "totalDeposit": "总存款",
+        "year": "年份",
+        "month": "月份",
+        "selectMonth": "選擇月份",
+        "selectWeek": "選擇周",
+        "noData": "無可用數據"
     }
 }

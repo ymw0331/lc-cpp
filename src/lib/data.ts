@@ -580,190 +580,190 @@
 
 
 
-/*** Manage Users Page ***/
-export interface AgentLevelCount {
-    level: string;
-    count: number;
-}
+// /*** Manage Users Page ***/
+// export interface AgentLevelCount {
+//     level: string;
+//     count: number;
+// }
 
-export interface User {
-    id: string;
-    name: string;
-    userId: string;
-    ranking: string;
-    keyMarket: string;
-    joinedSince: string;
-    lastActive: string;
-}
+// export interface User {
+//     id: string;
+//     name: string;
+//     userId: string;
+//     ranking: string;
+//     keyMarket: string;
+//     joinedSince: string;
+//     lastActive: string;
+// }
 
-export const agentLevelsData: AgentLevelCount[] = [
-    { level: 'Level 1 Agent', count: 91 },
-    { level: 'Level 2 Agent', count: 69 },
-    { level: 'Level 3 Agent', count: 50 },
-    { level: 'Level 4 Agent', count: 19 },
-];
-
-
-export const usersListData: User[] = [
-    {
-        id: 'user1',
-        name: 'John Smith',
-        userId: '10118237',
-        ranking: 'Partner 3',
-        keyMarket: 'Malaysia',
-        joinedSince: 'Jan 10, 2024',
-        lastActive: 'Jan 12, 2024 10:30:00',
-    },
-    {
-        id: 'user2',
-        name: 'Jane Doe',
-        userId: '10118238',
-        ranking: 'Agent 2',
-        keyMarket: 'Singapore',
-        joinedSince: 'Feb 20, 2024',
-        lastActive: 'Feb 22, 2024 14:45:00',
-    },
-    {
-        id: 'user3',
-        name: 'Robert Johnson',
-        userId: '10118239',
-        ranking: 'Agent 1',
-        keyMarket: 'Thailand',
-        joinedSince: 'Mar 05, 2024',
-        lastActive: 'Mar 07, 2024 09:15:00',
-    },
-    {
-        id: 'user4',
-        name: 'Emily Brown',
-        userId: '10118240',
-        ranking: 'User',
-        keyMarket: 'HongKong',
-        joinedSince: 'Apr 15, 2024',
-        lastActive: 'Apr 17, 2024 16:20:00',
-    },
-];
+// export const agentLevelsData: AgentLevelCount[] = [
+//     { level: 'Level 1 Agent', count: 91 },
+//     { level: 'Level 2 Agent', count: 69 },
+//     { level: 'Level 3 Agent', count: 50 },
+//     { level: 'Level 4 Agent', count: 19 },
+// ];
 
 
-/*** Single User View Page ***/
-
-export interface SingleUserData {
-    name: string;
-    avatar: string;
-    level: string;
-    promotedDate: string;
-    details: {
-        userId: string;
-        joinedSince: string;
-        lastActive: string;
-        keyMarket: string;
-    };
-    stats: {
-        directRecruit: number;
-        directReferrals: number;
-        cardActivation: {
-            current: number;
-            total: number;
-        };
-        agentRecruitment: {
-            current: number;
-            total: number;
-        };
-    };
-    status: {
-        deposit: boolean;
-        eKYC: boolean;
-        activatedCard: boolean;
-        physicalCard: boolean;
-    };
-    socialLinks?: {  // Optional social links
-        facebook?: string;
-        linkedin?: string;
-        instagram?: string;
-        twitter?: string;
-    };
-}
-
-export const singleUserData: SingleUserData = {
-    name: "Adam Lam",
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Adam",
-    level: "Level 2 Agent",
-    promotedDate: "Nov 07, 2024",
-    // Properly structured details object
-    details: {
-        userId: "10118237",
-        joinedSince: "Nov 07, 2024",
-        lastActive: "Nov 07, 2024 18:37:32",
-        keyMarket: "Malaysia"
-    },
-    stats: {
-        directRecruit: 2,
-        directReferrals: 148,
-        cardActivation: {
-            current: 340,
-            total: 1000,
-        },
-        agentRecruitment: {
-            current: 2,
-            total: 5,
-        }
-    },
-    status: {
-        deposit: true,
-        eKYC: true,
-        activatedCard: true,
-        physicalCard: true
-    },
-    // Optional social links
-    socialLinks: {
-        facebook: "https://facebook.com",
-        linkedin: "https://linkedin.com",
-        instagram: "https://instagram.com",
-        twitter: "https://twitter.com",
-    }
-
-};
+// export const usersListData: User[] = [
+//     {
+//         id: 'user1',
+//         name: 'John Smith',
+//         userId: '10118237',
+//         ranking: 'Partner 3',
+//         keyMarket: 'Malaysia',
+//         joinedSince: 'Jan 10, 2024',
+//         lastActive: 'Jan 12, 2024 10:30:00',
+//     },
+//     {
+//         id: 'user2',
+//         name: 'Jane Doe',
+//         userId: '10118238',
+//         ranking: 'Agent 2',
+//         keyMarket: 'Singapore',
+//         joinedSince: 'Feb 20, 2024',
+//         lastActive: 'Feb 22, 2024 14:45:00',
+//     },
+//     {
+//         id: 'user3',
+//         name: 'Robert Johnson',
+//         userId: '10118239',
+//         ranking: 'Agent 1',
+//         keyMarket: 'Thailand',
+//         joinedSince: 'Mar 05, 2024',
+//         lastActive: 'Mar 07, 2024 09:15:00',
+//     },
+//     {
+//         id: 'user4',
+//         name: 'Emily Brown',
+//         userId: '10118240',
+//         ranking: 'User',
+//         keyMarket: 'HongKong',
+//         joinedSince: 'Apr 15, 2024',
+//         lastActive: 'Apr 17, 2024 16:20:00',
+//     },
+// ];
 
 
-/*** Activation Volume Chart ***/
-export interface DataPoint {
-    label: string;
-    value: number;
-}
+// /*** Single User View Page ***/
 
-export type TimeRange = 'Month' | 'Year';
+// export interface SingleUserData {
+//     name: string;
+//     avatar: string;
+//     level: string;
+//     promotedDate: string;
+//     details: {
+//         userId: string;
+//         joinedSince: string;
+//         lastActive: string;
+//         keyMarket: string;
+//     };
+//     stats: {
+//         directRecruit: number;
+//         directReferrals: number;
+//         cardActivation: {
+//             current: number;
+//             total: number;
+//         };
+//         agentRecruitment: {
+//             current: number;
+//             total: number;
+//         };
+//     };
+//     status: {
+//         deposit: boolean;
+//         eKYC: boolean;
+//         activatedCard: boolean;
+//         physicalCard: boolean;
+//     };
+//     socialLinks?: {  // Optional social links
+//         facebook?: string;
+//         linkedin?: string;
+//         instagram?: string;
+//         twitter?: string;
+//     };
+// }
 
-export interface TimeRangeData {
-    [key: string]: {
-        Month: DataPoint[];
-        Year: DataPoint[];
-    };
-}
+// export const singleUserData: SingleUserData = {
+//     name: "Adam Lam",
+//     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Adam",
+//     level: "Level 2 Agent",
+//     promotedDate: "Nov 07, 2024",
+//     // Properly structured details object
+//     details: {
+//         userId: "10118237",
+//         joinedSince: "Nov 07, 2024",
+//         lastActive: "Nov 07, 2024 18:37:32",
+//         keyMarket: "Malaysia"
+//     },
+//     stats: {
+//         directRecruit: 2,
+//         directReferrals: 148,
+//         cardActivation: {
+//             current: 340,
+//             total: 1000,
+//         },
+//         agentRecruitment: {
+//             current: 2,
+//             total: 5,
+//         }
+//     },
+//     status: {
+//         deposit: true,
+//         eKYC: true,
+//         activatedCard: true,
+//         physicalCard: true
+//     },
+//     // Optional social links
+//     socialLinks: {
+//         facebook: "https://facebook.com",
+//         linkedin: "https://linkedin.com",
+//         instagram: "https://instagram.com",
+//         twitter: "https://twitter.com",
+//     }
 
-// Simplified weekly data
-export const activationData: TimeRangeData = {
-    "2023": {
-        Month: [
-            { label: "Week 1", value: 1250 },
-            { label: "Week 2", value: 2100 },
-            { label: "Week 3", value: 1800 },
-            { label: "Week 4", value: 2400 },
-        ],
-        Year: [
-            { label: "Jan", value: 150 },
-            { label: "Feb", value: 450 },
-            { label: "Mar", value: 380 },
-            { label: "Apr", value: 560 },
-            { label: "May", value: 270 },
-            { label: "Jun", value: 490 },
-            { label: "Jul", value: 120 },
-            { label: "Aug", value: 590 },
-            { label: "Sep", value: 310 },
-            { label: "Oct", value: 430 },
-            { label: "Nov", value: 580 },
-            { label: "Dec", value: 530 },
-        ],
-    }
-};
+// };
+
+
+// /*** Activation Volume Chart ***/
+// export interface DataPoint {
+//     label: string;
+//     value: number;
+// }
+
+// export type TimeRange = 'Month' | 'Year';
+
+// export interface TimeRangeData {
+//     [key: string]: {
+//         Month: DataPoint[];
+//         Year: DataPoint[];
+//     };
+// }
+
+// // Simplified weekly data
+// export const activationData: TimeRangeData = {
+//     "2023": {
+//         Month: [
+//             { label: "Week 1", value: 1250 },
+//             { label: "Week 2", value: 2100 },
+//             { label: "Week 3", value: 1800 },
+//             { label: "Week 4", value: 2400 },
+//         ],
+//         Year: [
+//             { label: "Jan", value: 150 },
+//             { label: "Feb", value: 450 },
+//             { label: "Mar", value: 380 },
+//             { label: "Apr", value: 560 },
+//             { label: "May", value: 270 },
+//             { label: "Jun", value: 490 },
+//             { label: "Jul", value: 120 },
+//             { label: "Aug", value: 590 },
+//             { label: "Sep", value: 310 },
+//             { label: "Oct", value: 430 },
+//             { label: "Nov", value: 580 },
+//             { label: "Dec", value: 530 },
+//         ],
+//     }
+// };
 
 
 
@@ -810,126 +810,126 @@ export const activationData: TimeRangeData = {
 // }
 
 
-export const performanceData = {
-    cardActivationVolume:
-    {
-        currentValue: 42208,
-        targetValue: 50000,
-    },
-    totalAgentRecruitment:
-    {
-        currentValue: 2146,
-        targetValue: 3000,
-    },
-    nextLevelCard: {
-        currentLevel: "userData.level",
-        progress: 84.5,
-        isMaxLevel: true,
-        avatarUrl: "userData.avatarUrl",
-        name: "ljdfkdsjf",
+// export const performanceData = {
+//     cardActivationVolume:
+//     {
+//         currentValue: 42208,
+//         targetValue: 50000,
+//     },
+//     totalAgentRecruitment:
+//     {
+//         currentValue: 2146,
+//         targetValue: 3000,
+//     },
+//     nextLevelCard: {
+//         currentLevel: "userData.level",
+//         progress: 84.5,
+//         isMaxLevel: true,
+//         avatarUrl: "userData.avatarUrl",
+//         name: "ljdfkdsjf",
 
-    },
-    salesSummary: {
-        groupSales: 73.2,
-        personalSales: 27.8,
-    },
-    demographicData: {
-        'Hong Kong': {
-            Q1_2024: 92118,
-            Q2_2024: 88234,
-            Q3_2024: 90123,
-            Q4_2024: 91456,
-            Q1_2023: 85234,
-            Q2_2023: 86123,
-            Q3_2023: 87456,
-            Q4_2023: 88789,
-        },
-        'Malaysia': {
-            Q1_2024: 35942,
-            Q2_2024: 34156,
-            Q3_2024: 33943,
-            Q4_2024: 35876,
-            Q1_2023: 32156,
-            Q2_2023: 31943,
-            Q3_2023: 33876,
-            Q4_2023: 34123,
-        },
-        'Bangkok': {
-            Q1_2024: 20621,
-            Q2_2024: 19943,
-            Q3_2024: 20876,
-            Q4_2024: 21123,
-            Q1_2023: 18943,
-            Q2_2023: 19876,
-            Q3_2023: 20123,
-            Q4_2023: 20456,
-        },
-        'Taiwan': {
-            Q1_2024: 11424,
-            Q2_2024: 10876,
-            Q3_2024: 11123,
-            Q4_2024: 11456,
-            Q1_2023: 10876,
-            Q2_2023: 11123,
-            Q3_2023: 11456,
-            Q4_2023: 11789,
-        },
-        'Philippines': {
-            Q1_2024: 10127,
-            Q2_2024: 9654,
-            Q3_2024: 9876,
-            Q4_2024: 10234,
-            Q1_2023: 9654,
-            Q2_2023: 9876,
-            Q3_2023: 10234,
-            Q4_2023: 10456,
-        },
-    },
-    salesVolumeData: {
-        monthlyData2024: [
-            { name: 'Jan', value: 3741 },
-            { name: 'Feb', value: 1587 },
-            { name: 'Mar', value: 2085 },
-            { name: 'Apr', value: 1664 },
-            { name: 'May', value: 1809 },
-            { name: 'Jun', value: 2536 },
-            { name: 'Jul', value: 2303 },
-            { name: 'Aug', value: 1718 },
-            { name: 'Sep', value: 2354 },
-            { name: 'Oct', value: 1914 },
-            { name: 'Nov', value: 1848 },
-            { name: 'Dec', value: 1831 },
-        ],
-        monthlyData2023: [
-            { name: 'Jan', value: 2841 },
-            { name: 'Feb', value: 1987 },
-            { name: 'Mar', value: 2785 },
-            { name: 'Apr', value: 1964 },
-            { name: 'May', value: 2109 },
-            { name: 'Jun', value: 2736 },
-            { name: 'Jul', value: 2503 },
-            { name: 'Aug', value: 1918 },
-            { name: 'Sep', value: 2554 },
-            { name: 'Oct', value: 2114 },
-            { name: 'Nov', value: 2048 },
-            { name: 'Dec', value: 2031 },
-        ],
-        weeklyData: {
-            Jan2024: [
-                { name: 'Week 1', value: 941 },
-                { name: 'Week 2', value: 887 },
-                { name: 'Week 3', value: 985 },
-                { name: 'Week 4', value: 928 },
-            ],
-            Feb2024: [
-                { name: 'Week 1', value: 441 },
-                { name: 'Week 2', value: 387 },
-                { name: 'Week 3', value: 485 },
-                { name: 'Week 4', value: 274 },
-            ],
-        },
-    },
-};
+//     },
+//     salesSummary: {
+//         groupSales: 73.2,
+//         personalSales: 27.8,
+//     },
+//     demographicData: {
+//         'Hong Kong': {
+//             Q1_2024: 92118,
+//             Q2_2024: 88234,
+//             Q3_2024: 90123,
+//             Q4_2024: 91456,
+//             Q1_2023: 85234,
+//             Q2_2023: 86123,
+//             Q3_2023: 87456,
+//             Q4_2023: 88789,
+//         },
+//         'Malaysia': {
+//             Q1_2024: 35942,
+//             Q2_2024: 34156,
+//             Q3_2024: 33943,
+//             Q4_2024: 35876,
+//             Q1_2023: 32156,
+//             Q2_2023: 31943,
+//             Q3_2023: 33876,
+//             Q4_2023: 34123,
+//         },
+//         'Bangkok': {
+//             Q1_2024: 20621,
+//             Q2_2024: 19943,
+//             Q3_2024: 20876,
+//             Q4_2024: 21123,
+//             Q1_2023: 18943,
+//             Q2_2023: 19876,
+//             Q3_2023: 20123,
+//             Q4_2023: 20456,
+//         },
+//         'Taiwan': {
+//             Q1_2024: 11424,
+//             Q2_2024: 10876,
+//             Q3_2024: 11123,
+//             Q4_2024: 11456,
+//             Q1_2023: 10876,
+//             Q2_2023: 11123,
+//             Q3_2023: 11456,
+//             Q4_2023: 11789,
+//         },
+//         'Philippines': {
+//             Q1_2024: 10127,
+//             Q2_2024: 9654,
+//             Q3_2024: 9876,
+//             Q4_2024: 10234,
+//             Q1_2023: 9654,
+//             Q2_2023: 9876,
+//             Q3_2023: 10234,
+//             Q4_2023: 10456,
+//         },
+//     },
+//     salesVolumeData: {
+//         monthlyData2024: [
+//             { name: 'Jan', value: 3741 },
+//             { name: 'Feb', value: 1587 },
+//             { name: 'Mar', value: 2085 },
+//             { name: 'Apr', value: 1664 },
+//             { name: 'May', value: 1809 },
+//             { name: 'Jun', value: 2536 },
+//             { name: 'Jul', value: 2303 },
+//             { name: 'Aug', value: 1718 },
+//             { name: 'Sep', value: 2354 },
+//             { name: 'Oct', value: 1914 },
+//             { name: 'Nov', value: 1848 },
+//             { name: 'Dec', value: 1831 },
+//         ],
+//         monthlyData2023: [
+//             { name: 'Jan', value: 2841 },
+//             { name: 'Feb', value: 1987 },
+//             { name: 'Mar', value: 2785 },
+//             { name: 'Apr', value: 1964 },
+//             { name: 'May', value: 2109 },
+//             { name: 'Jun', value: 2736 },
+//             { name: 'Jul', value: 2503 },
+//             { name: 'Aug', value: 1918 },
+//             { name: 'Sep', value: 2554 },
+//             { name: 'Oct', value: 2114 },
+//             { name: 'Nov', value: 2048 },
+//             { name: 'Dec', value: 2031 },
+//         ],
+//         weeklyData: {
+//             Jan2024: [
+//                 { name: 'Week 1', value: 941 },
+//                 { name: 'Week 2', value: 887 },
+//                 { name: 'Week 3', value: 985 },
+//                 { name: 'Week 4', value: 928 },
+//             ],
+//             Feb2024: [
+//                 { name: 'Week 1', value: 441 },
+//                 { name: 'Week 2', value: 387 },
+//                 { name: 'Week 3', value: 485 },
+//                 { name: 'Week 4', value: 274 },
+//             ],
+//         },
+//     },
+// };
 
 /*** 05 End of Performance Page ***/
 
@@ -946,152 +946,152 @@ export const performanceData = {
 
 /*** 08 Start of Legal Page ***/
 /*** 08 End of Legal Page ***/
-export interface LegalContent {
-    title: string;
-    lastUpdated: string;
-    sections: {
-        heading?: string;
-        content: string[];
-    }[];
-}
+// export interface LegalContent {
+//     title: string;
+//     lastUpdated: string;
+//     sections: {
+//         heading?: string;
+//         content: string[];
+//     }[];
+// }
 
-export const legalContentData: Record<string, LegalContent> = {
-    privacyPolicy: {
-        title: "Privacy Policy",
-        lastUpdated: "17 Nov, 2024",
-        sections: [
-            {
-                heading: "Information Collection",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            },
-            {
-                heading: "Data Usage",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    },
-    termsConditions: {
-        title: "Terms and Conditions",
-        lastUpdated: "15 Nov, 2024",
-        sections: [
-            {
-                heading: "General Terms",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    },
-    userAgreement: {
-        title: "User Agreement",
-        lastUpdated: "16 Nov, 2024",
-        sections: [
-            {
-                heading: "Agreement Terms",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    },
-    codeOfConduct: {
-        title: "Code Of Conduct",
-        lastUpdated: "16 Nov, 2024",
-        sections: [
-            {
-                heading: "Agreement Terms",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    },
-    complianceAndAntiCorruption: {
-        title: "Compliance and Anti-Corruption",
-        lastUpdated: "16 Nov, 2024",
-        sections: [
-            {
-                heading: "Agreement Terms",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    },
-    profilePolicy: {
-        title: "Profile Policy",
-        lastUpdated: "16 Nov, 2024",
-        sections: [
-            {
-                heading: "Agreement Terms",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    },
-    programGuideline: {
-        title: "Program Guideline",
-        lastUpdated: "16 Nov, 2024",
-        sections: [
-            {
-                heading: "Agreement Terms",
-                content: [
-                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
-                    "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
-                ]
-            }
-        ]
-    }
-};
+// export const legalContentData: Record<string, LegalContent> = {
+//     privacyPolicy: {
+//         title: "Privacy Policy",
+//         lastUpdated: "17 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "Information Collection",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             },
+//             {
+//                 heading: "Data Usage",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     },
+//     termsConditions: {
+//         title: "Terms and Conditions",
+//         lastUpdated: "15 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "General Terms",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     },
+//     userAgreement: {
+//         title: "User Agreement",
+//         lastUpdated: "16 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "Agreement Terms",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     },
+//     codeOfConduct: {
+//         title: "Code Of Conduct",
+//         lastUpdated: "16 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "Agreement Terms",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     },
+//     complianceAndAntiCorruption: {
+//         title: "Compliance and Anti-Corruption",
+//         lastUpdated: "16 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "Agreement Terms",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     },
+//     profilePolicy: {
+//         title: "Profile Policy",
+//         lastUpdated: "16 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "Agreement Terms",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     },
+//     programGuideline: {
+//         title: "Program Guideline",
+//         lastUpdated: "16 Nov, 2024",
+//         sections: [
+//             {
+//                 heading: "Agreement Terms",
+//                 content: [
+//                     "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.",
+//                     "Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+//                 ]
+//             }
+//         ]
+//     }
+// };

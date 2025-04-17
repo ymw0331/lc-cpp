@@ -8,11 +8,13 @@ import TransferActivityTable from "@/components/Tables/TransferActivityTable";
 import { USDTIcon, USDCIcon } from "@/components/Icons/dashboard";
 import { transferApi } from "@/api/transfer/transfer.api";
 import { useTranslation } from "react-i18next";
-import Loader from "@/components/common/Loader";
+import { TransferSkeleton } from "@/components/common/Skeletons";
 import { fetchData } from '@/lib/api-utils';
 import { toast } from "@/hooks/useToast";
 import { TransferSuccessDialog } from "@/components/Dialogs/TransferSuccessDialog";
 import { TransferActivityProps, CurrencyType } from "@/api/transfer/transfer.types";
+import { formatDateTimeWithHK } from '@/lib/dateUtils';
+import ErrorDisplay from '@/components/common/ErrorDisplay';
 
 // Define the expected structure of the transferData
 interface TransferData {
@@ -36,7 +38,7 @@ interface TransferData {
 const TransferPage = () => {
     const { t } = useTranslation();
     const [transferData, setTransferData] = useState<TransferData | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [initialLoading, setInitialLoading] = useState(true);
     const [isTransferring, setIsTransferring] = useState(false);
     const [error, setError] = useState<Error | null>(null);
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
@@ -60,7 +62,7 @@ const TransferPage = () => {
             transferApi.getTransferData,
             setTransferData,
             setError,
-            setLoading
+            setInitialLoading
         );
     };
 
@@ -74,7 +76,6 @@ const TransferPage = () => {
             setIsTransferring(true);
             console.log("Starting transfer:", { amount, currency, fromType: "REBATE" });
 
-            // Call the transfer API (only once)
             try {
                 const response = await transferApi.transferToCurrentWallet({
                     amount: amount,
@@ -85,12 +86,11 @@ const TransferPage = () => {
 
                 // If we reach here, the transfer was successful
                 setTransferDetails({ amount, currency });
-                setShowSuccessDialog(true);
 
-                // Reload data after successful transfer
-                loadTransferData();
+                // Reload data after successful transfer - but don't show loading state
+                const newData = await transferApi.getTransferData();
+                setTransferData(newData);
 
-                // Optional: show success toast
                 toast({
                     title: t("transferPage.successTitle"),
                     description: t("transferPage.successDescription", { amount, currency }),
@@ -99,10 +99,7 @@ const TransferPage = () => {
                 });
             } catch (apiError: any) {
                 console.error("API specific error:", apiError);
-
-                // Handle specific error cases from the API
                 const errorMessage = apiError?.response?.data?.message || t("transferPage.errorGeneric");
-
                 toast({
                     title: t("transferPage.errorTitle"),
                     description: errorMessage,
@@ -111,9 +108,7 @@ const TransferPage = () => {
                 });
             }
         } catch (error: any) {
-            // This is a general error, not specifically from the API call
             console.error("General transfer error:", error);
-
             toast({
                 title: t("transferPage.errorTitle"),
                 description: t("transferPage.errorDescription"),
@@ -122,6 +117,10 @@ const TransferPage = () => {
             });
         } finally {
             setIsTransferring(false);
+            // Show success dialog only after loading is complete
+            if (transferDetails.amount > 0) {
+                setShowSuccessDialog(true);
+            }3
         }
     };
     
@@ -131,14 +130,10 @@ const TransferPage = () => {
         // You can reset form or do additional actions here if needed
     };
 
-    if (loading) return <Loader />;
+    if (initialLoading) return <DefaultLayout><TransferSkeleton /></DefaultLayout>;
 
     if (error || !transferData) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <p className="text-red-500">{t('transferPage.failedToLoadData')}</p>
-            </div>
-        );
+        return <ErrorDisplay errorMessage={error?.message} />;
     }
 
     // Enhance data with icons
@@ -155,13 +150,7 @@ const TransferPage = () => {
         return {
             ...activity,
             // Format date to a more readable format
-            dateTime: date.toLocaleString(undefined, {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }),
+            dateTime: formatDateTimeWithHK(date),
             // Add description if not provided
             description: activity.description || (activity.type === 'transfer-in' ?
                 t('transferPage.transferIn') :
@@ -195,6 +184,8 @@ const TransferPage = () => {
             {showSuccessDialog && (
                 <TransferSuccessDialog
                     onClose={handleCloseSuccessDialog}
+                    amount={transferDetails.amount}
+                    currency={transferDetails.currency}
                 />
             )}
         </DefaultLayout>

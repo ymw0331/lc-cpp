@@ -3,7 +3,12 @@
         "comingSoon": "Coming Soon",
         "processing": "Processing",
         "unknown": "Unknown",
-        "notAvailable": "N/A"
+        "notAvailable": "N/A",
+        "noData": "No data yet",
+        "errorTitle": "Oops! Something went wrong",
+        "errorDescription": "We're sorry, but we couldn't fetch the data. Please try refreshing the page.",
+        "retry": "Retry",
+        "loading": "Loading..."
     },
     "header": {
         "searchPlaceholder": "Type to search...",
@@ -98,6 +103,9 @@
         "termsAgreement": "I agree to all the terms, including program terms, privacy policy, and consent to receive communication regarding this program.",
         "success": "Registration Successful",
         "successfullyRegistered": "You have successfully registered as a reseller",
+        "emailVerificationFailed": "Failed to verify email",
+        "emailRegistrationRequired": "Please register as a Lookcard user first",
+        "emailVerifiedSuccess": "You have successfully verified your email address",
         "error": "Registration Error",
         "processing": "Processing...",
         "signUp": "Sign Up",
@@ -117,8 +125,13 @@
         "done": "DONE",
         "termsLinkText": "terms and conditions",
         "termsAgreementFull": "I agree to all the terms and conditions, including program terms, privacy policy, and consent to receive communication regarding this program.",
-        "alreadyReseller": "Already a reseller?",
-        "signInHere": "Sign in here"
+        "alreadyReseller": "Already a reseller? ",
+        "signInHere": "Sign in here",
+        "notLookcardUser": "Not a lookcard user yet? ",
+        "registerHere": "Register here",
+        "verify": "Verify",
+        "notice": "Notice",
+        "resellerAlreadyExists": "Your account is already registered as a reseller. Please proceed to the reseller portal login to access your dashboard and manage your reseller activities."
     },
     "forgotPasswordDialog": {
         "close": "Close",
@@ -150,7 +163,7 @@
         "overview": "Overview",
         "rewardWalletBalance": "Reward Wallet Balance",
         "referredDepositAmount": "Referrals Deposit Amount",
-        "referralFeeBonus": "Referral Fee Bonus",
+        "referralFeeBonus": "Referral Fee Bonus (Accumulated)",
         "activeUsers": "Active Users",
         "left": "remaining to complete your goals",
         "totalDirectRecruit": "Total Direct Recruit",
@@ -187,15 +200,27 @@
         "activatedUsers": "Activated Users",
         "month": "Month",
         "months": "Months",
-        "congratulations": "Congratulations"
+        "congratulations": "Congratulations",
+        "completed": "Completed",
+        "milestoneTimeline": "Milestone Timeline",
+        "earnedBonus": "You've earned a bonus of",
+        "earnedBonusLong": "You've earned a bonus",
+        "youveActivated": "You've activated",
+        "cardsWithin": "cards within",
+        "monthsAndReceived": "months and received a bonus of",
+        "targetReached": "Target Reached",
+        "cardsToGo": "cards to go",
+        "youveReachedYourTarget": "You've reached your target within",
+        "atMonth": "at month"
     },
     "referralCard": {
         "referralCodeLabel": "Referral Code",
+        "description": "Share this referral link to earn rewards by referring users",
         "copiedToClipboard": "Copied to clipboard",
         "copiedToClipboardDescription": "Referral code copied to clipboard"
     },
     "recruitCard": {
-        "totalDirectRecruitLabel": "Total Direct Recruit",
+        "directReferredVolume": "Direct Referred Volume",
         "agentsToPartnerLabel": "Agents to Partner"
     },
     "statisticChart": {
@@ -224,17 +249,47 @@
         "noDataAvailable": "No Data Available",
         "comingSoon": "Coming Soon"
     },
+    "rewardSummaryChart": {
+        "year": "Year",
+        "month": "Month",
+        "noDataAvailable": "No data available",
+        "totalReward": "Total Reward"
+    },
+    "recruitmentSummaryChart": {
+        "year": "Year",
+        "month": "Month",
+        "noDataAvailable": "No data available",
+        "totalDownstream": "Total Direct Recruit"
+    },
     "transferActivityTable": {
         "transactionHistory": "Transaction History",
         "descriptionHeader": "DESCRIPTION",
         "transferredAmountHeader": "TRANSFERRED AMOUNT",
         "dateTimeHeader": "DATE & TIME",
         "statusHeader": "STATUS",
-        "noTransactionsYet": "No transactions yet"
+        "noTransactionsYet": "No transactions yet",
+        "noDataAvailable": "No data available",
+        "noRecordsToDisplay": "There are no records to display for this period",
+        "showingResults": "Showing {{start}} to {{end}} of {{total}} results",
+        "exportToExcel": "Export to Excel",
+        "filters": "Filters",
+        "allStatus": "All Status",
+        "succeed": "Succeed",
+        "failed": "Failed",
+        "dateRange": "Date Range",
+        "from": "From",
+        "to": "To",
+        "clearAll": "Clear All",
+        "applyFilters": "Apply Filters",
+        "previous": "Previous",
+        "next": "Next",
+        "noDataAvailable": "No data available",
+        "noRecordsToDisplay": "There are no records to display for this period"
     },
     "incentiveManagementPage": {
         "incentiveManagementBreadcrumb": "Incentive Management",
         "totalIncentive": "Total Incentive Earned",
+        "totalIncentiveEarnedToDate": "Total Incentive Earned to Date",
         "referralFeeBonus": "Referral Fee Bonus",
         "incentivePayoutRecords": "Incentive Payout Records",
         "milestoneAchievementBonus": "Milestone Achievement Bonus",
@@ -248,16 +303,21 @@
     "incentiveCard": {
         "activeUsersLeft": "Active Users Left"
     },
-    "dataTable": {
+    "incentivePayoutTable": {
         "incentivePayoutRecords": "Incentive, Bonus & Reward Records",
-        "transactionId": "Incentives Records",
+        "incentiveRecords": "Incentives Records",
         "transferredAmount": "AMOUNT (USD)",
         "dateTime": "DATE & TIME",
         "status": "STATUS",
         "noDataAvailable": "No data available",
         "noRecordsToDisplay": "There are no records to display for this period",
-        "showingResults": "Showing {start} to {end} of {total} results",
-        "exportToExcel": "Export to Excel"
+        "showingResults": "Showing {{start}} to {{end}} of {{total}} results",
+        "exportToExcel": "Export to Excel",
+        "viewDetail": "View Detail",
+        "incentiveDetails": "Incentive Details",
+        "fromName": "From Name",
+        "fromEmail": "From Email",
+        "amount": "Amount"
     },
     "referredUsersPage": {
         "referredUsersBreadcrumb": "Referred Users",
@@ -287,6 +347,7 @@
         "accActivation": "ACC ACTIVATION",
         "totalDeposit": "TOTAL DEPOSIT",
         "physicalCard": "PHYSICAL CARD",
+        "status": "STATUS",
         "actions": "ACTIONS",
         "searchUser": "Search user...",
         "filters": "Filters",
@@ -308,7 +369,10 @@
         "of": "of",
         "entries": "entries",
         "previous": "Previous",
-        "next": "Next"
+        "next": "Next",
+        "export": "Export to CSV",
+        "recruit": "Recruit",
+        "fromEventLegend": "Indicates agents recruited through special campaigns"
     },
     "performancePage": {
         "performanceBreadcrumb": "Performance",
@@ -336,7 +400,8 @@
         "week": "Week",
         "month": "Month",
         "selectMonth": "Select Month",
-        "selectWeek": "Select Week"
+        "selectWeek": "Select Week",
+        "noData": "No data yet"
     },
     "demographicSalesChart": {
         "salesVolumeInDemographic": "Sales Volume Based on Demographic",
@@ -526,8 +591,8 @@
         "november": "November",
         "december": "December"
     },
-    "recruitmentSummaryCard": {
-        "recruitmentSummary": "RECRUITMENT SUMMARY",
+    "referralSummaryCard": {
+        "referralSummary": "REFERRAL SUMMARY",
         "noOfDirectReferral": "No of Direct Referral",
         "totalDepositFromDirectReferral": "Total Deposit from Direct Referral"
     },
@@ -538,7 +603,7 @@
     },
     "recruitAgentCard": {
         "recruitAgentLabel": "Recruit Agent",
-        "description": "Share this link to recruit as lookcard agent",
+        "description": "Grow your network! Share this Reseller ID link to onboard new agents",
         "copiedToClipboard": "Copied to clipboard",
         "copiedToClipboardDescription": "Recruit agent link has been copied to clipboard"
     },
@@ -547,11 +612,11 @@
         "backToUsers": "Back to Users",
         "failedToLoad": "Failed to load user profile",
         "personalDetails": "Personal Details",
-        "fullName": "FULL NAME",
-        "contactNo": "CONTACT NO",
-        "emailAddress": "EMAIL ADDRESS",
-        "digitalId": "DIGITAL ID",
-        "country": "COUNTRY",
+        "fullName": "Full Name",
+        "contactNo": "Contact No",
+        "emailAddress": "Email Address",
+        "digitalId": "Digital ID",
+        "country": "Country",
         "accountActivation": "Account Activation",
         "physicalCard": "Physical Card",
         "totalDeposit": "Total Deposit"
@@ -559,28 +624,74 @@
     "agentProfile": {
         "title": "Agent Profile",
         "backToUsers": "Back to Users",
+        "backToAgents": "Back to Agents",
         "failedToLoad": "Failed to load agent profile",
         "personalDetails": "Personal Details",
-        "fullName": "FULL NAME",
-        "contactNo": "CONTACT NO",
-        "emailAddress": "EMAIL ADDRESS",
-        "digitalId": "DIGITAL ID",
-        "country": "COUNTRY",
+        "fullName": "Full Name",
+        "contactNo": "Contact No",
+        "emailAddress": "Email Address",
+        "digitalId": "Digital ID",
+        "country": "Country",
         "accountActivation": "Account Activation",
+        "accountActivationDate": "Account Activation Date",
         "physicalCard": "Physical Card",
         "totalDeposit": "Total Deposit",
-        "additionalSections": "Additional agent metrics and management features will be available soon"
+        "campaign": "Campaign",
+        "keyMarket": "Key Market",
+        "overview": "Overview",
+        "details": "Personal Details",
+        "status": "Status",
+        "performance": "Performance",
+        "cardActivationVolume": "Card Activation Volume",
+        "totalAgentRecruitment": "Total Agent Recruitment",
+        "activeCards": "Active Cards",
+        "recruitedAgents": "Recruited Agents",
+        "depositVolume": "Deposit Volume",
+        "totalDeposits": "Total Deposits",
+        "ekycStatus": "E-KYC Status",
+        "cardStatus": "Card Status",
+        "firstDeposit": "First Deposit",
+        "campaignParticipant": "Campaign Participant",
+        "accountStatus": "Account Status",
+        "active": "Active",
+        "issued": "Issued",
+        "notIssued": "Not Issued",
+        "completed": "Completed",
+        "pending": "Pending",
+        "no": "No",
+        "currentLevel": "Current Level",
+        "progress": "Progress",
+        "groupSales": "Group Sales",
+        "personalSales": "Personal Sales",
+        "totalSales": "Total Sales",
+        "accountStatusSection": {
+            "title": "Account Status",
+            "active": "Active",
+            "inactive": "Inactive",
+            "suspended": "Suspended",
+            "pending": "Pending"
+        },
+        "currentLevelSection": {
+            "title": "Current Level",
+            "level1": "Level 1 Agent",
+            "level2": "Level 2 Agent"
+        },
+        "salesSummarySection": {
+            "title": "Sales Summary",
+            "totalSales": "Total Sales",
+            "personalSales": "Personal Sales",
+            "groupSales": "Group Sales"
+        }
     },
     "recruitAgentPage": {
         "recruitAgentBreadcrumb": "Recruit Agent",
         "agentRecruitmentDetails": "Agent Recruitment Details",
+        "enterEmail": "Please enter your registered email address in lookcard.io platform account",
         "referralId": "Referral ID",
         "fullName": "Full Name",
         "registeredEmail": "Registered Email",
         "memberVerification": "Member Verification",
         "emailVerified": "Email Verified",
-        "matchedEmail": "Matched Email",
-        "check": "Check",
         "proposedKeyMarket": "Proposed Key Market",
         "selectMarket": "Select market",
         "acknowledgement": "Acknowledgement",
@@ -589,7 +700,19 @@
         "acknowledgementItem3": "I understand that submitting a referral does not guarantee acceptance into the program for the referred individual.",
         "acknowledgementItem4": "I acknowledge that any benefits or rewards for this referral are subject to the referred individual meeting the program eligibility and joining requirement.",
         "agreementLabel": "I agree to all the terms stated above, including compliance with the program requirements, ethical conduct, and privacy policies. I confirm that I understand and accept these terms for both my application and any referrals I submit.",
-        "recruitButton": "Recruit"
+        "recruitButton": "Recruit",
+        "verify": "Verify",
+        "contactNo": "Contact No.",
+        "processing": "Processing...",
+        "success": "Success",
+        "error": "Error",
+        "notice": "Notice",
+        "emailVerifiedSuccess": "You have successfully verified your email address",
+        "emailRegistrationRequired": "Please register as a Lookcard user first",
+        "emailVerificationRequired": "Email verification is required",
+        "successfullyRecruited": " is successfully recruited new agent, please check your inbox for the next step.",
+        "resellerAlreadyExists": "This account is already registered as a reseller. Please proceed to the reseller portal login.",
+        "verificationFailed": "Failed to verify email"
     },
     "termsDialog": {
         "title": "ACKNOWLEDGMENT",
@@ -599,5 +722,29 @@
         "terms": "By submitting this registration form, I confirm that the information provided is true, accurate, and complete. I agree to comply with the LookCard Community Partnership Program terms and conditions and understand that my participation is subject to approval. I acknowledge that commissions and incentives are based on my reseller tier and performance. I consent to LookCard collecting, processing, and storing my information for verification, program administration, and commission payouts in accordance with its Privacy Policy. I also understand that LookCard reserves the right to update program terms, and it is my responsibility to stay informed about any changes.",
         "termsAdditional1": "I acknowledge that commissions and incentives are based on my reseller tier and performance. I consent to LookCard collecting, processing, and storing my information for verification, program administration, and commission payouts in accordance with its Privacy Policy.",
         "termsAdditional2": "I also understand that LookCard reserves the right to update program terms, and it is my responsibility to stay informed about any changes."
+    },
+    "membershipDialog": {
+        "title": "Confirm Your lookcard.io Platform Membership",
+        "question": "Are you a registered user of lookcard.io platform?",
+        "ifNo": "If NO",
+        "noDescription": "kindly register for a user account to be onboard as Reseller.",
+        "ifYes": "If YES",
+        "yesDescription": "please proceed with Community Partnership Onboarding;",
+        "registerButton": "NO, Register for User Account",
+        "proceedButton": "YES, Proceed to Agent Onboarding"
+    },
+    "invitePage": {
+        "welcomeTitle": "Welcome to LookCard Community Partnership Program",
+        "redirectMessage": "You will be redirected to the LookCard agent registration page",
+        "processingInvitation": "Processing your invitation"
+    },
+    "depositOverviewChart": {
+        "title": "Deposit Overview",
+        "totalDeposit": "Total Deposit",
+        "year": "Year",
+        "month": "Month",
+        "selectMonth": "Select Month",
+        "selectWeek": "Select Week",
+        "noData": "No data yet"
     }
 }

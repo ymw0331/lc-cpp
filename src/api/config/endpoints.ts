@@ -5,12 +5,20 @@ export const API_ENDPOINTS = {
     },
     RESELLER: {
         BASE_URL: process.env.NEXT_PUBLIC_RESELLER_API_URL,
+        USER_VERIFICATION: `${process.env.NEXT_PUBLIC_RESELLER_API_URL}/app/user-details`,
+
         INFO: `${process.env.NEXT_PUBLIC_RESELLER_PATH}`,
         PROFILE: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/profile`,
         DASHBOARD: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/dashboard`,
         REWARDS: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/rewards`,
         ACCOUNT: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/account`,
         TRANSFER: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/aggregate`,
+        PERFORMANCE: `${process.env.NEXT_PUBLIC_RESELLER_PATH}/performance`,
+        
+        // charts
+        REWARD_CHART: `${process.env.NEXT_PUBLIC_RESELLER_API_URL}/app/chart/reward`,
+        DEPOSIT_CHART: `${process.env.NEXT_PUBLIC_RESELLER_API_URL}/app/chart/deposit`,
+        DOWNSTREAM_CHART: `${process.env.NEXT_PUBLIC_RESELLER_API_URL}/app/chart/downstream`,
     },
 } as const;
 

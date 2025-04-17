@@ -24,8 +24,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { SupportSkeleton } from '@/components/common/Skeletons';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/jpg", "application/pdf"];
@@ -50,6 +51,7 @@ const categories = [
 const SupportPage = () => {
     const { t } = useTranslation();
     const [files, setFiles] = useState<File[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const form = useForm<z.infer<typeof supportFormSchema>>({
         resolver: zodResolver(supportFormSchema),
@@ -99,6 +101,20 @@ const SupportPage = () => {
         } catch (error) {
             console.error("Error submitting form:", error);
         }
+    }
+
+    useEffect(() => {
+        // Simulate loading
+        const timer = setTimeout(() => setLoading(false), 1000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (loading) {
+        return (
+            <DefaultLayout>
+                <SupportSkeleton />
+            </DefaultLayout>
+        );
     }
 
     return (

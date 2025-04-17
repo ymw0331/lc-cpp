@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "@/hooks/useToast";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
+import { createShortInviteUrl } from "@/lib/url-utils";
 import {
     Card,
     CardContent,
@@ -32,14 +33,19 @@ const RecruitAgentCard = () => {
     const referralCode = user?.referralCode || '';
     const upstreamId = user?.resellerId || '';
 
-    // Construct the URL dynamically - use standard parameters (no "Invite" suffix in URL)
-    // Changed to properly use the invite path
-    const recruitAgentUrl = baseUrl
+    // Generate both the full URL and the shortened URL
+    const fullRecruitAgentUrl = baseUrl
         ? `${baseUrl}/invite?referralCode=${referralCode}&upstreamId=${upstreamId}`
         : '';
 
+    // Create shortened URL if both values are available, otherwise use full URL
+    const recruitAgentUrl = baseUrl && referralCode && upstreamId
+        ? createShortInviteUrl(baseUrl, referralCode, upstreamId)
+        : fullRecruitAgentUrl;
+
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(recruitAgentUrl);
+        // Always copy the shortened URL if available, fallback to full URL
+        navigator.clipboard.writeText(recruitAgentUrl || fullRecruitAgentUrl);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
 
@@ -57,7 +63,7 @@ const RecruitAgentCard = () => {
                     {t("recruitAgentCard.recruitAgentLabel", "Recruit Agent")}
                 </CardTitle>
                 <CardDescription className="text-body dark:text-bodydark mt-1">
-                    {t("recruitAgentCard.description", "Share this link to recruit as lookcard agent")}
+                    {t("recruitAgentCard.description", "Grow your network! Share this Reseller ID link to onboard new agents")}
                 </CardDescription>
             </CardHeader>
             <CardContent className="p-6 pt-4">
@@ -68,7 +74,9 @@ const RecruitAgentCard = () => {
                     whileHover={{ scale: 1.01 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                    <span className="text-lg font-medium text-white truncate pr-2">{recruitAgentUrl}</span>
+                    <span className="text-lg font-medium text-white truncate pr-2">
+                        {recruitAgentUrl || fullRecruitAgentUrl}
+                    </span>
                     <AnimatePresence mode="wait">
                         {copied ? (
                             <motion.div

@@ -52,3 +52,14 @@ export interface AuthUser {
     cardStatus: string;
     firstLogin: boolean;
 }
+
+// Interface for user verification response
+export interface UserVerificationResponse {
+    status: boolean;
+    data: {
+        emailVerified: boolean;
+        fullname: string;
+        phoneNo: string;
+        cardActive: boolean;
+    };
+}

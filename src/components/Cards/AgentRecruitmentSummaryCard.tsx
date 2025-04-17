@@ -69,26 +69,36 @@ const AgentRecruitmentSummaryCard = ({
         <Card className={`${cardStyle} ${className}`}>
             <CardHeader className="p-6 pb-4 flex flex-row justify-between items-center">
                 <div className="flex items-center gap-3">
-                    <div className="relative w-14 h-14 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex items-center justify-center">
+                    <div className={`relative w-14 h-14 rounded-lg overflow-hidden flex items-center justify-center ${
+                        isLevel1 
+                            ? 'bg-gradient-to-br from-gray-200/50 to-gray-300/50 dark:from-gray-700/50 dark:to-gray-600/50'
+                            : 'bg-gradient-to-br from-primary/20 to-amber-500/20 dark:from-primary/10 dark:to-amber-500/10'
+                    }`}>
+                        <div className={`absolute inset-0 bg-gradient-to-br ${
+                            isLevel1
+                                ? 'from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-700'
+                                : 'from-primary to-amber-500'
+                        } opacity-10`}></div>
                         <svg
-                            width="24"
-                            height="24"
+                            width="28"
+                            height="28"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
+                            className="relative z-10"
                         >
                             <path
                                 d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                                stroke={iconColor}
-                                strokeWidth="2"
+                                className={isLevel1 ? 'stroke-gray-400 dark:stroke-gray-500' : 'stroke-primary'}
+                                strokeWidth="2.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 fill="none"
                             />
                             <path
                                 d="M12 6V12L16 14"
-                                stroke={iconColor}
-                                strokeWidth="2"
+                                className={isLevel1 ? 'stroke-gray-400 dark:stroke-gray-500' : 'stroke-primary'}
+                                strokeWidth="2.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                             />

@@ -4,6 +4,7 @@ const STORAGE_KEYS = {
     AUTH_TOKEN: 'auth_token',
     REFRESH_TOKEN: 'refresh_token',
     AUTH_USER: 'auth_user',
+    SELECTED_MENU: 'selected_menu',
 } as const;
 
 export const storage = {
@@ -90,6 +91,7 @@ export const storage = {
             localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
             localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
             localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+            localStorage.removeItem(STORAGE_KEYS.SELECTED_MENU);
 
             console.log('[Storage] Successfully cleared all auth data');
         } catch (error) {
@@ -98,20 +100,21 @@ export const storage = {
             localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
             localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
             localStorage.removeItem(STORAGE_KEYS.AUTH_USER);
+            localStorage.removeItem(STORAGE_KEYS.SELECTED_MENU);
         }
     },
 
 
     // Language preference methods
     getLanguagePreference: () => {
-        const language = localStorage.getItem('preferredLanguage');
+        const language = localStorage.getItem('preferred_language');
         console.log('[Storage] Getting language preference:', { language });
         return language || 'en';
     },
 
     setLanguagePreference: (language: string) => {
         console.log('[Storage] Setting language preference:', { language });
-        localStorage.setItem('preferredLanguage', language);
+        localStorage.setItem('preferred_language', language);
     },
 
 };

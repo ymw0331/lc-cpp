@@ -18,82 +18,8 @@ import ForgotPasswordDialog from "@/components/Dialogs/ForgotPasswordDialog";
 import NotRegisteredDialog from "@/components/Dialogs/NotRegisteredDialog";
 import AccessDeniedDialog from "@/components/Dialogs/AccessDeniedDialog";
 import LanguageSwitcher from "@/components/Header/LanguageSwitcher";
-import { storage } from "@/lib/storage";
-
-
-const getCarouselImages = (language: string) => {
-    switch (language) {
-        case 'zh':
-            return [
-                {
-                    src: "/images/login/zh-simplified/slider-01.jpg",
-                    alt: "每次推荐最高可赚取80美元",
-                },
-                {
-                    src: "/images/login/zh-simplified/slider-02.jpg",
-                    alt: "轻松赚取奖励",
-                },
-                {
-                    src: "/images/login/zh-simplified/slider-03.jpg",
-                    alt: "无需护照",
-                },
-                {
-                    src: "/images/login/zh-simplified/slider-04.jpg",
-                    alt: "独家限时优惠",
-                },
-                {
-                    src: "/images/login/zh-simplified/slider-05.jpg",
-                    alt: "独家限时优惠",
-                },
-            ];
-        case 'zh-hk':
-            return [
-                {
-                    src: "/images/login/zh-traditional/slider-01.jpg",
-                    alt: "每次推薦最高可賺取80美元",
-                },
-                {
-                    src: "/images/login/zh-traditional/slider-02.jpg",
-                    alt: "輕鬆賺取獎勵",
-                },
-                {
-                    src: "/images/login/zh-traditional/slider-03.jpg",
-                    alt: "無需護照",
-                },
-                {
-                    src: "/images/login/zh-traditional/slider-04.jpg",
-                    alt: "獨家限時優惠",
-                },
-                {
-                    src: "/images/login/zh-traditional/slider-05.jpg",
-                    alt: "獨家限時優惠",
-                },
-            ];
-        default: // 'en'
-            return [
-                {
-                    src: "/images/login/en/slider-01.jpg",
-                    alt: "Earn Up to $80 Per Referral",
-                },
-                {
-                    src: "/images/login/en/slider-02.jpg",
-                    alt: "Earn Rewards Effortlessly",
-                },
-                {
-                    src: "/images/login/en/slider-03.jpg",
-                    alt: "No Passport Fret Not",
-                },
-                {
-                    src: "/images/login/en/slider-04.jpg",
-                    alt: "Exclusive Limited Offer",
-                },
-                {
-                    src: "/images/login/en/slider-05.jpg",
-                    alt: "Exclusive Limited Offer",
-                },
-            ];
-    }
-};
+import MembershipConfirmationDialog from "@/components/Dialogs/MembershipConfirmationDialog";
+import { getCarouselImages } from "@/lib/shared";
 
 
 export default function LoginPage() {
@@ -117,6 +43,7 @@ export default function LoginPage() {
     const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false);
     const [showRegistrationDialog, setShowRegistrationDialog] = useState(false);
     const [showAccessDeniedDialog, setShowAccessDeniedDialog] = useState(false);
+    const [showMembershipDialog, setShowMembershipDialog] = useState(false);
 
     // DEFAULT REFERRAL VALUES - Used when no parameters are provided
     const DEFAULT_REFERRAL_CODE = "44ZQW3QS";
@@ -157,15 +84,19 @@ export default function LoginPage() {
     }, [getCredentials]);
 
 
-    // When component mounts, check for URL parameters
+    // Check for URL parameters and show membership dialog if needed
     useEffect(() => {
         const referralCode = searchParams.get('referralCode');
         const upstreamId = searchParams.get('upstreamId');
 
-        // Log parameters but don't store them
         console.log('[Login] URL parameters:', { referralCode, upstreamId });
-    }, [searchParams]);
 
+        // If both referral code and upstream ID are present, this is from an invite
+        if (referralCode && upstreamId) {
+            console.log('[Login] Detected invite parameters, showing membership dialog');
+            setShowMembershipDialog(true);
+        }
+    }, [searchParams]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -191,11 +122,11 @@ export default function LoginPage() {
                     clearCredentials();
                 }
 
-                toast({
-                    title: t("loginPage.success"),
-                    description: t("loginPage.successfullyLoggedIn"),
-                    duration: 3000,
-                });
+                // toast({
+                //     title: t("loginPage.success"),
+                //     description: t("loginPage.successfullyLoggedIn"),
+                //     duration: 3000,
+                // });
 
                 // Redirect to dashboard
                 router.push('/');
@@ -250,8 +181,47 @@ export default function LoginPage() {
         window.location.href = 'https://wa.me/85230011108';
     };
 
+    // Handler for "NO, Register for User Account" in MembershipConfirmationDialog (no default, only from invite url)
+    const handleRegisterLookcardUser = () => {
+        console.log('[Login] User selected "NO" in membership dialog, redirecting to Lookcard registration');
 
-    // When redirecting to register page
+        // Get referral code from URL
+        const referralCode = searchParams.get('referralCode');
+        const upstreamId = searchParams.get('upstreamId');
+
+        // Build the Lookcard invitation URL
+        // const lookCardUrl = `${process.env.NEXT_PUBLIC_LOOKCARD_INVITE_DEV}/${referralCode}?upstreamId=${upstreamId}`;
+        const lookCardUrl = `${process.env.NEXT_PUBLIC_LOOKCARD_INVITE_PROD}/${referralCode}?upstreamId=${upstreamId}`;
+        console.log('[Login] Redirecting to:', lookCardUrl);
+
+        // Redirect to Lookcard registration
+        window.location.href = lookCardUrl;
+    };
+
+    // Handler for "YES, Proceed to Agent Onboarding" in MembershipConfirmationDialog (no default, only from invite url)
+    const handleProceedToAgentOnboarding = () => {
+        // console.log('[Login] TODO: Implement agent onboarding flow');
+        console.log('[Login] User selected "YES" in membership dialog, redirecting to SignUpAsResellerFromInvitePage');
+
+        // Get referral parameters to pass to the signup page
+        const referralCode = searchParams.get('referralCode');
+        const upstreamId = searchParams.get('upstreamId');
+
+        // Build query parameters
+        const queryParams = new URLSearchParams();
+        if (referralCode) queryParams.set('referralCode', referralCode);
+        if (upstreamId) queryParams.set('upstreamId', upstreamId);
+
+        // Close dialog
+        setShowMembershipDialog(false);
+
+        // Navigate to the new signup page with query parameters
+        router.push(`/auth/signup-reseller?${queryParams.toString()}`);
+
+    };
+
+
+    // Handler for "Register as reseller" button in AccessDeniedDialog (if no referral code or upstream id in url, use default values)
     const handleRegister = () => {
         // Pass URL parameters to registration page
         const referralCode = searchParams.get('referralCode') || DEFAULT_REFERRAL_CODE;
@@ -265,7 +235,8 @@ export default function LoginPage() {
     };
 
 
-    // Handler for "Become a Lookcard user" in NotRegisteredDialog
+    // Handler for "Become a Lookcard user" in NotRegisteredDialog (if no referral code in url, use default value)
+    // become lookcard user only use referral code not agent, no upstream id
     const handleBecomeUser = () => {
         console.log('[Login] Navigating to become Lookcard user first');
 
@@ -452,6 +423,13 @@ export default function LoginPage() {
                             onOpenChange={setShowAccessDeniedDialog}
                             onContactSupport={handleContactSupport}
                             onRegister={handleRegister}
+                        />
+
+                        <MembershipConfirmationDialog
+                            open={showMembershipDialog}
+                            onOpenChange={setShowMembershipDialog}
+                            onRegister={handleRegisterLookcardUser}
+                            onProceed={handleProceedToAgentOnboarding}
                         />
 
                         {/* Error Alert */}

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_ENDPOINTS } from './endpoints';
+import { API_ENDPOINTS } from '@/api/config/endpoints';
 import { storage } from '@/lib/storage';
 
 const authInstance = axios.create({

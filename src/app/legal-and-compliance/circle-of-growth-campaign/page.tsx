@@ -6,10 +6,12 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import ContentSection from "@/components/Sections/ContentSection";
 import { useTranslation } from "react-i18next";
 import { storage } from "@/lib/storage";
+import { CircleOfGrowthSkeleton } from '@/components/common/Skeletons';
 
 const CircleOfGrowthPage = () => {
     const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState('en');
+    const [loading, setLoading] = useState(true);
 
     interface Section {
         heading: string;
@@ -335,6 +337,7 @@ const CircleOfGrowthPage = () => {
 
         // Set the content based on language
         setCampaignContent(getCampaignContentByLanguage(userLang));
+        setLoading(false);
     }, [getCampaignContentByLanguage]);
 
     // Listen for language changes
@@ -344,6 +347,7 @@ const CircleOfGrowthPage = () => {
             if (newLang !== language) {
                 setLanguage(newLang);
                 setCampaignContent(getCampaignContentByLanguage(newLang));
+                setLoading(true);
             }
         };
 
@@ -352,6 +356,14 @@ const CircleOfGrowthPage = () => {
 
         return () => clearInterval(intervalId);
     }, [language, getCampaignContentByLanguage]);
+
+    if (loading) {
+        return (
+            <DefaultLayout>
+                <CircleOfGrowthSkeleton />
+            </DefaultLayout>
+        );
+    }
 
     return (
         <DefaultLayout>

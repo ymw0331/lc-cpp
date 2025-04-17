@@ -3,12 +3,13 @@ import "@/css/archivo.css";
 import "@/css/style.css";
 import "@/i18n/i18n";
 import React, { ReactNode, useEffect, useState } from "react";
-import Loader from "@/components/common/Loader";
 import useColorMode from "@/hooks/useColorMode";
 import { AuthProvider } from '@/contexts/AuthContext';
 import { Toaster } from "@/components/ui/toaster";
 import i18n from "@/i18n/i18n";
 import { storage } from "@/lib/storage";
+import Loader from "@/components/common/Loader";
+import '../lib/dev-console';
 
 // Auth wrapper component to handle auth-specific loading
 const AuthWrapper = ({ children }: { children: ReactNode }) => {
@@ -30,9 +31,8 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
         await new Promise(resolve => setTimeout(resolve, 500));
         setIsAuthChecking(false);
 
-
       } catch (error) {
-        console.error('Auth and languagecheck failed:', error);
+        console.error('Auth and language check failed:', error);
         setIsAuthChecking(false);
       }
     };

@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply relative z-1 bg-whiten font-archivo text-base font-normal text-body;
+    @apply relative z-1 bg-whiten font-archivo text-base font-normal text-body overflow-x-hidden;
   }
   :root {
     --background: 0 0% 100%;
@@ -48,6 +48,11 @@
     --chart-primary: #7c74ff;
     --chart-secondary: #e9e7fd;
     --chart-hover: rgba(124, 116, 255, 0.1);
+
+    --skeleton-from: 210 40% 96.1%;
+    --skeleton-via: 210 40% 98%;
+    --skeleton-to: 210 40% 96.1%;
+    --skeleton-shine: 0 0% 100%;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -89,6 +94,11 @@
     --chart-primary: #7c74ff;
     --chart-secondary: #e9e7fd;
     --chart-hover: rgba(124, 116, 255, 0.1);
+
+    --skeleton-from: 217.2 32.6% 17.5%;
+    --skeleton-via: 217.2 32.6% 20%;
+    --skeleton-to: 217.2 32.6% 17.5%;
+    --skeleton-shine: 0 0% 100%;
   }
 }
 
@@ -114,6 +124,48 @@
     content: "";
     @apply absolute bottom-0 left-0 h-0.5 w-full bg-primary;
     transform: translateY(1px);
+  }
+
+  /* Responsive Container Components */
+  .content-container {
+    @apply w-full px-2 sm:px-4 md:px-6 lg:px-8 mx-auto;
+    max-width: calc(100vw - 1rem);
+  }
+
+  .card-container {
+    @apply bg-white dark:bg-boxdark rounded-lg shadow-sm p-3 sm:p-4 md:p-6;
+  }
+
+  .grid-container {
+    @apply grid gap-4 sm:gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  }
+
+  .flex-container {
+    @apply flex flex-col sm:flex-row gap-4 flex-wrap;
+  }
+
+  /* Responsive Typography */
+  .heading-1 {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-xl sm:text-2xl md:text-3xl font-semibold;
+  }
+
+  .heading-3 {
+    @apply text-lg sm:text-xl md:text-2xl font-medium;
+  }
+
+  /* Responsive Form Elements */
+  .form-input-container {
+    @apply flex flex-col space-y-1.5 w-full max-w-[500px];
+  }
+
+  .form-group {
+    @apply grid gap-4 sm:gap-6 mb-4;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
   }
 }
 
@@ -148,6 +200,111 @@
 
   .inbox-height {
     @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
+  }
+
+  /* Responsive Spacing Utilities */
+  .responsive-gap {
+    @apply gap-2 sm:gap-4 md:gap-6;
+  }
+
+  .responsive-p {
+    @apply p-2 sm:p-4 md:p-6;
+  }
+
+  .responsive-px {
+    @apply px-2 sm:px-4 md:px-6;
+  }
+
+  .responsive-py {
+    @apply py-2 sm:py-4 md:py-6;
+  }
+
+  /* Responsive Layout Utilities */
+  .responsive-grid-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+  }
+
+  .responsive-grid-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  .responsive-grid-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+  }
+
+  .responsive-stack {
+    @apply flex flex-col sm:flex-row items-start gap-4;
+  }
+
+  .responsive-stack-reverse {
+    @apply flex flex-col-reverse sm:flex-row items-start gap-4;
+  }
+
+  /* Responsive Table Utilities */
+  .table-container {
+    @apply w-full overflow-x-auto -mx-2 sm:mx-0 px-2 sm:px-0;
+  }
+
+  /* Responsive Image Utilities */
+  .responsive-img {
+    @apply w-full h-auto object-cover rounded-lg;
+    max-height: min(300px, 50vh);
+  }
+
+  /* Responsive Card Utilities */
+  .card-grid {
+    @apply grid gap-4 sm:gap-6;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+
+  /* Responsive Form Utilities */
+  .form-section {
+    @apply space-y-4 sm:space-y-6 max-w-3xl mx-auto;
+  }
+
+  /* Scrollbar Utilities */
+  .custom-scrollbar {
+    @apply scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 
+           scrollbar-track-transparent hover:scrollbar-thumb-gray-400 
+           dark:hover:scrollbar-thumb-gray-500;
+  }
+
+  /* Content Overflow Utilities */
+  .text-ellipsis-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-ellipsis-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Media Query Fixes */
+@media (max-width: 640px) {
+  .table-container {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    width: calc(100% + 1rem);
+  }
+  
+  .card-container {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+    width: calc(100% + 1rem);
+    border-radius: 0;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
   }
 }
 

@@ -12,7 +12,9 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/contexts/AuthContext";
 import clsx from "clsx";
 import { performanceApi } from "@/api/performance/performance.api";
-import Loader from "@/components/common/Loader";
+import { resellerApi } from "@/api/reseller/reseller.api";
+import { PerformanceSkeleton } from "@/components/common/Skeletons";
+import ErrorDisplay from '@/components/common/ErrorDisplay';
 
 const PerformancePage = () => {
     const { user } = useAuth();
@@ -43,16 +45,16 @@ const PerformancePage = () => {
         TIER_PERMISSIONS.LEVEL_2_TIER
     );
 
-    if (loading) return <Loader />;
-
+    if (loading) {
+        return <DefaultLayout><PerformanceSkeleton /></DefaultLayout>;
+    }
 
     if (error || !performanceData) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <p className="text-red-500">{t('performancePage.failedToLoadData')}</p>
-            </div>
-        );
+        return <ErrorDisplay errorMessage={error?.message} />;
     }
+
+    // Get the user-friendly tier name
+    const tierName = resellerApi.getTierNameByPriority(user?.tierPriority || 0);
 
     return (
         <DefaultLayout>
@@ -90,11 +92,10 @@ const PerformancePage = () => {
 
                     {/* Next Level Card */}
                     <NextLevelCard
-                        currentLevel={performanceData.nextLevelCard.currentLevel}
-                        progress={performanceData.nextLevelCard.progress}
-                        isMaxLevel={performanceData.nextLevelCard.isMaxLevel}
-                        avatarUrl={performanceData.nextLevelCard.avatarUrl}
-                        name={performanceData.nextLevelCard.name}
+                        currentLevel={tierName}
+                        progress={performanceData.userLevel.progress}
+                        isMaxLevel={performanceData.userLevel.isMaxLevel}
+                        name={user?.fullName}
                     />
                 </div>
 
@@ -104,7 +105,6 @@ const PerformancePage = () => {
                         className="h-full"
                         groupSales={performanceData.salesSummary.groupSales}
                         personalSales={performanceData.salesSummary.personalSales}
-                        comingSoon={true}
                     />
                 </div>
             </div>
@@ -112,12 +112,13 @@ const PerformancePage = () => {
             <div className="mt-4">
                 <SalesVolumeBarChart
                     salesVolumeData={performanceData.salesVolumeData}
-                    comingSoon={true}
                 />
             </div>
 
             <div className="mt-4">
-                <DemographicSalesChart comingSoon={true} />
+                <DemographicSalesChart 
+                    demographicData={performanceData.demographicData}
+                />
             </div>
         </DefaultLayout>
     );

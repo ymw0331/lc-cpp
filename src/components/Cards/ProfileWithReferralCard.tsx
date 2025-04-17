@@ -50,7 +50,7 @@ const ProfileWithReferralCard = ({
     };
 
     return (
-        <Card className={`border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-full ${className}`}>
+        <Card className={`border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark h-full ${className} hover:shadow-lg`}>
             <CardHeader className="p-6 pb-0">
                 {/* Responsive Header Layout - Stack on mobile, side by side on desktop */}
                 <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:items-start md:space-y-0">

@@ -1,5 +1,5 @@
-import resellerAxios from "../config/reseller.config";
-import { API_ENDPOINTS } from "../config/endpoints";
+import resellerAxios from "@/api/config/reseller.config";
+import { API_ENDPOINTS } from "@/api/config/endpoints";
 
 export const accountApi = {
     getAccountData: async () => {

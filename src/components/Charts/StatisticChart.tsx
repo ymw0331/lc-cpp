@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
     BarChart,
@@ -12,10 +11,10 @@ import {
     LabelList,
 } from "recharts";
 import { useState, useEffect } from "react";
-import { ChartDataPoint, ChartRangeData, CurrencyType } from "@/types/dashboard";
+import { ChartDataPoint, CurrencyType } from "@/api/dashboard/dashboard.types";
 import { useTranslation } from "react-i18next";
 
-type TimeRange = "Week" | "Month" | "Year";
+type TimeRange = "Month" | "Year";
 
 interface StatisticChartProps {
     title: string;
@@ -26,7 +25,6 @@ interface StatisticChartProps {
         Month?: ChartDataPoint[];
         Year?: ChartDataPoint[];
     } | ChartDataPoint[]; // Support both formats for backward compatibility
-    comingSoon?: boolean;
     showLegend?: boolean;
     legendLabel?: string;
     legendPosition?: "top-left" | "top-right";
@@ -38,7 +36,6 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
     total,
     currency,
     chartData,
-    comingSoon = false,
     showLegend = false,
     legendLabel = "",
     legendPosition = "top-right",
@@ -81,7 +78,12 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
     };
 
     const formatLabelValue = (value: number) => {
-        return value.toLocaleString("en-US");
+        if (value >= 1000000) {
+            return `${(value / 1000000).toFixed(2)}M`;
+        } else if (value >= 1000) {
+            return `${(value / 1000).toFixed(2)}K`;
+        }
+        return value.toFixed(2);
     };
 
     const CustomBarLabel = (props: any) => {
@@ -94,8 +96,9 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                 textAnchor="middle"
                 fontSize={12}
                 fontWeight="500"
+                transform={`rotate(-45 ${x + width / 2} ${y - 10})`}
             >
-                {formatLabelValue(value)}
+                ${formatLabelValue(value)}
             </text>
         );
     };
@@ -132,49 +135,47 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
     const hasData = currentChartData && currentChartData.length > 0;
 
     return (
-        <Card className="w-full bg-white dark:bg-boxdark border border-stroke dark:border-strokedark">
-            <CardHeader className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-6">
+        <div className="w-full bg-white dark:bg-boxdark overflow-hidden">
+            <div className="p-4 sm:p-6 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 pb-4 sm:pb-6 border-b border-stroke dark:border-strokedark">
                 <div>
-                    <CardTitle className="text-2xl font-semibold text-black dark:text-white">
+                    <h3 className="text-xl sm:text-2xl font-semibold text-black dark:text-white">
                         {title}
-                    </CardTitle>
-                    <p className="text-4xl font-bold mt-2 text-black dark:text-white">
-                        {formatValue(calculatedTotal)}
+                    </h3>
+                    <p className="text-2xl sm:text-4xl font-bold mt-2 text-black dark:text-white">
+                        $ {formatValue(calculatedTotal)}
                     </p>
                 </div>
 
-                <div className="flex space-x-2 bg-gray-100 dark:bg-meta-4 p-1">
-                    {["Week", "Month", "Year"].map((range) => (
+                <div className="flex space-x-2 bg-gray-100 dark:bg-meta-4 p-1 rounded-full self-start sm:self-center">
+                    {["Month", "Year"].map((range) => (
                         <Button
                             key={range}
                             variant={activeRange === range ? "default" : "ghost"}
-                            className={`rounded-full px-6 transition-all duration-200 ${activeRange === range
-                                ? "bg-primary text-white hover:bg-primary/90"
-                                : "text-black dark:text-white hover:bg-meta-4/50"
-                                }`}
+                            className={`rounded-full px-4 sm:px-6 py-1.5 sm:py-2 text-sm transition-all duration-200 ${
+                                activeRange === range
+                                    ? "bg-primary text-white hover:bg-primary/90"
+                                    : "text-black dark:text-white hover:bg-meta-4/50"
+                            }`}
                             onClick={() => handleRangeChange(range as TimeRange)}
                         >
                             {range}
                         </Button>
                     ))}
                 </div>
-            </CardHeader>
+            </div>
 
-            <CardContent>
-                <div className="h-[400px] w-full flex items-center justify-center relative">
-                    {comingSoon && (
-                        <div className="absolute inset-0 bg-black/50 dark:bg-boxdark/70 z-10 flex items-center justify-center">
-                            <div className="text-white text-xl font-bold bg-primary/80 px-6 py-3 rounded-md">
-                                {t("common.comingSoon")}
-                            </div>
-                        </div>
-                    )}
-
+            <div className="p-4 sm:p-6">
+                <div className="h-[300px] sm:h-[400px] w-full flex items-center justify-center relative">
                     {hasData ? (
-                        <ResponsiveContainer width="100%" height={400}>
+                        <ResponsiveContainer width="100%" height="100%">
                             <BarChart
                                 data={currentChartData}
-                                margin={{ top: 40, right: 10, left: 0, bottom: 0 }}
+                                margin={{ 
+                                    top: 40, 
+                                    right: window.innerWidth < 640 ? 5 : 10, 
+                                    left: 0, 
+                                    bottom: window.innerWidth < 640 ? 20 : 0 
+                                }}
                                 className="text-black dark:text-white"
                             >
                                 {showLegend && legendLabel && (
@@ -192,22 +193,40 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                                     dataKey="label"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: "#64748B", fontSize: 12 }}
+                                    tick={{ 
+                                        fill: "#64748B", 
+                                        fontSize: window.innerWidth < 640 ? 10 : 12 
+                                    }}
                                     dy={10}
+                                    interval={window.innerWidth < 640 ? 1 : 0}
+                                    angle={window.innerWidth < 640 ? -45 : 0}
+                                    textAnchor={window.innerWidth < 640 ? "end" : "middle"}
                                 />
                                 <YAxis
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: "#64748B", fontSize: 12 }}
-                                    width={80}
+                                    tick={{ 
+                                        fill: "#64748B", 
+                                        fontSize: window.innerWidth < 640 ? 10 : 12 
+                                    }}
+                                    width={window.innerWidth < 640 ? 40 : 80}
                                     tickFormatter={(value) => value.toLocaleString()}
                                 />
                                 <Tooltip
                                     content={<CustomTooltip />}
                                     cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                                 />
-                                <Bar dataKey="value" barSize={40} shape={CustomBar}>
-                                    <LabelList dataKey="value" position="top" content={CustomBarLabel} />
+                                <Bar 
+                                    dataKey="value" 
+                                    barSize={window.innerWidth < 640 ? 20 : 40} 
+                                    shape={CustomBar}
+                                >
+                                    <LabelList 
+                                        dataKey="value" 
+                                        position="top" 
+                                        content={CustomBarLabel}
+                                        offset={30}
+                                    />
                                 </Bar>
                             </BarChart>
                         </ResponsiveContainer>
@@ -217,8 +236,8 @@ const StatisticChart: React.FC<StatisticChartProps> = ({
                         </div>
                     )}
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 };
 

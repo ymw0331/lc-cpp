@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { authApi } from '@/api/auth/auth.api';
 import { resellerApi } from '@/api/reseller/reseller.api';
 import { storage } from '@/lib/storage';
+import { expandUUID } from '@/lib/url-utils'; // Import the expandUUID function
 import type { AuthUser } from '@/api/auth/auth.types';
 
 export interface EnhancedAuthUser extends AuthUser {
@@ -22,6 +23,11 @@ interface AuthContextType {
     refreshUserData: () => Promise<void>;
 }
 
+// Helper function to check if a path is a short invite URL
+const isShortInvitePath = (path: string) => {
+    return path.startsWith('/i/') && path.split('/').length >= 4;
+};
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -32,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const checkResellerStatus = async (): Promise<boolean> => {
         try {
-            const resellerData = await resellerApi.getResellerInfo();
+            const resellerData = await resellerApi.getCurrentReseller();
             // User is a reseller only if resellerData exists AND has an id
             return !!(resellerData && resellerData.id);
         } catch (error) {
@@ -43,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUserData = async (baseUser: AuthUser) => {
         try {
-            const resellerData = await resellerApi.getResellerInfo();
+            const resellerData = await resellerApi.getCurrentReseller();
             setIsReseller(!!resellerData); // Set reseller status
 
             const enhancedUser: EnhancedAuthUser = {
@@ -68,6 +74,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setUser(baseUser as EnhancedAuthUser);
             setIsReseller(false);
         }
+    };
+    // Function to redirect to login with parameters if coming from a short URL
+    const redirectToLoginWithParams = () => {
+        if (isShortInvitePath(pathname)) {
+            const parts = pathname.split('/');
+            const referralCode = parts[2];
+            const shortId = parts[3];
+
+            if (referralCode && shortId) {
+                try {
+                    const upstreamId = expandUUID(shortId);
+                    console.log('[Auth] Redirecting to login with preserved parameters:', { referralCode, upstreamId });
+                    router.push(`/auth/login?referralCode=${referralCode}&upstreamId=${upstreamId}`);
+                } catch (error) {
+                    console.error('[Auth] Error expanding shortId:', error);
+                    router.push('/auth/login');
+                }
+                return true; // Redirect handled
+            }
+        }
+        return false; // Redirect not handled
     };
 
     const login = async (email: string, password: string): Promise<boolean> => {
@@ -166,14 +193,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 if (!isUserReseller &&
                     pathname !== '/auth/login' &&
                     pathname !== '/auth/register' &&
-                    pathname !== '/invite') {
+                    pathname !== '/auth/signup-reseller' && // Add the new path
+                    pathname !== '/invite' &&
+                    !isShortInvitePath(pathname)) {
                     console.log('[Auth] User is not a reseller, redirecting to login');
-                    router.push('/auth/login');
+
+                    // Preserve parameters if from a short URL
+                    if (!redirectToLoginWithParams()) {
+                        router.push('/auth/login');
+                    }
                 }
             });
-        } else if (pathname !== '/auth/login' && pathname !== '/auth/register' && pathname !== '/invite') {
+        } else if (
+            pathname !== '/auth/login' &&
+            pathname !== '/auth/register' &&
+            pathname !== '/auth/signup-reseller' && // Add the new path
+            pathname !== '/invite' &&
+            !isShortInvitePath(pathname)
+        ) {
             console.log('[Auth] No stored user, redirecting to login');
-            router.push('/auth/login');
+
+            // Preserve parameters if from a short URL
+            if (!redirectToLoginWithParams()) {
+                router.push('/auth/login');
+            }
         }
     }, [pathname, router]);
 

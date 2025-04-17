@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { FaGlobe } from 'react-icons/fa';
 import ClickOutside from '@/components/ClickOutside';
 import { toast } from '@/hooks/useToast';
-// import axios from 'axios';
 
 const LanguageSwitcher: React.FC = () => {
     const { i18n, t } = useTranslation();
@@ -32,9 +31,6 @@ const LanguageSwitcher: React.FC = () => {
             // Update i18n
             await i18n.changeLanguage(lang);
 
-            // Update database preference
-            // await axios.post('/api/preferences/language', { language: lang });
-
             toast({
                 title: t('preferences.language.changed'),
                 description: t('preferences.language.restart'),
@@ -54,7 +50,7 @@ const LanguageSwitcher: React.FC = () => {
     };
 
     const languages = [
-        { code: 'en', label: 'English'},
+        { code: 'en', label: 'English' },
         { code: 'zh', label: '简体中文' },
         { code: 'zh-hk', label: '繁體中文' }
     ];
